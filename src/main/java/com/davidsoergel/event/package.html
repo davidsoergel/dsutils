@@ -1,0 +1,119 @@
+<body>
+<p>This package magically distributes high-level events to their appropriate listeners.</p>
+
+<p>The EventMediator is a singleton that acts as a broker for all events fired in the application.
+
+<p>Each event type is represented by a subclass of EventObject.  The event may carry state with it.
+The event type must specify the
+name of its handler method to be invoked by introspection on its listeners.
+
+<p>(The event type need not register itself with the EventMediator, since that is dealt with automatically
+the first time the event is fired.)
+
+
+<p>An object may listen for events of a certain type sent from some source object by registering
+itself with the EventMediator:
+
+<p><code>EventMediator.getInstance().addListener(this, SomeEventClass.class, SomeSourceObject);</code>
+
+
+<p>An object may listen for events of a certain type sent from _any_ source object:
+
+<p><code>EventMediator.getInstance().addListener(this, SomeEventClass.class);</code>
+
+
+
+<p>An object may listen for events of _any_ type sent from some source object:
+
+
+<p><code>EventMediator.getInstance().addListener(this, SomeSourceObject);</code>
+
+
+<p>An object may register itself as a relay for certain event types.  That is, if the object
+receives an event of a certain type, it automatically rebroadcasts it to all of its listeners.
+Of course, the relay must itself be a listener in order to receive the event in the first
+place.
+
+<p>In this case the source object is still the original source!
+<p><pre>
+class Foo
+	{
+	public void Foo()
+		{
+		EventMediator.getInstance().addListener(this, SomeEventClass.class, SomeSourceObject);
+		EventMediator.getInstance().addRelay(this, SomeEventClass.class);
+		}
+	}
+
+class Bar
+	{
+	public void Bar(Foo myFoo)
+		{
+		EventMediator.getInstance().addListener(this, SomeEventClass.class, myFoo);
+		}
+	}
+</pre,>
+<p>now, when SomeSourceObject fires an event of SomeEventClass, the Bar object will hear
+about it!
+
+<p>This relay functionality is intended to facilitate hierarchical composition of UI elements.
+If a window contains a UI widget, then the window can relay events from that widget to other
+windows, which may in turn relay them to their contained elements.  Those other windows need
+not be concerned about the internal composition of the first window (e.g., that it contains
+a widget).  Indeed, it would be very difficult for a widget contained in window B to register
+itself as a listener of a widget contained in window A, since these widgets will in general
+have no way of knowing about each other.
+
+<p>There may be cycles of relays; these are caught and do not create infinite loops.
+Thus, given the situation A->B, B->C, C->B, B->D, C->D, an event fired from A arrives at D
+exactly once.
+
+<p>A handler method should not explicitly re-fire the event that it received, since
+that may give rise to an infinite loop.  That is, relay-like functionality should not be
+hand-coded; all event distribution should occur through the EventMediator.
+
+<p>/*
+If an object registers itself as a listener of SomeEventClass, then it should implement a
+handler method with the name specified by SomeEventClass.getMethodName().
+*/
+
+<p>The listening class must implement an interface called SomeEventClass.Listener.
+That interface is specified inner to the event class, thus:
+<p>
+<pre>
+public class CreateNodeEvent extends Event
+	{
+	public interface Listener
+		{
+		public void createNodeEventOccurred(CreateNodeEvent e);
+		}
+	}
+</pre>
+</p>
+<p>Then a listening class is defined thus:
+<p>
+<pre>
+public class Foobar implements CreateNodeEvent.Listener
+	{
+	public void createNodeEventOccurred(CreateNodeEvent e)
+		{
+		...
+		}
+	}
+</pre>
+</p>
+<p>
+The EventManager introspects on the event class and the contained interface to know the
+method name to invoke.  It simply chooses the first method in the Listener interface, so I
+don't think there's any point in having more than one method there.
+
+<p>The handler method should
+take exactly one argument, an object of SomeEventClass.  A relay may or may not implement a
+handler.  If a class does not implement a handler, it is silently ignored.
+<p>
+I use this EventManager stuff in combination with the XML Actions framework.  The distinction
+is that Actions are low-level and carry no state, e.g. button clicks that should be handled
+by the object associated with the button, which may want to collect state from other UI
+elements.  The action handler may well fire an Event; this is a high-level semantic thing
+that contains all of the state to specify what it means.
+</body>
