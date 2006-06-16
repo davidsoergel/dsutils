@@ -79,15 +79,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/jboss/javassist/3.0/javassist-3.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/swarmcache/swarmcache/1.0RC2/swarmcache-1.0RC2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -98,6 +89,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/javax/security/jacc/1.0/jacc-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/jboss/javassist/3.0/javassist-3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -250,15 +250,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/slide/webdavlib/2.0/webdavlib-2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/hibernate/hibernate-annotations/3.2.0.CR1/hibernate-annotations-3.2.0.CR1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -268,7 +259,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/qdox/qdox/1.5/qdox-1.5.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/slide/webdavlib/2.0/webdavlib-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -286,7 +277,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/jboss/jboss-system/4.0.2/jboss-system-4.0.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/qdox/qdox/1.5/qdox-1.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -304,6 +295,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/jboss/jboss-system/4.0.2/jboss-system-4.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../../.m2/repository/ehcache/ehcache/1.1/ehcache-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -313,7 +313,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/opensymphony/oscache/2.1/oscache-2.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/com/martiansoftware/JSAP/2.0a/JSAP-2.0a.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -322,7 +322,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/com/martiansoftware/JSAP/2.0a/JSAP-2.0a.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../.m2/repository/opensymphony/oscache/2.1/oscache-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
