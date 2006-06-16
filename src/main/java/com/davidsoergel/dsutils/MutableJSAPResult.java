@@ -33,6 +33,7 @@ import java.util.List;
  * @author lorax
  * @version 1.0
  */
+@Deprecated
 public class MutableJSAPResult extends JSAPResult
 	{
 // ------------------------------ FIELDS ------------------------------

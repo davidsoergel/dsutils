@@ -13,7 +13,7 @@
 		<groupId>com.davidsoergel</groupId>
 		<artifactId>basepom</artifactId>
 		<version>1.0</version>
-		<relativePath>../basepom/pom.xml</relativePath>
+		<relativePath>../../basepom/pom.xml</relativePath>
 	</parent>
 
 	<inceptionYear>2006</inceptionYear>

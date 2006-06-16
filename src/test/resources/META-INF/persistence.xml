@@ -24,7 +24,7 @@
 <persistence>
   <persistence-unit name="memorytest">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>com.davidsoergel.dsutils.TestEntity</class>
+    <class>com.davidsoergel.hibernateutils.TestEntity</class>
     <properties>
         <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:test"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
@@ -38,7 +38,7 @@
   </persistence-unit>
   <persistence-unit name="mysqltest">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>com.davidsoergel.dsutils.TestEntity</class>
+    <class>com.davidsoergel.hibernateutils.TestEntity</class>
     <properties>
         <property name="hibernate.connection.url" value="jdbc:mysql://localhost/test"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
