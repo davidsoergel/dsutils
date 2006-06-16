@@ -171,6 +171,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dsutils.iml" filepath="$PROJECT_DIR$/dsutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../event/trunk/event.iml" filepath="$PROJECT_DIR$/../../event/trunk/event.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../hibernateutils/trunk/hibernateutils.iml" filepath="$PROJECT_DIR$/../../hibernateutils/trunk/hibernateutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../runutils/trunk/runutils.iml" filepath="$PROJECT_DIR$/../../runutils/trunk/runutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../stats/trunk/stats.iml" filepath="$PROJECT_DIR$/../../stats/trunk/stats.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5.0" />

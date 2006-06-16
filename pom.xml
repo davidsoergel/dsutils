@@ -77,8 +77,8 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils/tags/dsutils-1.0</connection>
-		<developerConnection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils/tags/dsutils-1.0</developerConnection>
+		<connection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils</connection>
+		<developerConnection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils</developerConnection>
 	</scm>
 	<distributionManagement>
 		<site>
