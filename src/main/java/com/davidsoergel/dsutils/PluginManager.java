@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author lorax
@@ -66,6 +67,13 @@ public class PluginManager<T>
 	public static Class getClassByName(Class T, String s) throws PluginException
 		{
 		return getManagerForInterface(T).getClassByName(s);
+		}
+
+
+
+	public static Set<String> getKeySet(Class T) throws PluginException
+		{
+		return getManagerForInterface(T).getKeySet();
 		}
 
 
@@ -140,6 +148,11 @@ public class PluginManager<T>
 				}
 		}
 
+	public Set<String> getKeySet() throws PluginException
+		{
+		return classes.keySet();
+
+		}
 
 	}
 
