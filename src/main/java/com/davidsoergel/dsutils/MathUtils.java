@@ -33,7 +33,7 @@ public class MathUtils
 // ------------------------------ FIELDS ------------------------------
 
 	private static final int FACTORIAL_LIMIT = 100;
-	private static double[] factorials = new double[FACTORIAL_LIMIT+1];
+	private static double[] factorials = new double[FACTORIAL_LIMIT + 1];
 // log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
 // for x >= y
 
@@ -60,19 +60,25 @@ public class MathUtils
 
 	public static long choose(int n, int m)
 		{
-		if(m == 0) { return 1; }
+		if (m == 0)
+			{
+			return 1;
+			}
 		double result;
-		result = factorial(n) / (factorial(m) * factorial(n-m));
+		result = factorial(n) / (factorial(m) * factorial(n - m));
 
 		return (long) result;
 		}
 
 	public static double factorial(int n) throws ArithmeticException
 		{
-		if(n > FACTORIAL_LIMIT) { return StirlingFactorial(n); }
-		if(factorials[n] == 0)
+		if (n > FACTORIAL_LIMIT)
 			{
-			factorials[n] = n * factorial(n-1);
+			return StirlingFactorial(n);
+			}
+		if (factorials[n] == 0)
+			{
+			factorials[n] = n * factorial(n - 1);
 			}
 		return factorials[n];
 		}
@@ -83,7 +89,11 @@ public class MathUtils
 		return result;
 		}
 
-	static { factorials[0] = 1; factorials[1] = 1;  }
+	static
+		{
+		factorials[0] = 1;
+		factorials[1] = 1;
+		}
 
 
 	/**
@@ -140,5 +150,47 @@ public class MathUtils
 //			}
 
 		return result;
+		}
+
+	private static double[] logTableBelowOne;
+	private static double[] logTableAboveOne;
+
+	public static int logbins;
+	public static double logResolution;
+	public static double maxLogArg;
+
+
+	public static void initApproximateLog(int bins, double max)
+		{
+		maxLogArg = max;
+		logbins = bins;
+		logResolution = (double)1/logbins;
+		logTableBelowOne = new double[logbins];
+		for (int i = 0; i < logbins; i++)
+			{
+			logTableBelowOne[i] = Math.log((double) i / (double) logbins);
+			}
+		logTableAboveOne = new double[logbins];
+		for (int i = 0; i < logbins; i++)
+			{
+			logTableAboveOne[i] = Math.log((double) (i*maxLogArg) / (double) logbins);
+			}
+		}
+
+	public static double approximateLog(double x) throws MathUtilsException
+		{
+		if (!(x > 0) && (x < maxLogArg))
+			{
+			throw new MathUtilsException("approximateLog accepts only 0 < x < " + maxLogArg +"; maybe init with different max");
+			}
+		if (x < .00001 || (x > .9999 && x < 1))
+			{
+			return Math.log(x);
+			}
+		if(x < 1)
+			{
+			return logTableBelowOne[(int) Math.floor(x * logbins)];
+			}
+		return logTableAboveOne[(int) Math.floor((x/maxLogArg) * logbins)];
 		}
 	}
