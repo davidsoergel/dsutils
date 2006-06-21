@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -42,6 +43,9 @@ import java.util.zip.ZipEntry;
  *
  * Created: Wed Jan 24 11:15:02 2001
  *
+ * Adapted from Daniel le Berre
+ * http://www.javaworld.com/javaworld/javatips/jw-javatip113.html
+ * http://www.javaworld.com/javatips/javatip113/Tip113.zip
  */
 
 
@@ -61,6 +65,14 @@ public class SubclassFinder
 
 // -------------------------- STATIC METHODS --------------------------
 
+		public static List<Class> find(String pckgname, Class tosubclass) {
+		return find(pckgname, tosubclass, false);
+		}
+
+	public static List<Class> findRecursive(String pckgname, Class tosubclass) {
+		return find(pckgname, tosubclass, true);
+		}
+
 	/**
 	 * Display all the classes inheriting or implementing a given
 	 * class in a given package.
@@ -68,7 +80,7 @@ public class SubclassFinder
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
-	public static List<Class> find(String pckgname, Class tosubclass)
+	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse)
 	//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
@@ -102,12 +114,12 @@ public class SubclassFinder
 			{
 			URL url = (URL) e.nextElement();
 			logger.debug("Found resource: " + url);
-			result.addAll(find(url, pckgname, tosubclass));
+			result.addAll(find(url, pckgname, tosubclass, recurse));
 			}
 		return result;
 		}
 
-	private static List find(URL url, String pckgname, Class tosubclass)
+	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse)
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -142,8 +154,22 @@ public class SubclassFinder
 			logger.debug("Files to check: " + files.length);
 			for (int i = 0; i < files.length; i++)
 				{
-				// we are only interested in .class files
-				if (files[i].endsWith(".class"))
+				// we are only interested in directories and .class files
+				logger.debug("Checking: " + url.getFile()+"/"+files[i]);
+				if(recurse && new File(url.getFile()+"/"+files[i]).isDirectory())
+				//if(files[i].endsWith("/"))
+					{
+					logger.debug("Recursing into package: " + pckgname + "." + files[i]);
+					try
+						{
+						result.addAll(find(new URL(url.toString()+"/"+files[i]), pckgname+"."+files[i], tosubclass, recurse));
+						}
+					catch (MalformedURLException e)
+						{
+						logger.debug(e);
+						}
+					}
+				else if (files[i].endsWith(".class"))
 					{
 					// removes the .class extension
 					String classname = files[i].substring(0, files[i].length() - 6);
@@ -191,9 +217,29 @@ public class SubclassFinder
 					{
 					ZipEntry entry = (ZipEntry) e.nextElement();
 					String entryname = entry.getName();
-					if (entryname.startsWith(starts) && (entryname.lastIndexOf('/') <= starts.length()) && entryname.endsWith(
+
+					logger.debug("Checking: " + entryname);
+				/*	String shortEntryname;
+					try {shortEntryname= entryname.substring(entryname.lastIndexOf("/"));}
+						catch (IndexOutOfBoundsException j) { shortEntryname = ""; }
+					// we are only interested in directories and .class files
+				if(entryname.startsWith(starts) && entry.isDirectory())
+					{
+					logger.debug("Recursing into package: " + url.toString()+"/"+shortEntryname);
+					try
+						{
+						result.addAll(find(new URL(url.toString()+"/"+shortEntryname), pckgname+"."+entryname, tosubclass));
+						}
+					catch (MalformedURLException ex)
+						{
+						logger.debug(ex);
+						}
+					}
+				else*/
+					if (entryname.startsWith(starts) && entryname.endsWith(
 					        ".class"))
 						{
+						if(recurse == false && (entryname.lastIndexOf('/') > starts.length()) ) { continue; };
 						String classname = entryname.substring(0, entryname.length() - 6);
 						if (classname.startsWith("/"))
 							classname = classname.substring(1);

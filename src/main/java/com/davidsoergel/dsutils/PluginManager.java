@@ -93,7 +93,7 @@ public class PluginManager<T>
 
 	public void registerPackage(String packagename)
 		{
-		for (Class c : SubclassFinder.find(packagename, theInterface))
+		for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
 			{
 			//put((String)dm.getMethod("getName").invoke(), dm);
 			try
