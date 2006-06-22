@@ -164,7 +164,7 @@ public class MathUtils
 		{
 		maxLogArg = max;
 		logbins = bins;
-		logResolution = (double)1/logbins;
+		logResolution = (double) 1 / logbins;
 		logTableBelowOne = new double[logbins];
 		for (int i = 0; i < logbins; i++)
 			{
@@ -173,24 +173,25 @@ public class MathUtils
 		logTableAboveOne = new double[logbins];
 		for (int i = 0; i < logbins; i++)
 			{
-			logTableAboveOne[i] = Math.log((double) (i*maxLogArg) / (double) logbins);
+			logTableAboveOne[i] = Math.log((double) (i * maxLogArg) / (double) logbins);
 			}
 		}
 
-	public static double approximateLog(double x) throws MathUtilsException
+	public static double approximateLog(double x)
 		{
 		if (!(x > 0) && (x < maxLogArg))
 			{
-			throw new MathUtilsException("approximateLog accepts only 0 < x < " + maxLogArg +"; maybe init with different max");
+			return Math.log(x);
+			//throw new MathUtilsException("approximateLog accepts only 0 < x < " + maxLogArg +"; maybe init with different max");
 			}
 		if (x < .00001 || (x > .9999 && x < 1))
 			{
 			return Math.log(x);
 			}
-		if(x < 1)
+		if (x < 1)
 			{
 			return logTableBelowOne[(int) Math.floor(x * logbins)];
 			}
-		return logTableAboveOne[(int) Math.floor((x/maxLogArg) * logbins)];
+		return logTableAboveOne[(int) Math.floor((x / maxLogArg) * logbins)];
 		}
 	}
