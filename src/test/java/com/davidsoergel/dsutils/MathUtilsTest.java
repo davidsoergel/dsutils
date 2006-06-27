@@ -53,7 +53,7 @@ public class MathUtilsTest
 			{
 			checkLog(x);
 			}
-		for(double x = 1; x < 1000; x += 0.1)
+		for(double x = 1; x < 10005; x += 0.1)
 			{
 			checkLog(x);
 			}

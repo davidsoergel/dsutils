@@ -179,7 +179,7 @@ public class MathUtils
 
 	public static double approximateLog(double x)
 		{
-		if (!(x > 0) && (x < maxLogArg))
+		if ((x < 0) || (x >= maxLogArg))
 			{
 			return Math.log(x);
 			//throw new MathUtilsException("approximateLog accepts only 0 < x < " + maxLogArg +"; maybe init with different max");
@@ -190,8 +190,13 @@ public class MathUtils
 			}
 		if (x < 1)
 			{
-			return logTableBelowOne[(int) Math.floor(x * logbins)];
+			return logTableBelowOne[(int) (x * logbins)];
 			}
-		return logTableAboveOne[(int) Math.floor((x / maxLogArg) * logbins)];
+		return logTableAboveOne[(int)((x / maxLogArg) * logbins)];
 		}
+
+	public static boolean equalWithinFPError(double a, double b) {
+	double nearlyZero = a - b;
+	return -1e-15 < nearlyZero && nearlyZero < 1e-15;
+	}
 	}
