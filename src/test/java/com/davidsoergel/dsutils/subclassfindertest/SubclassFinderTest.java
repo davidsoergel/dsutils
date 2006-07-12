@@ -44,7 +44,7 @@ public class SubclassFinderTest extends TestCase
 	@Test
 	public void subclassFinderRecursesFilesystemPackages()
 		{
-		List classes = SubclassFinder.find("com.davidsoergel.dsutils", ChainedException.class);
+		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", ChainedException.class);
 		assert classes.contains(PluginException.class);
 		assert classes.contains(SubclassFinderTestException.class);
 		}

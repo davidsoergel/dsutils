@@ -26,6 +26,8 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
+
 /**
  * Created by IntelliJ IDEA.
  * User: lorax
@@ -33,7 +35,7 @@ import org.apache.log4j.Logger;
  * Time: 6:15:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ArrayUtils
+public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
 // ------------------------------ FIELDS ------------------------------
 
@@ -41,7 +43,68 @@ public class ArrayUtils
 
 // -------------------------- STATIC METHODS --------------------------
 
+
+	public static boolean equalWithinFPError(double[] a, double[] b)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't compare arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			if(!MathUtils.equalWithinFPError(a[i], b[i])) { return false; }
+			}
+		return true;
+		}
+
+	public static double[] plus(double[] a, double[] b)
+		{
+		double[] result = a.clone();  // does this work??
+		incrementBy(result, b);
+		return result;
+		}
+
+	public static void incrementBy(double[] a, double[] b)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			a[i] += b[i];
+			}
+		}
+
+	public static double[] minus(double[] a, double[] b)
+		{
+		double[] result = a.clone();  // does this work??
+		decrementBy(result, b);
+		return result;
+		}
+
+	public static void decrementBy(double[] a, double[] b)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			a[i] -= b[i];
+			}
+		}
+
+
+	@Deprecated
 	public static double[][] add(double[][] a, double[][] b)
+		{
+		return plus(a, b);
+		}
+
+	public static double[][] plus(double[][] a, double[][] b)
 		{
 		if (a.length != b.length)
 			{
@@ -190,6 +253,16 @@ public class ArrayUtils
 		return result;
 		}
 
+	public static int sum(Collection<Double> a)
+		{
+		int result = 0;
+		for (double i : a)
+			{
+			result += i;
+			}
+		return result;
+		}
+
 	public static double sum(double[][] a)
 		{
 		return sumFirstNColumns(a, a[0].length);
@@ -300,7 +373,10 @@ public class ArrayUtils
 		{
 		for (int i = 0; i < a.length; i++)
 			{
-			if(a[i] == o) { return true; }
+			if (a[i] == o)
+				{
+				return true;
+				}
 			}
 		return false;
 		}

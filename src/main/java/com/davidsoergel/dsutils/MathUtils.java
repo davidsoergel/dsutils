@@ -192,11 +192,14 @@ public class MathUtils
 			{
 			return logTableBelowOne[(int) (x * logbins)];
 			}
-		return logTableAboveOne[(int)((x / maxLogArg) * logbins)];
+		return logTableAboveOne[(int) ((x / maxLogArg) * logbins)];
 		}
 
-	public static boolean equalWithinFPError(double a, double b) {
-	double nearlyZero = a - b;
-	return -1e-15 < nearlyZero && nearlyZero < 1e-15;
-	}
+	public static boolean equalWithinFPError(double a, double b)
+		{
+		double nearlyZero = a - b;
+		// these errors are generally in the vicinity of 1e-15
+		// let's be extra permissive, 1e-10 is good enough anyway
+		return -1e-10 < nearlyZero && nearlyZero < 1e-10;
+		}
 	}

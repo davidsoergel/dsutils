@@ -26,6 +26,7 @@ package com.davidsoergel.dsutils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author lorax
@@ -39,13 +40,50 @@ public class CollectionUtils
 	 * Shallow-copy any Collection into an ArrayList.  Useful for making a local copy for iteration,
 	 * to avoid ConcurrentModificationExceptions.
 	 */
-	public static ArrayList ArrayList(Collection c)
+	public static <T> ArrayList<T> ArrayList(Collection<T> c)
 		{
 		if (c instanceof ArrayList)
 			{
-			return (ArrayList) c;
+			return (ArrayList<T>) c;
 			}
 
-		return new ArrayList(c);
+		return new ArrayList<T>(c);
 		}
-	}
+
+	public static ArrayList<Double> plus(List<Number> a, List<Number> b)
+		{
+		if (a.size() != b.size())
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		ArrayList<Double> result = new ArrayList<Double>(a.size());
+
+
+		for (int i = 0; i < a.size(); i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			result.add(a.get(i).doubleValue() + b.get(i).doubleValue());
+			}
+		return result;
+		}
+
+
+	public static ArrayList<Double> minus(List<Number> a, List<Number> b)
+		{
+		if (a.size() != b.size())
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		ArrayList<Double> result = new ArrayList<Double>(a.size());
+
+
+		for (int i = 0; i < a.size(); i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			result.add(a.get(i).doubleValue() - b.get(i).doubleValue());
+			}
+		return result;
+		}
+
+	
+}
