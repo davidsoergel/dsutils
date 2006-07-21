@@ -27,6 +27,8 @@ package com.davidsoergel.dsutils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.Arrays;
 
 /**
  * @author lorax
@@ -85,5 +87,12 @@ public class CollectionUtils
 		return result;
 		}
 
-	
+	public static boolean deepEqualsWithinFPError(Set<Double> a, Set<Double> b)
+		{
+		Double[] aa= a.toArray(new Double[]{});
+		Double[] bb= b.toArray(new Double[]{});
+		Arrays.sort(aa);
+		Arrays.sort(bb);
+		return ArrayUtils.equalWithinFPError(aa,bb);
+		}
 }

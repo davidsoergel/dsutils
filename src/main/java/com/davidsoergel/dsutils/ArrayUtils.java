@@ -57,6 +57,19 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return true;
 		}
 
+	public static boolean equalWithinFPError(Double[] a, Double[] b)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't compare arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			if(!MathUtils.equalWithinFPError(a[i], b[i])) { return false; }
+			}
+		return true;
+		}
+
 	public static double[] plus(double[] a, double[] b)
 		{
 		double[] result = a.clone();  // does this work??
