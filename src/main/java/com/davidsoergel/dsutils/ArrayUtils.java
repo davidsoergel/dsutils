@@ -393,4 +393,14 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return false;
 		}
+
+	public static double[] castToDouble(int[] p)
+		{
+		double[] result = new double[p.length];
+		for(int i = 0; i < p.length; i++)
+			{
+			result[i] = p[i];
+			}
+		return result;
+		}
 	}
