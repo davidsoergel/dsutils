@@ -158,6 +158,9 @@ import java.util.*;
 
 public class MersenneTwisterFast implements Serializable
     {
+
+    public static MersenneTwisterFast _instance = new MersenneTwisterFast();
+
 // ------------------------------ FIELDS ------------------------------
 
     // Period parameters
@@ -166,7 +169,6 @@ public class MersenneTwisterFast implements Serializable
     private static final int MATRIX_A = 0x9908b0df;   //    private static final * constant vector a
     private static final int UPPER_MASK = 0x80000000; // most significant w-r bits
     private static final int LOWER_MASK = 0x7fffffff; // least significant r bits
-
 
     // Tempering parameters
     private static final int TEMPERING_MASK_B = 0x9d2c5680;
@@ -378,7 +380,7 @@ public class MersenneTwisterFast implements Serializable
         r = new MersenneTwisterFast(SEED);
         for (j = 0; j < 1000; j++)
             {
-            System.out.print(r.nextBoolean((double)(j/999.0)) + " ");
+            System.out.print(r.nextBoolean((j/999.0)) + " ");
             if (j%8==7) System.out.println();
             }
         if (!(j%8==7)) System.out.println();
@@ -387,7 +389,7 @@ public class MersenneTwisterFast implements Serializable
         r = new MersenneTwisterFast(SEED);
         for (j = 0; j < 1000; j++)
             {
-            System.out.print(r.nextBoolean((float)(j/999.0f)) + " ");
+            System.out.print(r.nextBoolean(j/999.0f) + " ");
             if (j%8==7) System.out.println();
             }
         if (!(j%8==7)) System.out.println();
@@ -525,7 +527,7 @@ public class MersenneTwisterFast implements Serializable
         y ^= (y << 15) & TEMPERING_MASK_C;      // TEMPERING_SHIFT_T(y)
         y ^= (y >>> 18);                        // TEMPERING_SHIFT_L(y)
 
-        return (boolean)((y >>> 31) != 0);
+        return (y >>> 31) != 0;
         }
 
     /** This generates a coin flip with a probability <tt>probability</tt>
@@ -1256,4 +1258,9 @@ public class MersenneTwisterFast implements Serializable
             return v1 * multiplier;
             }
         }
+
+    public static double random()
+	    {
+	    return _instance.nextDouble();
+	    }
     }
