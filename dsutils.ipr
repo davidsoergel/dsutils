@@ -171,6 +171,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../../compbio/chartutils/trunk/chartutils.iml" filepath="$PROJECT_DIR$/../../../../compbio/chartutils/trunk/chartutils.iml" />
       <module fileurl="file://$PROJECT_DIR$/dsutils.iml" filepath="$PROJECT_DIR$/dsutils.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../event/trunk/event.iml" filepath="$PROJECT_DIR$/../../event/trunk/event.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../hibernateutils/trunk/hibernateutils.iml" filepath="$PROJECT_DIR$/../../hibernateutils/trunk/hibernateutils.iml" />
