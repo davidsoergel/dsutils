@@ -171,10 +171,11 @@ public class StringUtils
 	 * @param s     The string to be tokenized.
 	 * @param delim The delimiters to use (see {@link StringTokenizer} for details)
 	 * @return A Set of tokens.
-	 * @deprecated use orf.apache.commons.lang.StringUtils.split()
+	 * @deprecated use org.apache.commons.lang.StringUtils.split()
 	 */
 	public static Set TokenSet(String s, String delim)
 		{
+		//return new HashSet<String>(org.apache.commons.lang.StringUtils.split(s, delim));
 		StringTokenizer st = new StringTokenizer(s, delim);
 		Set result = new HashSet();
 
