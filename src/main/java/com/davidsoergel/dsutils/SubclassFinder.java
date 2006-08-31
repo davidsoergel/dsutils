@@ -29,14 +29,13 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-
 
 /**
  * RTSI.java
@@ -65,12 +64,24 @@ public class SubclassFinder
 
 // -------------------------- STATIC METHODS --------------------------
 
-		public static List<Class> find(String pckgname, Class tosubclass) {
-		return find(pckgname, tosubclass, false);
+	public static List<Class> find(String pckgname, Class tosubclass)
+		{
+		return find(pckgname, tosubclass, false, false);
 		}
 
-	public static List<Class> findRecursive(String pckgname, Class tosubclass) {
-		return find(pckgname, tosubclass, true);
+	public static List<Class> findRecursive(String pckgname, Class tosubclass)
+		{
+		return find(pckgname, tosubclass, true, false);
+		}
+
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass)
+		{
+		return find(pckgname, tosubclass, false, true);
+		}
+
+	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass)
+		{
+		return find(pckgname, tosubclass, true, true);
 		}
 
 	/**
@@ -80,8 +91,8 @@ public class SubclassFinder
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
-	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse)
-	//public static List find(String pckgname, Class tosubclass)
+	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces)
+		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
 
@@ -114,12 +125,12 @@ public class SubclassFinder
 			{
 			URL url = (URL) e.nextElement();
 			logger.debug("Found resource: " + url);
-			result.addAll(find(url, pckgname, tosubclass, recurse));
+			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces));
 			}
 		return result;
 		}
 
-	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse)
+	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces)
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -155,14 +166,15 @@ public class SubclassFinder
 			for (int i = 0; i < files.length; i++)
 				{
 				// we are only interested in directories and .class files
-				logger.debug("Checking: " + url.getFile()+"/"+files[i]);
-				if(recurse && new File(url.getFile()+"/"+files[i]).isDirectory())
-				//if(files[i].endsWith("/"))
+				logger.debug("Checking: " + url.getFile() + "/" + files[i]);
+				if (recurse && new File(url.getFile() + "/" + files[i]).isDirectory())
+					//if(files[i].endsWith("/"))
 					{
 					logger.debug("Recursing into package: " + pckgname + "." + files[i]);
 					try
 						{
-						result.addAll(find(new URL(url.toString()+"/"+files[i]), pckgname+"."+files[i], tosubclass, recurse));
+						result.addAll(find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i],
+						                   tosubclass, recurse, includeInterfaces));
 						}
 					catch (MalformedURLException e)
 						{
@@ -179,7 +191,7 @@ public class SubclassFinder
 						Class c = Class.forName(pckgname + "." + classname);
 						logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
-						if (tosubclass.isAssignableFrom(c))
+						if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !c.isInterface()))
 
 						/*Object o = c.newInstance();
 
@@ -219,30 +231,35 @@ public class SubclassFinder
 					String entryname = entry.getName();
 
 					logger.debug("Checking: " + entryname);
-				/*	String shortEntryname;
-					try {shortEntryname= entryname.substring(entryname.lastIndexOf("/"));}
-						catch (IndexOutOfBoundsException j) { shortEntryname = ""; }
-					// we are only interested in directories and .class files
-				if(entryname.startsWith(starts) && entry.isDirectory())
-					{
-					logger.debug("Recursing into package: " + url.toString()+"/"+shortEntryname);
-					try
+					/*	String shortEntryname;
+					 try {shortEntryname= entryname.substring(entryname.lastIndexOf("/"));}
+						 catch (IndexOutOfBoundsException j) { shortEntryname = ""; }
+					 // we are only interested in directories and .class files
+				 if(entryname.startsWith(starts) && entry.isDirectory())
+					 {
+					 logger.debug("Recursing into package: " + url.toString()+"/"+shortEntryname);
+					 try
+						 {
+						 result.addAll(find(new URL(url.toString()+"/"+shortEntryname), pckgname+"."+entryname, tosubclass));
+						 }
+					 catch (MalformedURLException ex)
+						 {
+						 logger.debug(ex);
+						 }
+					 }
+				 else*/
+					if (entryname.startsWith(starts) && entryname.endsWith(".class"))
 						{
-						result.addAll(find(new URL(url.toString()+"/"+shortEntryname), pckgname+"."+entryname, tosubclass));
-						}
-					catch (MalformedURLException ex)
-						{
-						logger.debug(ex);
-						}
-					}
-				else*/
-					if (entryname.startsWith(starts) && entryname.endsWith(
-					        ".class"))
-						{
-						if(recurse == false && (entryname.lastIndexOf('/') > starts.length()) ) { continue; };
+						if (recurse == false && (entryname.lastIndexOf('/') > starts.length()))
+							{
+							continue;
+							}
+						;
 						String classname = entryname.substring(0, entryname.length() - 6);
 						if (classname.startsWith("/"))
+							{
 							classname = classname.substring(1);
+							}
 						classname = classname.replace('/', '.');
 						try
 							{
@@ -252,15 +269,17 @@ public class SubclassFinder
 							Class c = Class.forName(classname);
 							logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
-							if (tosubclass.isAssignableFrom(c))
+							if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !c.isInterface()))
 
 							/*Object o = c.newInstance();
 
 							if (tosubclass.isInstance(o))*/
 								{
 								logger.debug("......YES!");
+
 								result.add(c); //System.out.println(classname);
 								}
+
 							}
 						catch (ClassNotFoundException cnfex)
 							{
