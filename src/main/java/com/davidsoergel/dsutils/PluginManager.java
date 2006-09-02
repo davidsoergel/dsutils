@@ -38,10 +38,16 @@ public class PluginManager<T>
 	{
 	private static Logger logger = Logger.getLogger(PluginManager.class);
 
-	private static Map<Class, PluginManager> _managers = new HashMap<Class, PluginManager>();
+	private static ThreadLocal<Map<Class, PluginManager>> _managers_tl = new ThreadLocal<Map<Class, PluginManager>>();
 
 	public static <T> PluginManager<T> getManagerForInterface(Class T)
 		{
+		Map<Class,PluginManager> _managers = _managers_tl.get();
+		if(_managers == null)
+			{
+			_managers = new HashMap<Class, PluginManager>();
+			_managers_tl.set(_managers);
+			}
 		PluginManager<T> result = _managers.get(T);
 		if(result == null)
 			{
@@ -50,7 +56,9 @@ public class PluginManager<T>
 			}
 		return result;
 		}
-
+/*
+ * Note plugins are registered only within a thread!
+ */
 	public static <T> void registerPackage(String packagename, Class T)
 		{
 		PluginManager<T> m = getManagerForInterface(T);
