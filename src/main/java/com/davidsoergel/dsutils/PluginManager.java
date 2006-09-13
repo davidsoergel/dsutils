@@ -42,23 +42,24 @@ public class PluginManager<T>
 
 	public static <T> PluginManager<T> getManagerForInterface(Class T)
 		{
-		Map<Class,PluginManager> _managers = _managers_tl.get();
-		if(_managers == null)
+		Map<Class, PluginManager> _managers = _managers_tl.get();
+		if (_managers == null)
 			{
 			_managers = new HashMap<Class, PluginManager>();
 			_managers_tl.set(_managers);
 			}
 		PluginManager<T> result = _managers.get(T);
-		if(result == null)
+		if (result == null)
 			{
 			result = new PluginManager<T>(T);
 			_managers.put(T, result);
 			}
 		return result;
 		}
-/*
- * Note plugins are registered only within a thread!
- */
+
+	/*
+	 * Note plugins are registered only within a thread!
+	 */
 	public static <T> void registerPackage(String packagename, Class T)
 		{
 		PluginManager<T> m = getManagerForInterface(T);
@@ -76,7 +77,6 @@ public class PluginManager<T>
 		{
 		return getManagerForInterface(T).getClassByName(s);
 		}
-
 
 
 	public static Set<String> getKeySet(Class T) throws PluginException
@@ -126,7 +126,8 @@ public class PluginManager<T>
 		T result = instances.get(s);
 		if (result == null)
 			{
-			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type " + theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
+			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
+					+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
 					.join(instances.keySet().iterator(), "\n"));
 			}
 		return result;
@@ -138,7 +139,18 @@ public class PluginManager<T>
 		Class result = classes.get(s);
 		if (result == null)
 			{
-			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type " + theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
+			System.err.println("Classes: " + classes);
+			System.err.println("Classpath: " + System.getProperty("java.class.path"));
+
+
+			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+			System.out.println("contextClassLoader: " + contextClassLoader);
+
+			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+			System.out.println("systemClassLoader: " + systemClassLoader);
+
+			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
+					+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
 					.join(classes.keySet().iterator(), "\n"));
 			}
 		return result;
@@ -147,13 +159,14 @@ public class PluginManager<T>
 
 	public T getNewInstanceByName(String s) throws PluginException
 		{
-		try{
-		return (T) getClassByName(s).newInstance();
-		}
-			catch(Exception e)
-				{
-				throw new PluginException(e);
-				}
+		try
+			{
+			return (T) getClassByName(s).newInstance();
+			}
+		catch (Exception e)
+			{
+			throw new PluginException(e);
+			}
 		}
 
 	public Set<String> getKeySet() throws PluginException

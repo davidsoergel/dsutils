@@ -58,11 +58,11 @@ import java.util.zip.ZipEntry;
  */
 public class SubclassFinder
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	private static Logger logger = Logger.getLogger(SubclassFinder.class);
 
-// -------------------------- STATIC METHODS --------------------------
+	// -------------------------- STATIC METHODS --------------------------
 
 	public static List<Class> find(String pckgname, Class tosubclass)
 		{
@@ -115,7 +115,8 @@ public class SubclassFinder
 		//logger.debug("The first resource found is: " + ClassLoader.getSystemResource(name));
 		try
 			{
-			e = ClassLoader.getSystemResources(name);
+			//e = ClassLoader.getSystemResources(name);
+			e = tosubclass.getClassLoader().getResources(name);
 			}
 		catch (IOException e1)
 			{
@@ -198,7 +199,7 @@ public class SubclassFinder
 						if (tosubclass.isInstance(o))*/
 							{
 							logger.debug("......YES!");
-							result.add(c); //System.out.println(classname);
+							result.add(c);//System.out.println(classname);
 							}
 						}
 					catch (ClassNotFoundException cnfex)
@@ -277,7 +278,7 @@ public class SubclassFinder
 								{
 								logger.debug("......YES!");
 
-								result.add(c); //System.out.println(classname);
+								result.add(c);//System.out.println(classname);
 								}
 
 							}
