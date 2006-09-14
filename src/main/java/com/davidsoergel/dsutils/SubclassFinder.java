@@ -116,7 +116,14 @@ public class SubclassFinder
 		try
 			{
 			//e = ClassLoader.getSystemResources(name);
-			e = tosubclass.getClassLoader().getResources(name);
+			try
+				{
+				e = tosubclass.getClassLoader().getResources(name);
+				}
+			catch (Throwable e1)
+				{
+				e = ClassLoader.getSystemResources(name);
+				}
 			}
 		catch (IOException e1)
 			{
