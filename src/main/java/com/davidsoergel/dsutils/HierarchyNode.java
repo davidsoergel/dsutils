@@ -42,5 +42,5 @@ public abstract class HierarchyNode<T>
 		this.contents = contents;
 		}
 
-	public abstract HierarchyNode<T> newChild();
+	public abstract HierarchyNode<T> newChild(T contents);
 	}

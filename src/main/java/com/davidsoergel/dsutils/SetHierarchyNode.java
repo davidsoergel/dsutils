@@ -19,9 +19,10 @@ public class SetHierarchyNode<T> extends HierarchyNode<T>
 		return children;
 		}
 
-	public SetHierarchyNode<T> newChild()
+	public SetHierarchyNode<T> newChild(T contents)
 		{
 		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		result.setContents(contents);
 		children.add(result);
 		return result;
 		}

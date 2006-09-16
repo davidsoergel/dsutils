@@ -20,9 +20,10 @@ public class SortedSetHierarchyNode<T> extends HierarchyNode<T>
 		}
 
 
-	public SortedSetHierarchyNode<T> newChild()
+	public SortedSetHierarchyNode<T> newChild(T contents)
 		{
 		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>();
+		result.setContents(contents);
 		children.add(result);
 		return result;
 		}
