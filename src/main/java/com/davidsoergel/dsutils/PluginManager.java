@@ -103,11 +103,12 @@ public class PluginManager<T>
 		{
 		for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
 			{
+			classes.put(c.getSimpleName(), c);
 			//put((String)dm.getMethod("getName").invoke(), dm);
-			try
+			/*try
 				{
 				classes.put(c.getSimpleName(), c);
-				instances.put(c.getSimpleName(), (T) c.newInstance());
+				//instances.put(c.getSimpleName(), (T) c.newInstance());
 				}
 			catch (InstantiationException e)
 				{
@@ -116,7 +117,7 @@ public class PluginManager<T>
 			catch (IllegalAccessException e)
 				{
 				logger.debug(e);
-				}
+				}*/
 			}
 		}
 
@@ -126,9 +127,29 @@ public class PluginManager<T>
 		T result = instances.get(s);
 		if (result == null)
 			{
-			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
-					+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
-					.join(instances.keySet().iterator(), "\n"));
+			Class c = classes.get(s);
+			if (c != null)
+				{
+				try
+					{
+					instances.put(c.getSimpleName(), (T) c.newInstance());
+					result = instances.get(s);
+					}
+				catch (InstantiationException e)
+					{
+					logger.debug(e);
+					}
+				catch (IllegalAccessException e)
+					{
+					logger.debug(e);
+					}
+				}
+			else
+				{
+				throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
+						+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
+						.join(classes.keySet().iterator(), "\n"));
+				}
 			}
 		return result;
 		}
