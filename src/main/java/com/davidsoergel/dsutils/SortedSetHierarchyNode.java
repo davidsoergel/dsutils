@@ -10,7 +10,7 @@ import java.util.TreeSet;
  * Time: 1:36:12 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SortedSetHierarchyNode<T> extends HierarchyNode<T>
+public class SortedSetHierarchyNode<T extends Comparable> extends HierarchyNode<T> implements Comparable
 	{
 	private SortedSet<HierarchyNode<T>> children = new TreeSet<HierarchyNode<T>>();
 
@@ -26,5 +26,10 @@ public class SortedSetHierarchyNode<T> extends HierarchyNode<T>
 		result.setContents(contents);
 		children.add(result);
 		return result;
+		}
+
+	public int compareTo(Object o)
+		{
+		return getContents().compareTo(o);
 		}
 	}
