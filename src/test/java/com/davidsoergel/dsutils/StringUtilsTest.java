@@ -25,7 +25,7 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -35,23 +35,24 @@ import org.testng.annotations.Test;
  */
 public class StringUtilsTest
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	private static Logger logger = Logger.getLogger(StringUtilsTest.class);
 
-// -------------------------- OTHER METHODS --------------------------
+	// -------------------------- OTHER METHODS --------------------------
 
-    @Configuration(beforeTestClass = true)
-    public void setUp()
-    {
-    //System.err.println("StringUtilsTest.setUp()");
-    }
+	@BeforeClass
+	public void setUp()
+		{
+		//System.err.println("StringUtilsTest.setUp()");
+		}
 
 	@Test
-	public void nullObjectStringConversionIsNotNull() {
+	public void nullObjectStringConversionIsNotNull()
+		{
 
-    //System.err.println("StringUtilsTest.nullObjectStringConversionIsNotNull()");
+		//System.err.println("StringUtilsTest.nullObjectStringConversionIsNotNull()");
 
-	assert StringUtils.s(null).equals("");
+		assert StringUtils.s(null).equals("");
+		}
 	}
-}

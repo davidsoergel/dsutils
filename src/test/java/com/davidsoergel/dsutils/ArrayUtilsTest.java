@@ -2,7 +2,7 @@ package com.davidsoergel.dsutils;
 
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
-import org.testng.annotations.Configuration;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -16,16 +16,31 @@ public class ArrayUtilsTest extends TestCase
 	private static Logger logger = Logger.getLogger(ArrayUtilsTest.class);
 
 
-	double[] a ;
-	double[] b ;
-	double[] c ;
+	double[] a;
+	double[] b;
+	double[] c;
 
-	@Configuration(beforeTestMethod = true)
+	@BeforeMethod
 	public void setUp()
 		{
- a = new double[]{1.1, 2.4, 5, 3};
-	b = new double[]{4, 7, 6.2, 1.3};
-	c = new double[]{5.1, 9.4, 11.2, 4.3};
+		a = new double[]{
+				1.1,
+				2.4,
+				5,
+				3
+		};
+		b = new double[]{
+				4,
+				7,
+				6.2,
+				1.3
+		};
+		c = new double[]{
+				5.1,
+				9.4,
+				11.2,
+				4.3
+		};
 		}
 
 	@Test
