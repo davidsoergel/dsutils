@@ -30,28 +30,28 @@ package com.davidsoergel.dsutils;
  */
 public class MathUtils
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	private static final int FACTORIAL_LIMIT = 100;
 	private static double[] factorials = new double[FACTORIAL_LIMIT + 1];
-// log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
-// for x >= y
+	// log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
+	// for x >= y
 
-/*	double logsum(double x, double y)
-		{
-		double largest = Math.max(x, y);
-		double smallest = Math.min(x, y);
+	/*	double logsum(double x, double y)
+		 {
+		 double largest = Math.max(x, y);
+		 double smallest = Math.min(x, y);
 
-		return largest + Math.log(1.0 + Math.exp(smallest - largest));
-		}
-*/
+		 return largest + Math.log(1.0 + Math.exp(smallest - largest));
+		 }
+ */
 
-// Still stuck on how to implement this:
-// need to know which is bigger, exp(x) or exp(y)+exp(z)
+	// Still stuck on how to implement this:
+	// need to know which is bigger, exp(x) or exp(y)+exp(z)
 
 	static double MAX_EXPONENT = Math.log(Double.MAX_VALUE);
 
-// -------------------------- STATIC METHODS --------------------------
+	// -------------------------- STATIC METHODS --------------------------
 
 	public static double minmax(double min, double b, double max)
 		{
@@ -135,19 +135,19 @@ public class MathUtils
 			result = Double.NEGATIVE_INFINITY;
 			//xklogger.info("Log sum produced NaN: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")", new Exception());
 			//logger.debug("Log sum produced NaN!");
-//			try
-//				{
-//			throw new Exception("bogus");
-//				}
-//				catch(Exception e) { e.printStackTrace(); }
+			//			try
+			//				{
+			//			throw new Exception("bogus");
+			//				}
+			//				catch(Exception e) { e.printStackTrace(); }
 			}
 
 		//	logger.debug("Log sum: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")");
 
-//		if (result > 0)
-//			{
-//			throw new Error("Positive log probability not allowed!");
-//			}
+		//		if (result > 0)
+		//			{
+		//			throw new Error("Positive log probability not allowed!");
+		//			}
 
 		return result;
 		}
