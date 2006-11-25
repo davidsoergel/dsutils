@@ -1,0 +1,3 @@
+Title: dsutils
+
+Provides various general utility classes.  Some of these have slowly been replaced over the years by new features in the JDK and by the Apache Commons packages.
