@@ -11,20 +11,20 @@ import java.util.TreeMap;
  * @author lorax
  * @version 1.0
  */
-public class MultiIntervalIntersection extends HashSet<Interval>
+public class MultiIntervalIntersection extends HashSet<LongInterval>
 	{
 	private static Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
 
-	private SortedMap<Double, Integer> fullLeftRightMap = new TreeMap<Double, Integer>();
+	private SortedMap<Long, Integer> fullLeftRightMap = new TreeMap<Long, Integer>();
 
-	//private Set<Interval> result = new HashSet<Interval>();
+	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
-	public MultiIntervalIntersection(Set<Set<Interval>> intervalSets)
+	public <T extends LongInterval> MultiIntervalIntersection(Set<Set<T>> intervalSets)
 		{
 		int numberOfConstraints = intervalSets.size();
-		for (Set<Interval> intervalSet : intervalSets)
+		for (Set<T> intervalSet : intervalSets)
 			{
-			for (Interval i : intervalSet)
+			for (LongInterval i : intervalSet)
 				{
 				fullLeftRightMap.put(i.getLeft(), 1);
 				fullLeftRightMap.put(i.getRight(), -1);
@@ -32,15 +32,15 @@ public class MultiIntervalIntersection extends HashSet<Interval>
 			}
 
 		int openParens = 0;
-		BasicDoubleInterval currentInterval = null;
-		for (Double position : fullLeftRightMap.keySet())// the positions must be sorted!
+		BasicLongInterval currentInterval = null;
+		for (Long position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
 			openParens += fullLeftRightMap.get(position);
 			if (currentInterval == null)
 				{
 				if (openParens == numberOfConstraints)
 					{
-					currentInterval = new BasicDoubleInterval();
+					currentInterval = new BasicLongInterval();
 					currentInterval.setLeft(position);
 					}
 				}
@@ -48,7 +48,10 @@ public class MultiIntervalIntersection extends HashSet<Interval>
 				{
 				assert openParens < numberOfConstraints;
 				currentInterval.setRight(position);
-				this.add(currentInterval);
+				if (!currentInterval.isZeroWidth())
+					{
+					this.add(currentInterval);
+					}
 				currentInterval = null;
 				}
 			}
