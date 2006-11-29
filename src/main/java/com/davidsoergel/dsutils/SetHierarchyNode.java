@@ -10,9 +10,10 @@ import java.util.Set;
  * Time: 1:36:12 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SetHierarchyNode<T> extends HierarchyNode<T>
+public class SetHierarchyNode<T> implements HierarchyNode<T>
 	{
 	private Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
+
 
 	public Set<HierarchyNode<T>> getChildren()
 		{
@@ -26,4 +27,28 @@ public class SetHierarchyNode<T> extends HierarchyNode<T>
 		children.add(result);
 		return result;
 		}
+
+	private HierarchyNode<T> parent;
+	private T contents;
+
+	public HierarchyNode<T> getParent()
+		{
+		return parent;
+		}
+
+	public void setParent(HierarchyNode<T> parent)
+		{
+		this.parent = parent;
+		}
+
+	public T getContents()
+		{
+		return contents;
+		}
+
+	public void setContents(T contents)
+		{
+		this.contents = contents;
+		}
+
 	}
