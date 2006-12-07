@@ -24,12 +24,17 @@
 
 package com.davidsoergel.dsutils;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author lorax
  * @version 1.0
  */
 public class MathUtils
 	{
+
+	private static Logger logger = Logger.getLogger(MathUtils.class);
+
 	// ------------------------------ FIELDS ------------------------------
 
 	private static final int FACTORIAL_LIMIT = 100;
@@ -246,6 +251,9 @@ public class MathUtils
 		while (v[2] != 0)
 			{
 			long q = u[2] / v[2];
+
+			logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [" + q + "]");
+
 			for (int i = 0; i < 3; i++)
 				{
 				t[i] = u[i] - v[i] * q;
@@ -253,6 +261,7 @@ public class MathUtils
 				v[i] = t[i];
 				}
 			}
+		logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [DONE]");
 		/*
 			 * The result is inverted if necessary to guarantee that the GCD (c) is non-negative.
 	 *
@@ -265,6 +274,58 @@ public class MathUtils
 			u[1] = -u[1];
 			u[2] = -u[2];
 			}*/
+		return u;
+		}
+
+	/**
+	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c with the constraints that a and c must be positive.
+	 * To achieve this, we first apply the standard GCD algorithm, and then adjust as needed by replacing a with (a+ny)
+	 * and b with (b-nx), since (a+ny)x + (b-nx)y = c
+	 *
+	 * @param x
+	 * @param y
+	 * @return an array of long containing {a, b, c}
+	 * @throws ArithmeticException if either argument is negative or zero
+	 */
+	public static long[] extendedGCDPositive(long x, long y) throws ArithmeticException
+		{
+		long[] u = extendedGCD(x, y);
+		if (u[2] < 0)
+			{
+			u[0] *= -1;
+			u[1] *= -1;
+			u[2] *= -1;
+			}
+		if (u[0] > 0)
+			{
+			return u;
+			}
+
+		long n = -u[0] / y;
+
+		// long division gives floor for positive, ceil for negative
+		// but we want the reverse
+		// so if y was positive, we got the floor, so we need to increment it, and vice versa
+		if (y > 0)
+			{
+			n++;
+			}
+		else
+			{
+			n--;
+			}
+
+
+		u[0] += n * y;
+		u[1] -= n * x;
+
+		// brute force variant
+		/*while(u[0] < 0)
+			{
+			u[0] += y;
+			u[1] -= x;
+			}
+		*/
 		return u;
 		}
 	}

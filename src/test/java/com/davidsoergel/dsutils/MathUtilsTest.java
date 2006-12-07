@@ -84,15 +84,29 @@ public class MathUtilsTest
 		assert MathUtils.GCD(1, 7895) == 1;
 		}
 
-	@Test(expectedExceptions = ArithmeticException.class)
-	public void gcdFailsOnZeroInput()
-		{
-		MathUtils.GCD(0, 7895);
-		}
+	/*	@Test(expectedExceptions = ArithmeticException.class)
+	 public void gcdFailsOnZeroInput()
+		 {
+		 MathUtils.GCD(0, 7895);
+		 }
+ */
+	/*	@Test(expectedExceptions = ArithmeticException.class)
+   public void gcdFailsOnNegativeInput()
+	   {
+	   MathUtils.GCD(-1, 7895);
+	   }*/
 
-	@Test(expectedExceptions = ArithmeticException.class)
-	public void gcdFailsOnNegativeInput()
+	@Test
+	public void longDivisionGivesAbsoluteValueFloor()
 		{
-		MathUtils.GCD(-1, 7895);
+		long x = 11;
+		long y = 2;
+		long z = 5;
+		assert (x / y == z);
+		assert (-x / y == -z);
+		assert (x / -y == -z);
+		assert (x / y == z);
+		assert (-x / -y == z);
+
 		}
 	}

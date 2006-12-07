@@ -2,8 +2,6 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
-
 /**
  * Created by IntelliJ IDEA.
  * User: soergel
@@ -37,18 +35,19 @@ public class FareyFractionUtils
 
 		// but using the extended Euclid algorithm should be much faster.
 		// We want the smallest positive integers d,x that satisfy (num*d + 1)/den = x
-		// rearranging, den*x - num*d = 1
+		// rearranging, den*x + (-num)*d = 1
 
 		// be very careful about signs here
-		logger.debug("MathUtils.extendedGCD(" + lft.denominator + ", " + lft.numerator + ") =" + Arrays
-				.toString(MathUtils.extendedGCD(lft.denominator, lft.numerator)));
 
-		long[] u = MathUtils.extendedGCD(lft.denominator, lft.numerator);
-		if (u[0] < 0)
-			{
+		/*logger.debug("MathUtils.extendedGCDPositive(" + lft.denominator + ", -" + lft.numerator + ") =" + Arrays
+				.toString(MathUtils.extendedGCDPositive(lft.denominator, -lft.numerator)));
+*/
 
-			}
-		long rgtDenominator = MathUtils.extendedGCD(lft.denominator, lft.numerator)[1];
+		// the normal GCD could make x and d negative, so we use the guaranteed-positive version
+		long[] u = MathUtils.extendedGCDPositive(lft.denominator, -lft.numerator);
+
+		long rgtDenominator = u[1];
+		//MathUtils.extendedGCD(lft.denominator, lft.numerator)[1];
 
 		// be careful about long multiplication overflow
 		try

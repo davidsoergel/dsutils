@@ -18,7 +18,17 @@ public class FareyFractionUtilsTest extends TestCase
 	@Test
 	public void rgtWorks()
 		{
-		logger.debug(FareyFractionUtils.rgt(new LongRational(5, 7)));
+		//logger.debug(FareyFractionUtils.rgt(new LongRational(5345, 73463)));
+
+
+		//logger.debug(FareyFractionUtils.rgt(new LongRational(5, 7)));
+		// examples from Tropashko 2004
+		assert FareyFractionUtils.rgt(new LongRational(1, 2)).equals(new LongRational(1, 1));
+		assert FareyFractionUtils.rgt(new LongRational(2, 3)).equals(new LongRational(1, 1));
+		assert FareyFractionUtils.rgt(new LongRational(3, 4)).equals(new LongRational(1, 1));
+		assert FareyFractionUtils.rgt(new LongRational(4, 5)).equals(new LongRational(1, 1));
 		assert FareyFractionUtils.rgt(new LongRational(5, 7)).equals(new LongRational(3, 4));
+		assert FareyFractionUtils.rgt(new LongRational(3, 5)).equals(new LongRational(2, 3));
+		assert FareyFractionUtils.rgt(new LongRational(4, 7)).equals(new LongRational(3, 5));
 		}
 	}
