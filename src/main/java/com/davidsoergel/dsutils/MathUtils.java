@@ -202,4 +202,69 @@ public class MathUtils
 		// let's be extra permissive, 1e-10 is good enough anyway
 		return -1e-10 < nearlyZero && nearlyZero < 1e-10;
 		}
+
+	/**
+	 * Greatest Common Denominator.
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public static long GCD(long x, long y)
+		{
+		return extendedGCD(x, y)[2];
+		}
+
+	/**
+	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c.
+	 * This clever implementation comes from http://www.cs.utsa.edu/~wagner/laws/fav_alg.html,
+	 * who in turn adapted it from D. Knuth.
+	 *
+	 * @param x
+	 * @param y
+	 * @return an array of long containing {a, b, c}
+	 * @throws ArithmeticException if either argument is negative or zero
+	 */
+	public static long[] extendedGCD(long x, long y) throws ArithmeticException
+		{
+		/*
+		if (x <= 0 || y <= 0)
+			{
+			throw new ArithmeticException("Can take GCD only of positive numbers");
+			}
+			*/
+
+		long[] u = {
+				1,
+				0,
+				x
+		}, v = {
+				0,
+				1,
+				y
+		}, t = new long[3];
+		while (v[2] != 0)
+			{
+			long q = u[2] / v[2];
+			for (int i = 0; i < 3; i++)
+				{
+				t[i] = u[i] - v[i] * q;
+				u[i] = v[i];
+				v[i] = t[i];
+				}
+			}
+		/*
+			 * The result is inverted if necessary to guarantee that the GCD (c) is non-negative.
+	 *
+	 * If one of the arguments is 0, the other argument is returned (0 can't have a common divisor with anything except itself).
+
+		 */
+		/*if (u[2] < 0)
+			{
+			u[0] = -u[0];
+			u[1] = -u[1];
+			u[2] = -u[2];
+			}*/
+		return u;
+		}
 	}

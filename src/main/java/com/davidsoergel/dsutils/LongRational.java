@@ -7,7 +7,7 @@ package com.davidsoergel.dsutils;
  * Time: 10:35:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LongRational //implements Comparable
+public class LongRational extends Number implements Comparable
 	{
 	long numerator;
 	long denominator;
@@ -22,48 +22,87 @@ public class LongRational //implements Comparable
 
 	private void reduce()
 		{
-		long gcd = gcd(numerator, denominator);
+		long gcd = MathUtils.GCD(numerator, denominator);
 		numerator /= gcd;
 		denominator /= gcd;
 		}
 
 	/**
-	 * greatest common divisor by Euclid's algorithm
-	 * shamelessly stolen from http://www.idevelopment.info/data/Programming/data_structures/java/gcd/GCD.java
+	 * Standard comparison method, with the caveat that LongRationals that differ by less than the resolution of double way not be correctly ordered.
 	 *
-	 * @param m
-	 * @param n
+	 * @param o
 	 * @return
 	 */
-	public static long gcd(long m, long n)
+	public int compareTo(Object o)
 		{
-		if (m < n)
-			{
-			long t = m;
-			m = n;
-			n = t;
-			}
-		long r = m % n;
-		if (r == 0)
-			{
-			return n;
-			}
-		else
-			{
-			return gcd(n, r);
-			}
+		LongRational lro = (LongRational) o;
+		return new Double(doubleValue()).compareTo(lro.doubleValue());
+		//return (numerator / denominator) (lro.numerator / lro.denominator);
 		}
-
-/*	public int compareTo(Object o)
-		{
-		LongRational lro = (LongRational)o;
-		return (numerator / denominator) (lro.numerator / lro.denominator);
-		}
-	*/
 
 	public static LongRational mediant(LongRational a, LongRational b)
 		{
 		return new LongRational(a.numerator + b.numerator, a.denominator + b.denominator);
 		}
 
+	public int intValue()
+		{
+		return (int) doubleValue();
+		}
+
+	public long longValue()
+		{
+		return (long) doubleValue();
+		}
+
+	public float floatValue()
+		{
+		return (float) doubleValue();
+		}
+
+	public double doubleValue()
+		{
+		return (double) numerator
+				/ (double) denominator;  //To change body of implemented methods use File | Settings | File Templates.
+		}
+
+
+	public boolean equals(Object o)
+		{
+		if (this == o)
+			{
+			return true;
+			}
+		if (o == null || getClass() != o.getClass())
+			{
+			return false;
+			}
+
+		LongRational that = (LongRational) o;
+
+		// note this depends on both LongRationals already being reduced, but that's OK since it's in the constructor
+		if (denominator != that.denominator)
+			{
+			return false;
+			}
+		if (numerator != that.numerator)
+			{
+			return false;
+			}
+
+		return true;
+		}
+
+	public int hashCode()
+		{
+		int result;
+		result = (int) (numerator ^ (numerator >>> 32));
+		result = 31 * result + (int) (denominator ^ (denominator >>> 32));
+		return result;
+		}
+
+	public String toString()
+		{
+		return "" + numerator + "/" + denominator;
+		}
 	}

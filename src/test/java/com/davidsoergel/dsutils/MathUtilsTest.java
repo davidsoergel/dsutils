@@ -49,11 +49,11 @@ public class MathUtilsTest
 			}
 		*/
 		// brute force across the whole range
-		for(double x = 0.0000001; x < 1; x += 0.0000001)
+		for (double x = 0.0000001; x < 1; x += 0.0000001)
 			{
 			checkLog(x);
 			}
-		for(double x = 1; x < 10005; x += 0.1)
+		for (double x = 1; x < 10005; x += 0.1)
 			{
 			checkLog(x);
 			}
@@ -62,18 +62,37 @@ public class MathUtilsTest
 	private void checkLog(double x) throws MathUtilsException
 		{
 		double approximate = MathUtils.approximateLog(x);
-				double correct = Math.log(x);
-				if (Math.abs(approximate) < Math.abs(correct * 0.99))
-					{
-					System.err.println("log(" + (x) + ") = " + correct + "; approximation = "
-							+ approximate + "\n");
-					assert false;
-					}
-				if (Math.abs(approximate) > Math.abs(correct * 1.01))
-					{
-					System.err.println("log(" + x + ") = " + correct + "; approximation = "
-							+ approximate + "\n");
-					assert false;
-					}
+		double correct = Math.log(x);
+		if (Math.abs(approximate) < Math.abs(correct * 0.99))
+			{
+			System.err.println("log(" + (x) + ") = " + correct + "; approximation = " + approximate + "\n");
+			assert false;
+			}
+		if (Math.abs(approximate) > Math.abs(correct * 1.01))
+			{
+			System.err.println("log(" + x + ") = " + correct + "; approximation = " + approximate + "\n");
+			assert false;
+			}
+		}
+
+
+	@Test
+	public void gcdWorks()
+		{
+		assert MathUtils.GCD(2345, 7895) == 5;
+		assert MathUtils.GCD(55986 * 2345, 55986 * 7895) == 55986 * 5;
+		assert MathUtils.GCD(1, 7895) == 1;
+		}
+
+	@Test(expectedExceptions = ArithmeticException.class)
+	public void gcdFailsOnZeroInput()
+		{
+		MathUtils.GCD(0, 7895);
+		}
+
+	@Test(expectedExceptions = ArithmeticException.class)
+	public void gcdFailsOnNegativeInput()
+		{
+		MathUtils.GCD(-1, 7895);
 		}
 	}
