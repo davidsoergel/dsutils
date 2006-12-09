@@ -12,6 +12,10 @@ public class LongRational extends Number implements Comparable
 	long numerator;
 	long denominator;
 
+	public LongRational(Long numerator, Long denominator)
+		{
+		this(numerator.longValue(), denominator.longValue());
+		}
 
 	public LongRational(long numerator, long denominator)
 		{
@@ -21,7 +25,14 @@ public class LongRational extends Number implements Comparable
 		// don't bother with all that NaN nonsense
 		if (denominator == 0)
 			{
-			throw new ArithmeticException("Division by zero when constructing new LongRational");
+			if (numerator == 1)
+				{
+				denominator = 1;
+				}
+			else
+				{
+				throw new ArithmeticException("Division by zero when constructing new LongRational");
+				}
 			}
 		reduce();
 		}
@@ -97,7 +108,7 @@ public class LongRational extends Number implements Comparable
 	 *
 	 * @return 1 if ab > cd, -1 if ab < cd, 0 if ab == cd.
 	 */
-	private static int overflowSafeCompare(LongRational ab, LongRational cd)
+	public static int overflowSafeCompare(LongRational ab, LongRational cd)
 		{
 		if (ab.equals(cd))
 			{
@@ -123,7 +134,6 @@ public class LongRational extends Number implements Comparable
 
 			long x = a - (n * c);
 			long y = b - (n * d);
-
 
 			//** maybe this comparisons to 0 would be faster as a bit shift to examine the sign bit?  Ideally the compiler would catch that if true
 			if (x > 0 && y < 0)
