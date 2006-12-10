@@ -27,7 +27,7 @@ public class LongRational extends Number implements Comparable
 			{
 			if (numerator == 1)
 				{
-				denominator = 1;
+				this.denominator = 1;
 				}
 			else
 				{
