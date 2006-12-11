@@ -157,47 +157,68 @@ public class MathUtils
 		return result;
 		}
 
-	private static double[] logTableBelowOne;
-	private static double[] logTableAboveOne;
+	private static double[][] logTable;
+	//	private static double[] logTableBelowOne;
+	//	private static double[] logTableAboveOne;
 
-	public static int logbins;
-	public static double logResolution;
-	public static double maxLogArg;
+	//	public static int logbins;
+	//public static double logResolution;
+	//	public static double maxLogArg;
 
+	//public static int logLevels;
+	public static int logMinOrderOfMagnitude;
+	public static int logMaxOrderOfMagnitude;
+	public static int logOrdersOfMagnitudePerLevel;
+	public static int logBinsPerLevel;
 
-	public static void initApproximateLog(int bins, double max)
+	public static int logLevels;
+	public static double[] logBinIncrement;
+
+	public static void initApproximateLog(int minOrderOfMagnitude, int maxOrderOfMagnitude,
+	                                      int ordersOfMagnitudePerLevel, int binsPerLevel)
 		{
-		maxLogArg = max;
-		logbins = bins;
-		logResolution = (double) 1 / logbins;
-		logTableBelowOne = new double[logbins];
-		for (int i = 0; i < logbins; i++)
+		minOrderOfMagnitude += ordersOfMagnitudePerLevel;// since we use the order to define the top of the bin
+
+		logMinOrderOfMagnitude = minOrderOfMagnitude;
+		logMaxOrderOfMagnitude = maxOrderOfMagnitude;
+		logOrdersOfMagnitudePerLevel = ordersOfMagnitudePerLevel;
+		logBinsPerLevel = binsPerLevel;
+
+		logLevels = ((maxOrderOfMagnitude - minOrderOfMagnitude) / ordersOfMagnitudePerLevel) + 1;
+
+		logTable = new double[logLevels][binsPerLevel];
+		logBinIncrement = new double[logLevels];
+
+		int level = 0;
+		for (int order = minOrderOfMagnitude; order <= maxOrderOfMagnitude; order += ordersOfMagnitudePerLevel)
 			{
-			logTableBelowOne[i] = Math.log((double) i / (double) logbins);
+			//logTable[level] = new double[binsPerLevel];
+			logBinIncrement[level] = Math.pow(10, order) / binsPerLevel;
+			for (int i = 0; i < binsPerLevel; i++)
+				{
+				logTable[level][i] = Math.log((double) (i * Math.pow(10, order)) / (double) binsPerLevel);
+				}
+			level++;
 			}
-		logTableAboveOne = new double[logbins];
-		for (int i = 0; i < logbins; i++)
-			{
-			logTableAboveOne[i] = Math.log((double) (i * maxLogArg) / (double) logbins);
-			}
+		logLevels = level;
 		}
 
 	public static double approximateLog(double x)
 		{
-		if ((x < 0) || (x >= maxLogArg))
+		if (x <= logBinIncrement[0])
 			{
-			return Math.log(x);
-			//throw new MathUtilsException("approximateLog accepts only 0 < x < " + maxLogArg +"; maybe init with different max");
-			}
-		if (x < .00001 || (x > .9999 && x < 1))
-			{
+			// x is too small
 			return Math.log(x);
 			}
-		if (x < 1)
+		for (int level = 0; level < logLevels; level++)
 			{
-			return logTableBelowOne[(int) (x * logbins)];
+			if (x < (logBinIncrement[level] * logBinsPerLevel))
+				{
+				return logTable[level][(int) (x / logBinIncrement[level])];
+				}
 			}
-		return logTableAboveOne[(int) ((x / maxLogArg) * logbins)];
+		// x is too big
+		return Math.log(x);
 		}
 
 	public static boolean equalWithinFPError(double a, double b)

@@ -38,7 +38,7 @@ public class MathUtilsTest
 	@Test
 	public void approximateLogErrorIsLessThanOnePercent() throws MathUtilsException
 		{
-		MathUtils.initApproximateLog(1000000, 10000);
+		MathUtils.initApproximateLog(-12, 12, 3, 100000);
 		/*for (int power = -1; power > -5; power--)
 			{
 			double orderOfMagnitude = Math.pow(10, power);
@@ -49,17 +49,21 @@ public class MathUtilsTest
 			}
 		*/
 		// brute force across the whole range
-		for (double x = 0.0000001; x < 1; x += 0.0000001)
+		for (int orderOfMagnitude = -15; orderOfMagnitude < 15; orderOfMagnitude++)
 			{
-			checkLog(x);
-			}
-		for (double x = 1; x < 10005; x += 0.1)
-			{
-			checkLog(x);
+			double scale = Math.pow(10, orderOfMagnitude);
+			for (double x = 1; x < 10; x++)
+				{
+				// the worst case is near the top of each bin, right?
+				// try the bottom and the middle too, just in case
+				checkLog((x * scale) + (0.1 * (scale / 10)));
+				checkLog((x * scale) + (0.5 * (scale / 10)));
+				checkLog((x * scale) + (0.9 * (scale / 10)));
+				}
 			}
 		}
 
-	private void checkLog(double x) throws MathUtilsException
+	private void checkLog(double x)//throws MathUtilsException
 		{
 		double approximate = MathUtils.approximateLog(x);
 		double correct = Math.log(x);

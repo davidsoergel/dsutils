@@ -51,4 +51,14 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 		this.contents = contents;
 		}
 
+	/**
+	 * not needed, non-transactional implementation
+	 */
+	public void beginTaxn()
+		{
+		}
+
+	public void commit()
+		{
+		}
 	}

@@ -9,7 +9,7 @@ import java.util.Collection;
  * Time: 1:34:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface HierarchyNode<T>   // was abstract class
+public interface HierarchyNode<T>// was abstract class
 	{
 	/*private HierarchyNode<T> parent;
 	private T contents;
@@ -17,30 +17,38 @@ public interface HierarchyNode<T>   // was abstract class
 */
 	public Collection<HierarchyNode<T>> getChildren();
 
-//	public void addChild(HierarchyNode<T> child);
-/*		{
-		getChildren().add(child);
-		}*/
+	//	public void addChild(HierarchyNode<T> child);
+	/*		{
+	   getChildren().add(child);
+	   }*/
 
 	public HierarchyNode<T> getParent();
-/*		{
-		return parent;
-		}*/
+
+	/*		{
+	   return parent;
+	   }*/
 
 	public void setParent(HierarchyNode<T> parent);
-/*		{
-		this.parent = parent;
-		}*/
+
+	/*		{
+	   this.parent = parent;
+	   }*/
 
 	public T getContents();
-/*		{
-		return contents;
-		}*/
+
+	/*		{
+	   return contents;
+	   }*/
 
 	public void setContents(T contents);
-/*		{
-		this.contents = contents;
-		}*/
+
+	/*		{
+	   this.contents = contents;
+	   }*/
 
 	public HierarchyNode<T> newChild(T contents);
+
+	public void beginTaxn();
+
+	public void commit();
 	}

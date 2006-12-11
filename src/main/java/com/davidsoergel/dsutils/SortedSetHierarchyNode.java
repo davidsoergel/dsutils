@@ -57,4 +57,15 @@ public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNo
 		this.contents = contents;
 		}
 
+	/**
+	 * not needed, non-transactional implementation
+	 */
+	public void beginTaxn()
+		{
+		}
+
+	public void commit()
+		{
+		}
+
 	}
