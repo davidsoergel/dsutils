@@ -173,6 +173,7 @@ public class MathUtils
 
 	public static int logLevels;
 	public static double[] logBinIncrement;
+	public static double[] logBinLimit;
 
 	public static void initApproximateLog(int minOrderOfMagnitude, int maxOrderOfMagnitude,
 	                                      int ordersOfMagnitudePerLevel, int binsPerLevel)
@@ -188,12 +189,14 @@ public class MathUtils
 
 		logTable = new double[logLevels][binsPerLevel];
 		logBinIncrement = new double[logLevels];
+		logBinLimit = new double[logLevels];
 
 		int level = 0;
 		for (int order = minOrderOfMagnitude; order <= maxOrderOfMagnitude; order += ordersOfMagnitudePerLevel)
 			{
 			//logTable[level] = new double[binsPerLevel];
-			logBinIncrement[level] = Math.pow(10, order) / binsPerLevel;
+			logBinLimit[level] = Math.pow(10, order);
+			logBinIncrement[level] = logBinLimit[level] / binsPerLevel;
 			for (int i = 0; i < binsPerLevel; i++)
 				{
 				logTable[level][i] = Math.log((double) (i * Math.pow(10, order)) / (double) binsPerLevel);
@@ -212,7 +215,7 @@ public class MathUtils
 			}
 		for (int level = 0; level < logLevels; level++)
 			{
-			if (x < (logBinIncrement[level] * logBinsPerLevel))
+			if (x < logBinLimit[level])
 				{
 				return logTable[level][(int) (x / logBinIncrement[level])];
 				}
