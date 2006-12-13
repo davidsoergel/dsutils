@@ -1538,4 +1538,9 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 		{
 		return tl.get().nextDouble();
 		}
+
+	public static double gaussian()
+		{
+		return tl.get().nextGaussian();
+		}
 	}

@@ -26,8 +26,14 @@ public class MultiIntervalIntersection extends HashSet<Interval>
 			{
 			for (Interval i : intervalSet)
 				{
-				fullLeftRightMap.put(i.getLeft(), 1);
-				fullLeftRightMap.put(i.getRight(), -1);
+				Number left = i.getLeft();
+				Number right = i.getRight();
+
+				Integer leftCount = fullLeftRightMap.get(left);
+				Integer rightCount = fullLeftRightMap.get(right);
+
+				fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
+				fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
 				}
 			}
 
@@ -55,5 +61,6 @@ public class MultiIntervalIntersection extends HashSet<Interval>
 				currentInterval = null;
 				}
 			}
+		assert openParens == 0;
 		}
 	}

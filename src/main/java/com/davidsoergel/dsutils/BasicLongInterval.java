@@ -37,4 +37,9 @@ public class BasicLongInterval implements LongInterval
 		{
 		return right == left;
 		}
+
+	public int compareTo(Object o)
+		{
+		return left.compareTo(((BasicLongInterval) o).getLeft());
+		}
 	}
