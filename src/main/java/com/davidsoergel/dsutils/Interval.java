@@ -7,9 +7,12 @@ package com.davidsoergel.dsutils;
  * Time: 4:46:30 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface Interval//extends Comparable //extends HierarchyNode
+public interface Interval<T extends Number> extends Comparable<Interval<T>>//extends HierarchyNode
 	{
-	public Number getLeft();
+	public T getLeft();
 
-	public Number getRight();
+	public T getRight();
+
+	// this is a little questionable because Numbers are not necessarily Comparable, but let's just assume they are.
+	boolean encompassesValue(T value);
 	}

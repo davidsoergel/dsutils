@@ -6,48 +6,53 @@ import org.apache.log4j.Logger;
  * @author lorax
  * @version 1.0
  */
-public class BasicInterval implements Interval
+public class BasicInterval<T extends Number> implements Interval<T>
 	{
 	private static Logger logger = Logger.getLogger(BasicInterval.class);
 
-	private Number left, right;
+	protected T left, right;
 
 
-	public BasicInterval()
-		{
-		}
-
-	public BasicInterval(Number left, Number right)
+	/*	public BasicInterval()
+		 {
+		 }
+ */
+	public BasicInterval(T left, T right)
 		{
 		this.left = left;
 		this.right = right;
 		}
 
-	public Number getLeft()
+	public T getLeft()
 		{
 		return left;
 		}
 
-	public void setLeft(Number left)
-		{
-		this.left = left;
-		}
-
-	public Number getRight()
+	/*	public void setLeft(T left)
+		 {
+		 this.left = left;
+		 }
+ */
+	public T getRight()
 		{
 		return right;
 		}
 
-	public void setRight(Number right)
+	public boolean encompassesValue(T value)
 		{
-		this.right = right;
+		// too bad we can't easily generify this; we just assume the Numbers are Comparable.
+		return ((Comparable) left).compareTo(value) <= 0 && ((Comparable) right).compareTo(value) >= 0;
 		}
 
+	/*	public void setRight(T right)
+		 {
+		 this.right = right;
+		 }
+ */
 	public boolean isZeroWidth()
 		{
 		return right.equals(left);
 		}
-
 
 	public boolean equals(Object o)
 		{
@@ -60,7 +65,7 @@ public class BasicInterval implements Interval
 			return false;
 			}
 
-		BasicInterval that = (BasicInterval) o;
+		BasicInterval<T> that = (BasicInterval<T>) o;
 
 		if (left != null ? !left.equals(that.left) : that.left != null)
 			{
@@ -87,8 +92,9 @@ public class BasicInterval implements Interval
 		return "" + left + " ---- " + right;
 		}
 
-	/*public int compareTo(Object o)
+	public int compareTo(Interval<T> o)
 		{
-		return getLeft().compareTo((BasicInterval)o.getLeft());
-		}*/
+		// assume we're using Comparable Numbers; ClassCastException if not
+		return ((Comparable) getLeft()).compareTo(o.getLeft());
+		}
 	}

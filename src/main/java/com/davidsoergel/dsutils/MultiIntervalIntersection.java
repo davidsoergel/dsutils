@@ -11,23 +11,23 @@ import java.util.TreeSet;
  * @author lorax
  * @version 1.0
  */
-public class MultiIntervalIntersection extends TreeSet<Interval>
+public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interval<T>>
 	{
 	private static Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
 
-	private SortedMap<Number, Integer> fullLeftRightMap = new TreeMap<Number, Integer>();
+	private SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
 
 	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
-	public <T extends Interval> MultiIntervalIntersection(Set<Set<T>> intervalSets)
+	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> intervalSets)
 		{
 		int numberOfConstraints = intervalSets.size();
-		for (Set<T> intervalSet : intervalSets)
+		for (Set<U> intervalSet : intervalSets)
 			{
-			for (Interval i : intervalSet)
+			for (Interval<T> i : intervalSet)
 				{
-				Number left = i.getLeft();
-				Number right = i.getRight();
+				T left = i.getLeft();
+				T right = i.getRight();
 
 				Integer leftCount = fullLeftRightMap.get(left);
 				Integer rightCount = fullLeftRightMap.get(right);
@@ -38,15 +38,15 @@ public class MultiIntervalIntersection extends TreeSet<Interval>
 			}
 
 		int openParens = 0;
-		BasicInterval currentInterval = null;
-		for (Number position : fullLeftRightMap.keySet())// the positions must be sorted!
+		MutableBasicInterval<T> currentInterval = null;
+		for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
 			openParens += fullLeftRightMap.get(position);
 			if (currentInterval == null)
 				{
 				if (openParens == numberOfConstraints)
 					{
-					currentInterval = new BasicInterval();
+					currentInterval = new MutableBasicInterval<T>();
 					currentInterval.setLeft(position);
 					}
 				}
@@ -64,9 +64,10 @@ public class MultiIntervalIntersection extends TreeSet<Interval>
 		assert openParens == 0;
 		}
 
-	public boolean encompassesValue(Number value)
+	public boolean encompassesValue(T value)
 		{
-		new BasicInterval(value, value);
-		floor(value)
+		//** efficient?
+		Interval<T> f = headSet(new BasicInterval<T>(value, value)).last();
+		return f.encompassesValue(value);
 		}
 	}

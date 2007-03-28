@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
  * @author lorax
  * @version 1.0
  */
-public class BasicLongRationalInterval implements LongRationalInterval
+public class BasicLongRationalInterval extends BasicInterval<LongRational>
 	{
 	private static Logger logger = Logger.getLogger(BasicLongRationalInterval.class);
 
@@ -15,37 +15,19 @@ public class BasicLongRationalInterval implements LongRationalInterval
 
 	public BasicLongRationalInterval(LongRational left, LongRational right)
 		{
-		this.left = left;
-		this.right = right;
+		super(left, right);
 		}
 
-	public LongRational getLeft()
+	public int compareTo(Interval<LongRational> o)
 		{
-		return left;
+		return left.compareTo(o.getLeft());
 		}
 
-	public void setLeft(LongRational left)
+	// assumes closed interval, i.e. includes endpoints
+	public boolean encompassesValue(LongRational value)
 		{
-		this.left = left;
-		}
 
-	public LongRational getRight()
-		{
-		return right;
-		}
-
-	public void setRight(LongRational right)
-		{
-		this.right = right;
-		}
-
-	public boolean isZeroWidth()
-		{
-		return right.equals(left);
-		}
-
-	public int compareTo(Object o)
-		{
-		return left.compareTo(((LongRationalInterval) o).getLeft());
+		return LongRational.overflowSafeCompare(left, value) <= 0
+				&& LongRational.overflowSafeCompare(right, value) >= 0;
 		}
 	}
