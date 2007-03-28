@@ -2,16 +2,16 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author lorax
  * @version 1.0
  */
-public class MultiIntervalIntersection extends HashSet<Interval>
+public class MultiIntervalIntersection extends TreeSet<Interval>
 	{
 	private static Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
 
@@ -62,5 +62,11 @@ public class MultiIntervalIntersection extends HashSet<Interval>
 				}
 			}
 		assert openParens == 0;
+		}
+
+	public boolean encompassesValue(Number value)
+		{
+		new BasicInterval(value, value);
+		floor(value)
 		}
 	}
