@@ -52,7 +52,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 				}
 			else
 				{
-				assert openParens < numberOfConstraints;
+				// assert openParens < numberOfConstraints;  // hogwash, each constraint may have multiple intervals
 				currentInterval.setRight(position);
 				if (!currentInterval.isZeroWidth())
 					{
