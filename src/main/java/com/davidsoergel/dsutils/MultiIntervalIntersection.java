@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -26,8 +27,8 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 			{
 			for (Interval<T> i : intervalSet)
 				{
-				T left = i.getLeft();
-				T right = i.getRight();
+				T left = i.getMin();
+				T right = i.getMax();
 
 				Integer leftCount = fullLeftRightMap.get(left);
 				Integer rightCount = fullLeftRightMap.get(right);
@@ -67,7 +68,15 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 	public boolean encompassesValue(T value)
 		{
 		//** efficient?
-		Interval<T> f = headSet(new BasicInterval<T>(value, value)).last();
-		return f.encompassesValue(value);
+		try
+			{
+			Interval<T> f = headSet(new BasicInterval<T>(value, value)).last();
+			return f.encompassesValue(value);
+			}
+		catch (NoSuchElementException e)
+			{
+			// the requested value is less than the smallest one in the set, so the headset is empty
+			return false;
+			}
 		}
 	}

@@ -23,7 +23,7 @@ public class BasicInterval<T extends Number> implements Interval<T>
 		this.right = right;
 		}
 
-	public T getLeft()
+	public T getMin()
 		{
 		return left;
 		}
@@ -33,7 +33,7 @@ public class BasicInterval<T extends Number> implements Interval<T>
 		 this.left = left;
 		 }
  */
-	public T getRight()
+	public T getMax()
 		{
 		return right;
 		}
@@ -95,6 +95,6 @@ public class BasicInterval<T extends Number> implements Interval<T>
 	public int compareTo(Interval<T> o)
 		{
 		// assume we're using Comparable Numbers; ClassCastException if not
-		return ((Comparable) getLeft()).compareTo(o.getLeft());
+		return ((Comparable) getMin()).compareTo(o.getMin());
 		}
 	}

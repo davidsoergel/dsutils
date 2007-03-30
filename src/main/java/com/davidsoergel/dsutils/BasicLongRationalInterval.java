@@ -20,7 +20,7 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 
 	public int compareTo(Interval<LongRational> o)
 		{
-		return left.compareTo(o.getLeft());
+		return left.compareTo(o.getMin());
 		}
 
 	// assumes closed interval, i.e. includes endpoints
