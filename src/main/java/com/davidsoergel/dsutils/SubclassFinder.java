@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,8 +50,7 @@ import java.util.zip.ZipEntry;
 
 
 /**
- * This utility class is looking for all the classes implementing or
- * inheriting from a given interface or class.
+ * This utility class is looking for all the classes implementing or inheriting from a given interface or class.
  * (RunTime Subclass Identification)
  *
  * @author <a href="mailto:daniel@satlive.org">Daniel Le Berre</a>
@@ -66,32 +66,55 @@ public class SubclassFinder
 
 	public static List<Class> find(String pckgname, Class tosubclass)
 		{
-		return find(pckgname, tosubclass, false, false);
+		return find(pckgname, tosubclass, false, false, null);
 		}
 
 	public static List<Class> findRecursive(String pckgname, Class tosubclass)
 		{
-		return find(pckgname, tosubclass, true, false);
+		return find(pckgname, tosubclass, true, false, null);
 		}
 
 	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass)
 		{
-		return find(pckgname, tosubclass, false, true);
+		return find(pckgname, tosubclass, false, true, null);
 		}
 
 	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass)
 		{
-		return find(pckgname, tosubclass, true, true);
+		return find(pckgname, tosubclass, true, true, null);
+		}
+
+	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation)
+		{
+		return find(pckgname, tosubclass, false, false, requiredAnnotation);
+		}
+
+	public static List<Class> findRecursive(String pckgname, Class tosubclass,
+	                                        Class<? extends Annotation> requiredAnnotation)
+		{
+		return find(pckgname, tosubclass, true, false, requiredAnnotation);
+		}
+
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
+	                                                  Class<? extends Annotation> requiredAnnotation)
+		{
+		return find(pckgname, tosubclass, false, true, requiredAnnotation);
+		}
+
+	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass,
+	                                                           Class<? extends Annotation> requiredAnnotation)
+		{
+		return find(pckgname, tosubclass, true, true, requiredAnnotation);
 		}
 
 	/**
-	 * Display all the classes inheriting or implementing a given
-	 * class in a given package.
+	 * Display all the classes inheriting or implementing a given class in a given package.
 	 *
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
-	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces)
+	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
+	                                Class<? extends Annotation> requiredAnnotation)
 		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
@@ -133,12 +156,13 @@ public class SubclassFinder
 			{
 			URL url = (URL) e.nextElement();
 			logger.debug("Found resource: " + url);
-			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces));
+			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation));
 			}
 		return result;
 		}
 
-	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces)
+	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
+	                         Class<? extends Annotation> requiredAnnotation)
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -182,7 +206,7 @@ public class SubclassFinder
 					try
 						{
 						result.addAll(find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i],
-						                   tosubclass, recurse, includeInterfaces));
+						                   tosubclass, recurse, includeInterfaces, requiredAnnotation));
 						}
 					catch (MalformedURLException e)
 						{
@@ -206,7 +230,10 @@ public class SubclassFinder
 						if (tosubclass.isInstance(o))*/
 							{
 							logger.debug("......YES!");
-							result.add(c);//System.out.println(classname);
+							if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
+								{
+								result.add(c);//System.out.println(classname);
+								}
 							}
 						}
 					catch (ClassNotFoundException cnfex)
@@ -284,8 +311,10 @@ public class SubclassFinder
 							if (tosubclass.isInstance(o))*/
 								{
 								logger.debug("......YES!");
-
-								result.add(c);//System.out.println(classname);
+								if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
+									{
+									result.add(c);//System.out.println(classname);
+									}
 								}
 
 							}

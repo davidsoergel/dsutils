@@ -6,7 +6,7 @@
 	<artifactId>dsutils</artifactId>
 
 	<name>dsutils</name>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.2-SNAPSHOT</version>
 	<url>http://dev.davidsoergel.com/dsutils</url>
 	<description>Some generic utility classes.</description>
 
