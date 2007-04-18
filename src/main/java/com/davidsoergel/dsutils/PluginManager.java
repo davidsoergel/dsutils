@@ -26,6 +26,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -84,6 +85,10 @@ public class PluginManager<T>
 		return getManagerForInterface(T).getKeySet();
 		}
 
+	public static Collection<Class> getPlugins(Class T)
+		{
+		return getManagerForInterface(T).getValues();
+		}
 
 	public static <T> T getNewInstanceByName(Class T, String s) throws PluginException
 		{
@@ -157,6 +162,10 @@ public class PluginManager<T>
 
 	public Class getClassByName(String s) throws PluginException
 		{
+		if (s == null)
+			{
+			return null;
+			}
 		Class result = classes.get(s);
 		if (result == null)
 			{
@@ -190,9 +199,15 @@ public class PluginManager<T>
 			}
 		}
 
-	public Set<String> getKeySet() throws PluginException
+	public Set<String> getKeySet()//throws PluginException
 		{
 		return classes.keySet();
+
+		}
+
+	public Collection<Class> getValues()
+		{
+		return classes.values();
 
 		}
 
