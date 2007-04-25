@@ -26,9 +26,10 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
 
 /**
  * @author lorax
@@ -36,49 +37,79 @@ import java.io.FileInputStream;
  */
 public class FileUtils
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	private static Logger logger = Logger.getLogger(FileUtils.class);
 
-// -------------------------- STATIC METHODS --------------------------
+	// -------------------------- STATIC METHODS --------------------------
 
-    public static boolean move(java.io.File oldFile, java.io.File newFile) {
-	// first try simple rename
-	if (!oldFile.renameTo(newFile)) {
-	    // perhaps failed while trying to rename across filesystems?
-	    // try buffered copy
-	    int bufsize = 1024;
+	public static boolean move(java.io.File oldFile, java.io.File newFile)
+		{
+		// first try simple rename
+		if (!oldFile.renameTo(newFile))
+			{
+			// perhaps failed while trying to rename across filesystems?
+			// try buffered copy
+			int bufsize = 1024;
 
-	    if (!bufferedCopy(oldFile, newFile, bufsize)) {
-		return false;
-	    } else {
-		// the copy succeeded, try removing old file
-		if (!oldFile.delete()) {
-		    logger.error("Can't delete " +
-						      oldFile + " after copy");
+			if (!bufferedCopy(oldFile, newFile, bufsize))
+				{
+				return false;
+				}
+			else
+				{
+				// the copy succeeded, try removing old file
+				if (!oldFile.delete())
+					{
+					logger.error("Can't delete " + oldFile + " after copy");
+					}
+				}
+			}
+		return true;
 		}
-	    }
-	}
-	return true;
-    }
 
-    public static boolean bufferedCopy(java.io.File origFile,
-                                       java.io.File copyFile,
-                                       int buffSize) {
-        byte[] buff = new byte[buffSize];
+	public static boolean bufferedCopy(java.io.File origFile, java.io.File copyFile, int buffSize)
+		{
+		byte[] buff = new byte[buffSize];
 
-	try {
-	    FileInputStream fis = new FileInputStream(origFile);
-	    //file.createNewFile();
-	    FileOutputStream fos = new FileOutputStream(copyFile);
+		try
+			{
+			FileInputStream fis = new FileInputStream(origFile);
+			//file.createNewFile();
+			FileOutputStream fos = new FileOutputStream(copyFile);
 
-	    for (int bytes = 0; (bytes = fis.read(buff)) > -1; ) {
-		fos.write(buff, 0, bytes);
-	    }
-	} catch (IOException e) {
-	    logger.error(e);
-	    return false;
-	}
-	return true;
-    }
+			for (int bytes = 0; (bytes = fis.read(buff)) > -1;)
+				{
+				fos.write(buff, 0, bytes);
+				}
+			}
+		catch (IOException e)
+			{
+			logger.error(e);
+			return false;
+			}
+		return true;
+		}
+
+
+	static public boolean deleteDirectory(File path)
+		{
+		if (path.exists())
+			{
+			File[] files = path.listFiles();
+			for (File file : files)
+				{
+				if (file.isDirectory())
+					{
+					deleteDirectory(file);
+					}
+				else
+					{
+					file.delete();
+					}
+				}
+			}
+		return (path.delete());
+		}
+
 	}

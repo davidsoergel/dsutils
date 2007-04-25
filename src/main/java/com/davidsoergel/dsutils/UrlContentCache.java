@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -18,4 +19,14 @@ public interface UrlContentCache
 	public File getFile(URL url, String checksum) throws UrlContentCacheException;
 
 	public File getFile(String url, String checksum) throws UrlContentCacheException;
+
+	public void clear();
+
+	String getChecksum(String s) throws MalformedURLException, UrlContentCacheException;
+
+	String getChecksum(URL s) throws UrlContentCacheException;
+
+	String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException;
+
+	String recalculateChecksum(URL s) throws UrlContentCacheException;
 	}

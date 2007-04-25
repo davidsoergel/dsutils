@@ -80,6 +80,12 @@ public class UrlContentCacheImpl implements UrlContentCache
 		}
 
 
+	public void clear()
+		{
+		FileUtils.deleteDirectory(cacheRootDir);
+		}
+
+
 	public File getFile(String url) throws UrlContentCacheException
 		{
 		try
@@ -97,7 +103,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		{
 		try
 			{
-			return getFile(new URL(url));
+			return getFile(new URL(url), checksum);
 			}
 		catch (MalformedURLException e)
 			{
@@ -178,10 +184,13 @@ public class UrlContentCacheImpl implements UrlContentCache
 				case HttpURLConnection.HTTP_OK:
 					localFile.delete();
 					ensureFreeSpace(conn.getContentLength());
+					localFile.getParentFile().mkdirs();
+					localFile.createNewFile();
 					FileOutputStream os = new FileOutputStream(localFile);
 					StreamUtils.pipe(conn.getInputStream(), os);
 					os.close();
 					updateChecksum(localFile);
+					break;
 				default:
 					// even if force=true, we still leave the old file in place, no harm done
 					throw new IOException(
@@ -195,7 +204,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-	private String getChecksumString(File file) throws IOException
+	private static String getChecksumString(File file) throws IOException
 		{
 		long millis = System.currentTimeMillis();
 		InputStream in = new FileInputStream(file);
@@ -210,13 +219,14 @@ public class UrlContentCacheImpl implements UrlContentCache
 		in.close();
 		millis = System.currentTimeMillis() - millis;
 		logger.debug("Calculated checksum for " + file.getName() + " in " + (millis / 1000L) + " seconds.");
-		return checksum.toString();
+		return "" + checksum.getValue();
 		}
 
 	private void updateChecksum(File file) throws IOException
 		{
 		File c = getChecksumFile(file);
 		c.delete();
+		c.createNewFile();
 		FileWriter w = new FileWriter(c);
 		w.write(getChecksumString(file));
 		w.close();
@@ -268,7 +278,9 @@ public class UrlContentCacheImpl implements UrlContentCache
 
 	private long getAvailableSpace()
 		{
-		return Math.min(cacheRootDir.getUsableSpace(), maxSize - cacheSize);
+		//return Math.min(cacheRootDir.getUsableSpace(), maxSize - cacheSize);   // works only in J2SE 1.6
+
+		return maxSize - cacheSize;
 		}
 
 	private void registerLocalFile(File file) throws IOException
@@ -291,7 +303,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 
 	private File getChecksumFile(File f) throws IOException
 		{
-		return new File(f.getCanonicalPath() + ".chk");
+		return new File(f.getCanonicalPath() + ".crc32");
 		}
 
 	private void updateLastAccessTime(File f) throws IOException
@@ -303,4 +315,48 @@ public class UrlContentCacheImpl implements UrlContentCache
 		{
 		return getChecksumFile(file).lastModified();
 		}
+
+
+	public String getChecksum(String s) throws MalformedURLException, UrlContentCacheException
+		{
+		return getChecksum(new URL(s));
+		}
+
+	public String getChecksum(URL s) throws UrlContentCacheException
+		{
+		try
+			{
+			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			}
+		catch (IOException e)
+			{
+			return recalculateChecksum(s);
+			}
+		catch (UrlContentCacheException e)
+			{
+			return recalculateChecksum(s);
+			}
+		}
+
+	public String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException
+		{
+		return recalculateChecksum(new URL(s));
+		}
+
+	public String recalculateChecksum(URL s) throws UrlContentCacheException
+		{
+		try
+			{
+			updateChecksum(getFile(s));
+
+			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			}
+		catch (IOException e)
+			{
+			throw new UrlContentCacheException(e);
+
+			}
+
+		}
+
 	}
