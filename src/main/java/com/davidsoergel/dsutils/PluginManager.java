@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,7 +68,6 @@ public class PluginManager<T>
 		m.registerPackage(packagename);
 		}
 
-
 	public static <T> T getSingletonByName(Class T, String s) throws PluginException
 		{
 		return (T) getManagerForInterface(T).getSingletonByName(s);
@@ -96,6 +96,7 @@ public class PluginManager<T>
 		}
 
 	private Class theInterface;
+	private Set<String> registeredPackages = new HashSet<String>();
 	private HashMap<String, Class> classes = new HashMap<String, Class>();
 	private HashMap<String, T> instances = new HashMap<String, T>();
 
@@ -106,11 +107,14 @@ public class PluginManager<T>
 
 	public void registerPackage(String packagename)
 		{
-		for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
+		if (!registeredPackages.contains(packagename))
 			{
-			classes.put(c.getSimpleName(), c);
-			//put((String)dm.getMethod("getName").invoke(), dm);
-			/*try
+			registeredPackages.add(packagename);
+			for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
+				{
+				classes.put(c.getSimpleName(), c);
+				//put((String)dm.getMethod("getName").invoke(), dm);
+				/*try
 				{
 				classes.put(c.getSimpleName(), c);
 				//instances.put(c.getSimpleName(), (T) c.newInstance());
@@ -123,6 +127,7 @@ public class PluginManager<T>
 				{
 				logger.debug(e);
 				}*/
+				}
 			}
 		}
 
