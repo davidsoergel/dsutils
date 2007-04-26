@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import sun.net.www.protocol.ftp.FtpURLConnection;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -170,6 +171,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			{
 			HttpURLConnection conn = (HttpURLConnection) url
 					.openConnection();// Http only supported for now; ClassCastException otherwise
+			FtpURLConnection f;
 			File localFile = new File(urlToLocalFilename(url));
 			if (localFile.exists() && !force)
 				{

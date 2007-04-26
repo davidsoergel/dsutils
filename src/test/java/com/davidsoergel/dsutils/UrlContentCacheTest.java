@@ -66,9 +66,9 @@ public class UrlContentCacheTest
 		fw.close();
 
 		String wrongChecksum = cache.getChecksum("http://www.davidsoergel.com/testfile");
-		assert wrongChecksum.equals("4275079459bogus");
+		assert wrongChecksum.equals("bogus");
 
-		assert new File("/tmp/test/www.davidsoergel.com/testfile").length() == 86;
+		assert new File("/tmp/test/www.davidsoergel.com/testfile").length() == 5;
 
 		File f = cache.getFile("http://www.davidsoergel.com/testfile", "4275079459");
 
@@ -117,4 +117,9 @@ public class UrlContentCacheTest
 		assert (new File("/tmp/test/www.davidsoergel.com/testdirectory/testfile2").exists());
 		}
 
+	@Test
+	public void wildcardsAreDownloaded() throws UrlContentCacheException
+		{
+		assert false;
+		}
 	}

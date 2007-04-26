@@ -208,7 +208,6 @@ public class PluginManager<T>
 	public Collection<Class> getValues()
 		{
 		return classes.values();
-
 		}
 
 	}
