@@ -4,11 +4,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lorax
- * Date: Sep 13, 2006
- * Time: 1:36:12 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: lorax Date: Sep 13, 2006 Time: 1:36:12 PM To change this template use File | Settings
+ * | File Templates.
  */
 public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNode<T>, Comparable
 	{
@@ -20,10 +17,10 @@ public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNo
 		}
 
 
-	public SortedSetHierarchyNode<T> newChild(T contents)
+	public SortedSetHierarchyNode<T> newChild()
 		{
 		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>();
-		result.setContents(contents);
+		//result.setContents(contents);
 		children.add(result);
 		return result;
 		}

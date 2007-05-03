@@ -3,11 +3,8 @@ package com.davidsoergel.dsutils;
 import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lorax
- * Date: Sep 13, 2006
- * Time: 1:34:37 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: lorax Date: Sep 13, 2006 Time: 1:34:37 PM To change this template use File | Settings
+ * | File Templates.
  */
 public interface HierarchyNode<T>// was abstract class
 	{
@@ -46,7 +43,7 @@ public interface HierarchyNode<T>// was abstract class
 	   this.contents = contents;
 	   }*/
 
-	public HierarchyNode<T> newChild(T contents);
+	public HierarchyNode<T> newChild();
 
 	public void beginTaxn();
 
