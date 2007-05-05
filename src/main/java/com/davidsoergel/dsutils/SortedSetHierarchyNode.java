@@ -25,6 +25,11 @@ public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNo
 		return result;
 		}
 
+	public void merge()
+		{
+		//To change body of implemented methods use File | Settings | File Templates.
+		}
+
 	public int compareTo(Object o)
 		{
 		return getContents().compareTo(o);

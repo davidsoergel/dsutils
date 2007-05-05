@@ -112,7 +112,7 @@ public class PluginManager<T>
 			registeredPackages.add(packagename);
 			for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
 				{
-				classes.put(c.getSimpleName(), c);
+				classes.put(c.getCanonicalName(), c);
 				//put((String)dm.getMethod("getName").invoke(), dm);
 				/*try
 				{
@@ -142,7 +142,7 @@ public class PluginManager<T>
 				{
 				try
 					{
-					instances.put(c.getSimpleName(), (T) c.newInstance());
+					instances.put(c.getCanonicalName(), (T) c.newInstance());
 					result = instances.get(s);
 					}
 				catch (InstantiationException e)

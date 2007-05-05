@@ -25,6 +25,11 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 		return result;
 		}
 
+	public void merge()
+		{
+		//To change body of implemented methods use File | Settings | File Templates.
+		}
+
 	private HierarchyNode<T> parent;
 	private T contents;
 

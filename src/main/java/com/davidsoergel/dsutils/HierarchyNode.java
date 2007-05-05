@@ -45,7 +45,9 @@ public interface HierarchyNode<T>// was abstract class
 
 	public HierarchyNode<T> newChild();
 
-	public void beginTaxn();
+	//	public void beginTaxn();
 
-	public void commit();
+	//	public void commit();
+
+	void merge();
 	}
