@@ -25,6 +25,7 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,7 +102,7 @@ public class SubclassFinder
 		return find(pckgname, tosubclass, false, true, requiredAnnotation);
 		}
 
-	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass,
+	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
 	                                                           Class<? extends Annotation> requiredAnnotation)
 		{
 		return find(pckgname, tosubclass, true, true, requiredAnnotation);
@@ -113,8 +114,8 @@ public class SubclassFinder
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
-	private static List<Class> find(String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
-	                                Class<? extends Annotation> requiredAnnotation)
+	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
+	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation)
 		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();

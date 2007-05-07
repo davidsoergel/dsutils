@@ -49,5 +49,5 @@ public interface HierarchyNode<T>// was abstract class
 
 	//	public void commit();
 
-	void merge();
+	//	void merge();
 	}
