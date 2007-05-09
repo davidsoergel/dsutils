@@ -79,7 +79,7 @@ public class MathUtils
 		{
 		if (n > FACTORIAL_LIMIT)
 			{
-			return StirlingFactorial(n);
+			return stirlingFactorial(n);
 			}
 		if (factorials[n] == 0)
 			{
@@ -88,7 +88,7 @@ public class MathUtils
 		return factorials[n];
 		}
 
-	public static double StirlingFactorial(int n)
+	public static double stirlingFactorial(int n)
 		{
 		double result = Math.sqrt(2.0 * Math.PI * n) * Math.pow(n, n) * Math.pow(Math.E, -n);
 		return result;
@@ -100,6 +100,17 @@ public class MathUtils
 		factorials[1] = 1;
 		}
 
+	/**
+	 * log(n!) =~ n * log(n) - n
+	 *
+	 * @param n
+	 * @return
+	 */
+	public static double stirlingLogFactorial(int n)
+		{
+		double d = n;// just to be sure
+		return ((d * approximateLog(d)) - d);
+		}
 
 	/**
 	 * log(sum(exp(args)))
@@ -247,9 +258,8 @@ public class MathUtils
 		}
 
 	/**
-	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c.
-	 * This clever implementation comes from http://www.cs.utsa.edu/~wagner/laws/fav_alg.html,
-	 * who in turn adapted it from D. Knuth.
+	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c. This clever implementation comes from
+	 * http://www.cs.utsa.edu/~wagner/laws/fav_alg.html, who in turn adapted it from D. Knuth.
 	 *
 	 * @param x
 	 * @param y
@@ -304,9 +314,9 @@ public class MathUtils
 		}
 
 	/**
-	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c with the constraints that a and c must be positive.
-	 * To achieve this, we first apply the standard GCD algorithm, and then adjust as needed by replacing a with (a+ny)
-	 * and b with (b-nx), since (a+ny)x + (b-nx)y = c
+	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c with the constraints that a and c must be
+	 * positive. To achieve this, we first apply the standard GCD algorithm, and then adjust as needed by replacing a with
+	 * (a+ny) and b with (b-nx), since (a+ny)x + (b-nx)y = c
 	 *
 	 * @param x
 	 * @param y
