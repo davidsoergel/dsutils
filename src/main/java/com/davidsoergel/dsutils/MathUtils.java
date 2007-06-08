@@ -69,8 +69,17 @@ public class MathUtils
 			{
 			return 1;
 			}
-		double result;
-		result = factorial(n) / (factorial(m) * factorial(n - m));
+		double result = 1;
+
+
+		// this was supposed to be faster than doing the multiplication explicitly, but it has all kinds of Infinity issues etc.
+		//result = factorial(n) / (factorial(m) * factorial(n - m));
+
+		for (int i = n; i > n - m; i--)
+			{
+			result *= i;
+			}
+		result /= factorial(m);
 
 		return (long) result;
 		}
@@ -90,6 +99,10 @@ public class MathUtils
 
 	public static double stirlingFactorial(int n)
 		{
+		if (n >= 144)
+			{
+			throw new ArithmeticException("Factorials greater than 144 don't fit in Double.");
+			}
 		double result = Math.sqrt(2.0 * Math.PI * n) * Math.pow(n, n) * Math.pow(Math.E, -n);
 		return result;
 		}
