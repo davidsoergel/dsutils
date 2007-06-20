@@ -252,6 +252,11 @@ public class MathUtils
 
 	public static boolean equalWithinFPError(double a, double b)
 		{
+		if (a == b)
+			{
+			return true;
+			}// covers Infinity cases
+
 		double nearlyZero = a - b;
 		// these errors are generally in the vicinity of 1e-15
 		// let's be extra permissive, 1e-10 is good enough anyway
