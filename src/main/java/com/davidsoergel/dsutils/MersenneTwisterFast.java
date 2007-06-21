@@ -1495,6 +1495,19 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 			}
 		}
 
+	public static final int randomInt(int range)
+		{
+		try
+			{
+			return tl.get().nextInt(range);
+			}
+		catch (NullPointerException e)
+			{
+			init();
+			return randomInt(range);
+			}
+		}
+
 	public static double gaussian()
 		{
 		try
