@@ -29,19 +29,16 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA.
- * User: lorax
- * Date: Apr 29, 2004
- * Time: 6:15:13 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: lorax Date: Apr 29, 2004 Time: 6:15:13 PM To change this template use File | Settings
+ * | File Templates.
  */
 public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	private static Logger logger = Logger.getLogger(ArrayUtils.class);
 
-// -------------------------- STATIC METHODS --------------------------
+	// -------------------------- STATIC METHODS --------------------------
 
 
 	public static boolean equalWithinFPError(double[] a, double[] b)
@@ -52,7 +49,10 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			if(!MathUtils.equalWithinFPError(a[i], b[i])) { return false; }
+			if (!MathUtils.equalWithinFPError(a[i], b[i]))
+				{
+				return false;
+				}
 			}
 		return true;
 		}
@@ -65,14 +65,17 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			if(!MathUtils.equalWithinFPError(a[i], b[i])) { return false; }
+			if (!MathUtils.equalWithinFPError(a[i], b[i]))
+				{
+				return false;
+				}
 			}
 		return true;
 		}
 
 	public static double[] plus(double[] a, double[] b)
 		{
-		double[] result = a.clone();  // does this work??
+		double[] result = a.clone();// does this work??
 		incrementBy(result, b);
 		return result;
 		}
@@ -92,7 +95,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	public static double[] minus(double[] a, double[] b)
 		{
-		double[] result = a.clone();  // does this work??
+		double[] result = a.clone();// does this work??
 		decrementBy(result, b);
 		return result;
 		}
@@ -256,6 +259,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
+
 	public static int sum(int[] a)
 		{
 		int result = 0;
@@ -265,6 +269,27 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return result;
 		}
+
+	public static double sum(double[] a)
+		{
+		double result = 0;
+		for (int i = 0; i < a.length; i++)
+			{
+			result += a[i];
+			}
+		return result;
+		}
+
+	public static double product(double[] a)
+		{
+		double result = 0;
+		for (int i = 0; i < a.length; i++)
+			{
+			result *= a[i];
+			}
+		return result;
+		}
+
 
 	public static int sum(Collection<Double> a)
 		{
@@ -305,6 +330,18 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return result;
 		}
+
+
+	public static double max(double[] x)
+		{
+		double result = Double.MIN_VALUE;
+		for (int col = 0; col < x.length; col++)
+			{
+			result = Math.max(result, x[col]);
+			}
+		return result;
+		}
+
 
 	public static int argmax(double[] x)
 		{
@@ -397,7 +434,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	public static double[] castToDouble(int[] p)
 		{
 		double[] result = new double[p.length];
-		for(int i = 0; i < p.length; i++)
+		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = p[i];
 			}
