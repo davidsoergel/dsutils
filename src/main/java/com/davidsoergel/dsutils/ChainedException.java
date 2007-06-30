@@ -28,16 +28,16 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * @author lorax
- * @version 1.0
+ * A superclass for exceptions that are caused by another exception.  Inheriting from this class facilitates printing a
+ * stack trace not only of the wrapper exception but also of the ultimate cause.
  */
 public class ChainedException extends java.lang.Exception
 	{
-// ------------------------------ FIELDS ------------------------------
+	// ------------------------------ FIELDS ------------------------------
 
 	Throwable parent;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+	// --------------------------- CONSTRUCTORS ---------------------------
 
 	/**
 	 * Creates new <code>FileUploadException</code> without detail message.
@@ -51,7 +51,6 @@ public class ChainedException extends java.lang.Exception
 	 * Constructor declaration
 	 *
 	 * @param e
-
 	 */
 	public ChainedException(Throwable e)
 		{
@@ -74,7 +73,6 @@ public class ChainedException extends java.lang.Exception
 	 *
 	 * @param e
 	 * @param s
-
 	 */
 	public ChainedException(Throwable e, String s)
 		{
@@ -82,13 +80,12 @@ public class ChainedException extends java.lang.Exception
 		parent = e;
 		}
 
-// -------------------------- OTHER METHODS --------------------------
+	// -------------------------- OTHER METHODS --------------------------
 
 	/**
 	 * Method declaration
 	 *
 	 * @param pw
-
 	 */
 	public void printStackTrace(PrintWriter pw)
 		{
@@ -103,7 +100,6 @@ public class ChainedException extends java.lang.Exception
 	 * Method declaration
 	 *
 	 * @param s
-
 	 */
 	public void printStackTrace(PrintStream s)
 		{
