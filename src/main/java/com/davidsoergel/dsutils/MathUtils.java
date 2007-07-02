@@ -1,25 +1,35 @@
+/* $Id$ */
+
 /*
- * dsutils - a collection of generally useful utility classes
- *
- * Copyright (c) 2001-2006 David Soergel
+ * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
  * david@davidsoergel.com
  *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
+ * All rights reserved.
  *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * USA.
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
  *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.davidsoergel.dsutils;
@@ -32,11 +42,25 @@ import org.apache.log4j.Logger;
  */
 public class MathUtils
 	{
-
-	private static Logger logger = Logger.getLogger(MathUtils.class);
-
 	// ------------------------------ FIELDS ------------------------------
 
+	//	private static double[] logTableBelowOne;
+	//	private static double[] logTableAboveOne;
+	//	public static int logbins;
+	//public static double logResolution;
+	//	public static double maxLogArg;
+
+	//public static int logLevels;
+	public static int logMinOrderOfMagnitude;
+	public static int logMaxOrderOfMagnitude;
+	public static int logOrdersOfMagnitudePerLevel;
+	public static int logBinsPerLevel;
+
+	public static int logLevels;
+	public static double[] logBinIncrement;
+	public static double[] logBinLimit;
+
+	private static Logger logger = Logger.getLogger(MathUtils.class);
 	private static final int FACTORIAL_LIMIT = 100;
 	private static double[] factorials = new double[FACTORIAL_LIMIT + 1];
 	// log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
@@ -55,6 +79,9 @@ public class MathUtils
 	// need to know which is bigger, exp(x) or exp(y)+exp(z)
 
 	static double MAX_EXPONENT = Math.log(Double.MAX_VALUE);
+
+	private static double[][] logTable;
+
 
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -125,6 +152,26 @@ public class MathUtils
 		return ((d * approximateLog(d)) - d);
 		}
 
+	public static double approximateLog(double x)
+		{
+		if (x <= logBinIncrement[0])
+			{
+			// x is too small
+			return Math.log(x);
+			}
+
+		// ** Is there a faster way to decide which bin to use?  e.g. binary tree instead of linear?
+		for (int level = 0; level < logLevels; level++)
+			{
+			if (x < logBinLimit[level])
+				{
+				return logTable[level][(int) (x / logBinIncrement[level])];
+				}
+			}
+		// x is too big
+		return Math.log(x);
+		}
+
 	/**
 	 * log(sum(exp(args)))
 	 *
@@ -181,24 +228,6 @@ public class MathUtils
 		return result;
 		}
 
-	private static double[][] logTable;
-	//	private static double[] logTableBelowOne;
-	//	private static double[] logTableAboveOne;
-
-	//	public static int logbins;
-	//public static double logResolution;
-	//	public static double maxLogArg;
-
-	//public static int logLevels;
-	public static int logMinOrderOfMagnitude;
-	public static int logMaxOrderOfMagnitude;
-	public static int logOrdersOfMagnitudePerLevel;
-	public static int logBinsPerLevel;
-
-	public static int logLevels;
-	public static double[] logBinIncrement;
-	public static double[] logBinLimit;
-
 	public static void initApproximateLog(int minOrderOfMagnitude, int maxOrderOfMagnitude,
 	                                      int ordersOfMagnitudePerLevel, int binsPerLevel)
 		{
@@ -228,26 +257,6 @@ public class MathUtils
 			level++;
 			}
 		logLevels = level;
-		}
-
-	public static double approximateLog(double x)
-		{
-		if (x <= logBinIncrement[0])
-			{
-			// x is too small
-			return Math.log(x);
-			}
-
-		// ** Is there a faster way to decide which bin to use?  e.g. binary tree instead of linear?
-		for (int level = 0; level < logLevels; level++)
-			{
-			if (x < logBinLimit[level])
-				{
-				return logTable[level][(int) (x / logBinIncrement[level])];
-				}
-			}
-		// x is too big
-		return Math.log(x);
 		}
 
 	public static boolean equalWithinFPError(double a, double b)

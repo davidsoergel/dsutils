@@ -1,3 +1,37 @@
+/* $Id$ */
+
+/*
+ * Copyright (c) 2001-2007 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * david@davidsoergel.com
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -25,12 +59,20 @@ import java.util.zip.CRC32;
  */
 public class UrlContentCacheImpl implements UrlContentCache
 	{
+	// ------------------------------ FIELDS ------------------------------
+
 	private static Logger logger = Logger.getLogger(UrlContentCacheImpl.class);
+	private final static int bufferSize = 16384;
 
 	private File cacheRootDir;
 	private String cacheRootDirCanonicalPath;
 	private long maxSize = Long.MAX_VALUE;
-	private final static int bufferSize = 16384;
+
+	private long cacheSize = 0;
+	private SortedMap<String, File> filesByAccessDate = null;
+
+
+	// --------------------------- CONSTRUCTORS ---------------------------
 
 	public UrlContentCacheImpl(File cacheRootDir) throws UrlContentCacheException
 		{
@@ -46,19 +88,6 @@ public class UrlContentCacheImpl implements UrlContentCache
 		this.cacheRootDir = new File(cacheRootDirCanonicalPath);
 		init();
 		}
-
-	public UrlContentCacheImpl(String cacheRootDir) throws UrlContentCacheException
-		{
-		this(new File(cacheRootDir));
-		}
-
-	public void setMaxSize(long maxSize)
-		{
-		this.maxSize = maxSize;
-		}
-
-	private long cacheSize = 0;
-	private SortedMap<String, File> filesByAccessDate = null;
 
 	// we're going to need all this anyway, so don't bother with lazy initializers
 	private void init() throws UrlContentCacheException
@@ -80,31 +109,76 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
+	private void registerLocalFile(File file) throws IOException
+		{
+		if (file.isFile())
+			{
+			filesByAccessDate.put("" + getLastAccessTime(file) + ":" + file.getCanonicalPath(), file);
+			cacheSize += file.length();
+			}
+		File[] files = file.listFiles();
+		if (files != null)
+			{
+			for (File f : files)
+				{
+				registerLocalFile(f);
+				}
+			}
+		}
+
+	private long getLastAccessTime(File file) throws IOException
+		{
+		return getChecksumFile(file).lastModified();
+		}
+
+	public UrlContentCacheImpl(String cacheRootDir) throws UrlContentCacheException
+		{
+		this(new File(cacheRootDir));
+		}
+
+	// --------------------- GETTER / SETTER METHODS ---------------------
+
+	public void setMaxSize(long maxSize)
+		{
+		this.maxSize = maxSize;
+		}
+
+	// ------------------------ INTERFACE METHODS ------------------------
+
+
+	// --------------------- Interface UrlContentCache ---------------------
 
 	public void clear()
 		{
 		FileUtils.deleteDirectory(cacheRootDir);
 		}
 
+	public String getChecksum(String s) throws MalformedURLException, UrlContentCacheException
+		{
+		return getChecksum(new URL(s));
+		}
+
+	public String getChecksum(URL s) throws UrlContentCacheException
+		{
+		try
+			{
+			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			}
+		catch (IOException e)
+			{
+			return recalculateChecksum(s);
+			}
+		catch (UrlContentCacheException e)
+			{
+			return recalculateChecksum(s);
+			}
+		}
 
 	public File getFile(String url) throws UrlContentCacheException
 		{
 		try
 			{
 			return getFile(new URL(url));
-			}
-		catch (MalformedURLException e)
-			{
-			logger.debug(e);
-			throw new UrlContentCacheException(e);
-			}
-		}
-
-	public File getFile(String url, String checksum) throws UrlContentCacheException
-		{
-		try
-			{
-			return getFile(new URL(url), checksum);
 			}
 		catch (MalformedURLException e)
 			{
@@ -153,17 +227,39 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-	private String urlToLocalFilename(URL url)
+	public File getFile(String url, String checksum) throws UrlContentCacheException
 		{
-		StringBuffer sb = new StringBuffer(cacheRootDirCanonicalPath);
-
-		String path = url.getFile();
-		path = org.apache.commons.lang.StringUtils.join(path.split("/"), File.separator);
-
-		sb.append(File.separator).append(url.getHost()).append(path);
-		return sb.toString();
+		try
+			{
+			return getFile(new URL(url), checksum);
+			}
+		catch (MalformedURLException e)
+			{
+			logger.debug(e);
+			throw new UrlContentCacheException(e);
+			}
 		}
 
+	public String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException
+		{
+		return recalculateChecksum(new URL(s));
+		}
+
+	public String recalculateChecksum(URL s) throws UrlContentCacheException
+		{
+		try
+			{
+			updateChecksum(getFile(s));
+
+			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			}
+		catch (IOException e)
+			{
+			throw new UrlContentCacheException(e);
+			}
+		}
+
+	// -------------------------- OTHER METHODS --------------------------
 
 	private void updateFile(URL url, boolean force) throws UrlContentCacheException
 		{
@@ -176,7 +272,6 @@ public class UrlContentCacheImpl implements UrlContentCache
 			if (localFile.exists() && !force)
 				{
 				conn.setIfModifiedSince(localFile.lastModified());// UNIX date as long?
-
 				}
 			conn.connect();
 			switch (conn.getResponseCode())
@@ -206,47 +301,15 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-	private static String getChecksumString(File file) throws IOException
+	private String urlToLocalFilename(URL url)
 		{
-		long millis = System.currentTimeMillis();
-		InputStream in = new FileInputStream(file);
-		CRC32 checksum = new CRC32();
-		checksum.reset();
-		byte[] buffer = new byte[bufferSize];
-		int bytesRead;
-		while ((bytesRead = in.read(buffer)) >= 0)
-			{
-			checksum.update(buffer, 0, bytesRead);
-			}
-		in.close();
-		millis = System.currentTimeMillis() - millis;
-		logger.debug("Calculated checksum for " + file.getName() + " in " + (millis / 1000L) + " seconds.");
-		return "" + checksum.getValue();
-		}
+		StringBuffer sb = new StringBuffer(cacheRootDirCanonicalPath);
 
-	private void updateChecksum(File file) throws IOException
-		{
-		File c = getChecksumFile(file);
-		c.delete();
-		c.createNewFile();
-		FileWriter w = new FileWriter(c);
-		w.write(getChecksumString(file));
-		w.close();
-		}
+		String path = url.getFile();
+		path = org.apache.commons.lang.StringUtils.join(path.split("/"), File.separator);
 
-	/**
-	 * compare the requested checksum against the locally stored checksum, without recalculating it.  To be really sure,
-	 * run updateChecksum first.
-	 *
-	 * @param file
-	 * @param checksum
-	 * @return
-	 * @throws IOException
-	 */
-	private boolean verifyChecksum(File file, String checksum) throws IOException
-		{
-		String localChecksum = new BufferedReader(new FileReader(getChecksumFile(file))).readLine().trim();
-		return localChecksum.equals(checksum);
+		sb.append(File.separator).append(url.getHost()).append(path);
+		return sb.toString();
 		}
 
 	private void ensureFreeSpace(int contentLength) throws UrlContentCacheException
@@ -277,7 +340,6 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-
 	private long getAvailableSpace()
 		{
 		//return Math.min(cacheRootDir.getUsableSpace(), maxSize - cacheSize);   // works only in J2SE 1.6
@@ -285,27 +347,37 @@ public class UrlContentCacheImpl implements UrlContentCache
 		return maxSize - cacheSize;
 		}
 
-	private void registerLocalFile(File file) throws IOException
+	private void updateChecksum(File file) throws IOException
 		{
-		if (file.isFile())
-			{
-			filesByAccessDate.put("" + getLastAccessTime(file) + ":" + file.getCanonicalPath(), file);
-			cacheSize += file.length();
-			}
-		File[] files = file.listFiles();
-		if (files != null)
-			{
-			for (File f : files)
-				{
-				registerLocalFile(f);
-				}
-			}
+		File c = getChecksumFile(file);
+		c.delete();
+		c.createNewFile();
+		FileWriter w = new FileWriter(c);
+		w.write(getChecksumString(file));
+		w.close();
 		}
-
 
 	private File getChecksumFile(File f) throws IOException
 		{
 		return new File(f.getCanonicalPath() + ".crc32");
+		}
+
+	private static String getChecksumString(File file) throws IOException
+		{
+		long millis = System.currentTimeMillis();
+		InputStream in = new FileInputStream(file);
+		CRC32 checksum = new CRC32();
+		checksum.reset();
+		byte[] buffer = new byte[bufferSize];
+		int bytesRead;
+		while ((bytesRead = in.read(buffer)) >= 0)
+			{
+			checksum.update(buffer, 0, bytesRead);
+			}
+		in.close();
+		millis = System.currentTimeMillis() - millis;
+		logger.debug("Calculated checksum for " + file.getName() + " in " + (millis / 1000L) + " seconds.");
+		return "" + checksum.getValue();
 		}
 
 	private void updateLastAccessTime(File f) throws IOException
@@ -313,52 +385,18 @@ public class UrlContentCacheImpl implements UrlContentCache
 		getChecksumFile(f).setLastModified(System.currentTimeMillis());
 		}
 
-	private long getLastAccessTime(File file) throws IOException
+	/**
+	 * compare the requested checksum against the locally stored checksum, without recalculating it.  To be really sure,
+	 * run updateChecksum first.
+	 *
+	 * @param file
+	 * @param checksum
+	 * @return
+	 * @throws IOException
+	 */
+	private boolean verifyChecksum(File file, String checksum) throws IOException
 		{
-		return getChecksumFile(file).lastModified();
+		String localChecksum = new BufferedReader(new FileReader(getChecksumFile(file))).readLine().trim();
+		return localChecksum.equals(checksum);
 		}
-
-
-	public String getChecksum(String s) throws MalformedURLException, UrlContentCacheException
-		{
-		return getChecksum(new URL(s));
-		}
-
-	public String getChecksum(URL s) throws UrlContentCacheException
-		{
-		try
-			{
-			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
-			}
-		catch (IOException e)
-			{
-			return recalculateChecksum(s);
-			}
-		catch (UrlContentCacheException e)
-			{
-			return recalculateChecksum(s);
-			}
-		}
-
-	public String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException
-		{
-		return recalculateChecksum(new URL(s));
-		}
-
-	public String recalculateChecksum(URL s) throws UrlContentCacheException
-		{
-		try
-			{
-			updateChecksum(getFile(s));
-
-			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
-			}
-		catch (IOException e)
-			{
-			throw new UrlContentCacheException(e);
-
-			}
-
-		}
-
 	}

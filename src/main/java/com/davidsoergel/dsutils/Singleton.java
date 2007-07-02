@@ -1,28 +1,38 @@
+/* $Id$ */
+
 /*
- * Ashatech Ibex - A framework for rapid development of dynamic web applications
+ * Copyright (c) 2001-2007 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * david@davidsoergel.com
  *
- * Copyright (C) 2002 Asha Technologies
- * 1215 2nd Avenue, San Francisco, CA  94122
- * info@ashatech.com
+ * All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or (at
- * your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * USA.
- *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* $Id: Singleton.java,v 1.1.1.1 2003/03/19 22:54:32 david Exp $ */
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -31,74 +41,77 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 
 /**
- * Use Singleton.instance(String) to access a given
- * instance by name.
+ * Use Singleton.instance(String) to access a given instance by name.
  */
-public abstract class Singleton {
-    private static Logger logger = Logger.getLogger(Singleton.class);
+public abstract class Singleton
+	{
+	// ------------------------------ FIELDS ------------------------------
 
-    static private HashMap _registry = new HashMap();
+	private static Logger logger = Logger.getLogger(Singleton.class);
 
-    /**
-     * The constructor could be made private
-     * to prevent others from instantiating this class.
-     * But this would also make it impossible to
-     * create instances of Singleton subclasses.
-     */
-    protected Singleton() {
-        logger.debug(
-                "Singleton registered: "
-                + this.getClass().getName());
-        _registry.put(this.getClass().getName().toLowerCase(), this);
+	static private HashMap _registry = new HashMap();
 
-        // _registry.put(this.getClass().getName(), this);
 
-    }
+	// -------------------------- STATIC METHODS --------------------------
 
-    /**
-     * @return The unique instance of the specified class.
-     */
-    static public Singleton instance(String byname)
-            throws ClassNotFoundException {
+	/**
+	 * @return The unique instance of the specified class.
+	 */
+	static public Singleton instance(String byname) throws ClassNotFoundException
+		{
+		// byname = byname.toLowerCase();
 
-        // byname = byname.toLowerCase();
+		logger.debug("Singleton.instance(\"" + byname + "\")");
 
-        logger.debug(
-                "Singleton.instance(\"" + byname + "\")");
+		Singleton result = (Singleton) (_registry.get(byname.toLowerCase()));
 
-        Singleton result = (Singleton) (_registry.get(byname.toLowerCase()));
+		// make sure the class has been loaded, since it wouldn't yet be in Singleton's registry otherwise
 
-        // make sure the class has been loaded, since it wouldn't yet be in Singleton's registry otherwise
+		if (result == null)
+			{
+			try
+				{
+				// ** this doesn't work due to the lowercasing issue!!
 
-        if (result == null) {
-            try {
+				Class.forName(byname).newInstance();
 
-                // ** this doesn't work due to the lowercasing issue!!
+				result = (Singleton) (_registry.get(byname.toLowerCase()));
+				}
+			catch (Exception e)
+				{
+				throw new ClassNotFoundException(
+						"Couldn't find class " + byname + ".  Check to make sure it was preloaded.");
+				}
+			}
 
-                Class.forName(byname).newInstance();
+		return result;
+		}
 
-                result = (Singleton) (_registry.get(byname.toLowerCase()));
-            } catch (Exception e) {
-                throw new ClassNotFoundException("Couldn't find class "
-                        + byname
-                        + ".  Check to make sure it was preloaded.");
-            }
-        }
+	// --------------------------- CONSTRUCTORS ---------------------------
 
-        return result;
-    }
+	/**
+	 * The constructor could be made private to prevent others from instantiating this class. But this would also make it
+	 * impossible to create instances of Singleton subclasses.
+	 */
+	protected Singleton()
+		{
+		logger.debug("Singleton registered: " + this.getClass().getName());
+		_registry.put(this.getClass().getName().toLowerCase(), this);
 
-    /**
-     * Method declaration
-     *
-     *
-     * @return
-     *
-     * @see
-     */
-    public String toString() {
-        return this.getClass().getName();
-    }
+		// _registry.put(this.getClass().getName(), this);
+		}
 
-}
+	// ------------------------ CANONICAL METHODS ------------------------
+
+	/**
+	 * Method declaration
+	 *
+	 * @return
+	 * @see
+	 */
+	public String toString()
+		{
+		return this.getClass().getName();
+		}
+	}
 
