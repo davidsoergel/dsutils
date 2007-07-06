@@ -278,6 +278,16 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static int sum(Integer[] a)
+		{
+		int result = 0;
+		for (int i = 0; i < a.length; i++)
+			{
+			result += a[i];
+			}
+		return result;
+		}
+
 	public static double sum(double[] a)
 		{
 		double result = 0;
@@ -288,7 +298,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int sum(Collection<Double> a)
+	public static double sum(Collection<Double> a)
 		{
 		int result = 0;
 		for (double i : a)
