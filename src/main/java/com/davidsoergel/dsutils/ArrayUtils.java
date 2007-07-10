@@ -456,6 +456,13 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static byte[] prefix(byte[] s, int i)
+		{
+		byte[] result = new byte[i];
+		System.arraycopy(s, 0, result, 0, i);
+		return result;
+		}
+
 	public static byte[] suffix(byte[] s, int i)
 		{
 		byte[] result = new byte[s.length - i];
