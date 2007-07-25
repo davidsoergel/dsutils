@@ -463,10 +463,21 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static byte[] suffix(byte[] s, int i)
+	public static byte[] suffix(byte[] s, int startpos)
 		{
-		byte[] result = new byte[s.length - i];
-		System.arraycopy(s, i, result, 0, s.length - i);
+		byte[] result = new byte[s.length - startpos];
+		System.arraycopy(s, startpos, result, 0, s.length - startpos);
+		return result;
+		}
+
+	public static byte[] suffixOfLength(byte[] s, int length)
+		{
+		if (length > s.length)
+			{
+			throw new IndexOutOfBoundsException("Requested suffix is longer than the array");
+			}
+		byte[] result = new byte[length];
+		System.arraycopy(s, s.length - length, result, 0, length);
 		return result;
 		}
 
