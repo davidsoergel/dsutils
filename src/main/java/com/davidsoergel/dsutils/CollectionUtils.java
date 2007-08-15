@@ -44,7 +44,7 @@ import java.util.Set;
  * @author lorax
  * @version 1.0
  */
-public class CollectionUtils
+public class CollectionUtils extends org.apache.commons.collections.CollectionUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
