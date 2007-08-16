@@ -52,8 +52,6 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 	private static Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
 
-	private SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
-
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
@@ -61,6 +59,8 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> intervalSets)
 		{
+		//private
+		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
 		int numberOfConstraints = intervalSets.size();
 		for (Set<U> intervalSet : intervalSets)
 			{
@@ -81,24 +81,29 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 		MutableBasicInterval<T> currentInterval = null;
 		for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
-			openParens += fullLeftRightMap.get(position);
-			if (currentInterval == null)
+			Integer parenDelta = fullLeftRightMap.get(position);
+			if (parenDelta != 0)//alternatively, could remove these entries from the map first
 				{
-				if (openParens == numberOfConstraints)
+				openParens += parenDelta;
+				if (currentInterval == null)
 					{
-					currentInterval = new MutableBasicInterval<T>();
-					currentInterval.setLeft(position);
+					if (openParens == numberOfConstraints)
+						{
+						currentInterval = new MutableBasicInterval<T>();
+						currentInterval.setLeft(position);
+						}
 					}
-				}
-			else
-				{
-				// assert openParens < numberOfConstraints;  // hogwash, each constraint may have multiple intervals
-				currentInterval.setRight(position);
-				if (!currentInterval.isZeroWidth())
+				else
 					{
-					this.add(currentInterval);
+					assert openParens
+							< numberOfConstraints;// hogwash, each constraint may have multiple intervals  // but they shouldn't overlap
+					currentInterval.setRight(position);
+					if (!currentInterval.isZeroWidth())
+						{
+						this.add(currentInterval);
+						}
+					currentInterval = null;
 					}
-				currentInterval = null;
 				}
 			}
 		assert openParens == 0;
