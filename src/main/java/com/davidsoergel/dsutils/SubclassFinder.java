@@ -40,10 +40,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -81,6 +84,14 @@ public class SubclassFinder
 		return find(pckgname, tosubclass, true, false, null);
 		}
 
+	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass)
+		{
+		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
+		Class c = (Class) tosubclass.getRawType();
+		return find(pckgname, c, true, false, null, tosubclass);
+		}
+
+
 	/**
 	 * Display all the classes inheriting or implementing a given class in a given package.
 	 *
@@ -89,6 +100,19 @@ public class SubclassFinder
 	 */
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation)
+		{
+		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null);
+		}
+
+	/**
+	 * Display all the classes inheriting or implementing a given class in a given package.
+	 *
+	 * @param pckgname   the fully qualified name of the package
+	 * @param tosubclass the Class object to inherit from
+	 */
+	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
+	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
+	                                ParameterizedType requiredParameterizedType)
 		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
@@ -130,7 +154,8 @@ public class SubclassFinder
 			{
 			URL url = (URL) e.nextElement();
 			logger.debug("Found resource: " + url);
-			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation));
+			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation,
+			                   requiredParameterizedType));
 			}
 		return result;
 		}
@@ -174,7 +199,8 @@ public class SubclassFinder
 		}
 
 	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
-	                         Class<? extends Annotation> requiredAnnotation)
+	                         Class<? extends Annotation> requiredAnnotation,
+	                         ParameterizedType requiredParameterizedType)
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -218,7 +244,8 @@ public class SubclassFinder
 					try
 						{
 						result.addAll(find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i],
-						                   tosubclass, recurse, includeInterfaces, requiredAnnotation));
+						                   tosubclass, recurse, includeInterfaces, requiredAnnotation,
+						                   requiredParameterizedType));
 						}
 					catch (MalformedURLException e)
 						{
@@ -244,6 +271,11 @@ public class SubclassFinder
 							logger.debug("......YES!");
 							if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
 								{
+								List<Type> types = Arrays.asList(c.getGenericInterfaces());
+								if (requiredParameterizedType == null || types.contains(requiredParameterizedType))
+									{
+									;
+									}
 								result.add(c);//System.out.println(classname);
 								}
 							}

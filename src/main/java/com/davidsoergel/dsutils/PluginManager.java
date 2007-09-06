@@ -36,9 +36,12 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,9 +55,9 @@ public class PluginManager<T>
 
 	private static Logger logger = Logger.getLogger(PluginManager.class);
 
-	private static ThreadLocal<Map<Class, PluginManager>> _managers_tl = new ThreadLocal<Map<Class, PluginManager>>();
+	private static ThreadLocal<Map<Type, PluginManager>> _managers_tl = new ThreadLocal<Map<Type, PluginManager>>();
 
-	private Class theInterface;
+	private Type theInterface;
 	private Set<String> registeredPackages = new HashSet<String>();
 	private HashMap<String, Class> classes = new HashMap<String, Class>();
 	private HashMap<String, T> instances = new HashMap<String, T>();
@@ -66,18 +69,18 @@ public class PluginManager<T>
 	 * Note plugins are registered only within a thread!
 	 */
 
-	public static <T> void registerPackage(String packagename, Class T)
+	public static <T> void registerPackage(String packagename, Type T)
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackage(packagename);
 		}
 
-	public static <T> PluginManager<T> getManagerForInterface(Class T)
+	public static <T> PluginManager<T> getManagerForInterface(Type T)
 		{
-		Map<Class, PluginManager> _managers = _managers_tl.get();
+		Map<Type, PluginManager> _managers = _managers_tl.get();
 		if (_managers == null)
 			{
-			_managers = new HashMap<Class, PluginManager>();
+			_managers = new HashMap<Type, PluginManager>();
 			_managers_tl.set(_managers);
 			}
 		PluginManager<T> result = _managers.get(T);
@@ -89,7 +92,7 @@ public class PluginManager<T>
 		return result;
 		}
 
-	public static <T> T getSingletonByName(Class T, String s) throws PluginException
+	public static <T> T getSingletonByName(Type T, String s) throws PluginException
 		{
 		return (T) getManagerForInterface(T).getSingletonByName(s);
 		}
@@ -99,12 +102,12 @@ public class PluginManager<T>
 		return getManagerForInterface(T).getClassByName(s);
 		}
 
-	public static Set<String> getKeySet(Class T) throws PluginException
+	public static Set<String> getKeySet(Type T) throws PluginException
 		{
 		return getManagerForInterface(T).getKeySet();
 		}
 
-	public static Collection<Class> getPlugins(Class T)
+	public static Collection<Class> getPlugins(Type T)
 		{
 		return getManagerForInterface(T).getValues();
 		}
@@ -121,7 +124,7 @@ public class PluginManager<T>
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public PluginManager(Class T)
+	public PluginManager(Type T)
 		{
 		theInterface = T;
 		}
@@ -147,8 +150,10 @@ public class PluginManager<T>
 			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
 			System.out.println("systemClassLoader: " + systemClassLoader);
 
-			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
-					+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
+			String name =
+					theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString();
+			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org
+					.apache.commons.lang.StringUtils
 					.join(classes.keySet().iterator(), "\n"));
 			}
 		return result;
@@ -195,9 +200,12 @@ public class PluginManager<T>
 				}
 			else
 				{
-				throw new PluginException("Can't find plugin " + s + ".  Available plugins of type "
-						+ theInterface.getSimpleName() + ": \n" + org.apache.commons.lang.StringUtils
-						.join(classes.keySet().iterator(), "\n"));
+				String name = theInterface instanceof Class ? ((Class) theInterface).getSimpleName() :
+						theInterface.toString();
+				throw new PluginException(
+						"Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org.apache.commons
+								.lang.StringUtils
+								.join(classes.keySet().iterator(), "\n"));
 				}
 			}
 		return result;
@@ -208,7 +216,20 @@ public class PluginManager<T>
 		if (!registeredPackages.contains(packagename))
 			{
 			registeredPackages.add(packagename);
-			for (Class c : SubclassFinder.findRecursive(packagename, theInterface))
+			List<Class> found;
+			if (theInterface instanceof Class)
+				{
+				found = SubclassFinder.findRecursive(packagename, (Class) theInterface);
+				}
+			else if (theInterface instanceof ParameterizedType)
+				{
+				found = SubclassFinder.findRecursive(packagename, (ParameterizedType) theInterface);
+				}
+			else
+				{
+				throw new Error("Not a Class or a ParameterizedType: " + theInterface);
+				}
+			for (Class c : found)
 				{
 				classes.put(c.getCanonicalName(), c);
 				//put((String)dm.getMethod("getName").invoke(), dm);
