@@ -271,12 +271,23 @@ public class SubclassFinder
 							logger.debug("......YES!");
 							if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
 								{
-								List<Type> types = Arrays.asList(c.getGenericInterfaces());
-								if (requiredParameterizedType == null || types.contains(requiredParameterizedType))
+								if (requiredParameterizedType == null)
 									{
-									;
+									result.add(c);
 									}
-								result.add(c);//System.out.println(classname);
+								else
+									{
+									List<Type> types = Arrays.asList(c.getGenericInterfaces());
+									for (Type t : types)
+										{
+										logger.error(t);
+										if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
+											{
+											result.add(c);
+											break;
+											}
+										}
+									}
 								}
 							}
 						}
@@ -357,7 +368,24 @@ public class SubclassFinder
 								logger.debug("......YES!");
 								if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
 									{
-									result.add(c);//System.out.println(classname);
+									if (requiredParameterizedType == null)
+										{
+										result.add(c);
+										}
+									else
+										{
+										List<Type> types = Arrays.asList(c.getGenericInterfaces());
+										for (Type t : types)
+											{
+											logger.error(t);
+											if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
+												{
+												result.add(c);
+												break;
+												}
+											}
+										}
+
 									}
 								}
 							}

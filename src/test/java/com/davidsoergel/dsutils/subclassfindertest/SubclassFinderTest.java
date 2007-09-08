@@ -41,6 +41,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -63,4 +64,35 @@ public class SubclassFinderTest extends TestCase
 		assert classes.contains(PluginException.class);
 		assert classes.contains(SubclassFinderTestException.class);
 		}
+
+
+	@Test
+	public void subclassFinderWorksWithGenericInheritance() throws NoSuchFieldException
+		{
+		ParameterizedType t = (ParameterizedType) (this.getClass().getField("testGenericFieldNumber").getGenericType());
+		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t);
+		assert classes.size() == 2;
+		assert classes.contains(TestGenericClassOne.class);
+		assert classes.contains(TestGenericClassTwo.class);
+		}
+
+	@Test
+	public void subclassFinderWorksWithSpecificGenerics() throws NoSuchFieldException
+		{
+		ParameterizedType t =
+				(ParameterizedType) (this.getClass().getField("testGenericFieldInteger").getGenericType());
+		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t);
+		assert classes.size() == 1;
+		assert classes.contains(TestGenericClassOne.class);
+
+		t = (ParameterizedType) (this.getClass().getField("testGenericFieldDouble").getGenericType());
+		classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t);
+		assert classes.size() == 1;
+		assert classes.contains(TestGenericClassTwo.class);
+		}
+
+
+	public TestGenericInterface<Number> testGenericFieldNumber;
+	public TestGenericInterface<Integer> testGenericFieldInteger;
+	public TestGenericInterface<Double> testGenericFieldDouble;
 	}
