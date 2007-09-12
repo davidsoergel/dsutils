@@ -31,8 +31,8 @@ import java.lang.reflect.Type;
 class ParamTypeAssignabilityAlgorithm
 	{
 	/**
-	 * Class responsible for telling whether two groups of arguments, used on two different instances of
-	 * ParameterizedType, can be considered the same group of arguments.
+	 * Class responsible for telling whether two groups of arguments, used on two different instances of ParameterizedType,
+	 * can be considered the same group of arguments.
 	 *
 	 * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
 	 * @param <T> this is a token that can be used to store information useful for the implementor.
@@ -40,12 +40,12 @@ class ParamTypeAssignabilityAlgorithm
 	static abstract class EqualityChecker<C, T>
 		{
 		/**
-		 * Indicates whether both argument list can be considered the same. This method is a facility that will invoke
-		 * {@link #isSame(Type,Type,Object)} for each argument of the lists. Both lists have the same length.
+		 * Indicates whether both argument list can be considered the same. This method is a facility that will invoke {@link
+		 * #isSame(Type,Type,Object,Object)} for each argument of the lists. Both lists have the same length.
 		 *
 		 * @param arguments     list of arguments.
-		 * @param fromArguments list of arguments that will be assigned to <code> arguments</code> only if this method
-		 *                      returns <code>true </code>
+		 * @param fromArguments list of arguments that will be assigned to <code> arguments</code> only if this method returns
+		 *                      <code>true </code>
 		 * @param token         a token that may be needed by implementor as auxiliar
 		 * @return <code>true</code> only if values of <code> fromArguments</code> list can be assigned to a list of
 		 *         <code>arguments</code> type.
@@ -67,13 +67,13 @@ class ParamTypeAssignabilityAlgorithm
 		 * inference process, in which case only a variable type referenced by <code>argument</code> can have its value
 		 * infered according to the process.
 		 *
-		 * @param token         a token that may be needed by implementor as auxiliar
-		 * @param arguments     an argument type
-		 * @param fromArguments argument type that will have its value assigned to <code>argument</code> only if this
-		 *                      method returns <code>true</code>
-		 * @return <code>true</code> only if a parameterized type with <code>argument</code> as one of its parameter
-		 *         values can be assigned from the same parameterized type with <code>fromArgument</code> as the
-		 *         equivalent parameter value
+		 * @param token        a token that may be needed by implementor as auxiliar
+		 * @param argument     an argument type
+		 * @param fromArgument argument type that will have its value assigned to <code>argument</code> only if this method
+		 *                     returns <code>true</code>
+		 * @return <code>true</code> only if a parameterized type with <code>argument</code> as one of its parameter values
+		 *         can be assigned from the same parameterized type with <code>fromArgument</code> as the equivalent parameter
+		 *         value
 		 */
 		abstract boolean isSame(Type argument, Type fromArgument, C caller, T token);
 		}

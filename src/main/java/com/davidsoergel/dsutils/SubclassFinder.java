@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -79,12 +80,12 @@ public class SubclassFinder
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static List<Class> findRecursive(String pckgname, Class tosubclass)
+	public static List<Class> findRecursive(String pckgname, Class tosubclass) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, null);
 		}
 
-	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass)
+	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass) throws IOException
 		{
 		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
 		Class c = (Class) tosubclass.getRawType();
@@ -100,6 +101,7 @@ public class SubclassFinder
 	 */
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation)
+			throws IOException
 		{
 		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null);
 		}
@@ -112,7 +114,7 @@ public class SubclassFinder
 	 */
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
-	                                ParameterizedType requiredParameterizedType)
+	                                ParameterizedType requiredParameterizedType) throws IOException
 		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
@@ -161,46 +163,48 @@ public class SubclassFinder
 		}
 
 	public static List<Class> findRecursive(String pckgname, Class tosubclass,
-	                                        Class<? extends Annotation> requiredAnnotation)
+	                                        Class<? extends Annotation> requiredAnnotation) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, requiredAnnotation);
 		}
 
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass)
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
 		{
 		return find(pckgname, tosubclass, false, true, null);
 		}
 
 	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
-	                                                  Class<? extends Annotation> requiredAnnotation)
+	                                                  Class<? extends Annotation> requiredAnnotation) throws IOException
 		{
 		return find(pckgname, tosubclass, false, true, requiredAnnotation);
 		}
 
-	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass)
+	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
 		{
 		return find(pckgname, tosubclass, true, true, null);
 		}
 
 	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
 	                                                           Class<? extends Annotation> requiredAnnotation)
+			throws IOException
 		{
 		return find(pckgname, tosubclass, true, true, requiredAnnotation);
 		}
 
-	public static List<Class> find(String pckgname, Class tosubclass)
+	public static List<Class> find(String pckgname, Class tosubclass) throws IOException
 		{
 		return find(pckgname, tosubclass, false, false, null);
 		}
 
 	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation)
+			throws IOException
 		{
 		return find(pckgname, tosubclass, false, false, requiredAnnotation);
 		}
 
 	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
 	                         Class<? extends Annotation> requiredAnnotation,
-	                         ParameterizedType requiredParameterizedType)
+	                         ParameterizedType requiredParameterizedType) throws IOException
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -227,11 +231,17 @@ public class SubclassFinder
 
 		// New code
 		// ======
-		if (directory.exists())
+		if (directory.exists() && directory.isDirectory())
 			{
+			logger.debug("Directory to check: " + directory);
 			// Get the list of the files contained in the package
 			String[] files = directory.list();
-			logger.debug("Directory to check: " + directory);
+			if (files == null)
+				{
+				File test = new File("/bin/sh");
+				new FileInputStream("/bin/sh");
+				throw new IOException("Could not read directory: " + url);
+				}
 			logger.debug("Files to check: " + files.length);
 			for (int i = 0; i < files.length; i++)
 				{

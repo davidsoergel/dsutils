@@ -496,4 +496,24 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		result[s.length] = b;
 		return result;
 		}
+
+	public static double mean(double[] counts)
+		{
+		double sum = 0;
+		for (int i = 0; i < counts.length; i++)
+			{
+			sum += counts[i];
+			}
+		return sum / counts.length;
+		}
+
+	public static double stddev(double[] counts)
+		{
+		double sumsq = 0;
+		for (int i = 0; i < counts.length; i++)
+			{
+			sumsq += counts[i] * counts[i];
+			}
+		return Math.sqrt(sumsq / counts.length);
+		}
 	}

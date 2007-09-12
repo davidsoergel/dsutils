@@ -36,6 +36,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -69,7 +70,7 @@ public class PluginManager<T>
 	 * Note plugins are registered only within a thread!
 	 */
 
-	public static <T> void registerPackage(String packagename, Type T)
+	public static <T> void registerPackage(String packagename, Type T) throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackage(packagename);
@@ -211,7 +212,7 @@ public class PluginManager<T>
 		return result;
 		}
 
-	public void registerPackage(String packagename)
+	public void registerPackage(String packagename) throws IOException
 		{
 		if (!registeredPackages.contains(packagename))
 			{

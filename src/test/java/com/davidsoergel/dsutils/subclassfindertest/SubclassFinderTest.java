@@ -41,6 +41,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class SubclassFinderTest extends TestCase
 	// -------------------------- OTHER METHODS --------------------------
 
 	@Test
-	public void subclassFinderRecursesFilesystemPackages()
+	public void subclassFinderRecursesFilesystemPackages() throws IOException
 		{
 		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", ChainedException.class);
 		assert classes.contains(PluginException.class);
@@ -67,7 +68,7 @@ public class SubclassFinderTest extends TestCase
 
 
 	@Test
-	public void subclassFinderWorksWithGenericInheritance() throws NoSuchFieldException
+	public void subclassFinderWorksWithGenericInheritance() throws NoSuchFieldException, IOException
 		{
 		ParameterizedType t = (ParameterizedType) (this.getClass().getField("testGenericFieldNumber").getGenericType());
 		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t);
@@ -77,7 +78,7 @@ public class SubclassFinderTest extends TestCase
 		}
 
 	@Test
-	public void subclassFinderWorksWithSpecificGenerics() throws NoSuchFieldException
+	public void subclassFinderWorksWithSpecificGenerics() throws NoSuchFieldException, IOException
 		{
 		ParameterizedType t =
 				(ParameterizedType) (this.getClass().getField("testGenericFieldInteger").getGenericType());
