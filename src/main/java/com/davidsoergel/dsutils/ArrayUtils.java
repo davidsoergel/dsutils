@@ -371,6 +371,40 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return posmax;
 		}
 
+
+	public static int min(int[] x)
+		{
+		int result = Integer.MAX_VALUE;
+		for (int col = 0; col < x.length; col++)
+			{
+			result = Math.min(result, x[col]);
+			}
+		return result;
+		}
+
+	public static double min(double[] x)
+		{
+		double result = Double.MAX_VALUE;
+		for (int col = 0; col < x.length; col++)
+			{
+			result = Math.min(result, x[col]);
+			}
+		return result;
+		}
+
+	public static int argmin(double[] x)
+		{
+		int posmax = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (x[col] < x[posmax])
+				{
+				posmax = col;
+				}
+			}
+		return posmax;
+		}
+
 	/**
 	 * @param x
 	 * @param value

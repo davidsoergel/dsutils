@@ -37,6 +37,7 @@ package com.davidsoergel.dsutils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -103,5 +104,15 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 		Arrays.sort(aa);
 		Arrays.sort(bb);
 		return ArrayUtils.equalWithinFPError(aa, bb);
+		}
+
+
+	public static void retainRandom(LinkedList list, int numElements)
+		{
+		//inefficient...
+		while (list.size() > numElements)
+			{
+			list.remove(MersenneTwisterFast.randomInt(list.size()));
+			}
 		}
 	}
