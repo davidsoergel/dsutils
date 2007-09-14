@@ -109,7 +109,7 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 
 	public static void retainRandom(LinkedList list, int numElements)
 		{
-		//inefficient...
+		//inefficient...?
 		while (list.size() > numElements)
 			{
 			list.remove(MersenneTwisterFast.randomInt(list.size()));
