@@ -37,8 +37,8 @@ package com.davidsoergel.dsutils;
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
  * @author lorax
  * @version 1.0
  */
-public class StringUtils
+public class StringUtils extends org.apache.commons.lang.StringUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
@@ -200,29 +200,34 @@ public class StringUtils
 		}
 
 	/**
-	 * Join a Set of Strings together into one string, separating the tokens with a delimiter. The delimiting string will
-	 * be placed only between tokens, and will not be added before the first or after the last token.
+	 * Join a Collection of Strings together into one string, separating the tokens with a delimiter. The delimiting string
+	 * will be placed only between tokens, and will not be added before the first or after the last token.
 	 *
 	 * @param s     The Set of Strings to be joined.
 	 * @param delim A string to insert between tokens.
 	 * @return The joined string.
 	 * @deprecated use org.apache.commons.lang.StringUtils.join()
 	 */
-	public static String joinStringSet(Set s, String delim)
+	/*	public static String join(Collection s, String delim)
+	   {
+	   StringBuffer sb = new StringBuffer();
+
+	   for (Iterator i = s.iterator(); i.hasNext();)
+		   {
+		   sb.append(i.next());
+
+		   if (i.hasNext())
+			   {
+			   sb.append(delim);
+			   }
+		   }
+
+	   return sb.toString();
+	   }*/
+	public static String join(Collection s, String delim)
 		{
-		StringBuffer sb = new StringBuffer();
+		return join(s.iterator(), delim);
 
-		for (Iterator i = s.iterator(); i.hasNext();)
-			{
-			sb.append(i.next());
-
-			if (i.hasNext())
-				{
-				sb.append(delim);
-				}
-			}
-
-		return sb.toString();
 		}
 
 	/**
@@ -355,115 +360,115 @@ public class StringUtils
 				 case '"':
 					 sb.append("&quot;");
 					 break;
-				 case 'à':
+				 case '?':
 					 sb.append("&agrave;");
 					 break;
-				 case 'À':
+				 case '?':
 					 sb.append("&Agrave;");
 					 break;
-				 case 'â':
+				 case '?':
 					 sb.append("&acirc;");
 					 break;
-				 case 'Â':
+				 case '?':
 					 sb.append("&Acirc;");
 					 break;
-				 case 'ä':
+				 case '?':
 					 sb.append("&auml;");
 					 break;
-				 case 'Ä':
+				 case '?':
 					 sb.append("&Auml;");
 					 break;
-				 case 'å':
+				 case '?':
 					 sb.append("&aring;");
 					 break;
-				 case 'Å':
+				 case '?':
 					 sb.append("&Aring;");
 					 break;
-				 case 'æ':
+				 case '?':
 					 sb.append("&aelig;");
 					 break;
-				 case 'Æ':
+				 case '?':
 					 sb.append("&AElig;");
 					 break;
-				 case 'ç':
+				 case '?':
 					 sb.append("&ccedil;");
 					 break;
-				 case 'Ç':
+				 case '?':
 					 sb.append("&Ccedil;");
 					 break;
-				 case 'é':
+				 case '?':
 					 sb.append("&eacute;");
 					 break;
-				 case 'É':
+				 case '?':
 					 sb.append("&Eacute;");
 					 break;
-				 case 'è':
+				 case '?':
 					 sb.append("&egrave;");
 					 break;
-				 case 'È':
+				 case '?':
 					 sb.append("&Egrave;");
 					 break;
-				 case 'ê':
+				 case '?':
 					 sb.append("&ecirc;");
 					 break;
-				 case 'Ê':
+				 case '?':
 					 sb.append("&Ecirc;");
 					 break;
-				 case 'ë':
+				 case '?':
 					 sb.append("&euml;");
 					 break;
-				 case 'Ë':
+				 case '?':
 					 sb.append("&Euml;");
 					 break;
-				 case 'ï':
+				 case '?':
 					 sb.append("&iuml;");
 					 break;
-				 case 'Ï':
+				 case '?':
 					 sb.append("&Iuml;");
 					 break;
-				 case 'ô':
+				 case '?':
 					 sb.append("&ocirc;");
 					 break;
-				 case 'Ô':
+				 case '?':
 					 sb.append("&Ocirc;");
 					 break;
-				 case 'ö':
+				 case '?':
 					 sb.append("&ouml;");
 					 break;
-				 case 'Ö':
+				 case '?':
 					 sb.append("&Ouml;");
 					 break;
-				 case 'ø':
+				 case '?':
 					 sb.append("&oslash;");
 					 break;
-				 case 'Ø':
+				 case '?':
 					 sb.append("&Oslash;");
 					 break;
-				 case 'ß':
+				 case '?':
 					 sb.append("&szlig;");
 					 break;
-				 case 'ù':
+				 case '?':
 					 sb.append("&ugrave;");
 					 break;
-				 case 'Ù':
+				 case '?':
 					 sb.append("&Ugrave;");
 					 break;
-				 case 'û':
+				 case '?':
 					 sb.append("&ucirc;");
 					 break;
-				 case 'Û':
+				 case '?':
 					 sb.append("&Ucirc;");
 					 break;
-				 case 'ü':
+				 case '?':
 					 sb.append("&uuml;");
 					 break;
-				 case 'Ü':
+				 case '?':
 					 sb.append("&Uuml;");
 					 break;
-				 case '®':
+				 case '?':
 					 sb.append("&reg;");
 					 break;
-				 case '©':
+				 case '?':
 					 sb.append("&copy;");
 					 break;
 					 //   case 'EUR': sb.append("&euro;"); break;
