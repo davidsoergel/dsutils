@@ -550,4 +550,6 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return Math.sqrt(sumsq / counts.length);
 		}
+
+
 	}

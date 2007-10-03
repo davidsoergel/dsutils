@@ -205,8 +205,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 	 *
 	 * @param s     The Set of Strings to be joined.
 	 * @param delim A string to insert between tokens.
-	 * @return The joined string.
-	 * @deprecated use org.apache.commons.lang.StringUtils.join()
+	 * @return The joined string. // * @deprecated use org.apache.commons.lang.StringUtils.join()
 	 */
 	/*	public static String join(Collection s, String delim)
 	   {
@@ -229,6 +228,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 		return join(s.iterator(), delim);
 
 		}
+
 
 	/**
 	 * Return the name of the month associated with the given int.  I think these are 0-based, but it's easiest just to use
