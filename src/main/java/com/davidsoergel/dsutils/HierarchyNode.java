@@ -49,7 +49,7 @@ public interface HierarchyNode<T>// was abstract class
 	//private Collection<HierarchyNode<T>> children;
 */
 
-	public Collection<HierarchyNode<T>> getChildren();
+	public Collection<? extends HierarchyNode<? extends T>> getChildren();
 
 	/*		{
 	   this.parent = parent;
@@ -62,13 +62,13 @@ public interface HierarchyNode<T>// was abstract class
 	   getChildren().add(child);
 	   }*/
 
-	public HierarchyNode<T> getParent();
+	public HierarchyNode<? extends T> getParent();
 
 	/*		{
 	   this.contents = contents;
 	   }*/
 
-	public HierarchyNode<T> newChild();
+	public HierarchyNode<? extends T> newChild();
 
 	/*		{
 	   return contents;
@@ -80,7 +80,7 @@ public interface HierarchyNode<T>// was abstract class
 	   return parent;
 	   }*/
 
-	public void setParent(HierarchyNode<T> parent);
+	public void setParent(HierarchyNode<? extends T> parent);
 
 	//	public void beginTaxn();
 

@@ -51,7 +51,7 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	private List<HierarchyNode<Map<String, Object>>> children = new ArrayList<HierarchyNode<Map<String, Object>>>();
 
-	private HierarchyNode<Map<String, Object>> parent;
+	private HierarchyNode<? extends Map<String, Object>> parent;
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
@@ -71,12 +71,12 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 		this.contents = contents;
 		}
 
-	public HierarchyNode<Map<String, Object>> getParent()
+	public HierarchyNode<? extends Map<String, Object>> getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<Map<String, Object>> parent)
+	public void setParent(HierarchyNode<? extends Map<String, Object>> parent)
 		{
 		this.parent = parent;
 		}

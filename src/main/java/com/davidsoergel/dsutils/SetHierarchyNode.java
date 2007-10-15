@@ -47,7 +47,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 
 	private Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
 
-	private HierarchyNode<T> parent;
+	private HierarchyNode<? extends T> parent;
 	private T contents;
 
 
@@ -68,12 +68,12 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 		this.contents = contents;
 		}
 
-	public HierarchyNode<T> getParent()
+	public HierarchyNode<? extends T> getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<T> parent)
+	public void setParent(HierarchyNode<? extends T> parent)
 		{
 		this.parent = parent;
 		}

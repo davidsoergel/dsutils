@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -32,60 +30,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.range;
 
-import java.util.Collection;
+/* $Id$ */
 
 /**
- * Created by IntelliJ IDEA. User: soergel Date: Nov 20, 2006 Time: 2:48:55 PM To change this template use File |
- * Settings | File Templates.
+ * Marker interface for classes that describe a range of values in one way or another.  "Range" is meant in a very
+ * general sense here, including explicit Sets, intervals, multi-intervals, etc.
+ *
+ * @Author David Soergel
+ * @Version 1.0
  */
-public abstract class AbstractHierarchyNode<T> implements HierarchyNode<T>
+public interface Range<T>
 	{
-	// ------------------------------ FIELDS ------------------------------
-
-	private HierarchyNode<? extends T> parent;
-	private T contents;
-
-
-	// --------------------- GETTER / SETTER METHODS ---------------------
-
-	public T getContents()
-		{
-		return contents;
-		}
-
-	public void setContents(T contents)
-		{
-		this.contents = contents;
-		}
-
-	public HierarchyNode<? extends T> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchyNode<? extends T> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	//private Collection<HierarchyNode<T>> children;
-
-	public abstract Collection<HierarchyNode<T>> getChildren();
-
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	public void addChild(HierarchyNode<T> child)
-		{
-		getChildren().add(child);
-		}
-
-	public abstract HierarchyNode<T> newChild(T contents);
+	//Set<T> getValues();
 	}
