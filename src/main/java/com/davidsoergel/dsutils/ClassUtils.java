@@ -56,7 +56,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 
 	public static Constructor findConstructor(Class theClass, Class[] paramClasses) throws NoSuchMethodException
 		{
-		// copied from http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4651775
+		// based on a comment at http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4651775
 
 		Constructor constr = null;
 		// search for the required constructor
@@ -64,15 +64,20 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 		for (int i = 0; constr == null && i < constrs.length; i++)
 			{
 			Class[] paramTypes = constrs[i].getParameterTypes();
+
+
 			if (paramTypes.length == paramClasses.length)
 				{
 				boolean candidate = true;
 				for (int j = 0; j < paramTypes.length; j++)
 					{
-					// either we have a parameter set and we can successfully check
-					// or we have no parameter set, but this is only allowed for primitives
-					if ((paramClasses[j] != null && !paramTypes[j].isAssignableFrom(paramClasses[j])) || (
-							paramClasses[j] == null && paramTypes[j].isPrimitive()))
+					// ClassUtils.isAssignable deals with autounboxing and nulls, but only in one direction
+					// this should take care of the "widening" version, i.e. autoboxing
+					if (paramTypes[j].isPrimitive())
+						{
+						paramTypes[j] = ClassUtils.primitiveToWrapper(paramTypes[j]);
+						}
+					if (!ClassUtils.isAssignable(paramClasses[j], paramTypes[j]))
 						{
 						candidate = false;
 						}
@@ -84,6 +89,6 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 				}
 			}
 
-		throw new NoSuchMethodException("" + theClass + " (" + paramClasses + ")");
+		throw new NoSuchMethodException("" + theClass + " (" + StringUtils.join(paramClasses, ", ") + ")");
 		}
 	}

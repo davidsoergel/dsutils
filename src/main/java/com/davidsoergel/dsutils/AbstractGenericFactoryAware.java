@@ -32,6 +32,8 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 /* $Id$ */
 
 /**
@@ -43,6 +45,7 @@ public abstract class AbstractGenericFactoryAware implements GenericFactoryAware
 	GenericFactory factory;
 
 
+	@NotNull
 	public GenericFactory getFactory()
 		{
 		return factory;

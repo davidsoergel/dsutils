@@ -42,6 +42,8 @@ public interface GenericFactory<T>
 	{
 	//public <T> T create(String context, Class<T> theClass, Object... constructorArguments);
 
+	public Class getCreatesClass();
+
 	public T create(Object... constructorArguments) throws GenericFactoryException;
 
 	}
