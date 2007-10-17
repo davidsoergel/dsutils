@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +52,38 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 			result.add(o.getClass());
 			}
 		return result.toArray(new Class[]{});
+		}
+
+	public static Constructor findConstructor(Class theClass, Class[] paramClasses) throws NoSuchMethodException
+		{
+		// copied from http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4651775
+
+		Constructor constr = null;
+		// search for the required constructor
+		Constructor[] constrs = theClass.getConstructors();
+		for (int i = 0; constr == null && i < constrs.length; i++)
+			{
+			Class[] paramTypes = constrs[i].getParameterTypes();
+			if (paramTypes.length == paramClasses.length)
+				{
+				boolean candidate = true;
+				for (int j = 0; j < paramTypes.length; j++)
+					{
+					// either we have a parameter set and we can successfully check
+					// or we have no parameter set, but this is only allowed for primitives
+					if ((paramClasses[j] != null && !paramTypes[j].isAssignableFrom(paramClasses[j])) || (
+							paramClasses[j] == null && paramTypes[j].isPrimitive()))
+						{
+						candidate = false;
+						}
+					}
+				if (candidate)
+					{
+					return constrs[i];
+					}
+				}
+			}
+
+		throw new NoSuchMethodException("" + theClass + " (" + paramClasses + ")");
 		}
 	}

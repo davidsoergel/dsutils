@@ -114,7 +114,7 @@ public class UrlContentCacheTest
 		}
 
 	@BeforeTest
-	public void setup() throws UrlContentCacheException
+	public void setUp() throws UrlContentCacheException
 		{
 		cache = new UrlContentCacheImpl("/tmp/test");
 		}
