@@ -37,7 +37,6 @@ package com.davidsoergel.dsutils.subclassfindertest;
 import com.davidsoergel.dsutils.ChainedException;
 import com.davidsoergel.dsutils.PluginException;
 import com.davidsoergel.dsutils.SubclassFinder;
-import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
@@ -49,7 +48,7 @@ import java.util.List;
  * @author lorax
  * @version 1.0
  */
-public class SubclassFinderTest extends TestCase
+public class SubclassFinderTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 

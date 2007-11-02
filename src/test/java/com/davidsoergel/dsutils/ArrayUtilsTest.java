@@ -34,7 +34,6 @@
 
 package com.davidsoergel.dsutils;
 
-import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -45,7 +44,7 @@ import java.util.Arrays;
  * @author lorax
  * @version 1.0
  */
-public class ArrayUtilsTest extends TestCase
+public class ArrayUtilsTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
