@@ -45,7 +45,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
+	protected Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
 
 	private HierarchyNode<? extends T> parent;
 	private T contents;
