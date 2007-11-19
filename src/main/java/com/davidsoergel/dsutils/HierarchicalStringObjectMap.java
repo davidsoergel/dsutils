@@ -39,8 +39,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by IntelliJ IDEA. User: lorax Date: May 7, 2007 Time: 1:18:24 AM To change this template use File | Settings
- * | File Templates.
+ * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
+ * interface and simply delegates to the contained Map.   The type of Collection that holds the children is up to the
+ * implementation, so they may or may not be ordered.
  */
 public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<String, Object>>, Map<String, Object>
 	{

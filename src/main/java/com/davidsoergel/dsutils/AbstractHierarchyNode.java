@@ -37,8 +37,9 @@ package com.davidsoergel.dsutils;
 import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA. User: soergel Date: Nov 20, 2006 Time: 2:48:55 PM To change this template use File |
- * Settings | File Templates.
+ * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
+ * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
+ * children.
  */
 public abstract class AbstractHierarchyNode<T> implements HierarchyNode<T>
 	{

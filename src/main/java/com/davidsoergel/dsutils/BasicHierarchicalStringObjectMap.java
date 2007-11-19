@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by IntelliJ IDEA. User: soergel Date: Jun 7, 2007 Time: 3:41:24 PM To change this template use File |
- * Settings | File Templates.
+ * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
+ * interface and simply delegates to the contained Map.  The children are stored in a List and are thus ordered.
  */
 public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMap
 	{

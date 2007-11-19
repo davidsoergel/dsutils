@@ -38,8 +38,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by IntelliJ IDEA. User: lorax Date: Sep 13, 2006 Time: 1:36:12 PM To change this template use File | Settings
- * | File Templates.
+ * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
+ * stored in a Set and are thus unordered.
  */
 public class SetHierarchyNode<T> implements HierarchyNode<T>
 	{

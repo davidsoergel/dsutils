@@ -37,8 +37,11 @@ package com.davidsoergel.dsutils;
 import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA. User: lorax Date: Sep 13, 2006 Time: 1:34:37 PM To change this template use File | Settings
- * | File Templates.
+ * Represents a simple hierarchy, where a value of the given generic type is attached at each node.  A node may have any
+ * number of children, which are also HierarchyNodes of the same generic type.  The type of Collection that holds the
+ * children is up to the implementation, so they may or may not be ordered.
+ *
+ * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
 public interface HierarchyNode<T>// was abstract class
 	{
