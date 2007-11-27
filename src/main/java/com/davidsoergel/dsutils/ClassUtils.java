@@ -49,7 +49,14 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 		List<Class> result = new ArrayList<Class>();
 		for (Object o : objects)
 			{
+			/*if (o == null)
+				{
+				result.add(Object.class);
+				}
+			else
+				{*/
 			result.add(o.getClass());
+			//}
 			}
 		return result.toArray(new Class[]{});
 		}
