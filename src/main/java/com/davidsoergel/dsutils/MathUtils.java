@@ -80,6 +80,7 @@ public class MathUtils
 	// need to know which is bigger, exp(x) or exp(y)+exp(z)
 
 	static double MAX_EXPONENT = Math.log(Double.MAX_VALUE);
+	static double LOG_TWO_PI = Math.log(2.0 * Math.PI);
 
 	private static double[][] logTable;
 
@@ -148,7 +149,8 @@ public class MathUtils
 	public static double stirlingLogFactorial(double d)
 		{
 		// double d = n;// just to be sure
-		return ((d * approximateLog(d)) - d);
+		// use the real log here, not the approximate one
+		return ((d + 0.5) * Math.log(d)) - d + (0.5 * LOG_TWO_PI);
 		}
 
 	public static double approximateLog(double x)
@@ -301,7 +303,15 @@ public class MathUtils
 					  }
 					  */
 
-		long[] u = {1, 0, x}, v = {0, 1, y}, t = new long[3];
+		long[] u = {
+				1,
+				0,
+				x
+		}, v = {
+				0,
+				1,
+				y
+		}, t = new long[3];
 		while (v[2] != 0)
 			{
 			long q = u[2] / v[2];
@@ -332,9 +342,9 @@ public class MathUtils
 		}
 
 	/**
-	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c with the constraints that a and c must
-	 * be positive. To achieve this, we first apply the standard GCD algorithm, and then adjust as needed by replacing a
-	 * with (a+ny) and b with (b-nx), since (a+ny)x + (b-nx)y = c
+	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c with the constraints that a and c must be
+	 * positive. To achieve this, we first apply the standard GCD algorithm, and then adjust as needed by replacing a with
+	 * (a+ny) and b with (b-nx), since (a+ny)x + (b-nx)y = c
 	 *
 	 * @param x
 	 * @param y
