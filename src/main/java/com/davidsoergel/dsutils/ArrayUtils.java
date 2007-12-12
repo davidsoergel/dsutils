@@ -490,6 +490,13 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	/**
+	 * returns a new byte[] containing the first i characters of s.
+	 *
+	 * @param s
+	 * @param i
+	 * @return
+	 */
 	public static byte[] prefix(byte[] s, int i)
 		{
 		byte[] result = new byte[i];
@@ -497,6 +504,14 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	/**
+	 * returns a new byte[] containing all characters of s starting from startPos
+	 *
+	 * @param s
+	 * @param startPos
+	 * @return
+	 * @see #suffixOfLength
+	 */
 	public static byte[] suffix(byte[] s, int startpos)
 		{
 		byte[] result = new byte[s.length - startpos];
