@@ -17,29 +17,29 @@ public class CircularBitField
 
 	public void set(int pos, boolean val)
 		{
-		buf.set(start + pos % size, val);
+		buf.set((start + pos + size) % size, val);
 		}
 
 	public boolean get(int pos)
 		{
-		return buf.get(start + pos % size);
+		return buf.get((start + pos + size) % size);
 		}
 
 	public boolean getLast()
 		{
-		return buf.get(start - 1 % size);
+		return buf.get((start - 1 + size) % size);
 		}
 
 	public void retain(BitSet mask)
 		{
-		assert mask.length() == size;
+		//assert mask.length() == size;
 
 		//assume the buffer is sparse; operate only on the true bits
 		for (int i = buf.nextSetBit(0); i >= 0; i = buf.nextSetBit(i + 1))
 			{
 			// i is the index in the underlying buffer.
 
-			int pos = (i - start) % size;// the logical position
+			int pos = (i - start + size) % size;// the logical position
 			if (!mask.get(pos))
 				{
 				buf.set(i, false);
@@ -52,7 +52,7 @@ public class CircularBitField
 	 */
 	public void shift(int steps)
 		{
-		start = (start - steps) % size;
+		start = (start - steps + size) % size;
 		}
 
 	public void clear()
