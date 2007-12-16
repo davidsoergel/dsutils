@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -313,15 +313,15 @@ public class LongRational extends Number implements Comparable
 		return (float) doubleValue();
 		}
 
-	public int intValue()
-		{
-		return (int) doubleValue();
-		}
-
 	public double doubleValue()
 		{
 		return (double) numerator
 				/ (double) denominator;//To change body of implemented methods use File | Settings | File Templates.
+		}
+
+	public int intValue()
+		{
+		return (int) doubleValue();
 		}
 
 	public long longValue()

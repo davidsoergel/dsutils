@@ -40,10 +40,11 @@ package com.davidsoergel.dsutils;
  */
 public interface GenericFactory<T>
 	{
-	//public <T> T create(String context, Class<T> theClass, Object... constructorArguments);
-
-	public Class getCreatesClass();
+	// -------------------------- OTHER METHODS --------------------------
 
 	public T create(Object... constructorArguments) throws GenericFactoryException;
 
+	//public <T> T create(String context, Class<T> theClass, Object... constructorArguments);
+
+	public Class getCreatesClass();
 	}

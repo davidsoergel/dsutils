@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -85,14 +85,6 @@ public class SubclassFinder
 		return find(pckgname, tosubclass, true, false, null);
 		}
 
-	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass) throws IOException
-		{
-		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
-		Class c = (Class) tosubclass.getRawType();
-		return find(pckgname, c, true, false, null, tosubclass);
-		}
-
-
 	/**
 	 * Display all the classes inheriting or implementing a given class in a given package.
 	 *
@@ -104,6 +96,13 @@ public class SubclassFinder
 			throws IOException
 		{
 		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null);
+		}
+
+	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass) throws IOException
+		{
+		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
+		Class c = (Class) tosubclass.getRawType();
+		return find(pckgname, c, true, false, null, tosubclass);
 		}
 
 	/**
@@ -166,29 +165,6 @@ public class SubclassFinder
 	                                        Class<? extends Annotation> requiredAnnotation) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, requiredAnnotation);
-		}
-
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
-		{
-		return find(pckgname, tosubclass, false, true, null);
-		}
-
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
-	                                                  Class<? extends Annotation> requiredAnnotation) throws IOException
-		{
-		return find(pckgname, tosubclass, false, true, requiredAnnotation);
-		}
-
-	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
-		{
-		return find(pckgname, tosubclass, true, true, null);
-		}
-
-	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
-	                                                           Class<? extends Annotation> requiredAnnotation)
-			throws IOException
-		{
-		return find(pckgname, tosubclass, true, true, requiredAnnotation);
 		}
 
 	public static List<Class> find(String pckgname, Class tosubclass) throws IOException
@@ -395,7 +371,6 @@ public class SubclassFinder
 												}
 											}
 										}
-
 									}
 								}
 							}
@@ -428,5 +403,28 @@ public class SubclassFinder
 				}
 			}
 		return result;
+		}
+
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
+		{
+		return find(pckgname, tosubclass, false, true, null);
+		}
+
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
+	                                                  Class<? extends Annotation> requiredAnnotation) throws IOException
+		{
+		return find(pckgname, tosubclass, false, true, requiredAnnotation);
+		}
+
+	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
+		{
+		return find(pckgname, tosubclass, true, true, null);
+		}
+
+	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
+	                                                           Class<? extends Annotation> requiredAnnotation)
+			throws IOException
+		{
+		return find(pckgname, tosubclass, true, true, requiredAnnotation);
 		}
 	}// RTSI

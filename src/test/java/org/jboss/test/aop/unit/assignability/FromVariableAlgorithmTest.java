@@ -1,23 +1,33 @@
 /*
- * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright (c) 2001-2007 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * david@davidsoergel.com
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * All rights reserved.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.jboss.test.aop.unit.assignability;
 
@@ -34,21 +44,18 @@ import java.util.List;
  */
 public class FromVariableAlgorithmTest extends TestCase
 	{
+	// ------------------------------ FIELDS ------------------------------
+
+	private static Class[] NO_ARGS = new Class[0];
 	AssignabilityAlgorithm algorithm;
 	VariableHierarchy hierarchy;
-	private static Class[] NO_ARGS = new Class[0];
 
-	public void setUp()
-		{
-		this.algorithm = AssignabilityAlgorithm.FROM_VARIABLE;
-		hierarchy = new VariableHierarchy();
-		}
 
-	private boolean runAlgorithm(int callerNumber, int calledNumber) throws Exception
+	// -------------------------- OTHER METHODS --------------------------
+
+	<A extends String> Collection<A> called4()
 		{
-		Method caller = this.getClass().getDeclaredMethod("caller" + callerNumber, NO_ARGS);
-		Method called = this.getClass().getDeclaredMethod("called" + calledNumber, NO_ARGS);
-		return algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy);
+		return null;
 		}
 
 	// Scenario 1
@@ -63,9 +70,19 @@ public class FromVariableAlgorithmTest extends TestCase
 		return null;
 		}
 
-	public void test1() throws Exception
+	// Scenario 10
+
+	Collection<Runnable> caller10(Collection<Runnable> arg)
 		{
-		assertTrue(runAlgorithm(1, 1));
+		return called8(arg);
+		}
+
+	// Scenario 11
+
+	Collection<? extends List> caller11(Collection<Runnable> arg)
+		{
+		//return called8(arg);
+		return null;
 		}
 
 	// Scenario 2
@@ -80,22 +97,12 @@ public class FromVariableAlgorithmTest extends TestCase
 		return null;
 		}
 
-	public void test2() throws Exception
-		{
-		assertTrue(runAlgorithm(2, 2));
-		}
-
 	// Scenario 3
 
 	Collection<Runnable> caller3()
 		{
 		//return called2();
 		return null;
-		}
-
-	public void test3() throws Exception
-		{
-		assertFalse(runAlgorithm(3, 2));
 		}
 
 	// Scenario 4
@@ -107,27 +114,12 @@ public class FromVariableAlgorithmTest extends TestCase
 		return null;
 		}
 
-	<A extends String> Collection<A> called4()
-		{
-		return null;
-		}
-
-	public void test4() throws Exception
-		{
-		assertTrue(runAlgorithm(4, 4));
-		}
-
 	// Scenario 5
 
 	Collection<? extends Runnable> caller5()
 		{
 		//return called4();
 		return null;
-		}
-
-	public void test5() throws Exception
-		{
-		assertFalse(runAlgorithm(5, 4));
 		}
 
 	// Scenario 6
@@ -142,21 +134,11 @@ public class FromVariableAlgorithmTest extends TestCase
 		return null;
 		}
 
-	public void test6() throws Exception
-		{
-		assertTrue(runAlgorithm(6, 6));
-		}
-
 	// Scenario 7
 
 	Collection<? extends Runnable> caller7()
 		{
 		return called6();
-		}
-
-	public void test7() throws Exception
-		{
-		assertTrue(runAlgorithm(7, 6));
 		}
 
 	// Scenario 8
@@ -171,16 +153,6 @@ public class FromVariableAlgorithmTest extends TestCase
 		return null;
 		}
 
-	public void test8() throws Exception
-		{
-		Method caller = this.getClass().getDeclaredMethod("caller8", new Class[]{Collection.class});
-		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
-		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
-		}
-
 	// Scenario 9
 
 	Collection<? extends Runnable> caller9(Collection<Runnable> arg)
@@ -188,21 +160,22 @@ public class FromVariableAlgorithmTest extends TestCase
 		return called8(arg);
 		}
 
-	public void test9() throws Exception
+	public void setUp()
 		{
-		Method caller = this.getClass().getDeclaredMethod("caller9", new Class[]{Collection.class});
-		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
-		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
+		this.algorithm = AssignabilityAlgorithm.FROM_VARIABLE;
+		hierarchy = new VariableHierarchy();
 		}
 
-	// Scenario 10
-
-	Collection<Runnable> caller10(Collection<Runnable> arg)
+	public void test1() throws Exception
 		{
-		return called8(arg);
+		assertTrue(runAlgorithm(1, 1));
+		}
+
+	private boolean runAlgorithm(int callerNumber, int calledNumber) throws Exception
+		{
+		Method caller = this.getClass().getDeclaredMethod("caller" + callerNumber, NO_ARGS);
+		Method called = this.getClass().getDeclaredMethod("called" + calledNumber, NO_ARGS);
+		return algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy);
 		}
 
 	public void test10() throws Exception
@@ -215,14 +188,6 @@ public class FromVariableAlgorithmTest extends TestCase
 		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 
-	// Scenario 11
-
-	Collection<? extends List> caller11(Collection<Runnable> arg)
-		{
-		//return called8(arg);
-		return null;
-		}
-
 	public void test11() throws Exception
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller11", new Class[]{Collection.class});
@@ -231,5 +196,55 @@ public class FromVariableAlgorithmTest extends TestCase
 		                                                               caller.getGenericParameterTypes()[0],
 		                                                               hierarchy));
 		assertFalse(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
+		}
+
+	public void test2() throws Exception
+		{
+		assertTrue(runAlgorithm(2, 2));
+		}
+
+	public void test3() throws Exception
+		{
+		assertFalse(runAlgorithm(3, 2));
+		}
+
+	public void test4() throws Exception
+		{
+		assertTrue(runAlgorithm(4, 4));
+		}
+
+	public void test5() throws Exception
+		{
+		assertFalse(runAlgorithm(5, 4));
+		}
+
+	public void test6() throws Exception
+		{
+		assertTrue(runAlgorithm(6, 6));
+		}
+
+	public void test7() throws Exception
+		{
+		assertTrue(runAlgorithm(7, 6));
+		}
+
+	public void test8() throws Exception
+		{
+		Method caller = this.getClass().getDeclaredMethod("caller8", new Class[]{Collection.class});
+		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
+		                                                               caller.getGenericParameterTypes()[0],
+		                                                               hierarchy));
+		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
+		}
+
+	public void test9() throws Exception
+		{
+		Method caller = this.getClass().getDeclaredMethod("caller9", new Class[]{Collection.class});
+		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
+		                                                               caller.getGenericParameterTypes()[0],
+		                                                               hierarchy));
+		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 	}

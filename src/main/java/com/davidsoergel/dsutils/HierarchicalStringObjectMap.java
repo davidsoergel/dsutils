@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -32,6 +30,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* $Id$ */
+
 package com.davidsoergel.dsutils;
 
 import java.util.Collection;
@@ -49,7 +49,6 @@ public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<S
 
 
 	// --------------------- Interface HierarchyNode ---------------------
-
 
 	public abstract HierarchicalStringObjectMap newChild();
 

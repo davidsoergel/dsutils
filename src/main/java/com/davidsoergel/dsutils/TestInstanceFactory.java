@@ -34,5 +34,7 @@ package com.davidsoergel.dsutils;
 
 public interface TestInstanceFactory
 	{
+	// -------------------------- OTHER METHODS --------------------------
+
 	public Object createInstance() throws Exception;
 	}

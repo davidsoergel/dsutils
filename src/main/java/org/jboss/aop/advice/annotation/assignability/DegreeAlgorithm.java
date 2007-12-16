@@ -1,23 +1,33 @@
 /*
- * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright (c) 2001-2007 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * david@davidsoergel.com
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * All rights reserved.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.jboss.aop.advice.annotation.assignability;
 
@@ -34,19 +44,28 @@ import java.util.ArrayList;
  */
 public class DegreeAlgorithm
 	{
+	// ------------------------------ FIELDS ------------------------------
+
 	public static final short NOT_ASSIGNABLE_DEGREE = Short.MAX_VALUE;
 	public static final short MAX_DEGREE = NOT_ASSIGNABLE_DEGREE - 1;
 
 	private static final DegreeAlgorithm INSTANCE = new DegreeAlgorithm();
+
+
+	// -------------------------- STATIC METHODS --------------------------
 
 	public static DegreeAlgorithm getInstance()
 		{
 		return INSTANCE;
 		}
 
+	// --------------------------- CONSTRUCTORS ---------------------------
+
 	private DegreeAlgorithm()
 		{
 		}
+
+	// -------------------------- OTHER METHODS --------------------------
 
 	public short getAssignabilityDegree(Type type, Type fromType)
 		{
@@ -171,6 +190,38 @@ public class DegreeAlgorithm
 		}
 
 	/**
+	 * Recursive method that returns the assignability degree on an interface inheritance.
+	 *
+	 * @param fromInterfaceType the interface that supposedly inherits (directly or indirectly
+	 *                          <code>toInterfaceType</code>.
+	 * @param toInterfaceType   the interface which is supposedly assignable from <code> fromInterfaceType</code>. The type
+	 *                          <code> toInterfaceType</code> is not the same as <code> fromInterfaceType</code>.
+	 * @param currentDegree     the current assignability degree
+	 * @return {@link AdviceMethodFactory#NOT_ASSIGNABLE_DEGREE} if <code>toInterfaceType</code> is not assignable from
+	 *         <code> fromInterfaceType</code>; <code>currentDegree + </code> the assignability degree from
+	 *         <code>fromInterfaceType </code> to <code>toInterfaceType</code>.
+	 */
+	private short getInterfaceInheritanceAD(Class<?> fromInterfaceType, Class<?> toInterfaceType, short currentDegree)
+		{
+		Class[] interfaces = fromInterfaceType.getInterfaces();
+		currentDegree++;
+		for (int i = 0; i < interfaces.length; i++)
+			{
+			if (interfaces[i] == toInterfaceType)
+				{
+				return currentDegree;
+				}
+			}
+		short bestDegree = DegreeAlgorithm.NOT_ASSIGNABLE_DEGREE;
+		for (int i = 0; i < interfaces.length; i++)
+			{
+			bestDegree = (short) Math
+					.min(getInterfaceInheritanceAD(interfaces[i], toInterfaceType, currentDegree), bestDegree);
+			}
+		return bestDegree;
+		}
+
+	/**
 	 * Returns the assignability degree between <code>fromClassType</code> and <code> toInterfaceType</code>.
 	 *
 	 * @param fromClassType   a class type that supposedly implements <code> toInterfaceType</code>
@@ -206,38 +257,6 @@ public class DegreeAlgorithm
 			return getImplementationAD(fromClassType.getSuperclass(), toInterfaceType);
 			}
 		return currentDegree;
-		}
-
-	/**
-	 * Recursive method that returns the assignability degree on an interface inheritance.
-	 *
-	 * @param fromInterfaceType the interface that supposedly inherits (directly or indirectly
-	 *                          <code>toInterfaceType</code>.
-	 * @param toInterfaceType   the interface which is supposedly assignable from <code> fromInterfaceType</code>. The
-	 *                          type <code> toInterfaceType</code> is not the same as <code> fromInterfaceType</code>.
-	 * @param currentDegree     the current assignability degree
-	 * @return {@link AdviceMethodFactory#NOT_ASSIGNABLE_DEGREE} if <code>toInterfaceType</code> is not assignable from
-	 *         <code> fromInterfaceType</code>; <code>currentDegree + </code> the assignability degree from
-	 *         <code>fromInterfaceType </code> to <code>toInterfaceType</code>.
-	 */
-	private short getInterfaceInheritanceAD(Class<?> fromInterfaceType, Class<?> toInterfaceType, short currentDegree)
-		{
-		Class[] interfaces = fromInterfaceType.getInterfaces();
-		currentDegree++;
-		for (int i = 0; i < interfaces.length; i++)
-			{
-			if (interfaces[i] == toInterfaceType)
-				{
-				return currentDegree;
-				}
-			}
-		short bestDegree = DegreeAlgorithm.NOT_ASSIGNABLE_DEGREE;
-		for (int i = 0; i < interfaces.length; i++)
-			{
-			bestDegree = (short) Math
-					.min(getInterfaceInheritanceAD(interfaces[i], toInterfaceType, currentDegree), bestDegree);
-			}
-		return bestDegree;
 		}
 
 	/**

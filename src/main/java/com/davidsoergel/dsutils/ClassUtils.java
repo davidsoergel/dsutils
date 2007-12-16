@@ -44,6 +44,8 @@ import java.util.List;
  */
 public class ClassUtils extends org.apache.commons.lang.ClassUtils
 	{
+	// -------------------------- STATIC METHODS --------------------------
+
 	public static Class[] getClasses(Object[] objects)
 		{
 		List<Class> result = new ArrayList<Class>();

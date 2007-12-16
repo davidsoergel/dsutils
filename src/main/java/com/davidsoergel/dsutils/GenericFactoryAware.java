@@ -40,6 +40,8 @@ package com.davidsoergel.dsutils;
  */
 public interface GenericFactoryAware
 	{
+	// -------------------------- OTHER METHODS --------------------------
+
 	public GenericFactory getFactory();
 
 	public void setFactory(GenericFactory f);

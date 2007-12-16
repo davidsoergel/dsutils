@@ -1,23 +1,33 @@
 /*
- * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
+ * Copyright (c) 2001-2007 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * david@davidsoergel.com
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * All rights reserved.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.jboss.aop.advice.annotation.assignability;
 
@@ -34,6 +44,58 @@ import java.util.ListIterator;
  */
 class ArgumentContextualizer
 	{
+	// ------------------------------ FIELDS ------------------------------
+
+	/**
+	 * Schedules variable replacement when required by contextualizer. The effect of this scheduling process is the
+	 * creation of variable replacement.
+	 */
+	private static ReplacementScheduler<ArgumentContextualizer> replacementCreator =
+			new ReplacementScheduler<ArgumentContextualizer>()
+			{
+			public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
+			                                ArgumentContextualizer outer)
+				{
+				outer.initialize();
+				outer.createVariableReplacement(outer.arguments, targetIndex, variableIndex);
+				}
+			};
+
+	/**
+	 * Schedules variable replacement when required by a <code>VariableReplacement </code> object. Generally, the effect of
+	 * this schedule process will be an update in the client object, unless this one already has a pending replacement
+	 * scheduled.
+	 */
+	private static ReplacementScheduler<VariableReplacer> updater = new ReplacementScheduler<VariableReplacer>()
+	{
+	public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
+	                                VariableReplacer replacer)
+		{
+		if (replacer.pendingExecution)// replacer is already busy
+			{
+			replacer.getContextualizer().createVariableReplacement(replacementTarget, targetIndex, variableIndex);
+			}
+		else
+			{
+			replacer.valueIndex = variableIndex;
+			replacer.arguments = replacementTarget;
+			replacer.argumentIndex = targetIndex;
+			replacer.pendingExecution = true;
+			}
+		}
+	};
+
+	boolean initialized = false;
+
+
+	private Type[] arguments;
+	private LinkedList<VariableReplacer> variableReplacements;
+
+	private ListIterator<VariableReplacer> iterator;
+
+
+	// -------------------------- STATIC METHODS --------------------------
+
 	public static final Type[] getContextualizedArguments(ParameterizedType paramType, Class rawType, Class desiredType)
 		{
 		ArgumentContextualizer contextualizedArguments = getContextualizedArgumentsInternal(desiredType, rawType);
@@ -47,7 +109,6 @@ class ArgumentContextualizer
 			}
 		return contextualizedArguments.getArguments();
 		}
-
 
 	private static final ArgumentContextualizer getContextualizedArgumentsInternal(Class<?> desiredType,
 	                                                                               Class<?> classType)
@@ -100,34 +161,6 @@ class ArgumentContextualizer
 		return result;
 		}
 
-
-	private Type[] arguments;
-	private LinkedList<VariableReplacer> variableReplacements;
-
-	// declaring class extends queried class (DeclaringClass<A, B, C> extends Queried<X, Y, Z, ..., W>,
-	// where X, Y, Z...W, are a list of types for which we need to map (contextualize)
-	// variables
-	// A, B, C... D are variables of DeclaringClass, that may be used in the contextualization proccess
-	/**
-	 * Constructor.
-	 *
-	 * @param arguments      the set of arguments in their original context (the extends or implements declaration)
-	 * @param declaringClass the class that declared those arguments. This class must be the same class that
-	 *                       extends/implements a queried parameterized type.
-	 */
-	private ArgumentContextualizer(Type[] arguments, Class<?> declaringClass)
-		{
-		this.arguments = arguments;
-		for (int i = 0; i < arguments.length; i++)
-			{
-			Type newArgument = processArgument(arguments, i, declaringClass, replacementCreator, this);
-			if (newArgument != null)
-				{
-				this.arguments[i] = newArgument;
-				}
-			}
-		}
-
 	// newDeclaringClass extends/implements oldDeclaringType
 	// returns false = warning (work with raw type hence)
 	/**
@@ -159,6 +192,33 @@ class ArgumentContextualizer
 			}
 		iterator = null;
 		return true;
+		}
+
+	// --------------------------- CONSTRUCTORS ---------------------------
+
+	// declaring class extends queried class (DeclaringClass<A, B, C> extends Queried<X, Y, Z, ..., W>,
+	// where X, Y, Z...W, are a list of types for which we need to map (contextualize)
+	// variables
+	// A, B, C... D are variables of DeclaringClass, that may be used in the contextualization proccess
+
+	/**
+	 * Constructor.
+	 *
+	 * @param arguments      the set of arguments in their original context (the extends or implements declaration)
+	 * @param declaringClass the class that declared those arguments. This class must be the same class that
+	 *                       extends/implements a queried parameterized type.
+	 */
+	private ArgumentContextualizer(Type[] arguments, Class<?> declaringClass)
+		{
+		this.arguments = arguments;
+		for (int i = 0; i < arguments.length; i++)
+			{
+			Type newArgument = processArgument(arguments, i, declaringClass, replacementCreator, this);
+			if (newArgument != null)
+				{
+				this.arguments[i] = newArgument;
+				}
+			}
 		}
 
 	/**
@@ -220,7 +280,41 @@ class ArgumentContextualizer
 		return argument;
 		}
 
-	boolean initialized = false;
+	// --------------------- GETTER / SETTER METHODS ---------------------
+
+	/**
+	 * Returns contextualized arguments.
+	 *
+	 * @return contextualized arguments
+	 */
+	public Type[] getArguments()
+		{
+		return this.arguments;
+		}
+
+	// -------------------------- OTHER METHODS --------------------------
+
+	/**
+	 * Creates a variable replacement. This replacement should take place during the contextualization steps, where the
+	 * variable will be replaced by its value. Notice this value may or may not be another variable.
+	 *
+	 * @param argumentContainer array on which the replacement will be executed
+	 * @param argumentIndex     the index that indicates a position of the variable to be replaced in
+	 *                          <code>argumentContainer</code> array
+	 * @param variableIndex     index of the variable value in the next argument context array. This index shall be used on
+	 *                          the replacement, during contextualization process.
+	 */
+	private void createVariableReplacement(Type[] argumentContainer, int argumentIndex, int variableIndex)
+		{
+		if (iterator != null)
+			{
+			iterator.add(new VariableReplacer(argumentContainer, argumentIndex, variableIndex));
+			}
+		else
+			{
+			this.variableReplacements.add(new VariableReplacer(argumentContainer, argumentIndex, variableIndex));
+			}
+		}
 
 	private void initialize()
 		{
@@ -234,39 +328,7 @@ class ArgumentContextualizer
 			}
 		}
 
-	private ListIterator<VariableReplacer> iterator;
-
-	/**
-	 * Returns contextualized arguments.
-	 *
-	 * @return contextualized arguments
-	 */
-	public Type[] getArguments()
-		{
-		return this.arguments;
-		}
-
-	/**
-	 * Creates a variable replacement. This replacement should take place during the contextualization steps, where the
-	 * variable will be replaced by its value. Notice this value may or may not be another variable.
-	 *
-	 * @param argumentContainer array on which the replacement will be executed
-	 * @param argumentIndex     the index that indicates a position of the variable to be replaced in
-	 *                          <code>argumentContainer</code> array
-	 * @param variableIndex     index of the variable value in the next argument context array. This index shall be used
-	 *                          on the replacement, during contextualization process.
-	 */
-	private void createVariableReplacement(Type[] argumentContainer, int argumentIndex, int variableIndex)
-		{
-		if (iterator != null)
-			{
-			iterator.add(new VariableReplacer(argumentContainer, argumentIndex, variableIndex));
-			}
-		else
-			{
-			this.variableReplacements.add(new VariableReplacer(argumentContainer, argumentIndex, variableIndex));
-			}
-		}
+	// -------------------------- INNER CLASSES --------------------------
 
 	/**
 	 * Replaces a variable by another type according to an argument context.
@@ -286,8 +348,8 @@ class ArgumentContextualizer
 		 * @param arguments     array on which the replacement will be executed
 		 * @param argumentIndex the index that indicates a position of the variable to be replaced in
 		 *                      <code>argumentContainer</code> array
-		 * @param valueIndex    index of the variable value in the next argument context array. This index shall be used
-		 *                      on the replacement, during contextualization process.
+		 * @param valueIndex    index of the variable value in the next argument context array. This index shall be used on
+		 *                      the replacement, during contextualization process.
 		 */
 		public VariableReplacer(Type[] arguments, int argumentIndex, int valueIndex)
 			{
@@ -302,9 +364,8 @@ class ArgumentContextualizer
 		 * Performs replacemen of a variable by a new type.
 		 *
 		 * @param paramType      parameterized type that contains the context to be used during replacement proccess.
-		 * @param declaringClass the class that declares the the variables used in the arguments of
-		 *                       <code>paramType</code>. This class must extend/implement the generic type
-		 *                       <code>paramType</code>.
+		 * @param declaringClass the class that declares the the variables used in the arguments of <code>paramType</code>.
+		 *                       This class must extend/implement the generic type <code>paramType</code>.
 		 */
 		public boolean replace(ParameterizedType paramType, Class<?> declaringClass)
 			{
@@ -350,7 +411,6 @@ class ArgumentContextualizer
 			this.ownerType = type.getOwnerType();
 			this.rawType = type.getRawType();
 			}
-
 
 		public Type[] getActualTypeArguments()
 			{
@@ -404,49 +464,10 @@ class ArgumentContextualizer
 		 * @param argumentContainer array on which the replacement will be executed
 		 * @param argumentIndex     the index that indicates a position of the variable to be replaced in
 		 *                          <code>argumentContainer</code> array
-		 * @param variableIndex     index of the variable value in the next argument context array. This index shall be
-		 *                          used on the replacement, during contextualization process.
+		 * @param variableIndex     index of the variable value in the next argument context array. This index shall be used
+		 *                          on the replacement, during contextualization process.
 		 * @param client            the client of recorder
 		 */
 		public void scheduleReplacement(Type[] argumentContainer, int argumentIndex, int variableIndex, C client);
 		}
-
-	/**
-	 * Schedules variable replacement when required by contextualizer. The effect of this scheduling process is the
-	 * creation of variable replacement.
-	 */
-	private static ReplacementScheduler<ArgumentContextualizer> replacementCreator =
-			new ReplacementScheduler<ArgumentContextualizer>()
-			{
-			public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
-			                                ArgumentContextualizer outer)
-				{
-				outer.initialize();
-				outer.createVariableReplacement(outer.arguments, targetIndex, variableIndex);
-				}
-			};
-
-	/**
-	 * Schedules variable replacement when required by a <code>VariableReplacement </code> object. Generally, the effect
-	 * of this schedule process will be an update in the client object, unless this one already has a pending replacement
-	 * scheduled.
-	 */
-	private static ReplacementScheduler<VariableReplacer> updater = new ReplacementScheduler<VariableReplacer>()
-	{
-	public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
-	                                VariableReplacer replacer)
-		{
-		if (replacer.pendingExecution)// replacer is already busy
-			{
-			replacer.getContextualizer().createVariableReplacement(replacementTarget, targetIndex, variableIndex);
-			}
-		else
-			{
-			replacer.valueIndex = variableIndex;
-			replacer.arguments = replacementTarget;
-			replacer.argumentIndex = targetIndex;
-			replacer.pendingExecution = true;
-			}
-		}
-	};
 	}

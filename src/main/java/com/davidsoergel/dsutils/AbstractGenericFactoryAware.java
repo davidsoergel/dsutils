@@ -42,8 +42,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractGenericFactoryAware implements GenericFactoryAware
 	{
+	// ------------------------------ FIELDS ------------------------------
+
 	GenericFactory factory;
 
+
+	// --------------------- GETTER / SETTER METHODS ---------------------
 
 	@NotNull
 	public GenericFactory getFactory()

@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -32,6 +30,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* $Id$ */
+
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -50,7 +50,6 @@ public class MathUtils
 	//	public static int logbins;
 	//public static double logResolution;
 	//	public static double maxLogArg;
-
 	//public static int logLevels;
 	public static int logMinOrderOfMagnitude;
 	public static int logMaxOrderOfMagnitude;
@@ -83,6 +82,7 @@ public class MathUtils
 	static double LOG_TWO_PI = Math.log(2.0 * Math.PI);
 
 	private static double[][] logTable;
+
 
 	// -------------------------- STATIC METHODS --------------------------
 

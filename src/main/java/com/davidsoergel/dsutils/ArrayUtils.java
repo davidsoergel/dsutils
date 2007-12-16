@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -371,7 +371,6 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return posmax;
 		}
 
-
 	public static int min(int[] x)
 		{
 		int result = Integer.MAX_VALUE;
@@ -565,6 +564,4 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return Math.sqrt(sumsq / counts.length);
 		}
-
-
 	}

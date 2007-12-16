@@ -39,6 +39,8 @@ import java.lang.reflect.Type;
 
 public class TypeUtils
 	{
+	// -------------------------- STATIC METHODS --------------------------
+
 	public static boolean isAssignableFrom(Type superType, Type subType)
 		{
 		return AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(superType, subType, new VariableHierarchy());

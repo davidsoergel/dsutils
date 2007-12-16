@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -407,37 +407,6 @@ public class Base64
 		return new String(baos.toByteArray());
 		}// end encode
 
-	/* ********  E N C O D I N G   M E T H O D S  ******** */
-
-	/**
-	 * Encodes the first three bytes of array <var>threeBytes</var> and returns a four-byte array in Base64 notation.
-	 *
-	 * @param threeBytes the array to convert
-	 * @return four byte array in Base64 notation.
-	 * @since 1.3
-	 */
-	private static byte[] encode3to4(byte[] threeBytes)
-		{
-		return encode3to4(threeBytes, 3);
-		}// end encodeToBytes
-
-	/**
-	 * Encodes up to the first three bytes of array <var>threeBytes</var> and returns a four-byte array in Base64 notation.
-	 * The actual number of significant bytes in your array is given by <var>numSigBytes</var>. The array
-	 * <var>threeBytes</var> needs only be as big as <var>numSigBytes</var>.
-	 *
-	 * @param threeBytes  the array to convert
-	 * @param numSigBytes the number of significant bytes in your array
-	 * @return four byte array in Base64 notation.
-	 * @since 1.3
-	 */
-	private static byte[] encode3to4(byte[] threeBytes, int numSigBytes)
-		{
-		byte[] dest = new byte[4];
-		encode3to4(threeBytes, 0, numSigBytes, dest, 0);
-		return dest;
-		}
-
 	/**
 	 * Encodes a string in Base64 notation with line breaks after every 75 Base64 characters. Of course you probably only
 	 * need to encode a string if there are non-ASCII characters in it such as many non-English languages.
@@ -572,6 +541,37 @@ public class Base64
 			}// end switch
 		}// end encode3to4
 
+	/* ********  E N C O D I N G   M E T H O D S  ******** */
+
+	/**
+	 * Encodes the first three bytes of array <var>threeBytes</var> and returns a four-byte array in Base64 notation.
+	 *
+	 * @param threeBytes the array to convert
+	 * @return four byte array in Base64 notation.
+	 * @since 1.3
+	 */
+	private static byte[] encode3to4(byte[] threeBytes)
+		{
+		return encode3to4(threeBytes, 3);
+		}// end encodeToBytes
+
+	/**
+	 * Encodes up to the first three bytes of array <var>threeBytes</var> and returns a four-byte array in Base64 notation.
+	 * The actual number of significant bytes in your array is given by <var>numSigBytes</var>. The array
+	 * <var>threeBytes</var> needs only be as big as <var>numSigBytes</var>.
+	 *
+	 * @param threeBytes  the array to convert
+	 * @param numSigBytes the number of significant bytes in your array
+	 * @return four byte array in Base64 notation.
+	 * @since 1.3
+	 */
+	private static byte[] encode3to4(byte[] threeBytes, int numSigBytes)
+		{
+		byte[] dest = new byte[4];
+		encode3to4(threeBytes, 0, numSigBytes, dest, 0);
+		return dest;
+		}
+
 	/**
 	 * Simple helper method that Base64-encodes a file and returns the encoded string or <tt>null</tt> if there was an
 	 * error.
@@ -597,6 +597,55 @@ public class Base64
 	public static byte[] readFile(String file, boolean encode)
 		{
 		return readFile(new java.io.File(file), encode);
+		}// end readFile
+
+	/**
+	 * Reads a file and either encodes or decodes it.
+	 *
+	 * @param file   The file to read
+	 * @param encode Whether or not to encode file as it is read.
+	 * @return The encoded/decoded file or <tt>null</tt> if there was an error.
+	 * @since 1.4
+	 */
+	public static byte[] readFile(java.io.File file, boolean encode)
+		{
+		byte[] data = new byte[100];
+		byte[] returnValue = null;
+		int nextIndex = 0;
+		int b = -1;
+		Base64.InputStream bis = null;
+		try
+			{
+			bis = new Base64.InputStream(new java.io.BufferedInputStream(new java.io.FileInputStream(file)), encode);
+			while ((b = bis.read()) >= 0)
+				{
+				// Resize array?
+				if (nextIndex >= data.length)
+					{
+					byte[] temp = new byte[data.length << 1];
+					System.arraycopy(data, 0, temp, 0, data.length);
+					data = temp;
+					}// end if: resize array
+				data[nextIndex++] = (byte) b;
+				}// end while: each byte
+			returnValue = new byte[nextIndex];
+			System.arraycopy(data, 0, returnValue, 0, nextIndex);
+			}// end try
+		catch (java.io.IOException e)
+			{
+			returnValue = null;
+			}// end catch
+		finally
+			{
+			try
+				{
+				bis.close();
+				}
+			catch (Exception e)
+				{
+				}
+			}// end finally
+		return returnValue;
 		}// end readFile
 
 	/**
@@ -640,6 +689,58 @@ public class Base64
 		}// end writeFile
 
 	/**
+	 * Writes a byte array to a file either encoding it or decoding it as specified.
+	 *
+	 * @param data   The array to write to a file.
+	 * @param file   The file to write to.
+	 * @param encode Whether or not to encode the data.
+	 * @return Whether or not the write was a success.
+	 * @since 1.4
+	 */
+	public static boolean writeFile(byte[] data, java.io.File file, boolean encode)
+		{
+		return writeFile(data, 0, data.length, file, encode);
+		}// end writeFile
+
+	/**
+	 * Writes a byte array to a file either encoding it or decoding it as specified.
+	 *
+	 * @param data   The array to write to a file.
+	 * @param offset The offset where the "real" data begins.
+	 * @param length The amount of data to write.
+	 * @param file   The file to write to.
+	 * @param encode Whether or not to encode the data.
+	 * @return Whether or not the write was a success.
+	 * @since 1.4
+	 */
+	public static boolean writeFile(byte[] data, int offset, int length, java.io.File file, boolean encode)
+		{
+		Base64.OutputStream bos = null;
+		boolean success = false;
+		try
+			{
+			bos = new Base64.OutputStream(new java.io.BufferedOutputStream(new java.io.FileOutputStream(file)), encode);
+			bos.write(data, offset, length);
+			success = true;
+			}// end try
+		catch (java.io.IOException e)
+			{
+			success = false;
+			}// end catch
+		finally
+			{
+			try
+				{
+				bos.close();
+				}
+			catch (Exception e)
+				{
+				}
+			}// end finally
+		return success;
+		}// end writeFile
+
+	/**
 	 * Simple helper method that Base64-decodes data to a file.
 	 *
 	 * @param encdata The data to write.
@@ -651,28 +752,6 @@ public class Base64
 		{
 		return writeFile(encdata, file, DECODE);
 		}// end encodeFromFile
-
-	/* ********  D E C O D I N G   M E T H O D S  ******** */
-
-	/**
-	 * Decodes the first four bytes of array <var>fourBytes</var> and returns an array up to three bytes long with the
-	 * decoded values.
-	 *
-	 * @param fourBytes the array with Base64 content
-	 * @return array with decoded values
-	 * @since 1.3
-	 */
-	private static byte[] decode4to3(byte[] fourBytes)
-		{
-		byte[] outBuff1 = new byte[3];
-		int count = decode4to3(fourBytes, 0, outBuff1, 0);
-		byte[] outBuff2 = new byte[count];
-		for (int i = 0; i < count; i++)
-			{
-			outBuff2[i] = outBuff1[i];
-			}
-		return outBuff2;
-		}
 
 	/**
 	 * Decodes data from Base64 notation and returns it as a string. Equivlaent to calling <code>new String( decode( s )
@@ -699,53 +778,6 @@ public class Base64
 		byte[] bytes = s.getBytes();
 		return decode(bytes, 0, bytes.length);
 		}// end decode
-
-	/**
-	 * Attempts to decode Base64 data and deserialize a Java Object within. Returns <tt>null if there was an error.
-	 *
-	 * @param encodedObject The Base64 data to decode
-	 * @return The decoded and deserialized object
-	 * @since 1.4
-	 */
-	public static Object decodeToObject(String encodedObject)
-		{
-		byte[] objBytes = decode(encodedObject);
-		java.io.ByteArrayInputStream bais = null;
-		java.io.ObjectInputStream ois = null;
-		try
-			{
-			bais = new java.io.ByteArrayInputStream(objBytes);
-			ois = new java.io.ObjectInputStream(bais);
-			return ois.readObject();
-			}// end try
-		catch (java.io.IOException e)
-			{
-			e.printStackTrace();
-			return null;
-			}// end catch
-		catch (java.lang.ClassNotFoundException e)
-			{
-			e.printStackTrace();
-			return null;
-			}// end catch
-		finally
-			{
-			try
-				{
-				bais.close();
-				}
-			catch (Exception e)
-				{
-				}
-			try
-				{
-				ois.close();
-				}
-			catch (Exception e)
-				{
-				}
-			}// end finally
-		}// end decodeObject
 
 	/**
 	 * Decodes Base64 content in byte array format and returns the decoded byte array.
@@ -874,105 +906,73 @@ public class Base64
 		}// end decodeToBytes
 
 	/**
-	 * Reads a file and either encodes or decodes it.
+	 * Attempts to decode Base64 data and deserialize a Java Object within. Returns <tt>null if there was an error.
 	 *
-	 * @param file   The file to read
-	 * @param encode Whether or not to encode file as it is read.
-	 * @return The encoded/decoded file or <tt>null</tt> if there was an error.
+	 * @param encodedObject The Base64 data to decode
+	 * @return The decoded and deserialized object
 	 * @since 1.4
 	 */
-	public static byte[] readFile(java.io.File file, boolean encode)
+	public static Object decodeToObject(String encodedObject)
 		{
-		byte[] data = new byte[100];
-		byte[] returnValue = null;
-		int nextIndex = 0;
-		int b = -1;
-		Base64.InputStream bis = null;
+		byte[] objBytes = decode(encodedObject);
+		java.io.ByteArrayInputStream bais = null;
+		java.io.ObjectInputStream ois = null;
 		try
 			{
-			bis = new Base64.InputStream(new java.io.BufferedInputStream(new java.io.FileInputStream(file)), encode);
-			while ((b = bis.read()) >= 0)
-				{
-				// Resize array?
-				if (nextIndex >= data.length)
-					{
-					byte[] temp = new byte[data.length << 1];
-					System.arraycopy(data, 0, temp, 0, data.length);
-					data = temp;
-					}// end if: resize array
-				data[nextIndex++] = (byte) b;
-				}// end while: each byte
-			returnValue = new byte[nextIndex];
-			System.arraycopy(data, 0, returnValue, 0, nextIndex);
+			bais = new java.io.ByteArrayInputStream(objBytes);
+			ois = new java.io.ObjectInputStream(bais);
+			return ois.readObject();
 			}// end try
 		catch (java.io.IOException e)
 			{
-			returnValue = null;
+			e.printStackTrace();
+			return null;
+			}// end catch
+		catch (java.lang.ClassNotFoundException e)
+			{
+			e.printStackTrace();
+			return null;
 			}// end catch
 		finally
 			{
 			try
 				{
-				bis.close();
+				bais.close();
 				}
 			catch (Exception e)
 				{
 				}
-			}// end finally
-		return returnValue;
-		}// end readFile
-
-	/**
-	 * Writes a byte array to a file either encoding it or decoding it as specified.
-	 *
-	 * @param data   The array to write to a file.
-	 * @param file   The file to write to.
-	 * @param encode Whether or not to encode the data.
-	 * @return Whether or not the write was a success.
-	 * @since 1.4
-	 */
-	public static boolean writeFile(byte[] data, java.io.File file, boolean encode)
-		{
-		return writeFile(data, 0, data.length, file, encode);
-		}// end writeFile
-
-	/**
-	 * Writes a byte array to a file either encoding it or decoding it as specified.
-	 *
-	 * @param data   The array to write to a file.
-	 * @param offset The offset where the "real" data begins.
-	 * @param length The amount of data to write.
-	 * @param file   The file to write to.
-	 * @param encode Whether or not to encode the data.
-	 * @return Whether or not the write was a success.
-	 * @since 1.4
-	 */
-	public static boolean writeFile(byte[] data, int offset, int length, java.io.File file, boolean encode)
-		{
-		Base64.OutputStream bos = null;
-		boolean success = false;
-		try
-			{
-			bos = new Base64.OutputStream(new java.io.BufferedOutputStream(new java.io.FileOutputStream(file)), encode);
-			bos.write(data, offset, length);
-			success = true;
-			}// end try
-		catch (java.io.IOException e)
-			{
-			success = false;
-			}// end catch
-		finally
-			{
 			try
 				{
-				bos.close();
+				ois.close();
 				}
 			catch (Exception e)
 				{
 				}
 			}// end finally
-		return success;
-		}// end writeFile
+		}// end decodeObject
+
+	/* ********  D E C O D I N G   M E T H O D S  ******** */
+
+	/**
+	 * Decodes the first four bytes of array <var>fourBytes</var> and returns an array up to three bytes long with the
+	 * decoded values.
+	 *
+	 * @param fourBytes the array with Base64 content
+	 * @return array with decoded values
+	 * @since 1.3
+	 */
+	private static byte[] decode4to3(byte[] fourBytes)
+		{
+		byte[] outBuff1 = new byte[3];
+		int count = decode4to3(fourBytes, 0, outBuff1, 0);
+		byte[] outBuff2 = new byte[count];
+		for (int i = 0; i < count; i++)
+			{
+			outBuff2[i] = outBuff1[i];
+			}
+		return outBuff2;
+		}
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 

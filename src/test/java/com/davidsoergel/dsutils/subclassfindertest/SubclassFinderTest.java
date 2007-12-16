@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -32,6 +30,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* $Id$ */
+
 package com.davidsoergel.dsutils.subclassfindertest;
 
 import com.davidsoergel.dsutils.ChainedException;
@@ -55,6 +55,11 @@ public class SubclassFinderTest//extends TestCase
 	private static Logger logger = Logger.getLogger(SubclassFinderTest.class);
 
 
+	public TestGenericInterface<Number> testGenericFieldNumber;
+	public TestGenericInterface<Integer> testGenericFieldInteger;
+	public TestGenericInterface<Double> testGenericFieldDouble;
+
+
 	// -------------------------- OTHER METHODS --------------------------
 
 	@Test
@@ -64,7 +69,6 @@ public class SubclassFinderTest//extends TestCase
 		assert classes.contains(PluginException.class);
 		assert classes.contains(SubclassFinderTestException.class);
 		}
-
 
 	@Test
 	public void subclassFinderWorksWithGenericInheritance() throws NoSuchFieldException, IOException
@@ -90,9 +94,4 @@ public class SubclassFinderTest//extends TestCase
 		assert classes.size() == 1;
 		assert classes.contains(TestGenericClassTwo.class);
 		}
-
-
-	public TestGenericInterface<Number> testGenericFieldNumber;
-	public TestGenericInterface<Integer> testGenericFieldInteger;
-	public TestGenericInterface<Double> testGenericFieldDouble;
 	}

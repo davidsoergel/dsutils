@@ -1,5 +1,3 @@
-/* $Id$ */
-
 /*
  * Copyright (c) 2001-2007 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id$ */
 
 package com.davidsoergel.dsutils;
 
@@ -107,7 +107,6 @@ public class BasicInterval<T extends Number> implements Interval<T>
 
 	// --------------------- Interface Comparable ---------------------
 
-
 	public int compareTo(Interval<T> o)
 		{
 		// assume we're using Comparable Numbers; ClassCastException if not
@@ -116,9 +115,11 @@ public class BasicInterval<T extends Number> implements Interval<T>
 
 	// --------------------- Interface Interval ---------------------
 
-	public T getMin()
+
+	public boolean encompassesValue(T value)
 		{
-		return left;
+		// too bad we can't easily generify this; we just assume the Numbers are Comparable.
+		return ((Comparable) left).compareTo(value) <= 0 && ((Comparable) right).compareTo(value) >= 0;
 		}
 
 	/*	public void setLeft(T left)
@@ -131,10 +132,9 @@ public class BasicInterval<T extends Number> implements Interval<T>
 		return right;
 		}
 
-	public boolean encompassesValue(T value)
+	public T getMin()
 		{
-		// too bad we can't easily generify this; we just assume the Numbers are Comparable.
-		return ((Comparable) left).compareTo(value) <= 0 && ((Comparable) right).compareTo(value) >= 0;
+		return left;
 		}
 
 	// -------------------------- OTHER METHODS --------------------------
