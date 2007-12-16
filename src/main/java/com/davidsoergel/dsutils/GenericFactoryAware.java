@@ -42,7 +42,7 @@ public interface GenericFactoryAware
 	{
 	// -------------------------- OTHER METHODS --------------------------
 
-	public GenericFactory getFactory();
+	GenericFactory getFactory();
 
-	public void setFactory(GenericFactory f);
+	void setFactory(GenericFactory f);
 	}

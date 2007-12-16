@@ -48,7 +48,7 @@ public interface Interval<T extends Number> extends Comparable<Interval<T>>, Ran
 
 	boolean encompassesValue(T value);
 
-	public T getMax();
+	T getMax();
 
-	public T getMin();
+	T getMin();
 	}

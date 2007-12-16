@@ -42,9 +42,9 @@ public interface GenericFactory<T>
 	{
 	// -------------------------- OTHER METHODS --------------------------
 
-	public T create(Object... constructorArguments) throws GenericFactoryException;
+	T create(Object... constructorArguments) throws GenericFactoryException;
 
 	//public <T> T create(String context, Class<T> theClass, Object... constructorArguments);
 
-	public Class getCreatesClass();
+	Class getCreatesClass();
 	}

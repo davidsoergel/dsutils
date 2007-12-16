@@ -52,38 +52,38 @@ public interface HierarchyNode<T>// was abstract class
 	//private Collection<HierarchyNode<T>> children;
 */
 
-	public Collection<? extends HierarchyNode<? extends T>> getChildren();
+	Collection<? extends HierarchyNode<? extends T>> getChildren();
 
 	/*		{
 	   this.parent = parent;
 	   }*/
 
-	public T getContents();
+	T getContents();
 
 	//	public void addChild(HierarchyNode<T> child);
 	/*		{
 	   getChildren().add(child);
 	   }*/
 
-	public HierarchyNode<? extends T> getParent();
+	HierarchyNode<? extends T> getParent();
 
 	/*		{
 	   this.contents = contents;
 	   }*/
 
-	public HierarchyNode<? extends T> newChild();
+	HierarchyNode<? extends T> newChild();
 
 	/*		{
 	   return contents;
 	   }*/
 
-	public void setContents(T contents);
+	void setContents(T contents);
 
 	/*		{
 	   return parent;
 	   }*/
 
-	public void setParent(HierarchyNode<? extends T> parent);
+	void setParent(HierarchyNode<? extends T> parent);
 
 	//	public void beginTaxn();
 

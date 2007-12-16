@@ -46,23 +46,23 @@ public interface UrlContentCache
 	{
 	// -------------------------- OTHER METHODS --------------------------
 
-	public void clear();
+	void clear();
 
 	String getChecksum(String s) throws MalformedURLException, UrlContentCacheException;
 
 	String getChecksum(URL s) throws UrlContentCacheException;
 
-	public File getFile(String url) throws UrlContentCacheException;
+	File getFile(String url) throws UrlContentCacheException;
 
-	public File getFile(URL url) throws UrlContentCacheException;
+	File getFile(URL url) throws UrlContentCacheException;
 
-	public File getFile(URL url, String checksum) throws UrlContentCacheException;
+	File getFile(URL url, String checksum) throws UrlContentCacheException;
 
-	public File getFile(String url, String checksum) throws UrlContentCacheException;
+	File getFile(String url, String checksum) throws UrlContentCacheException;
 
 	String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException;
 
 	String recalculateChecksum(URL s) throws UrlContentCacheException;
 
-	public void setMaxSize(long maxSize);
+	void setMaxSize(long maxSize);
 	}

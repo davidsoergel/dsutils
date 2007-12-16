@@ -36,5 +36,5 @@ public interface TestInstanceFactory
 	{
 	// -------------------------- OTHER METHODS --------------------------
 
-	public Object createInstance() throws Exception;
+	Object createInstance() throws Exception;
 	}
