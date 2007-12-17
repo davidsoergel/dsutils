@@ -165,7 +165,13 @@ public class FileUtils
 					if (f.endsWith("*"))
 						{
 						logger.info("Separator: " + File.separator);
-						File dir = new File(f.substring(0, f.lastIndexOf(File.separator)));
+						String dirname = f.substring(0, f.lastIndexOf(File.separator));
+						logger.info("Wildcard directory: " + dirname);
+						File dir = new File(dirname);
+						if (dir == null)
+							{
+							throw new RuntimeException("Directory not found: " + dirname);
+							}
 
 						// TODO full-blown pattern matching
 						final String prefix = f.substring(f.lastIndexOf(File.separator) + 1, f.length() - 1);
