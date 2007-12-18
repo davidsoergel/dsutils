@@ -564,4 +564,20 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return Math.sqrt(sumsq / counts.length);
 		}
+
+	public static double[] times(double[] data, double scalar)
+		{
+		double[] result = data.clone();// does this work??
+		multiplyBy(result, scalar);
+		return result;
+		}
+
+	public static void multiplyBy(double[] a, double scalar)
+		{
+		for (int i = 0; i < a.length; i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			a[i] *= scalar;
+			}
+		}
 	}
