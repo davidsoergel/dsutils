@@ -38,14 +38,14 @@
 	<artifactId>dsutils</artifactId>
 
 	<name>dsutils</name>
-	<version>1.2-SNAPSHOT</version>
+	<version>0.9-SNAPSHOT</version>
 	<url>http://dev.davidsoergel.com/dsutils</url>
 	<description>Some generic utility classes.</description>
 
 	<parent>
 		<groupId>com.davidsoergel</groupId>
 		<artifactId>basepom</artifactId>
-		<version>1.2-SNAPSHOT</version>
+		<version>0.9-SNAPSHOT</version>
 	</parent>
 
 	<inceptionYear>2006</inceptionYear>
@@ -73,8 +73,8 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils</connection>
-		<developerConnection>scm:svn:svn+ssh://lorax.org/home/lorax/repos/dsutils</developerConnection>
+		<connection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils</developerConnection>
 	</scm>
 	<distributionManagement>
 		<site>
