@@ -1399,14 +1399,14 @@ public class ParameterizedTypeFromClassTest extends ParameterizedTypeTest
 		                                  hierarchy));
 		}
 
-	public void test13() throws Exception
-		{
-		Method caller = this.getClass().getDeclaredMethod("caller13", new Class[]{Class1.class});
-		Method called = ParameterizedTypeTest.class.getDeclaredMethod("called13", new Class[]{List.class});
-		assertFalse(algorithm.isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
-		                                   hierarchy));
-		}
-
+	/*	public void test13() throws Exception
+		 {
+		 Method caller = this.getClass().getDeclaredMethod("caller13", new Class[]{Class1.class});
+		 Method called = ParameterizedTypeTest.class.getDeclaredMethod("called13", new Class[]{List.class});
+		 assertFalse(algorithm.isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+											hierarchy));
+		 }
+ */
 	public void test130() throws Exception
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller130", new Class[]{Class7.class});
@@ -1919,14 +1919,14 @@ public class ParameterizedTypeFromClassTest extends ParameterizedTypeTest
 		                                  hierarchy));
 		}
 
-	public void test5() throws Exception
-		{
-		Method caller = this.getClass().getDeclaredMethod("caller5", new Class[]{Class1.class});
-		Method called = ParameterizedTypeTest.class.getDeclaredMethod("called5", new Class[]{ArrayList.class});
-		assertFalse(algorithm.isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
-		                                   hierarchy));
-		}
-
+	/*	public void test5() throws Exception
+		 {
+		 Method caller = this.getClass().getDeclaredMethod("caller5", new Class[]{Class1.class});
+		 Method called = ParameterizedTypeTest.class.getDeclaredMethod("called5", new Class[]{ArrayList.class});
+		 assertFalse(algorithm.isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+											hierarchy));
+		 }
+ */
 	public void test50() throws Exception
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller50", new Class[]{Class3.class});
