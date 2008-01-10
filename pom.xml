@@ -57,21 +57,6 @@
 		<url>http://dev.davidsoergel.com/dsutils/</url>
 	</issueManagement>
 
-	<dependencies>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>2.1</version>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
-
 	<scm>
 		<connection>scm:svn:http://svn.davidsoergel.com/repos/dsutils</connection>
 		<developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils</developerConnection>
@@ -101,21 +86,20 @@
 	        </releases>
 	    </repository>
 	</repositories>
-	<pluginRepositories>
-	    <pluginRepository>
-	        <id>central</id>
-	        <url>http://dev.davidsoergel.com/artifactory/plugins-releases</url>
-	        <snapshots>
-	            <enabled>false</enabled>
-	        </snapshots>
-	    </pluginRepository>
-	    <pluginRepository>
-	        <id>snapshots</id>
-	        <url>http://dev.davidsoergel.com/artifactory/plugins-snapshots</url>
-	        <releases>
-	            <enabled>false</enabled>
-	        </releases>
-	    </pluginRepository>
-	</pluginRepositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 
 </project>
