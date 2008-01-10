@@ -53,8 +53,8 @@
 	<packaging>jar</packaging>
 
 	<issueManagement>
-		<system>Jira</system>
-		<url>http://jira.davidsoergel.com/dsutils</url>
+		<system>Trac</system>
+		<url>http://dev.davidsoergel.com/dsutils/</url>
 	</issueManagement>
 
 	<dependencies>
