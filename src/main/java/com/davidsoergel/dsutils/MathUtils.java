@@ -82,6 +82,7 @@ public class MathUtils
 	static double LOG_TWO_PI = Math.log(2.0 * Math.PI);
 
 	private static double[][] logTable;
+	public static final double LOGTWO = Math.log(2);
 
 
 	// -------------------------- STATIC METHODS --------------------------
