@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -84,11 +85,15 @@ public class PropertiesUtils
 			return result;
 			}
 
-		propsFilename = ClassLoader.getSystemClassLoader().getResource(defaultFileName).getFile();
-		result = new File(propsFilename);
-		if (result.exists() && result.canRead())
+		URL resource = ClassLoader.getSystemClassLoader().getResource(defaultFileName);
+		if (resource != null)
 			{
-			return result;
+			propsFilename = resource.getFile();
+			result = new File(propsFilename);
+			if (result.exists() && result.canRead())
+				{
+				return result;
+				}
 			}
 
 		throw new RuntimeException("Could not find properties file");
