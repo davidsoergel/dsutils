@@ -258,7 +258,10 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
 	public static final void init()
 		{
-		tl.set(new MersenneTwisterFast());
+		if (tl.get() == null)
+			{
+			tl.set(new MersenneTwisterFast());
+			}
 		}
 
 	public static final int randomInt(int range)

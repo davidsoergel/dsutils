@@ -555,14 +555,22 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return sum / counts.length;
 		}
 
-	public static double stddev(double[] counts)
+	/**
+	 * Since we will often have computed the mean already when calling this, we just pass it in instead of recomputing it
+	 *
+	 * @param x
+	 * @param mean
+	 * @return
+	 */
+	public static double stddev(double[] x, double mean)
 		{
 		double sumsq = 0;
-		for (int i = 0; i < counts.length; i++)
+		for (int i = 0; i < x.length; i++)
 			{
-			sumsq += counts[i] * counts[i];
+			double dev = x[i] - mean;
+			sumsq += dev * dev;
 			}
-		return Math.sqrt(sumsq / counts.length);
+		return Math.sqrt(sumsq / x.length);
 		}
 
 	public static double[] times(double[] data, double scalar)
@@ -579,5 +587,25 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			//logger.debug("Adding cells: " + i + ", " + j);
 			a[i] *= scalar;
 			}
+		}
+
+	public static double norm(int[] x)
+		{
+		int sumsq = 0;
+		for (int i = 0; i < x.length; i++)
+			{
+			sumsq += x[i] * x[i];
+			}
+		return Math.sqrt(sumsq / x.length);
+		}
+
+	public static double norm(double[] x)
+		{
+		double sumsq = 0;
+		for (int i = 0; i < x.length; i++)
+			{
+			sumsq += x[i] * x[i];
+			}
+		return Math.sqrt(sumsq / x.length);
 		}
 	}
