@@ -232,7 +232,10 @@ public class PluginManager<T>
 				}
 			for (Class c : found)
 				{
-				classes.put(c.getCanonicalName(), c);
+				if (!c.isInterface())
+					{
+					classes.put(c.getCanonicalName(), c);
+					}
 				//put((String)dm.getMethod("getName").invoke(), dm);
 				/*try
 				{
