@@ -51,9 +51,9 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public BasicLongRationalInterval(LongRational left, LongRational right)
+	public BasicLongRationalInterval(LongRational left, LongRational right, boolean closedLeft, boolean closedRight)
 		{
-		super(left, right);
+		super(left, right, closedLeft, closedRight);
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
@@ -63,16 +63,40 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 
 	public int compareTo(Interval<LongRational> o)
 		{
-		return left.compareTo(o.getMin());
+		// assume we're using Comparable Numbers; ClassCastException if not
+		int result = left.compareTo(o.getMin());
+		if (result == 0)
+			{
+			if (closedLeft && !o.isClosedLeft())
+				{
+				result = -1;
+				}
+			else if (!closedLeft && o.isClosedLeft())
+				{
+				result = 1;
+				}
+			}
+		return result;
 		}
 
 	// --------------------- Interface Interval ---------------------
 
-	// assumes closed interval, i.e. includes endpoints
+	// assumes open interval, i.e. includes endpoints
 
 	public boolean encompassesValue(LongRational value)
 		{
-		return LongRational.overflowSafeCompare(left, value) <= 0
-				&& LongRational.overflowSafeCompare(right, value) >= 0;
+		int leftCompare = LongRational.overflowSafeCompare(left, value);
+		int rightCompare = LongRational.overflowSafeCompare(right, value);
+
+		if (closedLeft && leftCompare == 0)
+			{
+			return true;
+			}
+		if (closedRight && rightCompare == 0)
+			{
+			return true;
+			}
+
+		return leftCompare < 0 && rightCompare > 0;
 		}
 	}

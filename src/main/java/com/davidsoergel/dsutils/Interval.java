@@ -51,4 +51,8 @@ public interface Interval<T extends Number> extends Comparable<Interval<T>>, Ran
 	T getMax();
 
 	T getMin();
+
+	boolean isClosedLeft();
+
+	boolean isClosedRight();
 	}

@@ -37,6 +37,7 @@ package com.davidsoergel.dsutils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -232,7 +233,7 @@ public class PluginManager<T>
 				}
 			for (Class c : found)
 				{
-				if (!c.isInterface())
+				if (!(c.isInterface() || Modifier.isAbstract(c.getModifiers())))
 					{
 					classes.put(c.getCanonicalName(), c);
 					}

@@ -47,7 +47,7 @@ public class BasicInterval<T extends Number> implements Interval<T>
 	private static Logger logger = Logger.getLogger(BasicInterval.class);
 
 	protected T left, right;
-
+	boolean closedLeft, closedRight;
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
@@ -56,10 +56,22 @@ public class BasicInterval<T extends Number> implements Interval<T>
 		 }
  */
 
-	public BasicInterval(T left, T right)
+	public BasicInterval(T left, T right, boolean closedLeft, boolean closedRight)
 		{
 		this.left = left;
 		this.right = right;
+		this.closedLeft = closedLeft;
+		this.closedRight = closedRight;
+		}
+
+	public boolean isClosedLeft()
+		{
+		return closedLeft;
+		}
+
+	public boolean isClosedRight()
+		{
+		return closedRight;
 		}
 
 	// ------------------------ CANONICAL METHODS ------------------------
@@ -77,6 +89,14 @@ public class BasicInterval<T extends Number> implements Interval<T>
 
 		BasicInterval<T> that = (BasicInterval<T>) o;
 
+		if (closedLeft != that.closedLeft)
+			{
+			return false;
+			}
+		if (closedRight != that.closedRight)
+			{
+			return false;
+			}
 		if (left != null ? !left.equals(that.left) : that.left != null)
 			{
 			return false;
@@ -94,13 +114,16 @@ public class BasicInterval<T extends Number> implements Interval<T>
 		int result;
 		result = (left != null ? left.hashCode() : 0);
 		result = 31 * result + (right != null ? right.hashCode() : 0);
+		result = 31 * result + (closedLeft ? 1 : 0);
+		result = 31 * result + (closedRight ? 1 : 0);
 		return result;
 		}
 
 	public String toString()
 		{
-		return "" + left + " ---- " + right;
+		return (closedLeft ? "[" : "(") + left + "," + right + (closedRight ? "]" : ")");
 		}
+
 
 	// ------------------------ INTERFACE METHODS ------------------------
 
@@ -110,7 +133,19 @@ public class BasicInterval<T extends Number> implements Interval<T>
 	public int compareTo(Interval<T> o)
 		{
 		// assume we're using Comparable Numbers; ClassCastException if not
-		return ((Comparable) getMin()).compareTo(o.getMin());
+		int result = ((Comparable) getMin()).compareTo(o.getMin());
+		if (result == 0)
+			{
+			if (closedLeft && !o.isClosedLeft())
+				{
+				result = -1;
+				}
+			else if (!closedLeft && o.isClosedLeft())
+				{
+				result = 1;
+				}
+			}
+		return result;
 		}
 
 	// --------------------- Interface Interval ---------------------
@@ -119,7 +154,19 @@ public class BasicInterval<T extends Number> implements Interval<T>
 	public boolean encompassesValue(T value)
 		{
 		// too bad we can't easily generify this; we just assume the Numbers are Comparable.
-		return ((Comparable) left).compareTo(value) <= 0 && ((Comparable) right).compareTo(value) >= 0;
+		int leftCompare = ((Comparable) left).compareTo(value);
+		int rightCompare = ((Comparable) right).compareTo(value);
+
+		if (closedLeft && leftCompare == 0)
+			{
+			return true;
+			}
+		if (closedRight && rightCompare == 0)
+			{
+			return true;
+			}
+
+		return leftCompare < 0 && rightCompare > 0;
 		}
 
 	/*	public void setLeft(T left)

@@ -44,7 +44,7 @@ public class MutableBasicInterval<T extends Number> extends BasicInterval<T>
 
 	public MutableBasicInterval()
 		{
-		super(null, null);
+		super(null, null, false, false);
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
@@ -57,5 +57,15 @@ public class MutableBasicInterval<T extends Number> extends BasicInterval<T>
 	public void setRight(T right)
 		{
 		this.right = right;
+		}
+
+	public void setClosedRight(boolean closedRight)
+		{
+		this.closedRight = closedRight;
+		}
+
+	public void setClosedLeft(boolean closedLeft)
+		{
+		this.closedLeft = closedLeft;
 		}
 	}

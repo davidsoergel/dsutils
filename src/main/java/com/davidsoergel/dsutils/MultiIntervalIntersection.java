@@ -36,6 +36,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
@@ -61,6 +62,8 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 		{
 		//private
 		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
+		Set<T> openClosedSet = new HashSet<T>();
+
 		int numberOfConstraints = intervalSets.size();
 		for (Set<U> intervalSet : intervalSets)
 			{
@@ -74,6 +77,16 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 				fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
 				fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
+
+				// if any bound in ever inclusive, that overrides any exclusive bound at the same point
+				if (i.isClosedLeft())
+					{
+					openClosedSet.add(left);
+					}
+				if (i.isClosedRight())
+					{
+					openClosedSet.add(right);
+					}
 				}
 			}
 
@@ -91,6 +104,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 						{
 						currentInterval = new MutableBasicInterval<T>();
 						currentInterval.setLeft(position);
+						currentInterval.setClosedLeft(openClosedSet.contains(position));
 						}
 					}
 				else
@@ -98,6 +112,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 					assert openParens
 							< numberOfConstraints;// hogwash, each constraint may have multiple intervals  // but they shouldn't overlap
 					currentInterval.setRight(position);
+					currentInterval.setClosedRight(openClosedSet.contains(position));
 					if (!currentInterval.isZeroWidth())
 						{
 						this.add(currentInterval);
@@ -116,7 +131,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 		//** efficient?
 		try
 			{
-			Interval<T> f = headSet(new BasicInterval<T>(value, value)).last();
+			Interval<T> f = headSet(new BasicInterval<T>(value, value, false, false)).last();
 			return f.encompassesValue(value);
 			}
 		catch (NoSuchElementException e)
