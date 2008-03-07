@@ -596,7 +596,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			{
 			sumsq += x[i] * x[i];
 			}
-		return Math.sqrt(sumsq / x.length);
+		return Math.sqrt(sumsq);
 		}
 
 	public static double norm(double[] x)
@@ -606,6 +606,6 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			{
 			sumsq += x[i] * x[i];
 			}
-		return Math.sqrt(sumsq / x.length);
+		return Math.sqrt(sumsq);
 		}
 	}

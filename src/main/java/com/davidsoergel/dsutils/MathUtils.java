@@ -275,18 +275,6 @@ public class MathUtils
 		}
 
 	/**
-	 * Greatest Common Denominator.
-	 *
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public static long GCD(long x, long y)
-		{
-		return extendedGCD(x, y)[2];
-		}
-
-	/**
 	 * Extended GCD algorithm; solves the linear Diophantine equation ax + by = c. This clever implementation comes from
 	 * http://www.cs.utsa.edu/~wagner/laws/fav_alg.html, who in turn adapted it from D. Knuth.
 	 *
@@ -317,7 +305,7 @@ public class MathUtils
 			{
 			long q = u[2] / v[2];
 
-			logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [" + q + "]");
+			//	logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [" + q + "]");
 
 			for (int i = 0; i < 3; i++)
 				{
@@ -326,7 +314,7 @@ public class MathUtils
 				v[i] = t[i];
 				}
 			}
-		logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [DONE]");
+		//	logger.debug("" + x + "(" + u[0] + ") + " + y + "(" + u[1] + ") = " + u[2] + "     [DONE]");
 		/*
 					   * The result is inverted if necessary to guarantee that the GCD (c) is non-negative.
 			   *
@@ -392,5 +380,17 @@ public class MathUtils
 					  }
 				  */
 		return u;
+		}
+
+	/**
+	 * Greatest Common Denominator.
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public static long GCD(long x, long y)
+		{
+		return extendedGCD(x, y)[2];
 		}
 	}
