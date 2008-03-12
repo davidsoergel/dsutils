@@ -83,6 +83,7 @@ public class MathUtils
 
 	private static double[][] logTable;
 	public static final double LOGTWO = Math.log(2);
+	public static final double LOGTEN = Math.log(10);
 
 
 	// -------------------------- STATIC METHODS --------------------------
@@ -156,9 +157,17 @@ public class MathUtils
 
 	public static double approximateLog(double x)
 		{
+
+
 		if (x <= logBinIncrement[0])
 			{
 			// x is too small
+
+			if (x < 0)
+				{
+				throw new Error("Can't take log < 0");
+				}
+
 			return Math.log(x);
 			}
 
