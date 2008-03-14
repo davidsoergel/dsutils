@@ -57,7 +57,9 @@ public class PluginManager<T>
 
 	private static Logger logger = Logger.getLogger(PluginManager.class);
 
-	private static ThreadLocal<Map<Type, PluginManager>> _managers_tl = new ThreadLocal<Map<Type, PluginManager>>();
+	//private static ThreadLocal<Map<Type, PluginManager>> _managers_tl = new ThreadLocal<Map<Type, PluginManager>>();
+
+	private static Map<Type, PluginManager> _managers = new HashMap<Type, PluginManager>();
 
 	private Type theInterface;
 	private Set<String> registeredPackages = new HashSet<String>();
@@ -79,11 +81,11 @@ public class PluginManager<T>
 
 	public static <T> PluginManager<T> getManagerForInterface(Type T)
 		{
-		Map<Type, PluginManager> _managers = _managers_tl.get();
+		//Map<Type, PluginManager> _managers = _managers_tl.get();
 		if (_managers == null)
 			{
 			_managers = new HashMap<Type, PluginManager>();
-			_managers_tl.set(_managers);
+			//	_managers_tl.set(_managers);
 			}
 		PluginManager<T> result = _managers.get(T);
 		if (result == null)
