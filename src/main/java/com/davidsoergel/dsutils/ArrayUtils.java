@@ -103,6 +103,20 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		}
 
+
+	public static void decrementByWeighted(double[] a, double[] b, double weight)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			a[i] -= b[i] * weight;
+			}
+		}
+
 	@Deprecated
 	public static double[][] add(double[][] a, double[][] b)
 		{
@@ -149,6 +163,20 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			{
 			//logger.debug("Adding cells: " + i + ", " + j);
 			a[i] += b[i];
+			}
+		}
+
+
+	public static void incrementByWeighted(double[] a, double[] b, double weight)
+		{
+		if (a.length != b.length)
+			{
+			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
+			}
+		for (int i = 0; i < a.length; i++)
+			{
+			//logger.debug("Adding cells: " + i + ", " + j);
+			a[i] += b[i] * weight;
 			}
 		}
 
@@ -507,7 +535,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * returns a new byte[] containing all characters of s starting from startPos
 	 *
 	 * @param s
-	 * @param startPos
+	 * @param startpos
 	 * @return
 	 * @see #suffixOfLength
 	 */
