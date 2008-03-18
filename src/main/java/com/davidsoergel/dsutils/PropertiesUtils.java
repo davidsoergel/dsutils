@@ -60,6 +60,7 @@ public class PropertiesUtils
 		File result;
 
 		String propsFilename = System.getProperty(environmentVariableName);
+		logger.debug("Looking for properties file: " + propsFilename);
 		if (propsFilename != null)
 			{
 			result = new File(propsFilename);
@@ -70,6 +71,7 @@ public class PropertiesUtils
 			}
 
 		propsFilename = System.getProperty("user.dir") + System.getProperty("file.separator") + defaultFileName;
+		logger.debug("Looking for properties file: " + propsFilename);
 		result = new File(propsFilename);
 		if (result.exists() && result.canRead())
 			{
@@ -79,6 +81,7 @@ public class PropertiesUtils
 
 		propsFilename = System.getProperty("user.home") + System.getProperty("file.separator") + homeDirSubdirName
 				+ System.getProperty("file.separator") + defaultFileName;
+		logger.debug("Looking for properties file: " + propsFilename);
 		result = new File(propsFilename);
 		if (result.exists() && result.canRead())
 			{
@@ -86,6 +89,7 @@ public class PropertiesUtils
 			}
 
 		URL resource = ClassLoader.getSystemClassLoader().getResource(defaultFileName);
+		logger.debug("Looking for properties file: " + defaultFileName);
 		if (resource != null)
 			{
 			propsFilename = resource.getFile();
@@ -96,6 +100,7 @@ public class PropertiesUtils
 				}
 			}
 
+		logger.error("Could not find properties file");
 		throw new RuntimeException("Could not find properties file");
 		}
 
