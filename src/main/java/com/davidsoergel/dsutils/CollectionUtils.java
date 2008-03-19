@@ -106,12 +106,25 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 		return ArrayUtils.equalWithinFPError(aa, bb);
 		}
 
-	public static void retainRandom(LinkedList list, int numElements)
+	public static void retainRandom(List list, int numElements)
 		{
 		//inefficient...?
 		while (list.size() > numElements)
 			{
 			list.remove(MersenneTwisterFast.randomInt(list.size()));
+			}
+		}
+
+
+	public static void retainRandom(Collection set, int numElements)
+		{
+		//inefficient...?
+		List list = new LinkedList(set);
+		while (set.size() > numElements)
+			{
+			int pos = MersenneTwisterFast.randomInt(set.size());
+			set.remove(list.get(pos));
+			list.remove(pos);
 			}
 		}
 	}
