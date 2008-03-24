@@ -636,4 +636,25 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return Math.sqrt(sumsq);
 		}
+
+	/**
+	 * Linearly scale the values in the given array in place such that the minimum and maximum values are as requested.
+	 *
+	 * @param x
+	 * @param newMin
+	 * @param newMax
+	 */
+	public static void rescale(double[] x, double newMin, double newMax)
+		{
+		double newSpan = newMax - newMin;
+
+		double oldMin = min(x);
+		double oldMax = max(x);
+		double oldSpan = oldMax - oldMin;
+
+		for (int i = 0; i < x.length; i++)
+			{
+			x[i] = newMin + ((x[i] - oldMin) / oldSpan) * newSpan;
+			}
+		}
 	}
