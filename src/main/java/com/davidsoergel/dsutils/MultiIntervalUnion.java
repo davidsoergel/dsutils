@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2007 David Soergel
+ * Copyright (c) 2001-2008 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
  * david@davidsoergel.com
  *
@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * @author lorax
  * @version 1.0
  */
-public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interval<T>>
+public class MultiIntervalUnion<T extends Number> extends TreeSet<Interval<T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
@@ -58,37 +58,37 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
-	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> intervalSets)
+	public <U extends Interval<T>> MultiIntervalUnion(Set<U> intervalSet)
 		{
 		//private
 		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
 		Set<T> openClosedSet = new HashSet<T>();
 
-		int numberOfConstraints = intervalSets.size();
-		for (Set<U> intervalSet : intervalSets)
+		//int numberOfConstraints = intervalSets.size();
+		//	for (Set<U> intervalSet : intervalSets)
+		//		{
+		for (Interval<T> i : intervalSet)
 			{
-			for (Interval<T> i : intervalSet)
+			T left = i.getMin();
+			T right = i.getMax();
+
+			Integer leftCount = fullLeftRightMap.get(left);
+			Integer rightCount = fullLeftRightMap.get(right);
+
+			fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
+			fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
+
+			// if any bound in ever inclusive, that overrides any exclusive bound at the same point
+			if (i.isClosedLeft())
 				{
-				T left = i.getMin();
-				T right = i.getMax();
-
-				Integer leftCount = fullLeftRightMap.get(left);
-				Integer rightCount = fullLeftRightMap.get(right);
-
-				fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
-				fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
-
-				// if any bound in ever inclusive, that overrides any exclusive bound at the same point
-				if (i.isClosedLeft())
-					{
-					openClosedSet.add(left);
-					}
-				if (i.isClosedRight())
-					{
-					openClosedSet.add(right);
-					}
+				openClosedSet.add(left);
+				}
+			if (i.isClosedRight())
+				{
+				openClosedSet.add(right);
 				}
 			}
+		//		}
 
 		int openParens = 0;
 		MutableBasicInterval<T> currentInterval = null;
@@ -100,7 +100,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 				openParens += parenDelta;
 				if (currentInterval == null)
 					{
-					if (openParens == numberOfConstraints)
+					if (openParens > 0)
 						{
 						currentInterval = new MutableBasicInterval<T>();
 						currentInterval.setLeft(position);
@@ -109,18 +109,16 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 					}
 				else
 					{
-					assert openParens < numberOfConstraints;
-					// hogwash, each constraint may have multiple intervals  // but they shouldn't overlap
-
-					// Sure they can overlap, especially if some are descendants of others.  That's OK... but we should handle it elsewhere.
-
-					currentInterval.setRight(position);
-					currentInterval.setClosedRight(openClosedSet.contains(position));
-					if (!currentInterval.isZeroWidth())
+					if (openParens == 0)
 						{
-						this.add(currentInterval);
+						currentInterval.setRight(position);
+						currentInterval.setClosedRight(openClosedSet.contains(position));
+						if (!currentInterval.isZeroWidth())
+							{
+							this.add(currentInterval);
+							}
+						currentInterval = null;
 						}
-					currentInterval = null;
 					}
 				}
 			}
