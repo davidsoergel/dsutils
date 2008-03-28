@@ -209,28 +209,35 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	public static double[][] deepcopy(double[][] copyFrom, int newcolumns, double newval)
 		{
+		if (copyFrom == null)
+			{
+			return null;
+			}
 		double[][] to = new double[copyFrom.length][];
 		for (int i = 0; i < copyFrom.length; i++)
 			{
-			to[i] = new double[copyFrom[i].length + newcolumns];
+			if (copyFrom[i] != null)
+				{
+				to[i] = new double[copyFrom[i].length + newcolumns];
 
 
-			if (newcolumns < 0)
-				{
-				for (int j = 0; j < (copyFrom[i].length + newcolumns); j++)
+				if (newcolumns < 0)
 					{
-					to[i][j] = copyFrom[i][j];
+					for (int j = 0; j < (copyFrom[i].length + newcolumns); j++)
+						{
+						to[i][j] = copyFrom[i][j];
+						}
 					}
-				}
-			else
-				{
-				for (int j = 0; j < copyFrom[i].length; j++)
+				else
 					{
-					to[i][j] = copyFrom[i][j];
-					}
-				for (int j = copyFrom[i].length; j < copyFrom[i].length + newcolumns; j++)
-					{
-					to[i][j] = newval;
+					for (int j = 0; j < copyFrom[i].length; j++)
+						{
+						to[i][j] = copyFrom[i][j];
+						}
+					for (int j = copyFrom[i].length; j < copyFrom[i].length + newcolumns; j++)
+						{
+						to[i][j] = newval;
+						}
 					}
 				}
 			}
