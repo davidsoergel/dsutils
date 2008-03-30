@@ -37,8 +37,11 @@ package com.davidsoergel.dsutils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -126,5 +129,29 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 			set.remove(list.get(pos));
 			list.remove(pos);
 			}
+		}
+
+	public static <K, V> Collection<V> mapAll(Map<K, V> m, Iterable<K> keys)
+		{
+		Set result = new HashSet<V>();
+		for (K key : keys)
+			{
+			result.add(m.get(key));
+			}
+		return result;
+		}
+
+	public static <K, V> Collection<V> mapAllIgnoringNulls(Map<K, V> m, Iterator<? extends K> keys)
+		{
+		Set result = new HashSet<V>();
+		while (keys.hasNext())
+			{
+			V value = m.get(keys.next());
+			if (value != null)
+				{
+				result.add(value);
+				}
+			}
+		return result;
 		}
 	}
