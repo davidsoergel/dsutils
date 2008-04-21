@@ -1,9 +1,7 @@
-/* $Id: PropertiesToMapAdapter.java 152 2007-12-16 04:23:10Z lorax $ */
-
 /*
- * Copyright (c) 2001-2007 David Soergel
+ * Copyright (c) 2001-2008 David Soergel
  * 418 Richmond St., El Cerrito, CA  94530
- * david@davidsoergel.com
+ * dev@davidsoergel.com
  *
  * All rights reserved.
  *
@@ -31,6 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+/* $Id: PropertiesToMapAdapter.java 152 2007-12-16 04:23:10Z lorax $ */
 
 package com.davidsoergel.dsutils;
 
