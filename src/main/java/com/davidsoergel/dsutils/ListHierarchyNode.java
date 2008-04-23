@@ -58,12 +58,12 @@ public class ListHierarchyNode<T> implements HierarchyNode<T>
 		return children;
 		}
 
-	public T getContents()
+	public T getValue()
 		{
 		return contents;
 		}
 
-	public void setContents(T contents)
+	public void setValue(T contents)
 		{
 		this.contents = contents;
 		}

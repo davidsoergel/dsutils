@@ -59,12 +59,12 @@ public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNo
 		return children;
 		}
 
-	public T getContents()
+	public T getValue()
 		{
 		return contents;
 		}
 
-	public void setContents(T contents)
+	public void setValue(T contents)
 		{
 		this.contents = contents;
 		}
@@ -86,7 +86,7 @@ public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNo
 
 	public int compareTo(Object o)
 		{
-		return getContents().compareTo(o);
+		return getValue().compareTo(o);
 		}
 
 	// --------------------- Interface HierarchyNode ---------------------

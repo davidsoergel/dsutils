@@ -61,12 +61,12 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 		return children;
 		}
 
-	public Map<String, Object> getContents()
+	public Map<String, Object> getValue()
 		{
 		return contents;
 		}
 
-	public void setContents(Map<String, Object> contents)
+	public void setValue(Map<String, Object> contents)
 		{
 		this.contents = contents;
 		}
@@ -100,22 +100,22 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	public Object put(String s, Object o)
 		{
-		return getContents().put(s, o);
+		return getValue().put(s, o);
 		}
 
 	public Object remove(Object o)
 		{
-		return getContents().remove(o);
+		return getValue().remove(o);
 		}
 
 	public void putAll(Map<? extends String, ? extends Object> map)
 		{
-		getContents().putAll(map);
+		getValue().putAll(map);
 		}
 
 	public void clear()
 		{
-		getContents().clear();
+		getValue().clear();
 		}
 
 	// -------------------------- OTHER METHODS --------------------------

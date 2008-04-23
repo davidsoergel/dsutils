@@ -51,12 +51,12 @@ public abstract class AbstractHierarchyNode<T> implements HierarchyNode<T>
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public T getContents()
+	public T getValue()
 		{
 		return contents;
 		}
 
-	public void setContents(T contents)
+	public void setValue(T contents)
 		{
 		this.contents = contents;
 		}

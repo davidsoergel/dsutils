@@ -154,4 +154,50 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 			}
 		return result;
 		}
+
+
+	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists)
+		{
+		Object o = null;
+		for (List l : theLists)
+			{
+			if (l.size() == 0)
+				{
+				return false;
+				}
+			if (o != null)
+				{
+				if (!o.equals(l.get(0)))
+					{
+					return false;
+					}
+				}
+			else
+				//if(o == null)
+				{
+				o = l.get(0);
+				}
+
+			if (o == null)
+				{
+				// the first list had null as its first element, that's no good
+				return false;
+				}
+			}
+		return true;
+		}
+
+	public static <T> T removeAllFirstElements(Set<List<T>> theLists)
+		{
+		T o = null;
+		for (List<T> l : theLists)
+			{
+			if (l.size() == 0)
+				{
+				return null;
+				}
+			o = l.remove(0);
+			}
+		return o;
+		}
 	}

@@ -58,7 +58,7 @@ public interface HierarchyNode<T>// was abstract class
 	   this.parent = parent;
 	   }*/
 
-	T getContents();
+	T getValue();
 
 	//	public void addChild(HierarchyNode<T> child);
 	/*		{
@@ -77,7 +77,7 @@ public interface HierarchyNode<T>// was abstract class
 	   return contents;
 	   }*/
 
-	void setContents(T contents);
+	void setValue(T contents);
 
 	/*		{
 	   return parent;

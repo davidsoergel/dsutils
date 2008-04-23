@@ -57,27 +57,27 @@ public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<S
 
 	public int size()
 		{
-		return getContents().size();
+		return getValue().size();
 		}
 
 	public boolean isEmpty()
 		{
-		return getContents().isEmpty();
+		return getValue().isEmpty();
 		}
 
 	public boolean containsKey(Object o)
 		{
-		return getContents().containsKey(o);
+		return getValue().containsKey(o);
 		}
 
 	public boolean containsValue(Object o)
 		{
-		return getContents().containsValue(o);
+		return getValue().containsValue(o);
 		}
 
 	public Object get(Object o)
 		{
-		return getContents().get(o);
+		return getValue().get(o);
 		}
 
 	// transactions required for these
@@ -106,17 +106,17 @@ public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<S
 
 	public Set<String> keySet()
 		{
-		return getContents().keySet();
+		return getValue().keySet();
 		}
 
 	public Collection<Object> values()
 		{
-		return getContents().values();
+		return getValue().values();
 		}
 
 	public Set<Entry<String, Object>> entrySet()
 		{
-		return getContents().entrySet();
+		return getValue().entrySet();
 		}
 
 	// -------------------------- OTHER METHODS --------------------------
