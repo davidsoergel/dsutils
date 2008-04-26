@@ -131,6 +131,19 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 			}
 		}
 
+
+	public static void retainRandom(Map map, int numElements)
+		{
+		//inefficient...?
+		List list = new LinkedList(map.keySet());
+		while (map.size() > numElements)
+			{
+			int pos = MersenneTwisterFast.randomInt(map.size());
+			map.remove(list.get(pos));
+			list.remove(pos);
+			}
+		}
+
 	public static <K, V> Collection<V> mapAll(Map<K, V> m, Iterable<K> keys)
 		{
 		Set result = new HashSet<V>();
@@ -159,9 +172,10 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists)
 		{
 		Object o = null;
+		if(theLists.isEmpty()) { return false; }
 		for (List l : theLists)
 			{
-			if (l.size() == 0)
+			if (l.isEmpty())
 				{
 				return false;
 				}
@@ -192,9 +206,9 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 		T o = null;
 		for (List<T> l : theLists)
 			{
-			if (l.size() == 0)
+			if (l.isEmpty())
 				{
-				return null;
+				throw new IndexOutOfBoundsException("Can't remove first element from an empty list.");
 				}
 			o = l.remove(0);
 			}
