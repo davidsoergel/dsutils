@@ -183,6 +183,11 @@ public class MathUtils
 		return Math.log(x);
 		}
 
+	public static double approximateLog2(double d)
+		{
+		return approximateLog(d) / LOGTWO;
+		}
+
 	/**
 	 * log(sum(exp(args)))
 	 *
