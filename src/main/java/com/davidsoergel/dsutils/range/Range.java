@@ -32,7 +32,7 @@
 
 package com.davidsoergel.dsutils.range;
 
-/* $Id$ */
+
 
 /**
  * Marker interface for classes that describe a range of values in one way or another.  "Range" is meant in a very

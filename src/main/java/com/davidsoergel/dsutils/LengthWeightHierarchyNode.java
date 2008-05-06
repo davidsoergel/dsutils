@@ -30,82 +30,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
 package com.davidsoergel.dsutils;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
- * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
- * stored in a List and are thus ordered.
+ * @Author David Soergel
+ * @Version 1.0
  */
-public class ListHierarchyNode<T> implements HierarchyNode<T>
+public interface LengthWeightHierarchyNode<T> extends HierarchyNode<T>
 	{
-	// ------------------------------ FIELDS ------------------------------
+	Double getLength();
 
-	private List<HierarchyNode<T>> children = new ArrayList<HierarchyNode<T>>();
+	double getWeight();
 
-	private HierarchyNode<? extends T> parent;
-	private T contents;
-
-
-	// --------------------- GETTER / SETTER METHODS ---------------------
-
-	public List<HierarchyNode<T>> getChildren()
-		{
-		return children;
-		}
-
-	public T getValue()
-		{
-		return contents;
-		}
-
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
-
-	public HierarchyNode<? extends T> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchyNode<? extends T> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	public ListHierarchyNode<T> newChild()
-		{
-		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
-		//result.setContents(contents);
-		children.add(result);
-		return result;
-		}
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	/**
-	 * not needed, non-transactional implementation
-	 */
-	public void beginTaxn()
-		{
-		}
-
-	public void commit()
-		{
-		}
-
-	public void merge()
-		{
-		//To change body of implemented methods use File | Settings | File Templates.
-		}
+	Double getLargestLengthSpan();
 	}

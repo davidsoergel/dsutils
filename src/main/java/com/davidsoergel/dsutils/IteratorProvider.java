@@ -37,7 +37,7 @@ import org.apache.commons.lang.NotImplementedException;
 import java.util.Collection;
 import java.util.Iterator;
 
-/* $Id$ */
+
 
 /**
  * @Author David Soergel

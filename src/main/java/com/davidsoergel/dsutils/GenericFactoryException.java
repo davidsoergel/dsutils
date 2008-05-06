@@ -34,7 +34,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
-/* $Id$ */
+
 
 /**
  * @author lorax

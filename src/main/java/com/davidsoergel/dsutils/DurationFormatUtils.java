@@ -32,7 +32,7 @@
 
 package com.davidsoergel.dsutils;
 
-/* $Id$ */
+
 
 /**
  * @Author David Soergel

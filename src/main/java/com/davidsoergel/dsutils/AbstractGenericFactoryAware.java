@@ -34,11 +34,11 @@ package com.davidsoergel.dsutils;
 
 import org.jetbrains.annotations.NotNull;
 
-/* $Id$ */
+
 
 /**
- * @Author David Soergel
- * @Version 1.0
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version 1.0
  */
 public abstract class AbstractGenericFactoryAware implements GenericFactoryAware
 	{

@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* $Id: PropertiesToMapAdapter.java 152 2007-12-16 04:23:10Z lorax $ */
+
 
 package com.davidsoergel.dsutils;
 

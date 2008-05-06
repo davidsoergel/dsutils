@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-/* $Id$ */
+
 
 /**
  * @Author David Soergel

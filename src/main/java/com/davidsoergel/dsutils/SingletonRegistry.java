@@ -30,9 +30,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* $Id$ */
 
-/* $Id$ */
+
+
 
 package com.davidsoergel.dsutils;
 
