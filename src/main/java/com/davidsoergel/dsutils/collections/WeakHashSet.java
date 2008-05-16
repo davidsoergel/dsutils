@@ -31,10 +31,7 @@
  */
 
 
-
-
-
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
 

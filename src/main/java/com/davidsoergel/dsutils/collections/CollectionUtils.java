@@ -31,8 +31,10 @@
  */
 
 
+package com.davidsoergel.dsutils.collections;
 
-package com.davidsoergel.dsutils;
+import com.davidsoergel.dsutils.ArrayUtils;
+import com.davidsoergel.dsutils.math.MersenneTwisterFast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +50,7 @@ import java.util.Set;
  * @author lorax
  * @version 1.0
  */
-public class CollectionUtils extends org.apache.commons.collections.CollectionUtils
+public class CollectionUtils extends org.apache.commons.collections15.CollectionUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -172,7 +174,10 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists)
 		{
 		Object o = null;
-		if(theLists.isEmpty()) { return false; }
+		if (theLists.isEmpty())
+			{
+			return false;
+			}
 		for (List l : theLists)
 			{
 			if (l.isEmpty())

@@ -31,31 +31,25 @@
  */
 
 
-
-package com.davidsoergel.dsutils;
-
-import org.apache.log4j.Logger;
+package com.davidsoergel.dsutils.range;
 
 /**
- * @author lorax
- * @version 1.0
+ * Created by IntelliJ IDEA. User: soergel Date: Dec 7, 2006 Time: 4:46:30 PM To change this template use File |
+ * Settings | File Templates.
  */
-public class MathUtilsException extends ChainedException
+public interface Interval<T extends Number> extends Comparable<Interval<T>>, Range<T>//extends HierarchyNode
 	{
-	// ------------------------------ FIELDS ------------------------------
+	// -------------------------- OTHER METHODS --------------------------
 
-	private static Logger logger = Logger.getLogger(MathUtilsException.class);
+	// this is a little questionable because Numbers are not necessarily Comparable, but let's just assume they are.
 
+	boolean encompassesValue(T value);
 
-	// --------------------------- CONSTRUCTORS ---------------------------
+	T getMax();
 
-	public MathUtilsException(String s)
-		{
-		super(s);
-		}
+	T getMin();
 
-	public MathUtilsException(Throwable t)
-		{
-		super(t);
-		}
+	boolean isClosedLeft();
+
+	boolean isClosedRight();
 	}

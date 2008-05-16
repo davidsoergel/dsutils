@@ -31,28 +31,76 @@
  */
 
 
+package com.davidsoergel.dsutils.tree;
 
-package com.davidsoergel.dsutils;
-
-import com.davidsoergel.dsutils.range.Range;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
- * Created by IntelliJ IDEA. User: soergel Date: Dec 7, 2006 Time: 4:46:30 PM To change this template use File |
- * Settings | File Templates.
+ * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
+ * stored in a SortedSet and thus maintain their natural order.
  */
-public interface Interval<T extends Number> extends Comparable<Interval<T>>, Range<T>//extends HierarchyNode
+public class SortedSetHierarchyNode<T extends Comparable> implements HierarchyNode<T>, Comparable
 	{
-	// -------------------------- OTHER METHODS --------------------------
+	// ------------------------------ FIELDS ------------------------------
 
-	// this is a little questionable because Numbers are not necessarily Comparable, but let's just assume they are.
+	private SortedSet<HierarchyNode<T>> children = new TreeSet<HierarchyNode<T>>();
 
-	boolean encompassesValue(T value);
 
-	T getMax();
+	private HierarchyNode<? extends T> parent;
+	private T contents;
 
-	T getMin();
 
-	boolean isClosedLeft();
+	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	boolean isClosedRight();
+	public SortedSet<HierarchyNode<T>> getChildren()
+		{
+		return children;
+		}
+
+	public T getValue()
+		{
+		return contents;
+		}
+
+	public void setValue(T contents)
+		{
+		this.contents = contents;
+		}
+
+	public HierarchyNode<? extends T> getParent()
+		{
+		return parent;
+		}
+
+	public void setParent(HierarchyNode<? extends T> parent)
+		{
+		this.parent = parent;
+		}
+
+	// ------------------------ INTERFACE METHODS ------------------------
+
+
+	// --------------------- Interface Comparable ---------------------
+
+	public int compareTo(Object o)
+		{
+		return getValue().compareTo(o);
+		}
+
+	// --------------------- Interface HierarchyNode ---------------------
+
+	public SortedSetHierarchyNode<T> newChild()
+		{
+		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>();
+		//result.setContents(contents);
+		children.add(result);
+		return result;
+		}
+
+
+	public boolean isLeaf()
+		{
+		return children == null || children.isEmpty();
+		}
 	}

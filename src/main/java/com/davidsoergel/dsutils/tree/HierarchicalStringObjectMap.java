@@ -31,8 +31,7 @@
  */
 
 
-
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.tree;
 
 import java.util.Collection;
 import java.util.Map;
@@ -122,4 +121,11 @@ public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<S
 	// -------------------------- OTHER METHODS --------------------------
 
 	public abstract void merge();
+
+
+	public boolean isLeaf()
+		{
+		Collection<? extends HierarchyNode<? extends Map<String, Object>>> children = getChildren();
+		return children == null || children.isEmpty();
+		}
 	}

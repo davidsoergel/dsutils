@@ -31,39 +31,67 @@
  */
 
 
+package com.davidsoergel.dsutils.tree;
 
-package com.davidsoergel.dsutils;
-
-import org.apache.log4j.Logger;
-import org.testng.annotations.Test;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by IntelliJ IDEA. User: soergel Date: Dec 6, 2006 Time: 5:07:31 PM To change this template use File |
- * Settings | File Templates.
+ * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
+ * stored in a List and are thus ordered.
  */
-public class FareyFractionUtilsTest//extends TestCase
+public class ListHierarchyNode<T> implements HierarchyNode<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(FareyFractionUtilsTest.class);
+	private List<HierarchyNode<T>> children = new ArrayList<HierarchyNode<T>>();
+
+	private HierarchyNode<? extends T> parent;
+	private T contents;
 
 
-	// -------------------------- OTHER METHODS --------------------------
+	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	@Test
-	public void rgtWorks()
+	public List<HierarchyNode<T>> getChildren()
 		{
-		//logger.debug(FareyFractionUtils.rgt(new LongRational(5345, 73463)));
+		return children;
+		}
+
+	public T getValue()
+		{
+		return contents;
+		}
+
+	public void setValue(T contents)
+		{
+		this.contents = contents;
+		}
+
+	public HierarchyNode<? extends T> getParent()
+		{
+		return parent;
+		}
+
+	public void setParent(HierarchyNode<? extends T> parent)
+		{
+		this.parent = parent;
+		}
+
+	// ------------------------ INTERFACE METHODS ------------------------
 
 
-		//logger.debug(FareyFractionUtils.rgt(new LongRational(5, 7)));
-		// examples from Tropashko 2004
-		assert FareyFractionUtils.rgt(new LongRational(1, 2)).equals(new LongRational(1, 1));
-		assert FareyFractionUtils.rgt(new LongRational(2, 3)).equals(new LongRational(1, 1));
-		assert FareyFractionUtils.rgt(new LongRational(3, 4)).equals(new LongRational(1, 1));
-		assert FareyFractionUtils.rgt(new LongRational(4, 5)).equals(new LongRational(1, 1));
-		assert FareyFractionUtils.rgt(new LongRational(5, 7)).equals(new LongRational(3, 4));
-		assert FareyFractionUtils.rgt(new LongRational(3, 5)).equals(new LongRational(2, 3));
-		assert FareyFractionUtils.rgt(new LongRational(4, 7)).equals(new LongRational(3, 5));
+	// --------------------- Interface HierarchyNode ---------------------
+
+	public ListHierarchyNode<T> newChild()
+		{
+		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
+		//result.setContents(contents);
+		children.add(result);
+		return result;
+		}
+
+	public boolean isLeaf()
+		{
+		return children == null || children.isEmpty();
 		}
 	}

@@ -31,41 +31,61 @@
  */
 
 
+package com.davidsoergel.dsutils.tree;
 
-package com.davidsoergel.dsutils;
+import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA. User: lorax Date: Mar 28, 2007 Time: 10:36:03 AM To change this template use File |
- * Settings | File Templates.
+ * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
+ * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
+ * children.
  */
-public class MutableBasicInterval<T extends Number> extends BasicInterval<T>
+public abstract class AbstractHierarchyNode<T> implements HierarchyNode<T>
 	{
-	// --------------------------- CONSTRUCTORS ---------------------------
+	// ------------------------------ FIELDS ------------------------------
 
-	public MutableBasicInterval()
-		{
-		super(null, null, false, false);
-		}
+	private HierarchyNode<? extends T> parent;
+	private T contents;
+
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public void setLeft(T left)
+	public T getValue()
 		{
-		this.left = left;
+		return contents;
 		}
 
-	public void setRight(T right)
+	public void setValue(T contents)
 		{
-		this.right = right;
+		this.contents = contents;
 		}
 
-	public void setClosedRight(boolean closedRight)
+	public HierarchyNode<? extends T> getParent()
 		{
-		this.closedRight = closedRight;
+		return parent;
 		}
 
-	public void setClosedLeft(boolean closedLeft)
+	public void setParent(HierarchyNode<? extends T> parent)
 		{
-		this.closedLeft = closedLeft;
+		this.parent = parent;
 		}
+
+	// ------------------------ INTERFACE METHODS ------------------------
+
+
+	// --------------------- Interface HierarchyNode ---------------------
+
+	//private Collection<HierarchyNode<T>> children;
+
+	public abstract Collection<HierarchyNode<T>> getChildren();
+
+
+	// -------------------------- OTHER METHODS --------------------------
+
+	public void addChild(HierarchyNode<T> child)
+		{
+		getChildren().add(child);
+		}
+
+	public abstract HierarchyNode<T> newChild(T contents);
 	}

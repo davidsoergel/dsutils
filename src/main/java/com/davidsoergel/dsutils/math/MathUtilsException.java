@@ -31,81 +31,31 @@
  */
 
 
+package com.davidsoergel.dsutils.math;
 
-package com.davidsoergel.dsutils;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.davidsoergel.dsutils.ChainedException;
+import org.apache.log4j.Logger;
 
 /**
- * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
- * stored in a List and are thus ordered.
+ * @author lorax
+ * @version 1.0
  */
-public class ListHierarchyNode<T> implements HierarchyNode<T>
+public class MathUtilsException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private List<HierarchyNode<T>> children = new ArrayList<HierarchyNode<T>>();
-
-	private HierarchyNode<? extends T> parent;
-	private T contents;
+	private static Logger logger = Logger.getLogger(MathUtilsException.class);
 
 
-	// --------------------- GETTER / SETTER METHODS ---------------------
+	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public List<HierarchyNode<T>> getChildren()
+	public MathUtilsException(String s)
 		{
-		return children;
+		super(s);
 		}
 
-	public T getValue()
+	public MathUtilsException(Throwable t)
 		{
-		return contents;
-		}
-
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
-
-	public HierarchyNode<? extends T> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchyNode<? extends T> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	public ListHierarchyNode<T> newChild()
-		{
-		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
-		//result.setContents(contents);
-		children.add(result);
-		return result;
-		}
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	/**
-	 * not needed, non-transactional implementation
-	 */
-	public void beginTaxn()
-		{
-		}
-
-	public void commit()
-		{
-		}
-
-	public void merge()
-		{
-		//To change body of implemented methods use File | Settings | File Templates.
+		super(t);
 		}
 	}

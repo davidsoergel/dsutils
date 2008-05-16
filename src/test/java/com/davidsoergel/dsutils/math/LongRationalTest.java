@@ -31,8 +31,7 @@
  */
 
 
-
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.math;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;

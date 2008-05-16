@@ -30,19 +30,67 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
 
+package com.davidsoergel.dsutils.tree;
 
+import java.util.Collection;
 
 /**
- * @Author David Soergel
- * @Version 1.0
+ * Represents a simple hierarchy, where a value of the given generic type is attached at each node.  A node may have any
+ * number of children, which are also HierarchyNodes of the same generic type.  The type of Collection that holds the
+ * children is up to the implementation, so they may or may not be ordered.
+ *
+ * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
-public interface LengthWeightHierarchyNode<T> extends HierarchyNode<T>
+public interface HierarchyNode<T>// was abstract class
 	{
-	Double getLength();
+	// -------------------------- OTHER METHODS --------------------------
 
-	double getWeight();
+	/*private HierarchyNode<T> parent;
+	private T contents;
+	//private Collection<HierarchyNode<T>> children;
+*/
 
-	Double getLargestLengthSpan();
+	Collection<? extends HierarchyNode<? extends T>> getChildren();
+
+	boolean isLeaf();
+
+	/*		{
+		   this.parent = parent;
+		   }*/
+
+	T getValue();
+
+	//	public void addChild(HierarchyNode<T> child);
+	/*		{
+	   getChildren().add(child);
+	   }*/
+
+	HierarchyNode<? extends T> getParent();
+
+	/*		{
+	   this.contents = contents;
+	   }*/
+
+	HierarchyNode<? extends T> newChild();
+
+	/*		{
+	   return contents;
+	   }*/
+
+	void setValue(T contents);
+
+	/*		{
+	   return parent;
+	   }*/
+
+	void setParent(HierarchyNode<? extends T> parent);
+
+	//	public void beginTaxn();
+
+	//	public void commit();
+
+	//	void merge();
+
+	//void setName(String label);
 	}

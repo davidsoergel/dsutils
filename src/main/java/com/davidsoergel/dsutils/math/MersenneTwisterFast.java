@@ -31,8 +31,7 @@
  */
 
 
-
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.math;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

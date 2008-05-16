@@ -31,8 +31,7 @@
  */
 
 
-
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.math;
 
 /**
  * Title              <p> Safe Integer Arithmetic Description        <p> Copyright          Copyright (c) <p> J F H

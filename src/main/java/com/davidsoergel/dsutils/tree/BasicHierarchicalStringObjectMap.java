@@ -31,49 +31,51 @@
  */
 
 
+package com.davidsoergel.dsutils.tree;
 
-package com.davidsoergel.dsutils;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
- * stored in a Set and are thus unordered.
+ * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
+ * interface and simply delegates to the contained Map.  The children are stored in a List and are thus ordered.
  */
-public class SetHierarchyNode<T> implements HierarchyNode<T>
+public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMap
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	protected Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
+	Map<String, Object> contents = new HashMap<String, Object>();
 
-	private HierarchyNode<? extends T> parent;
-	private T contents;
+	private List<HierarchyNode<Map<String, Object>>> children = new ArrayList<HierarchyNode<Map<String, Object>>>();
+
+	private HierarchyNode<? extends Map<String, Object>> parent;
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public Set<HierarchyNode<T>> getChildren()
+	public List<HierarchyNode<Map<String, Object>>> getChildren()
 		{
 		return children;
 		}
 
-	public T getValue()
+	public Map<String, Object> getValue()
 		{
 		return contents;
 		}
 
-	public void setValue(T contents)
+	public void setValue(Map<String, Object> contents)
 		{
 		this.contents = contents;
 		}
 
-	public HierarchyNode<? extends T> getParent()
+	public HierarchyNode<? extends Map<String, Object>> getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<? extends T> parent)
+	public void setParent(HierarchyNode<? extends Map<String, Object>> parent)
 		{
 		this.parent = parent;
 		}
@@ -83,26 +85,39 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 
 	// --------------------- Interface HierarchyNode ---------------------
 
-	public SetHierarchyNode<T> newChild()
+	public HierarchicalStringObjectMap newChild()
 		{
-		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
+		BasicHierarchicalStringObjectMap result = new BasicHierarchicalStringObjectMap();
+
 		//result.setContents(contents);
 		children.add(result);
 		return result;
 		}
 
+	// --------------------- Interface Map ---------------------
+
+	public Object put(String s, Object o)
+		{
+		return getValue().put(s, o);
+		}
+
+	public Object remove(Object o)
+		{
+		return getValue().remove(o);
+		}
+
+	public void putAll(Map<? extends String, ? extends Object> map)
+		{
+		getValue().putAll(map);
+		}
+
+	public void clear()
+		{
+		getValue().clear();
+		}
+
 	// -------------------------- OTHER METHODS --------------------------
-
-	/**
-	 * not needed, non-transactional implementation
-	 */
-	public void beginTaxn()
-		{
-		}
-
-	public void commit()
-		{
-		}
 
 	public void merge()
 		{

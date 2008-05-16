@@ -31,9 +31,9 @@
  */
 
 
+package com.davidsoergel.dsutils.range;
 
-package com.davidsoergel.dsutils;
-
+import com.davidsoergel.dsutils.math.LongRational;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;

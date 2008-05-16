@@ -31,9 +31,9 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
+import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
