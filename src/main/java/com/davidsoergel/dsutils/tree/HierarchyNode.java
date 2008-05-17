@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.tree;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a simple hierarchy, where a value of the given generic type is attached at each node.  A node may have any
@@ -42,7 +43,7 @@ import java.util.Collection;
  *
  * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
-public interface HierarchyNode<T>// was abstract class
+public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>// was abstract class
 	{
 	// -------------------------- OTHER METHODS --------------------------
 
@@ -51,7 +52,7 @@ public interface HierarchyNode<T>// was abstract class
 	//private Collection<HierarchyNode<T>> children;
 */
 
-	Collection<? extends HierarchyNode<? extends T>> getChildren();
+	Collection<? extends HierarchyNode<T, I>> getChildren();
 
 	boolean isLeaf();
 
@@ -66,13 +67,15 @@ public interface HierarchyNode<T>// was abstract class
 	   getChildren().add(child);
 	   }*/
 
-	HierarchyNode<? extends T> getParent();
+	HierarchyNode<? extends T, I> getParent();
+
+	List<? extends HierarchyNode<T, I>> getAncestorPath();
 
 	/*		{
 	   this.contents = contents;
 	   }*/
 
-	HierarchyNode<? extends T> newChild();
+	HierarchyNode<? extends T, I> newChild();
 
 	/*		{
 	   return contents;
@@ -84,7 +87,7 @@ public interface HierarchyNode<T>// was abstract class
 	   return parent;
 	   }*/
 
-	void setParent(HierarchyNode<? extends T> parent);
+	//void setParent(HierarchyNode<? extends T> parent);
 
 	//	public void beginTaxn();
 
@@ -93,4 +96,6 @@ public interface HierarchyNode<T>// was abstract class
 	//	void merge();
 
 	//void setName(String label);
+
+	DepthFirstTreeIterator<T, I> depthFirstIterator();
 	}

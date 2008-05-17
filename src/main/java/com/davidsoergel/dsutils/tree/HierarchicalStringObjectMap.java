@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils.tree;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +44,8 @@ import java.util.Set;
  * interface and simply delegates to the contained Map.   The type of Collection that holds the children is up to the
  * implementation, so they may or may not be ordered.
  */
-public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<String, Object>>, Map<String, Object>
+public abstract class HierarchicalStringObjectMap
+		implements HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>, Map<String, Object>
 	{
 	// ------------------------ INTERFACE METHODS ------------------------
 
@@ -125,7 +128,24 @@ public abstract class HierarchicalStringObjectMap implements HierarchyNode<Map<S
 
 	public boolean isLeaf()
 		{
-		Collection<? extends HierarchyNode<? extends Map<String, Object>>> children = getChildren();
+		Collection<? extends HierarchyNode<? extends Map<String, Object>, HierarchicalStringObjectMap>> children =
+				getChildren();
 		return children == null || children.isEmpty();
+		}
+
+	public abstract HierarchicalStringObjectMap getParent();
+
+	public List<HierarchicalStringObjectMap> getAncestorPath()
+		{
+		List<HierarchicalStringObjectMap> result = new LinkedList<HierarchicalStringObjectMap>();
+		HierarchicalStringObjectMap trav = this;
+
+		while (trav != null)
+			{
+			result.add(0, trav);
+			trav = trav.getParent();
+			}
+
+		return result;
 		}
 	}

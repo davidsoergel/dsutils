@@ -30,62 +30,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.davidsoergel.dsutils.tree;
 
-import java.util.Collection;
+import com.davidsoergel.dsutils.ChainedException;
+import org.apache.log4j.Logger;
 
 /**
- * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
- * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
- * children.
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version $Rev$
  */
-public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
+public class TreeException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private HierarchyNode<? extends T, I> parent;
-	private T contents;
+	private static Logger logger = Logger.getLogger(TreeException.class);
 
 
-	// --------------------- GETTER / SETTER METHODS ---------------------
+	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public T getValue()
+	public TreeException(String s)
 		{
-		return contents;
+		super(s);
 		}
 
-	public void setValue(T contents)
+	public TreeException(Exception e)
 		{
-		this.contents = contents;
+		super(e);
 		}
 
-	public HierarchyNode<? extends T, I> getParent()
+	public TreeException(Exception e, String s)
 		{
-		return parent;
+		super(e, s);
 		}
-
-	public void setParent(HierarchyNode<? extends T, I> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	//private Collection<HierarchyNode<T>> children;
-
-	public abstract Collection<HierarchyNode<T, I>> getChildren();
-
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	public void addChild(HierarchyNode<T, I> child)
-		{
-		getChildren().add(child);
-		}
-
-	public abstract HierarchyNode<T, I> newChild(T contents);
 	}

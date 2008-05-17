@@ -30,62 +30,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.davidsoergel.dsutils.tree;
 
-import java.util.Collection;
+import java.util.Iterator;
+
 
 /**
- * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
- * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
- * children.
+ * @Author David Soergel
+ * @Version 1.0
  */
-public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
+public interface DepthFirstTreeIterator<T, I extends HierarchyNode<T, I>> extends Iterator<I>
 	{
-	// ------------------------------ FIELDS ------------------------------
-
-	private HierarchyNode<? extends T, I> parent;
-	private T contents;
-
-
-	// --------------------- GETTER / SETTER METHODS ---------------------
-
-	public T getValue()
-		{
-		return contents;
-		}
-
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
-
-	public HierarchyNode<? extends T, I> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchyNode<? extends T, I> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	//private Collection<HierarchyNode<T>> children;
-
-	public abstract Collection<HierarchyNode<T, I>> getChildren();
-
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	public void addChild(HierarchyNode<T, I> child)
-		{
-		getChildren().add(child);
-		}
-
-	public abstract HierarchyNode<T, I> newChild(T contents);
+	void skipAllDescendants(HierarchyNode<T, I> node) throws TreeException;
 	}

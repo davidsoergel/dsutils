@@ -30,62 +30,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.davidsoergel.dsutils.tree;
 
-import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
- * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
- * children.
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version $Rev$
  */
-public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
+public class TreePrinter
 	{
-	// ------------------------------ FIELDS ------------------------------
 
-	private HierarchyNode<? extends T, I> parent;
-	private T contents;
-
-
-	// --------------------- GETTER / SETTER METHODS ---------------------
-
-	public T getValue()
+	public static <T, I extends HierarchyNode<T, I>> String prettyPrint(HierarchyNode<T, I> root)
 		{
-		return contents;
+		StringBuffer sb = new StringBuffer();
+		Iterator<I> iterator = root.iterator();// depth first
+		while (iterator.hasNext())
+			{
+			I n = iterator.next();
+			int level = n.getAncestorPath().size();
+			for (int i = 1; i < level; i++)
+				{
+				sb.append("\t|");
+				}
+			sb.append(" ").append(n).append("\n");
+			}
+		return sb.toString();
 		}
 
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
+	/*
+   public static void appendToStringBuffer(HierarchyNode n, StringBuffer sb, int indentLevel)
+	   {
+	   for (int i = 0; i < indentLevel; i++)
+		   {
+		   sb.append("\t");
+		   }
+	   sb.append(getKey().getKey()).append(" = ").append(value).append("\n");
+	   indentLevel++;
 
-	public HierarchyNode<? extends T, I> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchyNode<? extends T, I> parent)
-		{
-		this.parent = parent;
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
-
-	//private Collection<HierarchyNode<T>> children;
-
-	public abstract Collection<HierarchyNode<T, I>> getChildren();
-
-
-	// -------------------------- OTHER METHODS --------------------------
-
-	public void addChild(HierarchyNode<T, I> child)
-		{
-		getChildren().add(child);
-		}
-
-	public abstract HierarchyNode<T, I> newChild(T contents);
+	   for (HierarchicalTypedPropertyNode<HierarchicalTypedPropertyNode<String, Object>, ParameterSetValueOrRange> child : children
+			   .values())
+		   {
+		   ((WrappedHierarchicalTypedPropertyNode) child).appendToStringBuffer(sb, indentLevel);
+		   }
+	   }*/
 	}

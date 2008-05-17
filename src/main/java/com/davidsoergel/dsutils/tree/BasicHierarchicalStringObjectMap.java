@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils.tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,14 +49,15 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	Map<String, Object> contents = new HashMap<String, Object>();
 
-	private List<HierarchyNode<Map<String, Object>>> children = new ArrayList<HierarchyNode<Map<String, Object>>>();
+	private List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> children =
+			new ArrayList<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>>();
 
-	private HierarchyNode<? extends Map<String, Object>> parent;
+	private HierarchicalStringObjectMap parent;
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public List<HierarchyNode<Map<String, Object>>> getChildren()
+	public List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> getChildren()
 		{
 		return children;
 		}
@@ -70,12 +72,12 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 		this.contents = contents;
 		}
 
-	public HierarchyNode<? extends Map<String, Object>> getParent()
+	public HierarchicalStringObjectMap getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<? extends Map<String, Object>> parent)
+	public void setParent(HierarchicalStringObjectMap parent)
 		{
 		this.parent = parent;
 		}
@@ -122,5 +124,21 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	public void merge()
 		{
 		//To change body of implemented methods use File | Settings | File Templates.
+		}
+
+
+	/**
+	 * Returns an iterator over a set of elements of type T.
+	 *
+	 * @return an Iterator.
+	 */
+	public Iterator<HierarchicalStringObjectMap> iterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
+		}
+
+	public DepthFirstTreeIterator<Map<String, Object>, HierarchicalStringObjectMap> depthFirstIterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
 		}
 	}

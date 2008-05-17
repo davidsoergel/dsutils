@@ -34,25 +34,29 @@
 package com.davidsoergel.dsutils.tree;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a Set and are thus unordered.
  */
-public class SetHierarchyNode<T> implements HierarchyNode<T>
+public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	protected Set<HierarchyNode<T>> children = new HashSet<HierarchyNode<T>>();
+	protected Set<HierarchyNode<T, SetHierarchyNode<T>>> children =
+			new HashSet<HierarchyNode<T, SetHierarchyNode<T>>>();
 
-	private HierarchyNode<? extends T> parent;
+	private SetHierarchyNode<T> parent;
 	private T contents;
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public Set<HierarchyNode<T>> getChildren()
+	public Set<HierarchyNode<T, SetHierarchyNode<T>>> getChildren()
 		{
 		return children;
 		}
@@ -67,12 +71,12 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 		this.contents = contents;
 		}
 
-	public HierarchyNode<? extends T> getParent()
+	public SetHierarchyNode<T> getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<? extends T> parent)
+	public void setParent(SetHierarchyNode<T> parent)
 		{
 		this.parent = parent;
 		}
@@ -93,5 +97,34 @@ public class SetHierarchyNode<T> implements HierarchyNode<T>
 	public boolean isLeaf()
 		{
 		return children == null || children.isEmpty();
+		}
+
+	public List<SetHierarchyNode<T>> getAncestorPath()
+		{
+		List<SetHierarchyNode<T>> result = new LinkedList<SetHierarchyNode<T>>();
+		SetHierarchyNode<T> trav = this;
+
+		while (trav != null)
+			{
+			result.add(0, trav);
+			trav = trav.getParent();
+			}
+
+		return result;
+		}
+
+	/**
+	 * Returns an iterator over a set of elements of type T.
+	 *
+	 * @return an Iterator.
+	 */
+	public Iterator<SetHierarchyNode<T>> iterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
+		}
+
+	public DepthFirstTreeIterator<T, SetHierarchyNode<T>> depthFirstIterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
 		}
 	}
