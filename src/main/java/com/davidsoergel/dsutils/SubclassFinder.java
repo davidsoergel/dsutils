@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -171,6 +170,30 @@ public class SubclassFinder
 		{
 		return find(pckgname, tosubclass, false, false, null);
 		}
+
+
+	public static List<Class> find(String pckgname, ParameterizedType tosubclass) throws IOException
+		{
+		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
+		Class c = (Class) tosubclass.getRawType();
+		return find(pckgname, c, false, false, null, tosubclass);
+		}
+
+	public static List<Class> find(String pckgname, Type tosubclass) throws IOException
+		{
+		if (tosubclass instanceof Class)
+			{
+			return find(pckgname, (Class) tosubclass);
+			}
+
+		if (tosubclass instanceof ParameterizedType)
+			{
+			return find(pckgname, (ParameterizedType) tosubclass);
+			}
+
+		throw new Error("Unknown Type: " + tosubclass);
+		}
+
 
 	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation)
 			throws IOException
