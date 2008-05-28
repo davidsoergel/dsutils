@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.JarURLConnection;
@@ -271,7 +272,8 @@ public class SubclassFinder
 						Class c = Class.forName(pckgname + "." + classname);
 						logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
-						if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !c.isInterface()))
+						if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !(
+								Modifier.isAbstract(c.getModifiers()) || c.isInterface())))
 
 						/*Object o = c.newInstance();
 
