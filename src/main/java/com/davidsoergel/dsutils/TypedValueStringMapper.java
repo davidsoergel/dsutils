@@ -34,11 +34,10 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Handles mapping Java objects to Strings and back.  Intended for short, human-readable Strings (unlike the
@@ -56,7 +55,19 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		StringMapper stringMapper = ((HashMap<Type, StringMapper>) _instance).get(c);
 		if (stringMapper == null)
 			{
-			throw new StringMapperException("No String Mapper for type: " + c);
+			for (Type t : _instance.keySet())
+				{
+				// this doesn't find the closest match, just the first
+				if (TypeUtils.isAssignableFrom(t, c))
+					{
+					stringMapper = ((HashMap<Type, StringMapper>) _instance).get(t);
+					}
+				}
+			}
+		if (stringMapper == null)
+			{
+			stringMapper = ((HashMap<Type, StringMapper>) _instance).get(Class.class);
+			//			throw new StringMapperException("No String Mapper for type: " + c);
 			}
 		return stringMapper;
 		}
@@ -65,11 +76,11 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 
 	public TypedValueStringMapper init()
 		{
-		ClassMapper aoeu = new ClassMapper();
 		try
 			{
 			// add an instance of each inner class to the map.  Should automatically work for subclasses too.
-			for (Class c : this.getClass().getClasses())
+			//for (Class c : this.getClass().getClasses())
+			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class))
 				{
 				if (TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{
@@ -77,7 +88,14 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 					assert pt.getRawType().equals(StringMapper.class);
 					Type[] types = pt.getActualTypeArguments();
 					Type t = types[0];
-					put(t, (StringMapper) (c.newInstance()));
+					StringMapper sm = (StringMapper) (c.newInstance());
+					put(t, sm);
+
+					t = ClassUtils.wrapperToPrimitive(t);
+					if (t != null)
+						{
+						put(t, sm);
+						}
 					}
 				}
 			}
@@ -88,6 +106,12 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 			throw new Error(e);
 			}
 		catch (InstantiationException e)
+			{
+			logger.debug(e);
+			e.printStackTrace();
+			throw new Error(e);
+			}
+		catch (IOException e)
 			{
 			logger.debug(e);
 			e.printStackTrace();
@@ -209,167 +233,4 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		 throw new StringParseException("Don't know how to parse a string into type " + type);
 		 }
  */
-
-	public class StringArrayMapper extends StringMapper<String[]>
-		{
-		public String[] parse(String s)
-			{
-			//List<Double> result = new ArrayList<String>();
-			return s.split(":");
-			}
-
-		public String render(String[] value)
-			{
-			return StringUtils.join(value, ":");
-			}
-		}
-
-	public class DoubleArrayMapper extends StringMapper<Double[]>
-		{
-		public Double[] parse(String s)
-			{
-			List<Double> result = new ArrayList<Double>();
-			for (String d : s.split(":"))
-				{
-				result.add(Double.parseDouble(d));
-				}
-			return result.toArray(new Double[]{});
-			}
-
-		public String render(Double[] value)
-			{
-			return StringUtils.join(value, ":");
-			}
-		}
-
-
-	public class IntegerArrayMapper extends StringMapper<Integer[]>
-		{
-		public Integer[] parse(String s)
-			{
-			List<Integer> result = new ArrayList<Integer>();
-			for (String d : s.split(":"))
-				{
-				result.add(Integer.parseInt(d));
-				}
-			return result.toArray(new Integer[]{});
-			}
-
-		public String render(Integer[] value)
-			{
-			return StringUtils.join(value, ":");
-			}
-		}
-
-
-	public class BooleanArrayMapper extends StringMapper<Boolean[]>
-		{
-		public Boolean[] parse(String s) throws StringMapperException
-			{
-			List<Boolean> result = new ArrayList<Boolean>();
-			StringMapper<Boolean> booleanMapper = get(Boolean.class);
-			for (String d : s.split(":"))
-				{
-				result.add(booleanMapper.parse(d));
-				}
-			return result.toArray(new Boolean[]{});
-			}
-
-		public String render(Boolean[] value)
-			{
-			return StringUtils.join(value, ":");
-			}
-		}
-
-	public class SimpleStringMapper extends StringMapper<String>
-		{
-		public String parse(String s)
-			{
-			return s.trim();
-			}
-
-		public String render(String value)
-			{
-			return value.trim();
-			}
-		}
-
-	public class DoubleMapper extends StringMapper<Double>
-		{
-		public Double parse(String s)
-			{
-			return new Double(s);
-			}
-
-		public String render(Double value)
-			{
-			return value.toString();
-			}
-		}
-
-	public class IntegerMapper extends StringMapper<Integer>
-		{
-		public Integer parse(String s)
-			{
-			return new Integer(s);
-			}
-
-		public String render(Integer value)
-			{
-			return value.toString();
-			}
-		}
-
-
-	public class BooleanMapper extends StringMapper<Boolean>
-		{
-		/**
-		 * Return false if the given string is "false", "no", "n", "none", or "0"; return true otherwise. Note this is
-		 * entirely different from {@link java.lang.Boolean#parseBoolean(String)}
-		 *
-		 * @param d
-		 * @return
-		 */
-		public Boolean parse(String d)
-			{
-			String p = d.trim();
-			if (p.equals(""))
-				{
-				return null;
-				}
-			return !(p.equals("false") || p.equals("no") || p.equals("n") || p.equals("none") || p.equals("0"));
-			}
-
-		public String render(Boolean value)
-			{
-			return value.toString();
-			}
-		}
-
-	public class ClassMapper extends StringMapper<Class>
-		{
-		public ClassMapper()
-			{
-			//super();
-			}
-
-		public Class parse(String s) throws StringMapperException
-			{
-			try
-				{
-				return Class.forName(s);
-				}
-			catch (ClassNotFoundException e)
-				{
-				logger.debug(e);
-				e.printStackTrace();
-				throw new StringMapperException(e);
-				}
-			}
-
-		public String render(Class value)
-			{
-			return value.getCanonicalName();
-			}
-		}
 	}

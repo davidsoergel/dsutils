@@ -33,9 +33,11 @@
 package com.davidsoergel.dsutils;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 /**
@@ -99,5 +101,28 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 			}
 
 		throw new NoSuchMethodException("" + theClass + " (" + StringUtils.join(paramClasses, ", ") + ")");
+		}
+
+	private static Map<Type, Type> wrapperPrimitiveMap = new HashMap<Type, Type>();
+
+	static
+		{
+		wrapperPrimitiveMap.put(Boolean.class, Boolean.TYPE);
+		wrapperPrimitiveMap.put(Byte.class, Byte.TYPE);
+		wrapperPrimitiveMap.put(Character.class, Character.TYPE);
+		wrapperPrimitiveMap.put(Short.class, Short.TYPE);
+		wrapperPrimitiveMap.put(Integer.class, Integer.TYPE);
+		wrapperPrimitiveMap.put(Long.class, Long.TYPE);
+		wrapperPrimitiveMap.put(Double.class, Double.TYPE);
+		wrapperPrimitiveMap.put(Float.class, Float.TYPE);
+		}
+
+	public static Type wrapperToPrimitive(Type t)
+		{
+		/*		if(t instanceof Class && ((Class)t).isArray())
+		   {
+
+		   }*/
+		return wrapperPrimitiveMap.get(t);
 		}
 	}
