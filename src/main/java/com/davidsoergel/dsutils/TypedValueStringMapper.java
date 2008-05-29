@@ -51,7 +51,6 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 
 	public static StringMapper get(Type c) throws StringMapperException
 		{
-		// assert TypeUtils.isAssignableFrom(Type, c);
 		StringMapper stringMapper = ((HashMap<Type, StringMapper>) _instance).get(c);
 		if (stringMapper == null)
 			{
@@ -72,14 +71,10 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		return stringMapper;
 		}
 
-	// theMappers = new HashMap<Class<Type>, StringMapper>();
-
 	public TypedValueStringMapper init()
 		{
 		try
 			{
-			// add an instance of each inner class to the map.  Should automatically work for subclasses too.
-			//for (Class c : this.getClass().getClasses())
 			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class))
 				{
 				if (TypeUtils.isAssignableFrom(StringMapper.class, c))
