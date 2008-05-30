@@ -2,12 +2,22 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.StringMapper;
 
+import java.lang.reflect.Type;
+
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
  */
 public class BooleanMapper extends StringMapper<Boolean>
 	{
+	public Type[] basicTypes()
+		{
+		return new Type[]{
+				Boolean.class,
+				boolean.class
+		};
+		}
+
 	/**
 	 * Return false if the given string is "false", "no", "n", "none", or "0"; return true otherwise. Note this is entirely
 	 * different from {@link Boolean#parseBoolean(String)}

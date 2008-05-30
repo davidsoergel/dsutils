@@ -4,6 +4,8 @@ import com.davidsoergel.dsutils.StringMapper;
 import com.davidsoergel.dsutils.StringMapperException;
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.Type;
+
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
@@ -11,6 +13,13 @@ import org.apache.log4j.Logger;
 public class ClassMapper extends StringMapper<Class>
 	{
 	private static final Logger logger = Logger.getLogger(ClassMapper.class);
+
+	public Type[] basicTypes()
+		{
+		return new Type[]{
+				Class.class
+		};
+		}
 
 	public ClassMapper()
 		{
@@ -33,6 +42,6 @@ public class ClassMapper extends StringMapper<Class>
 
 	public String render(Class value)
 		{
-		return value.getCanonicalName();
+		return value == null ? "null" : value.getCanonicalName();
 		}
 	}

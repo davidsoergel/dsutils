@@ -4,8 +4,8 @@ import com.davidsoergel.dsutils.ArrayUtils;
 import com.davidsoergel.dsutils.StringMapper;
 import com.davidsoergel.dsutils.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,6 +14,13 @@ import java.util.List;
  */
 public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 	{
+	public Type[] basicTypes()
+		{
+		return new Type[]{
+				double[].class
+		};
+		}
+
 	public double[] parse(String s)
 		{
 		List<Double> result = new ArrayList<Double>();
@@ -26,6 +33,6 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 
 	public String render(double[] value)
 		{
-		return StringUtils.join(Arrays.asList(value), ",");
+		return StringUtils.join(ArrayUtils.toObject(value), ",");
 		}
 	}

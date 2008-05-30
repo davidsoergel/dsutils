@@ -35,7 +35,6 @@ package com.davidsoergel.dsutils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
@@ -60,6 +59,7 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 				if (TypeUtils.isAssignableFrom(t, c))
 					{
 					stringMapper = ((HashMap<Type, StringMapper>) _instance).get(t);
+					break;
 					}
 				}
 			}
@@ -71,6 +71,18 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		return stringMapper;
 		}
 
+	/**
+	 * Could call this "put", but danger of confusion vs. non-static method
+	 *
+	 * @param k
+	 * @param v
+	 * @return
+	 */
+	public static StringMapper register(Type k, StringMapper v)
+		{
+		return _instance.put(k, v);
+		}
+
 	public TypedValueStringMapper init()
 		{
 		try
@@ -79,15 +91,8 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 				{
 				if (TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{
-					ParameterizedType pt = (ParameterizedType) c.getGenericSuperclass();
-					assert pt.getRawType().equals(StringMapper.class);
-					Type[] types = pt.getActualTypeArguments();
-					Type t = types[0];
 					StringMapper sm = (StringMapper) (c.newInstance());
-					put(t, sm);
-
-					t = ClassUtils.wrapperToPrimitive(t);
-					if (t != null)
+					for (Type t : sm.basicTypes())
 						{
 						put(t, sm);
 						}
@@ -117,15 +122,9 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public Object parse(Type type, String s) throws StringMapperException
+	public static Object parse(Type type, String s) throws StringMapperException
 		{
-		StringMapper sm = get(type);
-		if (sm != null)
-			{
-			return sm.parse(s);
-			}
-
-		if (((Class) type).isEnum())
+		if (type instanceof Class && ((Class) type).isEnum())
 			{
 			Object result = Enum.valueOf((Class) type, s);
 			if (result == null)
@@ -134,6 +133,13 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 				}
 			return result;
 			}
+
+		StringMapper sm = get(type);
+		if (sm != null)
+			{
+			return sm.parse(s);
+			}
+
 		/*else if (type instanceof ParameterizedType)
 		{
 		return get(Class.class).parse(s);

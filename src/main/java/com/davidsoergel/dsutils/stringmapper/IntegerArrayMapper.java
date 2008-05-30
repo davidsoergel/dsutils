@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils.stringmapper;
 import com.davidsoergel.dsutils.StringMapper;
 import com.davidsoergel.dsutils.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,13 @@ import java.util.List;
  */
 public class IntegerArrayMapper extends StringMapper<Integer[]>
 	{
+	public Type[] basicTypes()
+		{
+		return new Type[]{
+				Integer[].class
+		};
+		}
+
 	public Integer[] parse(String s)
 		{
 		List<Integer> result = new ArrayList<Integer>();

@@ -5,6 +5,7 @@ import com.davidsoergel.dsutils.StringMapperException;
 import com.davidsoergel.dsutils.StringUtils;
 import com.davidsoergel.dsutils.TypedValueStringMapper;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,13 @@ import java.util.List;
  */
 public class BooleanArrayMapper extends StringMapper<Boolean[]>
 	{
+	public Type[] basicTypes()
+		{
+		return new Type[]{
+				Boolean[].class
+		};
+		}
+
 	public Boolean[] parse(String s) throws StringMapperException
 		{
 		List<Boolean> result = new ArrayList<Boolean>();
