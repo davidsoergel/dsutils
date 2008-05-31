@@ -31,13 +31,11 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -223,7 +221,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 
 	   return sb.toString();
 	   }*/
-	public static String join(Collection s, String delim)
+	public static String join(Iterable s, String delim)
 		{
 		return join(s.iterator(), delim);
 		}
