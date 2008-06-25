@@ -385,7 +385,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	public static double max(double[] x)
 		{
-		double result = Double.MIN_VALUE;
+		double result = Double.NEGATIVE_INFINITY;
 		for (int col = 0; col < x.length; col++)
 			{
 			result = Math.max(result, x[col]);
@@ -418,7 +418,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	public static double min(double[] x)
 		{
-		double result = Double.MAX_VALUE;
+		double result = Double.POSITIVE_INFINITY;
 		for (int col = 0; col < x.length; col++)
 			{
 			result = Math.min(result, x[col]);
