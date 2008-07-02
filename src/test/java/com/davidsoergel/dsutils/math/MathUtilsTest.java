@@ -83,12 +83,12 @@ public class MathUtilsTest
 		double correct = Math.log(x);
 		if (Math.abs(approximate) < Math.abs(correct * 0.99))
 			{
-			System.err.println("log(" + (x) + ") = " + correct + "; approximation = " + approximate + "\n");
+			logger.warn("log(" + (x) + ") = " + correct + "; approximation = " + approximate + "\n");
 			assert false;
 			}
 		if (Math.abs(approximate) > Math.abs(correct * 1.01))
 			{
-			System.err.println("log(" + x + ") = " + correct + "; approximation = " + approximate + "\n");
+			logger.warn("log(" + x + ") = " + correct + "; approximation = " + approximate + "\n");
 			assert false;
 			}
 		}

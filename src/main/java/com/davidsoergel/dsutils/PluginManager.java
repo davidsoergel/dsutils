@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -144,8 +143,8 @@ public class PluginManager<T>
 		Class result = classes.get(s);
 		if (result == null)
 			{
-			System.err.println("Classes: " + classes);
-			System.err.println("Classpath: " + System.getProperty("java.class.path"));
+			logger.warn("Classes: " + classes);
+			logger.warn("Classpath: " + System.getProperty("java.class.path"));
 
 
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();

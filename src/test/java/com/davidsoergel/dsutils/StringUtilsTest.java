@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -55,7 +54,7 @@ public class StringUtilsTest
 	@Test
 	public void nullObjectStringConversionIsNotNull()
 		{
-		//System.err.println("StringUtilsTest.nullObjectStringConversionIsNotNull()");
+		//logger.warn("StringUtilsTest.nullObjectStringConversionIsNotNull()");
 
 		assert StringUtils.s(null).equals("");
 		}
@@ -63,6 +62,6 @@ public class StringUtilsTest
 	@BeforeClass
 	public void setUp()
 		{
-		//System.err.println("StringUtilsTest.setUp()");
+		//logger.warn("StringUtilsTest.setUp()");
 		}
 	}

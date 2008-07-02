@@ -31,8 +31,9 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
+
+import org.apache.log4j.Logger;
 
 /**
  * Encodes and decodes to and from Base64 notation.
@@ -70,6 +71,8 @@ package com.davidsoergel.dsutils;
  */
 public class Base64
 	{
+	private static final Logger logger = Logger.getLogger(Base64.class);
+
 	// ------------------------------ FIELDS ------------------------------
 
 	/**
@@ -822,7 +825,7 @@ public class Base64
 				}// end if: white space, equals sign or better
 			else
 				{
-				System.err.println("Bad Base64 input character at " + i + ": " + source[i] + "(decimal)");
+				logger.warn("Bad Base64 input character at " + i + ": " + source[i] + "(decimal)");
 				return null;
 				}// end else:
 			}// each input character

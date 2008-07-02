@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -141,7 +140,7 @@ public class SmtpUtils
 			is = new BufferedReader(new InputStreamReader(mailSocket.getInputStream()));
 			servResponse = is.readLine();
 
-			// System.err.println(servResponse);
+			// logger.warn(servResponse);
 
 			if (servResponse.startsWith("4"))
 				{
@@ -152,7 +151,7 @@ public class SmtpUtils
 
 			servResponse = is.readLine();
 
-			// System.err.println(servResponse);
+			// logger.warn(servResponse);
 
 			String lineOut = "MAIL FROM: " + from;
 
@@ -160,7 +159,7 @@ public class SmtpUtils
 
 			servResponse = is.readLine();
 
-			// System.err.println(servResponse);
+			// logger.warn(servResponse);
 
 			if (servResponse.startsWith("5"))
 				{
@@ -178,7 +177,7 @@ public class SmtpUtils
 
 				servResponse = is.readLine();
 
-				// System.err.println(servResponse);
+				// logger.warn(servResponse);
 
 				if (servResponse.startsWith("5"))
 					{
@@ -190,7 +189,7 @@ public class SmtpUtils
 
 			servResponse = is.readLine();
 
-			// System.err.println(servResponse);
+			// logger.warn(servResponse);
 
 			if (servResponse.startsWith("5"))
 				{
@@ -211,7 +210,7 @@ public class SmtpUtils
 
 			servResponse = is.readLine();
 
-			// System.err.println(servResponse);
+			// logger.warn(servResponse);
 
 			if (servResponse.startsWith("5"))
 				{
@@ -222,7 +221,7 @@ public class SmtpUtils
 
 			/*
 			 * servResponse = is.readLine();
-			 * //System.err.println(servResponse);
+			 * //logger.warn(servResponse);
 			 * if (servResponse.startsWith("5")) {
 			 * throw new Exception(servResponse);
 			 * }
@@ -296,7 +295,7 @@ public class SmtpUtils
 			}
 		catch (StringIndexOutOfBoundsException e)
 			{
-			//System.err.println("Couldn't fix LF -> CRLF at position " + c);
+			//logger.warn("Couldn't fix LF -> CRLF at position " + c);
 			logger.error("Couldn't fix LF -> CRLF at position " + c, e);
 			}
 
