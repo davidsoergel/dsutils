@@ -148,10 +148,10 @@ public class PluginManager<T>
 
 
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-			System.out.println("contextClassLoader: " + contextClassLoader);
+			logger.debug("contextClassLoader: " + contextClassLoader);
 
 			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-			System.out.println("systemClassLoader: " + systemClassLoader);
+			logger.debug("systemClassLoader: " + systemClassLoader);
 
 			String name =
 					theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString();

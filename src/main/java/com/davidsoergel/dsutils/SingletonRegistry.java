@@ -31,9 +31,6 @@
  */
 
 
-
-
-
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
@@ -51,6 +48,7 @@ public abstract class SingletonRegistry
 
 	static private HashMap _registry = new HashMap();
 
+	private static ClassLoader classLoader = null;
 
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -73,7 +71,14 @@ public abstract class SingletonRegistry
 				{
 				// ** this doesn't work due to the lowercasing issue!!
 
-				Class.forName(byname).newInstance();
+				if (classLoader != null)
+					{
+					Class.forName(byname, true, classLoader).newInstance();
+					}
+				else
+					{
+					Class.forName(byname).newInstance();
+					}
 
 				result = (SingletonRegistry) (_registry.get(byname.toLowerCase()));
 				}

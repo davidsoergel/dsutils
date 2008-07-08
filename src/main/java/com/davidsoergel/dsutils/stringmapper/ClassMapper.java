@@ -13,6 +13,13 @@ import java.lang.reflect.Type;
 public class ClassMapper extends StringMapper<Class>
 	{
 	private static final Logger logger = Logger.getLogger(ClassMapper.class);
+	private static ClassLoader classLoader =
+			Thread.currentThread().getContextClassLoader();//ClassLoader.getSystemClassLoader();
+
+	public static void setClassLoader(ClassLoader classLoader)
+		{
+		ClassMapper.classLoader = classLoader;
+		}
 
 	public Type[] basicTypes()
 		{
@@ -30,7 +37,7 @@ public class ClassMapper extends StringMapper<Class>
 		{
 		try
 			{
-			return Class.forName(s);
+			return Class.forName(s, true, classLoader);
 			}
 		catch (ClassNotFoundException e)
 			{

@@ -77,12 +77,19 @@ public class SubclassFinder
 
 	private static Logger logger = Logger.getLogger(SubclassFinder.class);
 
+	private static ClassLoader classLoader =
+			Thread.currentThread().getContextClassLoader();//ClassLoader.getSystemClassLoader();
 
 	// -------------------------- STATIC METHODS --------------------------
 
 	public static List<Class> findRecursive(String pckgname, Class tosubclass) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, null);
+		}
+
+	public static void setClassLoader(ClassLoader classLoader)
+		{
+		SubclassFinder.classLoader = classLoader;
 		}
 
 	/**
@@ -144,7 +151,7 @@ public class SubclassFinder
 				}
 			catch (Throwable e1)
 				{
-				e = ClassLoader.getSystemResources(name);
+				e = classLoader.getResources(name);
 				}
 			}
 		catch (IOException e1)
@@ -269,7 +276,7 @@ public class SubclassFinder
 					try
 						{
 						logger.debug("Checking class file: " + pckgname + "." + classname);
-						Class c = Class.forName(pckgname + "." + classname);
+						Class c = Class.forName(pckgname + "." + classname, true, classLoader);
 						logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
 						if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !(
@@ -367,7 +374,7 @@ public class SubclassFinder
 							// Try to create an instance of the object
 
 							logger.debug("Checking class in jar: " + classname);
-							Class c = Class.forName(classname);
+							Class c = Class.forName(classname, true, classLoader);
 							logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
 							if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !c.isInterface()))
