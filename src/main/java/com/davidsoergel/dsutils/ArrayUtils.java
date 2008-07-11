@@ -664,4 +664,49 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 			x[i] = newMin + ((x[i] - oldMin) / oldSpan) * newSpan;
 			}
 		}
+
+	public static int compare(int[] a, int[] b)
+		{
+		if (a.length < b.length)
+			{
+			return -1;
+			}
+		if (b.length < a.length)
+			{
+			return 1;
+			}
+
+		for (int i = 0; i < a.length; i++)
+			{
+			int result = a[i] < b[i] ? -1 : a[i] > b[i] ? 1 : 0;
+			if (result != 0)
+				{
+				return result;
+				}
+			}
+		return 0;
+		}
+
+
+	public static int compare(char[] a, char[] b)
+		{
+		if (a.length < b.length)
+			{
+			return -1;
+			}
+		if (b.length < a.length)
+			{
+			return 1;
+			}
+
+		for (int i = 0; i < a.length; i++)
+			{
+			int result = a[i] < b[i] ? -1 : a[i] > b[i] ? 1 : 0;
+			if (result != 0)
+				{
+				return result;
+				}
+			}
+		return 0;
+		}
 	}

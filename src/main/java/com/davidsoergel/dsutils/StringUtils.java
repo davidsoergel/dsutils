@@ -226,6 +226,12 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 		return join(s.iterator(), delim);
 		}
 
+
+	public static String join(char[] chars, String delim)
+		{
+		return ArrayUtils.asString(chars, delim);
+		}
+
 	/**
 	 * Return the name of the month associated with the given int.  I think these are 0-based, but it's easiest just to use
 	 * Calendar.JANUARY and so on to avoid any confusion.
