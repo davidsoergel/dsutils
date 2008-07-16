@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.Properties;
 
 
-
 /**
  * @Author David Soergel
  * @Version 1.0
@@ -89,7 +88,7 @@ public class PropertiesUtils
 			}
 
 		URL resource = ClassLoader.getSystemClassLoader().getResource(defaultFileName);
-		logger.debug("Looking for properties file: " + defaultFileName);
+		logger.debug("Looking for properties file: " + resource);
 		if (resource != null)
 			{
 			propsFilename = resource.getFile();
@@ -100,8 +99,8 @@ public class PropertiesUtils
 				}
 			}
 
-		logger.error("Could not find properties file");
-		throw new RuntimeException("Could not find properties file");
+		logger.error("Could not find properties file: " + defaultFileName);
+		throw new RuntimeException("Could not find properties file: " + defaultFileName);
 		}
 
 	public static Map<String, Properties> splitPeriodDelimitedProperties(Properties p)
