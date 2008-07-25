@@ -219,4 +219,10 @@ public class CollectionUtils extends org.apache.commons.collections15.Collection
 			}
 		return o;
 		}
+
+	public static <T> T chooseRandom(Collection<T> coll)
+		{
+		T[] ar = (T[]) coll.toArray();
+		return ar[MersenneTwisterFast.randomInt(ar.length)];
+		}
 	}
