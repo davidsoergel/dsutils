@@ -195,6 +195,15 @@ public class MathUtils
 	 */
 	public static double logsum(double x, double y)
 		{
+		if (x == Double.NEGATIVE_INFINITY)
+			{
+			return y;
+			}
+		if (y == Double.NEGATIVE_INFINITY)
+			{
+			return x;
+			}
+
 		// scale all the log probabilities up to avoid underflow.
 
 		double B = MAX_EXPONENT - Math.log(3) - Math.max(x, y);
@@ -216,6 +225,18 @@ public class MathUtils
 	 */
 	public static double logsum(double x, double y, double z)
 		{
+		if (x == Double.NEGATIVE_INFINITY)
+			{
+			return logsum(y, z);
+			}
+		if (y == Double.NEGATIVE_INFINITY)
+			{
+			return logsum(x, z);
+			}
+		if (z == Double.NEGATIVE_INFINITY)
+			{
+			return logsum(x, y);
+			}
 		// scale all the log probabilities up to avoid underflow.
 
 		double B = MAX_EXPONENT - Math.log(3) - Math.max(x, Math.max(y, z));

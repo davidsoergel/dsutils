@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -230,6 +231,11 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 	public static String join(char[] chars, String delim)
 		{
 		return ArrayUtils.asString(chars, delim);
+		}
+
+	public static String join(double[] doubles, String delim)
+		{
+		return join(Arrays.asList(doubles), delim);
 		}
 
 	/**
