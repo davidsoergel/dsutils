@@ -225,4 +225,12 @@ public class CollectionUtils extends org.apache.commons.collections15.Collection
 		T[] ar = (T[]) coll.toArray();
 		return ar[MersenneTwisterFast.randomInt(ar.length)];
 		}
+
+	public static <T> T getFirst(Collection<T> coll)
+		{
+		// like coll.iterator().next(), but we hope this is faster since it doesn't instantiate hashsets
+		// oops, yes it does
+		//return (T)coll.toArray()[0];
+		return coll.iterator().next();
+		}
 	}
