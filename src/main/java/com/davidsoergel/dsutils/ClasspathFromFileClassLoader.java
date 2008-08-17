@@ -60,7 +60,7 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 		String s = is.readLine();
 		while (s != null)
 			{
-			if (!s.contains(":"))
+			if (!s.contains(":") && !s.trim().startsWith("#"))
 				{
 				if (!s.startsWith("/"))
 					{
