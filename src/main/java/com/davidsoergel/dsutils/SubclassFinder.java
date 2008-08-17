@@ -145,14 +145,14 @@ public class SubclassFinder
 		try
 			{
 			//e = ClassLoader.getSystemResources(name);
-			try
-				{
-				e = tosubclass.getClassLoader().getResources(name);
-				}
-			catch (Throwable e1)
-				{
-				e = classLoader.getResources(name);
-				}
+			/*	try
+			   {
+			   e = tosubclass.getClassLoader().getResources(name);
+			   }
+		   catch (Throwable e1)
+			   {*/
+			e = classLoader.getResources(name);
+			//	}
 			}
 		catch (IOException e1)
 			{
@@ -298,7 +298,7 @@ public class SubclassFinder
 									List<Type> types = Arrays.asList(c.getGenericInterfaces());
 									for (Type t : types)
 										{
-										logger.error(t);
+										logger.info(t);
 										if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
 											{
 											result.add(c);
@@ -395,7 +395,7 @@ public class SubclassFinder
 										List<Type> types = Arrays.asList(c.getGenericInterfaces());
 										for (Type t : types)
 											{
-											logger.error(t);
+											logger.info(t);
 											if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
 												{
 												result.add(c);
