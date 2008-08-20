@@ -37,65 +37,33 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Represents a simple hierarchy, where a value of the given generic type is attached at each node.  A node may have any
+ * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  A node may have any
  * number of children, which are also HierarchyNodes of the same generic type.  The type of Collection that holds the
  * children is up to the implementation, so they may or may not be ordered.
  *
  * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
-public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>// was abstract class
+public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>
 	{
-	// -------------------------- OTHER METHODS --------------------------
-
-	/*private HierarchyNode<T> parent;
-	private T contents;
-	//private Collection<HierarchyNode<T>> children;
-*/
 
 	Collection<? extends HierarchyNode<T, I>> getChildren();
 
 	boolean isLeaf();
 
-	/*		{
-		   this.parent = parent;
-		   }*/
 
 	T getValue();
 
-	//	public void addChild(HierarchyNode<T> child);
-	/*		{
-	   getChildren().add(child);
-	   }*/
 
 	HierarchyNode<? extends T, I> getParent();
 
 	List<? extends HierarchyNode<T, I>> getAncestorPath();
 
-	/*		{
-	   this.contents = contents;
-	   }*/
 
 	HierarchyNode<? extends T, I> newChild();
 
-	/*		{
-	   return contents;
-	   }*/
 
 	void setValue(T contents);
 
-	/*		{
-	   return parent;
-	   }*/
-
-	//void setParent(HierarchyNode<? extends T> parent);
-
-	//	public void beginTaxn();
-
-	//	public void commit();
-
-	//	void merge();
-
-	//void setName(String label);
 
 	DepthFirstTreeIterator<T, I> depthFirstIterator();
 	}
