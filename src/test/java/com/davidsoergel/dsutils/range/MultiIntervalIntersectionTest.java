@@ -39,10 +39,7 @@ import org.testng.annotations.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA. User: lorax Date: Dec 12, 2006 Time: 4:29:46 PM To change this template use File | Settings
- * | File Templates.
- */
+
 public class MultiIntervalIntersectionTest//extends TestCase
 	{
 	// -------------------------- OTHER METHODS --------------------------

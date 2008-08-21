@@ -33,11 +33,6 @@
 package com.davidsoergel.dsutils;
 
 
-
-/**
- * @Author David Soergel
- * @Version 1.0
- */
 public interface GenericFactory<T>
 	{
 	// -------------------------- OTHER METHODS --------------------------

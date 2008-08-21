@@ -38,10 +38,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA. User: lorax Date: Apr 29, 2004 Time: 6:15:13 PM To change this template use File | Settings
- * | File Templates.
- */
+
 public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
 	// ------------------------------ FIELDS ------------------------------

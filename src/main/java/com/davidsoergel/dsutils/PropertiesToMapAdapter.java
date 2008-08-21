@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import java.io.FileInputStream;
@@ -44,10 +43,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA. User: lorax Date: Apr 3, 2007 Time: 1:14:13 AM To change this template use File | Settings
- * | File Templates.
- */
+
 public class PropertiesToMapAdapter implements Map<String, Object>
 	{
 	// ------------------------------ FIELDS ------------------------------

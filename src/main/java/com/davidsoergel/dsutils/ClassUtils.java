@@ -40,10 +40,6 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * @Author David Soergel
- * @Version 1.0
- */
 public class ClassUtils extends org.apache.commons.lang.ClassUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------

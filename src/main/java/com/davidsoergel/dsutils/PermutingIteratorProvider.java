@@ -37,11 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 
 
-
-/**
- * @Author David Soergel
- * @Version 1.0
- */
 public class PermutingIteratorProvider<T> extends IteratorProvider<T>
 	{
 

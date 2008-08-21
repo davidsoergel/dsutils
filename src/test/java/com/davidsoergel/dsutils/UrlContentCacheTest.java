@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import org.testng.annotations.BeforeTest;
@@ -44,16 +43,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-/**
- * Created by IntelliJ IDEA. User: lorax Date: Apr 24, 2007 Time: 8:17:05 PM To change this template use File | Settings
- * | File Templates.
- */
+
 public class UrlContentCacheTest
 	{
 	// ------------------------------ FIELDS ------------------------------
 
 	UrlContentCache cache = null;
-
 
 	// -------------------------- OTHER METHODS --------------------------
 

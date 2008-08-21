@@ -38,11 +38,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 
-
-/**
- * @Author David Soergel
- * @Version 1.0
- */
 public class IteratorProvider<T> implements Iterator<Iterator<T>>
 	{
 	protected Collection<T> underlyingCollection;

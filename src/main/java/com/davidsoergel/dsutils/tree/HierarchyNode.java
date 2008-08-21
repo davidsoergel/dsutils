@@ -56,9 +56,17 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 
 	HierarchyNode<? extends T, I> getParent();
 
+	/**
+	 * @return
+	 */
 	List<? extends HierarchyNode<T, I>> getAncestorPath();
 
 
+	/**
+	 * Creates a new child node of the appropriate type
+	 *
+	 * @return the new child node
+	 */
 	HierarchyNode<? extends T, I> newChild();
 
 

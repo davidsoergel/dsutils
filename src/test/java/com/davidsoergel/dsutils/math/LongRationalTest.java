@@ -36,10 +36,7 @@ package com.davidsoergel.dsutils.math;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
-/**
- * Created by IntelliJ IDEA. User: soergel Date: Dec 6, 2006 Time: 4:30:53 PM To change this template use File |
- * Settings | File Templates.
- */
+
 public class LongRationalTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------

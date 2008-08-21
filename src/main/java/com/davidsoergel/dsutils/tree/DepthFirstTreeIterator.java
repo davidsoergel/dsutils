@@ -35,10 +35,6 @@ package com.davidsoergel.dsutils.tree;
 import java.util.Iterator;
 
 
-/**
- * @Author David Soergel
- * @Version 1.0
- */
 public interface DepthFirstTreeIterator<T, I extends HierarchyNode<T, I>> extends Iterator<I>
 	{
 	void skipAllDescendants(HierarchyNode<T, I> node) throws TreeException;

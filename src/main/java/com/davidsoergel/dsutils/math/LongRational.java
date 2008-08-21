@@ -33,10 +33,7 @@
 
 package com.davidsoergel.dsutils.math;
 
-/**
- * Created by IntelliJ IDEA. User: soergel Date: Dec 3, 2006 Time: 10:35:46 PM To change this template use File |
- * Settings | File Templates.
- */
+
 public class LongRational extends Number implements Comparable
 	{
 	// ------------------------------ FIELDS ------------------------------

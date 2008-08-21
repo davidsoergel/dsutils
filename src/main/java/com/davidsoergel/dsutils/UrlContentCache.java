@@ -31,17 +31,13 @@
  */
 
 
-
 package com.davidsoergel.dsutils;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by IntelliJ IDEA. User: soergel Date: Apr 24, 2007 Time: 5:35:43 PM To change this template use File |
- * Settings | File Templates.
- */
+
 public interface UrlContentCache
 	{
 	// -------------------------- OTHER METHODS --------------------------

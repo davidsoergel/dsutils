@@ -35,10 +35,7 @@ package com.davidsoergel.dsutils.math;
 
 import org.apache.log4j.Logger;
 
-/**
- * Created by IntelliJ IDEA. User: soergel Date: Dec 6, 2006 Time: 4:58:36 PM To change this template use File |
- * Settings | File Templates.
- */
+
 public class FareyFractionUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
