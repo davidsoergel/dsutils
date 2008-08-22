@@ -59,9 +59,9 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 		}
 
 	@Factory
-	public Object[] testInterfacesNoReally()
+	public Object[] instantiateAllContractTests()
 		{
-		return testInterfaces();
+		return super.instantiateAllContractTests();
 		}
 
 
