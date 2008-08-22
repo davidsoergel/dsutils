@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
  */
-public class HierarchyNodeInterfaceTest
+public abstract class HierarchyNodeInterfaceTest
 	{
 	private TestInstanceFactory<? extends HierarchyNode> tif;
 
