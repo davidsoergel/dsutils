@@ -30,11 +30,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.tree;
 
-public interface TestInstanceFactory<T>
+import com.davidsoergel.dsutils.TestInstanceFactory;
+import org.testng.annotations.Test;
+
+/**
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version $Rev$
+ */
+public class HierarchyNodeInterfaceTest
 	{
-	// -------------------------- OTHER METHODS --------------------------
+	private TestInstanceFactory<? extends HierarchyNode> tif;
 
-	T createInstance() throws Exception;
+
+	// --------------------------- CONSTRUCTORS ---------------------------
+
+	public HierarchyNodeInterfaceTest(TestInstanceFactory<? extends HierarchyNode> tif)
+		{
+		this.tif = tif;
+		}
+
+	@Test
+	public void addedChildIsIncludedInChildArray()
+		{
+		assert false;
+		}
+
+	@Test
+	public void addChildSetsChildParentLink()
+		{
+		assert false;
+		}
+
+	@Test
+	public void newChildIsIncludedInChildArray()
+		{
+		assert false;
+		}
+
+	@Test
+	public void ancestorPathDoesNotIncludeThis()
+		{
+		assert false;
+		}
+
+	@Test
+	public void ancestorPathExtendsFromRootToImmediateParent()
+		{
+		assert false;
+		}
 	}

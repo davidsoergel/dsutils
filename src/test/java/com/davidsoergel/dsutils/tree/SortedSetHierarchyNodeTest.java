@@ -30,11 +30,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.tree;
 
-public interface TestInstanceFactory<T>
+import com.davidsoergel.dsutils.TestInstanceFactory;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+
+/**
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version $Rev$
+ */
+public class SortedSetHierarchyNodeTest implements TestInstanceFactory<SortedSetHierarchyNode>
 	{
-	// -------------------------- OTHER METHODS --------------------------
+	public SortedSetHierarchyNode createInstance() throws Exception
+		{
+		return null;
+		}
 
-	T createInstance() throws Exception;
+	@Factory
+	public Object[] testInterfaces()
+		{
+		Object[] result = new Object[1];
+		result[0] = new HierarchyNodeInterfaceTest(this)
+		{
+		};// this is the trick
+		return result;
+		}
+
+	@Test
+	public void childrenAreInSortedOrderAfterAddChild()
+		{
+		assert false;
+		}
 	}
