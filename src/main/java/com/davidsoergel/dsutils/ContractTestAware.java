@@ -32,7 +32,6 @@
 
 package com.davidsoergel.dsutils;
 
-import org.testng.annotations.Factory;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -48,7 +47,7 @@ public abstract class ContractTestAware<T>
 
 	public abstract void addContractTestsToQueue(Queue<Object> theContractTests);
 
-	@Factory
+	//@Factory
 	public Object[] instantiateAllContractTests()
 		{
 		Set<Object> result = new HashSet<Object>();
