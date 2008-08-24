@@ -35,7 +35,6 @@ package com.davidsoergel.dsutils.tree;
 import com.davidsoergel.dsutils.ContractTestAware;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
 
 import java.util.Queue;
 
@@ -64,9 +63,9 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		return super.instantiateAllContractTests();
 		}
 
-
-	@Test
-	public void bogusTest()
-		{
-		}
+	// see if TestNG runs these tests under Maven
+	/*	@Test
+   public void bogusTest()
+	   {
+	   }*/
 	}
