@@ -54,7 +54,6 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	private HierarchicalStringObjectMap parent;
 
-
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
 	public List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> getChildren()

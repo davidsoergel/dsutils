@@ -90,10 +90,10 @@ public abstract class HierarchyNodeInterfaceTest
 		}
 
 	@Test
-	public void ancestorPathDoesNotIncludeThis() throws Exception
+	public void ancestorPathIncludesThis() throws Exception
 		{
 		HierarchyNode n = tif.createInstance();
-		assert !n.getAncestorPath().contains(this);
+		assert n.getAncestorPath().contains(n);
 		}
 
 	@Test
@@ -102,7 +102,7 @@ public abstract class HierarchyNodeInterfaceTest
 		HierarchyNode n = tif.createInstance();
 		List path = n.getAncestorPath();
 		Collections.reverse(path);
-		HierarchyNode p = n.getParent();
+		HierarchyNode p = n;
 		while (p != null)
 			{
 			HierarchyNode p2 = p.getParent();

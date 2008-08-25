@@ -52,6 +52,14 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 	private ListHierarchyNode<T> parent;
 	private T contents;
 
+	public ListHierarchyNode(T contents)
+		{
+		this.contents = contents;
+		}
+
+	public ListHierarchyNode()
+		{
+		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -89,6 +97,14 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 		{
 		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
 		//result.setContents(contents);
+		children.add(result);
+		result.setParent(this);
+		return result;
+		}
+
+	public ListHierarchyNode<T> newChild(T value)
+		{
+		ListHierarchyNode<T> result = new ListHierarchyNode<T>(value);
 		children.add(result);
 		result.setParent(this);
 		return result;

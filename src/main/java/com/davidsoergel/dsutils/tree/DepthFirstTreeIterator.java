@@ -35,7 +35,22 @@ package com.davidsoergel.dsutils.tree;
 import java.util.Iterator;
 
 
+/**
+ * An Iterator that providos all of the nodes of a tree in depth-first order.
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Rev$
+ */
 public interface DepthFirstTreeIterator<T, I extends HierarchyNode<T, I>> extends Iterator<I>
 	{
+	/**
+	 * Skip all descendants of the given node.  After calling this method, the next node returned by the iterator will be
+	 * the next sibling (or uncle, etc.) of the given node.  The given node must be on the path between the root and the
+	 * current node.  This is useful when performing some kinds of searches, where an entire subtree can be pruned once
+	 * some condition is met.
+	 *
+	 * @param node the HierarchyNode<T, I> whose descendants are to be skipped.
+	 * @throws TreeException when the node is not on the current tree path.
+	 */
 	void skipAllDescendants(HierarchyNode<T, I> node) throws TreeException;
 	}

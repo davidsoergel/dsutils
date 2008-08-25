@@ -37,23 +37,38 @@ import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.Iterator;
 import java.util.Queue;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
  */
-public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHierarchyNode>
-		implements TestInstanceFactory<SortedSetHierarchyNode>
+public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHierarchyNode<String>>
+		implements TestInstanceFactory<SortedSetHierarchyNode<String>>
 	{
-	public SortedSetHierarchyNode createInstance() throws Exception
+	public SortedSetHierarchyNode<String> createInstance() throws Exception
 		{
-		return null;
+		SortedSetHierarchyNode<String> root = new SortedSetHierarchyNode<String>("root");
+		SortedSetHierarchyNode<String> a = root.newChild("a");
+		SortedSetHierarchyNode<String> b = root.newChild("b");
+		SortedSetHierarchyNode<String> c = root.newChild("c");
+		SortedSetHierarchyNode<String> d = a.newChild("d");
+		SortedSetHierarchyNode<String> e = a.newChild("e");
+		SortedSetHierarchyNode<String> f = b.newChild("f");
+		SortedSetHierarchyNode<String> g = b.newChild("g");
+		SortedSetHierarchyNode<String> h = b.newChild("h");
+		SortedSetHierarchyNode<String> i = c.newChild("i");
+		SortedSetHierarchyNode<String> j = g.newChild("j");
+		SortedSetHierarchyNode<String> k = g.newChild("k");
+		SortedSetHierarchyNode<String> l = k.newChild("l");
+		SortedSetHierarchyNode<String> m = l.newChild("m");
+		return root;
 		}
 
 	public void addContractTestsToQueue(Queue<Object> theContractTests)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest(this)
+		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest(this)
 		{
 		});
 		}
@@ -66,8 +81,19 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 
 
 	@Test
-	public void childrenAreInSortedOrderAfterAddChild()
+	public void childrenAreInSortedOrderAfterNewChild() throws Exception
 		{
-		assert false;
+		SortedSetHierarchyNode<String> n = createInstance();
+		n.newChild("p");
+		n.newChild("o");
+		n.newChild("n");
+
+		Iterator<HierarchyNode<String, SortedSetHierarchyNode<String>>> l = n.getChildren().iterator();
+		assert l.next().getValue().equals("a");
+		assert l.next().getValue().equals("b");
+		assert l.next().getValue().equals("c");
+		assert l.next().getValue().equals("n");
+		assert l.next().getValue().equals("o");
+		assert l.next().getValue().equals("p");
 		}
 	}

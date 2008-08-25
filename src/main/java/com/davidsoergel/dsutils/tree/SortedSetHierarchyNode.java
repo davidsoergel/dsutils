@@ -43,8 +43,8 @@ import java.util.TreeSet;
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a SortedSet and thus maintain their natural order.
  */
-public class SortedSetHierarchyNode<T extends Comparable>
-		implements HierarchyNode<T, SortedSetHierarchyNode<T>>, Comparable
+public class SortedSetHierarchyNode<T extends Comparable> extends ImmutableHierarchyNode<T, SortedSetHierarchyNode<T>>
+		implements Comparable
 	{
 	// ------------------------------ FIELDS ------------------------------
 
@@ -53,8 +53,12 @@ public class SortedSetHierarchyNode<T extends Comparable>
 
 
 	private SortedSetHierarchyNode<T> parent;
-	private T contents;
+	private final T contents;
 
+	public SortedSetHierarchyNode(final T contents)
+		{
+		this.contents = contents;
+		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -68,10 +72,6 @@ public class SortedSetHierarchyNode<T extends Comparable>
 		return contents;
 		}
 
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
 
 	public SortedSetHierarchyNode<T> getParent()
 		{
@@ -90,16 +90,23 @@ public class SortedSetHierarchyNode<T extends Comparable>
 
 	public int compareTo(Object o)
 		{
-		return getValue().compareTo(o);
+		T otherVal = ((SortedSetHierarchyNode<T>) o).getValue();
+		T thisVal = getValue();
+		if (otherVal == null || thisVal == null)
+			{
+			throw new Error("SortedSetHierarchyNode must contain a value");
+			}
+		return thisVal.compareTo(otherVal);
 		}
 
 	// --------------------- Interface HierarchyNode ---------------------
 
-	public SortedSetHierarchyNode<T> newChild()
+
+	public SortedSetHierarchyNode<T> newChild(final T value)
 		{
-		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>();
-		//result.setContents(contents);
+		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>(value);
 		children.add(result);
+		result.setParent(this);
 		return result;
 		}
 

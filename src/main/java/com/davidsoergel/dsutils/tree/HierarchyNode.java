@@ -56,6 +56,11 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 
 	HierarchyNode<? extends T, I> getParent();
 
+	/**
+	 * Returns a List of nodes describing a path down the tree, starting with the root and ending with this node
+	 *
+	 * @return a List of nodes describing a path down the tree, starting with the root and ending with this node
+	 */
 	List<? extends HierarchyNode<T, I>> getAncestorPath();
 
 	/**
@@ -63,8 +68,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the new child node
 	 */
-	HierarchyNode<? extends T, I> newChild();
-
+	HierarchyNode<? extends T, ? extends I> newChild();
 
 	/**
 	 * Get an iterator that returns all the nodes of the tree in depth-first order.  The breadth ordering may or may not be

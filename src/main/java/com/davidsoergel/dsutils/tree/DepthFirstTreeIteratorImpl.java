@@ -132,7 +132,6 @@ public class DepthFirstTreeIteratorImpl<T, I extends HierarchyNode<T, I>> implem
 			}
 		}
 
-	// the requested node must be on the current path
 	public void skipAllDescendants(HierarchyNode<T, I> node) throws TreeException
 		{
 		if (node == root)

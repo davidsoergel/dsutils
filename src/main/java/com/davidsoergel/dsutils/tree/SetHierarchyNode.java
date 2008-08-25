@@ -91,6 +91,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
 		//result.setContents(contents);
 		children.add(result);
+		result.setParent(this);
 		return result;
 		}
 

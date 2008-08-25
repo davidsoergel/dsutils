@@ -32,56 +32,34 @@
 
 package com.davidsoergel.dsutils.tree;
 
-import com.davidsoergel.dsutils.ContractTestAware;
-import com.davidsoergel.dsutils.TestInstanceFactory;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import java.util.Queue;
+import com.davidsoergel.dsutils.ChainedRuntimeException;
+import org.apache.log4j.Logger;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
  */
-
-public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
-		implements TestInstanceFactory<SetHierarchyNode>
+public class TreeRuntimeException extends ChainedRuntimeException
 	{
-	public SetHierarchyNode<String> createInstance() throws Exception
+	// ------------------------------ FIELDS ------------------------------
+
+	private static Logger logger = Logger.getLogger(TreeRuntimeException.class);
+
+
+	// --------------------------- CONSTRUCTORS ---------------------------
+
+	public TreeRuntimeException(String s)
 		{
-		SetHierarchyNode<String> root = new SetHierarchyNode<String>();
-		SetHierarchyNode<String> a = root.newChild();
-		SetHierarchyNode<String> b = root.newChild();
-		SetHierarchyNode<String> c = root.newChild();
-		SetHierarchyNode<String> d = a.newChild();
-		SetHierarchyNode<String> e = a.newChild();
-		SetHierarchyNode<String> f = b.newChild();
-		SetHierarchyNode<String> g = b.newChild();
-		SetHierarchyNode<String> h = b.newChild();
-		SetHierarchyNode<String> i = c.newChild();
-		SetHierarchyNode<String> j = g.newChild();
-		SetHierarchyNode<String> k = g.newChild();
-		SetHierarchyNode<String> l = k.newChild();
-		SetHierarchyNode<String> m = l.newChild();
-		return root;
+		super(s);
 		}
 
-
-	public void addContractTestsToQueue(Queue<Object> theContractTests)
+	public TreeRuntimeException(Exception e)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest(this)
-		{
-		});
+		super(e);
 		}
 
-	@Factory
-	public Object[] instantiateAllContractTests()
+	public TreeRuntimeException(Exception e, String s)
 		{
-		return super.instantiateAllContractTests();
-		}
-
-	@Test
-	public void bogusTest()
-		{
+		super(e, s);
 		}
 	}
