@@ -35,6 +35,9 @@ package com.davidsoergel.dsutils.tree;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Rev$
@@ -51,10 +54,16 @@ public abstract class HierarchyNodeInterfaceTest
 		this.tif = tif;
 		}
 
+	// oops, there is no addChild()
+
+	/*
 	@Test
-	public void addedChildIsIncludedInChildArray()
+	public void addedChildIsIncludedInChildArray() throws Exception
 		{
-		assert false;
+		HierarchyNode n = tif.createInstance();
+		HierarchyNode c = tif.createInstance();
+		n.addChild(c);
+		assert n.getChildren().contains(c);
 		}
 
 	@Test
@@ -62,22 +71,53 @@ public abstract class HierarchyNodeInterfaceTest
 		{
 		assert false;
 		}
+		*/
 
 	@Test
-	public void newChildIsIncludedInChildArray()
+	public void newChildIsIncludedInChildArray() throws Exception
 		{
-		assert false;
+		HierarchyNode n = tif.createInstance();
+		HierarchyNode c = n.newChild();
+		assert n.getChildren().contains(c);
 		}
 
 	@Test
-	public void ancestorPathDoesNotIncludeThis()
+	public void newChildSetsChildParentLink() throws Exception
 		{
-		assert false;
+		HierarchyNode n = tif.createInstance();
+		HierarchyNode c = n.newChild();
+		assert c.getParent() == n;
 		}
 
 	@Test
-	public void ancestorPathExtendsFromRootToImmediateParent()
+	public void ancestorPathDoesNotIncludeThis() throws Exception
 		{
-		assert false;
+		HierarchyNode n = tif.createInstance();
+		assert !n.getAncestorPath().contains(this);
+		}
+
+	@Test
+	public void ancestorPathExtendsFromRootToImmediateParent() throws Exception
+		{
+		HierarchyNode n = tif.createInstance();
+		List path = n.getAncestorPath();
+		Collections.reverse(path);
+		HierarchyNode p = n.getParent();
+		while (p != null)
+			{
+			HierarchyNode p2 = p.getParent();
+
+			assert p == path.get(0);
+			path.remove(p);
+			p = p2;
+			}
+		assert path.isEmpty();
+		}
+
+	@Test
+	public void providesDepthFirstIterator() throws Exception
+		{
+		HierarchyNode n = tif.createInstance();
+		assert n.depthFirstIterator() != null;
 		}
 	}

@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils.tree;
 import com.davidsoergel.dsutils.ContractTestAware;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 
 import java.util.Queue;
 
@@ -47,7 +48,21 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 	{
 	public ListHierarchyNode createInstance() throws Exception
 		{
-		return null;
+		ListHierarchyNode root = new ListHierarchyNode();
+		ListHierarchyNode a = root.newChild();
+		ListHierarchyNode b = root.newChild();
+		ListHierarchyNode c = root.newChild();
+		ListHierarchyNode d = a.newChild();
+		ListHierarchyNode e = a.newChild();
+		ListHierarchyNode f = b.newChild();
+		ListHierarchyNode g = b.newChild();
+		ListHierarchyNode h = b.newChild();
+		ListHierarchyNode i = c.newChild();
+		ListHierarchyNode j = g.newChild();
+		ListHierarchyNode k = g.newChild();
+		ListHierarchyNode l = k.newChild();
+		ListHierarchyNode m = l.newChild();
+		return root;
 		}
 
 	public void addContractTestsToQueue(Queue<Object> theContractTests)
@@ -63,9 +78,9 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		return super.instantiateAllContractTests();
 		}
 
-	// see if TestNG runs these tests under Maven
-	/*	@Test
-   public void bogusTest()
-	   {
-	   }*/
+	// comment this out to see if TestNG runs these tests under Maven
+	@Test
+	public void bogusTest()
+		{
+		}
 	}

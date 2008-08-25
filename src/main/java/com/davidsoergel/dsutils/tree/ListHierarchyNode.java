@@ -90,6 +90,7 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
 		//result.setContents(contents);
 		children.add(result);
+		result.setParent(this);
 		return result;
 		}
 

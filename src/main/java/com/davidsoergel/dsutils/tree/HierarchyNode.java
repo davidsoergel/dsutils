@@ -50,17 +50,13 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 
 	boolean isLeaf();
 
-
 	T getValue();
 
+	void setValue(T contents);
 
 	HierarchyNode<? extends T, I> getParent();
 
-	/**
-	 * @return
-	 */
 	List<? extends HierarchyNode<T, I>> getAncestorPath();
-
 
 	/**
 	 * Creates a new child node of the appropriate type
@@ -70,8 +66,12 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	HierarchyNode<? extends T, I> newChild();
 
 
-	void setValue(T contents);
-
-
+	/**
+	 * Get an iterator that returns all the nodes of the tree in depth-first order.  The breadth ordering may or may not be
+	 * defined, depending on the HierarchyNode implementation.  We provide this depth-first iterator explicitly even though
+	 * the HierarchyNode is itself iterable, because the default iterator may be breadth-first or something else.
+	 *
+	 * @return the DepthFirstTreeIterator<T, I>
+	 */
 	DepthFirstTreeIterator<T, I> depthFirstIterator();
 	}
