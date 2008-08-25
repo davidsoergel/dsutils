@@ -36,7 +36,7 @@ import java.util.Iterator;
 
 
 /**
- * An Iterator that providos all of the nodes of a tree in depth-first order.
+ * An Iterator that provides all of the nodes of a tree in depth-first order.
  *
  * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
  * @version $Rev$

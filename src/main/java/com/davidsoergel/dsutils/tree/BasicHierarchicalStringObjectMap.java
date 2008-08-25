@@ -56,21 +56,34 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> getChildren()
 		{
 		return children;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Map<String, Object> getValue()
 		{
 		return contents;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setValue(Map<String, Object> contents)
 		{
 		this.contents = contents;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public HierarchicalStringObjectMap getParent()
 		{
 		return parent;
@@ -86,6 +99,10 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	// --------------------- Interface HierarchyNode ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public HierarchicalStringObjectMap newChild()
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
@@ -98,21 +115,33 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	// --------------------- Interface Map ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object put(String s, Object o)
 		{
 		return getValue().put(s, o);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object remove(Object o)
 		{
 		return getValue().remove(o);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void putAll(Map<? extends String, ? extends Object> map)
 		{
 		getValue().putAll(map);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void clear()
 		{
 		getValue().clear();
@@ -120,6 +149,10 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	// -------------------------- OTHER METHODS --------------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void merge()
 		{
 		//To change body of implemented methods use File | Settings | File Templates.
@@ -136,6 +169,9 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public DepthFirstTreeIterator<Map<String, Object>, HierarchicalStringObjectMap> depthFirstIterator()
 		{
 		return new DepthFirstTreeIteratorImpl(this);

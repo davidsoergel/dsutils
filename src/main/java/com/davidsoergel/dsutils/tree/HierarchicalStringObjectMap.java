@@ -43,6 +43,9 @@ import java.util.Set;
  * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
  * interface and simply delegates to the contained Map.   The type of Collection that holds the children is up to the
  * implementation, so they may or may not be ordered.
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Rev$
  */
 public abstract class HierarchicalStringObjectMap
 		implements HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>, Map<String, Object>
@@ -52,31 +55,49 @@ public abstract class HierarchicalStringObjectMap
 
 	// --------------------- Interface HierarchyNode ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract HierarchicalStringObjectMap newChild();
 
 
 	// --------------------- Interface Map ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int size()
 		{
 		return getValue().size();
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEmpty()
 		{
 		return getValue().isEmpty();
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean containsKey(Object o)
 		{
 		return getValue().containsKey(o);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean containsValue(Object o)
 		{
 		return getValue().containsValue(o);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object get(Object o)
 		{
 		return getValue().get(o);
@@ -106,16 +127,25 @@ public abstract class HierarchicalStringObjectMap
 		 }
  */
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Set<String> keySet()
 		{
 		return getValue().keySet();
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Collection<Object> values()
 		{
 		return getValue().values();
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Set<Entry<String, Object>> entrySet()
 		{
 		return getValue().entrySet();
@@ -126,6 +156,9 @@ public abstract class HierarchicalStringObjectMap
 	public abstract void merge();
 
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isLeaf()
 		{
 		Collection<? extends HierarchyNode<? extends Map<String, Object>, HierarchicalStringObjectMap>> children =
@@ -133,8 +166,14 @@ public abstract class HierarchicalStringObjectMap
 		return children == null || children.isEmpty();
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract HierarchicalStringObjectMap getParent();
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<HierarchicalStringObjectMap> getAncestorPath()
 		{
 		List<HierarchicalStringObjectMap> result = new LinkedList<HierarchicalStringObjectMap>();

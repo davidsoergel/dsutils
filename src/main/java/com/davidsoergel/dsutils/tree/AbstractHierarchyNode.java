@@ -35,10 +35,15 @@ package com.davidsoergel.dsutils.tree;
 
 import java.util.Collection;
 
+//** make ListHierarchyNode, etc. extend this
+
 /**
  * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need
  * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
  * children.
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Rev$
  */
 public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
 	{
@@ -50,16 +55,25 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public T getValue()
 		{
 		return contents;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setValue(T contents)
 		{
 		this.contents = contents;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public HierarchyNode<? extends T, I> getParent()
 		{
 		return parent;
@@ -77,6 +91,9 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 
 	//private Collection<HierarchyNode<T>> children;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract Collection<HierarchyNode<T, I>> getChildren();
 
 

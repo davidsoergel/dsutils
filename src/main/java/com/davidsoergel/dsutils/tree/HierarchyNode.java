@@ -41,6 +41,8 @@ import java.util.List;
  * number of children, which are also HierarchyNodes of the same generic type.  The type of Collection that holds the
  * children is up to the implementation, so they may or may not be ordered.
  *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Rev$
  * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
 public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>
