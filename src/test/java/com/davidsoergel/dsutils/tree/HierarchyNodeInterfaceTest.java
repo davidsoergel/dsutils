@@ -96,6 +96,13 @@ public abstract class HierarchyNodeInterfaceTest
 		assert n.getAncestorPath().contains(n);
 		}
 
+	/*	@Test
+   public void ancestorPathDoesNotIncludeThis() throws Exception
+	   {
+	   HierarchyNode n = tif.createInstance();
+	   assert !n.getAncestorPath().contains(n);
+	   }*/
+
 	@Test
 	public void ancestorPathExtendsFromRootToImmediateParent() throws Exception
 		{
