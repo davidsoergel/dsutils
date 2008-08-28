@@ -55,9 +55,9 @@ public class MathUtils
 	public static int logOrdersOfMagnitudePerLevel;
 	public static int logBinsPerLevel;
 
-	public static int logLevels;
-	public static double[] logBinIncrement;
-	public static double[] logBinLimit;
+	private static int logLevels;
+	private static double[] logBinIncrement;
+	private static double[] logBinLimit;
 
 	private static Logger logger = Logger.getLogger(MathUtils.class);
 	private static final int FACTORIAL_LIMIT = 100;

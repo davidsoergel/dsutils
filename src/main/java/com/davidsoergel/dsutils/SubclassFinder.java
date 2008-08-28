@@ -142,22 +142,22 @@ public class SubclassFinder
 		Enumeration e = null;
 		logger.debug("Looking for resources: " + name);
 		//logger.debug("The first resource found is: " + ClassLoader.getSystemResource(name));
-		try
-			{
-			//e = ClassLoader.getSystemResources(name);
-			/*	try
-			   {
-			   e = tosubclass.getClassLoader().getResources(name);
-			   }
-		   catch (Throwable e1)
-			   {*/
-			e = classLoader.getResources(name);
-			//	}
-			}
-		catch (IOException e1)
-			{
-			logger.debug(e1);
-			}
+		//try
+		//	{
+		//e = ClassLoader.getSystemResources(name);
+		/*	try
+					   {
+					   e = tosubclass.getClassLoader().getResources(name);
+					   }
+				   catch (Throwable e1)
+					   {*/
+		e = classLoader.getResources(name);
+		//	}
+		//	}
+		//	catch (IOException e1)
+		//		{
+		//		logger.debug(e1);
+		//		}
 		while (e.hasMoreElements())
 			{
 			URL url = (URL) e.nextElement();
