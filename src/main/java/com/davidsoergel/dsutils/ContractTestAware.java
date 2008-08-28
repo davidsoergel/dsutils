@@ -40,18 +40,18 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public abstract class ContractTestAware<T>
 	{
 
-	public abstract void addContractTestsToQueue(Queue<Object> theContractTests);
+	public abstract void addContractTestsToQueue(Queue theContractTests);
 
 	//@Factory
 	public Object[] instantiateAllContractTests()
 		{
-		Set<Object> result = new HashSet<Object>();
-		Queue<Object> queue = new LinkedList<Object>();
+		Set result = new HashSet();
+		Queue queue = new LinkedList();
 
 		addContractTestsToQueue(queue);
 

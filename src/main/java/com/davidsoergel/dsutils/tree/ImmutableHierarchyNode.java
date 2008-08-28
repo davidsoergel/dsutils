@@ -2,7 +2,7 @@ package com.davidsoergel.dsutils.tree;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode<T, I>> implements HierarchyNode<T, I>
 	{

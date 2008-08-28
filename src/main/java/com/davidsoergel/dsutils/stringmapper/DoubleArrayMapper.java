@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public class DoubleArrayMapper extends StringMapper<Double[]>
 	{

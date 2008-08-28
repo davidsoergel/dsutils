@@ -41,7 +41,7 @@ import java.util.Iterator;
  * will be provided before any of its siblings.
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public class DepthFirstTreeIteratorImpl<T, I extends HierarchyNode<T, I>> implements DepthFirstTreeIterator<T, I>
 	{

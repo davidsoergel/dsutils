@@ -45,7 +45,7 @@ import java.util.Set;
  * implementation, so they may or may not be ordered.
  *
  * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public abstract class HierarchicalStringObjectMap
 		implements HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>, Map<String, Object>

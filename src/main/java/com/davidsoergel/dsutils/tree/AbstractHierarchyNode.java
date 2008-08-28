@@ -43,7 +43,7 @@ import java.util.Collection;
  * children.
  *
  * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
 	{

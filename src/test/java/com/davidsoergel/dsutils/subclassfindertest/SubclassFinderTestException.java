@@ -31,7 +31,6 @@
  */
 
 
-
 package com.davidsoergel.dsutils.subclassfindertest;
 
 import com.davidsoergel.dsutils.ChainedException;

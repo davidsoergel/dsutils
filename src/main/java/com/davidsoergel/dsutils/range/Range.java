@@ -33,7 +33,6 @@
 package com.davidsoergel.dsutils.range;
 
 
-
 /**
  * Marker interface for classes that describe a range of values in one way or another.  "Range" is meant in a very
  * general sense here, including explicit Sets, intervals, multi-intervals, etc.

@@ -42,7 +42,7 @@ import java.util.Queue;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHierarchyNode<String>>
 		implements TestInstanceFactory<SortedSetHierarchyNode<String>>
@@ -66,7 +66,7 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 		return root;
 		}
 
-	public void addContractTestsToQueue(Queue<Object> theContractTests)
+	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest(this)
 		{

@@ -40,16 +40,16 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
-public abstract class HierarchyNodeInterfaceTest
+public class HierarchyNodeInterfaceTest<T extends HierarchyNode>
 	{
-	private TestInstanceFactory<? extends HierarchyNode> tif;
+	private TestInstanceFactory<T> tif;
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public HierarchyNodeInterfaceTest(TestInstanceFactory<? extends HierarchyNode> tif)
+	public HierarchyNodeInterfaceTest(TestInstanceFactory<T> tif)
 		{
 		this.tif = tif;
 		}
@@ -76,7 +76,7 @@ public abstract class HierarchyNodeInterfaceTest
 	@Test
 	public void newChildIsIncludedInChildArray() throws Exception
 		{
-		HierarchyNode n = tif.createInstance();
+		T n = tif.createInstance();
 		HierarchyNode c = n.newChild();
 		assert n.getChildren().contains(c);
 		}
@@ -84,7 +84,7 @@ public abstract class HierarchyNodeInterfaceTest
 	@Test
 	public void newChildSetsChildParentLink() throws Exception
 		{
-		HierarchyNode n = tif.createInstance();
+		T n = tif.createInstance();
 		HierarchyNode c = n.newChild();
 		assert c.getParent() == n;
 		}
@@ -92,7 +92,7 @@ public abstract class HierarchyNodeInterfaceTest
 	@Test
 	public void ancestorPathIncludesThis() throws Exception
 		{
-		HierarchyNode n = tif.createInstance();
+		T n = tif.createInstance();
 		assert n.getAncestorPath().contains(n);
 		}
 
@@ -106,7 +106,7 @@ public abstract class HierarchyNodeInterfaceTest
 	@Test
 	public void ancestorPathExtendsFromRootToImmediateParent() throws Exception
 		{
-		HierarchyNode n = tif.createInstance();
+		T n = tif.createInstance();
 		List path = n.getAncestorPath();
 		Collections.reverse(path);
 		HierarchyNode p = n;
@@ -124,7 +124,7 @@ public abstract class HierarchyNodeInterfaceTest
 	@Test
 	public void providesDepthFirstIterator() throws Exception
 		{
-		HierarchyNode n = tif.createInstance();
+		T n = tif.createInstance();
 		assert n.depthFirstIterator() != null;
 		}
 	}

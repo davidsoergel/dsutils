@@ -41,7 +41,7 @@ import java.util.Queue;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 
 public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
@@ -67,7 +67,7 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 		}
 
 
-	public void addContractTestsToQueue(Queue<Object> theContractTests)
+	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new HierarchyNodeInterfaceTest(this)
 		{

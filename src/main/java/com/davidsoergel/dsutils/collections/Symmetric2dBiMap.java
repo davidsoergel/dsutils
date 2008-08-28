@@ -49,7 +49,7 @@ import java.util.TreeSet;
  * value->keys direction).  The order of the keys is unimportant.
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public class Symmetric2dBiMap<K, V extends Comparable>
 	{

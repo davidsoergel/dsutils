@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Rev$
+ * @version $Id$
  */
 public class TreeRuntimeException extends ChainedRuntimeException
 	{
