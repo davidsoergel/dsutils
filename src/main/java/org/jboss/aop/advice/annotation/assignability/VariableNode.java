@@ -427,7 +427,7 @@ class VariableNode
 				return false;
 				}
 			}
-		return argument.equals(fromArgument);// TODO check this works correctly
+		return argument.equals(fromArgument);// (ignore)  TODO check this works correctly
 		}
 
 	private static boolean isAssignable(Type[] upperBounds, Type[] fromUpperBounds)

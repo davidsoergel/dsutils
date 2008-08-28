@@ -35,7 +35,7 @@ package com.davidsoergel.dsutils.tree;
 
 import java.util.Collection;
 
-//** make ListHierarchyNode, etc. extend this
+// TODO make ListHierarchyNode, etc. extend this
 
 /**
  * Abstract implementation of some of the most basic HierarchyNode functionality.  Concrete classes extending this need

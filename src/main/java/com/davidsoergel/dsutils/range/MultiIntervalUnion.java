@@ -128,7 +128,7 @@ public class MultiIntervalUnion<T extends Number> extends TreeSet<Interval<T>>
 
 	public boolean encompassesValue(T value)
 		{
-		//** efficient?
+		// efficient?
 		try
 			{
 			Interval<T> f = headSet(new BasicInterval<T>(value, value, false, false)).last();

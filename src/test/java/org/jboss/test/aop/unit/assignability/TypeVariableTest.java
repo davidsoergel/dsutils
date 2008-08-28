@@ -448,7 +448,7 @@ public class TypeVariableTest extends VariableTargetAlgorithmTest
 
 	<A extends Runnable, X extends A> void caller9(A arg1, Runnable arg2, X arg3)
 		{
-		// TODO fix algorithm here
+		// (ignore) TODO fix algorithm here
 		//called6(arg1, arg2, arg3);
 		}
 

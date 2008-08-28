@@ -170,7 +170,7 @@ public class MathUtils
 			return Math.log(x);
 			}
 
-		// ** Is there a faster way to decide which bin to use?  e.g. binary tree instead of linear?
+		// REVIEW Is there a faster way to decide which bin to use?  e.g. binary tree instead of linear?
 		for (int level = 0; level < logLevels; level++)
 			{
 			if (x < logBinLimit[level])

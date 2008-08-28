@@ -109,7 +109,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	Collection<?> caller4()
 		{
-		// TODO fix algorithm here
+		// (ignore) TODO fix algorithm here
 		//return called4();
 		return null;
 		}

@@ -89,7 +89,7 @@ public class LongRational extends Number implements Comparable
 			long x = a - (n * c);
 			long y = b - (n * d);
 
-			//** maybe this comparisons to 0 would be faster as a bit shift to examine the sign bit?  Ideally the compiler would catch that if true
+			// REVIEW maybe this comparisons to 0 would be faster as a bit shift to examine the sign bit?  Ideally the compiler would catch that if true
 			if (x > 0 && y < 0)
 				{
 				return 1;

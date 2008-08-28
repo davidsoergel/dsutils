@@ -40,6 +40,7 @@ import java.util.HashMap;
 /**
  * Use SingletonRegistry.instance(String) to access a given instance by name.
  */
+@Deprecated
 public abstract class SingletonRegistry
 	{
 	// ------------------------------ FIELDS ------------------------------
@@ -69,7 +70,7 @@ public abstract class SingletonRegistry
 			{
 			try
 				{
-				// ** this doesn't work due to the lowercasing issue!!
+				// (ignore, deprecated) BAD this doesn't work due to the lowercasing issue!!
 
 				if (classLoader != null)
 					{

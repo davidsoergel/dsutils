@@ -107,7 +107,7 @@ public enum AssignabilityAlgorithm
 					}
 				if (type instanceof Class)
 					{
-					// ** Updated by David Soergel <lorax@lorax.org> 2007-09-07
+					// Updated by David Soergel <lorax@lorax.org> 2007-09-07
 					// return type.equals(fromType);
 					Class fromClass;
 					if (fromType instanceof Class)

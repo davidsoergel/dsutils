@@ -69,7 +69,7 @@ class ParamTypeAssignabilityAlgorithm
 				// result true with a warning (i.e., this if statemente is not only for
 				// fromRaw subclass of desiredType, but also for fromRaw same as
 				// desiredType
-				return true;// TODO With warning
+				return true;// (ignore) TODO With warning
 				}
 			}
 		else if (fromType instanceof ParameterizedType)
@@ -95,7 +95,7 @@ class ParamTypeAssignabilityAlgorithm
 		Type[] arguments = ArgumentContextualizer.getContextualizedArguments(fromParamType, fromRaw, desiredType);
 		if (arguments == null)
 			{
-			return true;// TODO with Warning
+			return true;// (ignore)  TODO with Warning
 			}
 		return checker.isSame(paramType.getActualTypeArguments(), arguments, caller, checkerToken);
 		}

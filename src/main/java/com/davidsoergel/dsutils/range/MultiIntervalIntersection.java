@@ -130,7 +130,7 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 	public boolean encompassesValue(T value)
 		{
-		//** efficient?
+		// efficient?
 		try
 			{
 			Interval<T> f = headSet(new BasicInterval<T>(value, value, false, false)).last();
