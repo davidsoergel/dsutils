@@ -74,7 +74,7 @@ public class SafeIntegerArithmetic
 
 	// ------------------------------- ADDITION ------------------------------
 
-	public static final byte Add(byte L, byte R)
+	public static final byte add(byte L, byte R)
 		{
 		short result = (short) (L + R);
 		if (result < MinB || result > MaxB)
@@ -87,7 +87,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final short Add(short L, short R)
+	public static final short add(short L, short R)
 		{
 		int result = (int) (L + R);
 		if (result < MinS || result > MaxS)
@@ -100,7 +100,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final int Add(int L, int R)
+	public static final int add(int L, int R)
 		{
 		long result = (long) L + (long) R;
 		if (result < MinI || result > MaxI)
@@ -113,7 +113,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final long Add(long L, long R)
+	public static final long add(long L, long R)
 		{
 		long result = L + R;
 		if (L > 0 && R > 0 && result < 0 || L < 0 && R < 0 && result >= 0)
@@ -127,7 +127,7 @@ public class SafeIntegerArithmetic
 		}
 
 	// ------------------------------- SUBTRACTION ------------------------
-	public static final byte Sub(byte L, byte R)
+	public static final byte sub(byte L, byte R)
 		{
 		short result = (short) (L - R);
 		if (result < MinB || result > MaxB)
@@ -140,7 +140,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final short Sub(short L, short R)
+	public static final short sub(short L, short R)
 		{
 		int result = (int) (L - R);
 		if (result < MinS || result > MaxS)
@@ -153,7 +153,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final int Sub(int L, int R)
+	public static final int sub(int L, int R)
 		{
 		long result = (long) L - (long) R;
 		if (result < MinI || result > MaxI)
@@ -166,7 +166,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final long Sub(long L, long R)
+	public static final long sub(long L, long R)
 		{
 		long result = L - R;
 		if (L >= 0 && R < 0 && result < 0 || L < 0 && R > 0 && result > 0)
@@ -180,7 +180,7 @@ public class SafeIntegerArithmetic
 		}
 
 	// ------------------------------- NEGATION --------------------------
-	public static final byte Neg(byte L)
+	public static final byte neg(byte L)
 		{
 		if (L == MinB)
 			{
@@ -192,7 +192,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final short Neg(short L)
+	public static final short neg(short L)
 		{
 		if (L == MinS)
 			{
@@ -204,7 +204,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final int Neg(int L)
+	public static final int neg(int L)
 		{
 		if (L == MinI)
 			{
@@ -216,7 +216,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final long Neg(long L)
+	public static final long neg(long L)
 		{
 		if (L == MinL)
 			{
@@ -229,7 +229,7 @@ public class SafeIntegerArithmetic
 		}
 
 	// ------------------------------- MULTIPLICATION -----------------------
-	public static final byte Mul(byte L, byte R)
+	public static final byte mul(byte L, byte R)
 		{
 		short result = (short) (L * R);
 		if (result < MinB || result > MaxB)
@@ -242,7 +242,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final short Mul(short L, short R)
+	public static final short mul(short L, short R)
 		{
 		int result = (int) (L * R);
 		if (result < MinS || result > MaxS)
@@ -255,7 +255,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final int Mul(int L, int R)
+	public static final int mul(int L, int R)
 		{
 		long result = (long) L * (long) R;
 		if (result < MinI || result > MaxI)
@@ -268,7 +268,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final long Mul(long L, long R)
+	public static final long mul(long L, long R)
 		{
 		if ((L > 0 && (R < MinL / L || R > MaxL / L)) || (L == -1 && R == MinL) || (L < -1 && (R < MaxL / L
 				|| R > MinL / L)))
@@ -282,7 +282,7 @@ public class SafeIntegerArithmetic
 		}
 
 	// ------------------------------- DIVISION -------------------------
-	public static final byte Div(byte L, byte R)
+	public static final byte div(byte L, byte R)
 		{
 		if (L == MinB && R == -1)
 			{
@@ -294,7 +294,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final short Div(short L, short R)
+	public static final short div(short L, short R)
 		{
 		if (L == MinS && R == -1)
 			{
@@ -306,7 +306,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final int Div(int L, int R)
+	public static final int div(int L, int R)
 		{
 		if (L == MinI && R == -1)
 			{
@@ -318,7 +318,7 @@ public class SafeIntegerArithmetic
 			}
 		}
 
-	public static final long Div(long L, long R)
+	public static final long div(long L, long R)
 		{
 		if (L == MinL && R == -1)
 			{
@@ -331,7 +331,7 @@ public class SafeIntegerArithmetic
 		}
 
 	// ------------------------------- EXPONENTIATION ----------------------
-	public static byte Exp(byte L, byte R)
+	public static byte exp(byte L, byte R)
 		{
 		if (L == 0 && R < 0)
 			{
@@ -353,7 +353,7 @@ public class SafeIntegerArithmetic
 		return (byte) StrictMath.pow((double) L, (double) R);
 		}
 
-	public static short Exp(short L, short R)
+	public static short exp(short L, short R)
 		{
 		if (L == 0 && R < 0)
 			{
@@ -375,7 +375,7 @@ public class SafeIntegerArithmetic
 		return (short) StrictMath.pow((double) L, (double) R);
 		}
 
-	public static int Exp(int L, int R)
+	public static int exp(int L, int R)
 		{
 		if (L == 0 && R < 0)
 			{
@@ -397,7 +397,7 @@ public class SafeIntegerArithmetic
 		return (int) StrictMath.pow((double) L, (double) R);
 		}
 
-	public static long Exp(long L, long R)
+	public static long exp(long L, long R)
 		{
 		if (L == 0 && R < 0)
 			{
@@ -440,7 +440,7 @@ public class SafeIntegerArithmetic
 			}
 		if (R < 0)
 			{
-			return (long) 1 / Exp(L, -R);
+			return (long) 1 / exp(L, -R);
 			}
 		{
 		long res = 1;
@@ -463,7 +463,7 @@ public class SafeIntegerArithmetic
 		protected static final PrimTypeIndTy IntTy = new PrimTypeIndTy("IntTy");
 		protected static final PrimTypeIndTy LongTy = new PrimTypeIndTy("LongTy");
 
-		public String GetVal()
+		public String getVal()
 			{
 			return this.Val;
 			}
@@ -485,62 +485,62 @@ public class SafeIntegerArithmetic
 		protected static final OperationKindTy DivOp = new OperationKindTy("DivOp");
 		protected static final OperationKindTy ExpOp = new OperationKindTy("ExpOp");
 
-		public String GetVal()
+		public String getV()
 			{
-			return this.Val;
+			return this.v;
 			}
 
 		private OperationKindTy(String Val)
 			{
-			this.Val = Val;
+			this.v = Val;
 			}
 
-		private String Val;
+		private String v;
 		}
 
 	public static class IllegalArithArgsException extends IllegalArgumentException
 		{
 		public IllegalArithArgsException(PrimTypeIndTy type, OperationKindTy operation, long L, long R)
 			{
-			this.TypeIndication = type;
-			this.OperationKind = operation;
+			this.typeIndication = type;
+			this.operationKind = operation;
 			this.L = L;
 			this.R = R;
-			System.out.println("illegal args: " + "op = " + OperationKind.GetVal() + ", type = "
-					+ TypeIndication.GetVal() + ", L = " + L + ", R = " + R);
+			System.out.println("illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal()
+					+ ", L = " + L + ", R = " + R);
 			}
 
 		public IllegalArithArgsException(PrimTypeIndTy type, OperationKindTy operation, long L)
 			{
-			this.TypeIndication = type;
-			this.OperationKind = operation;
+			this.typeIndication = type;
+			this.operationKind = operation;
 			this.L = L;
-			System.out.println("illegal args: " + "op = " + OperationKind.GetVal() + ", type = "
-					+ TypeIndication.GetVal() + ", L = " + L);
+			System.out.println("illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal()
+					+ ", L = " + L);
 			}
 
-		public PrimTypeIndTy GetType()
+		public PrimTypeIndTy getType()
 			{
-			return this.TypeIndication;
+			return this.typeIndication;
 			}
 
-		public OperationKindTy GetOperation()
+		public OperationKindTy getOperation()
 			{
-			return this.OperationKind;
+			return this.operationKind;
 			}
 
-		public long GetLeftOp()
+		public long getLeftOp()
 			{
 			return this.L;
 			}
 
-		public long GetRightOp()
+		public long getRightOp()
 			{
 			return this.R;
 			}
 
-		protected PrimTypeIndTy TypeIndication;
-		protected OperationKindTy OperationKind;
+		protected PrimTypeIndTy typeIndication;
+		protected OperationKindTy operationKind;
 		protected long L;
 		protected long R;
 		}

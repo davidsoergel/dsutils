@@ -167,10 +167,10 @@ public class LongRational extends Number implements Comparable
 		long aFactor = b.denominator / denominatorGCD;// the division should be precision-safe anyway
 		long bFactor = a.denominator / denominatorGCD;// the division should be precision-safe anyway
 
-		long denom = SafeIntegerArithmetic.Mul(a.denominator, aFactor);// == Mul(b.denominator, bFactor)
+		long denom = SafeIntegerArithmetic.mul(a.denominator, aFactor);// == Mul(b.denominator, bFactor)
 
-		long aNum = SafeIntegerArithmetic.Mul(a.numerator, aFactor);
-		long bNum = SafeIntegerArithmetic.Mul(b.numerator, bFactor);
+		long aNum = SafeIntegerArithmetic.mul(a.numerator, aFactor);
+		long bNum = SafeIntegerArithmetic.mul(b.numerator, bFactor);
 
 		return new LongRational(aNum - bNum, denom);
 		}

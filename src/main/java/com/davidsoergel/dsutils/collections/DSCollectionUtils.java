@@ -58,7 +58,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	 * Shallow-copy any Collection into an ArrayList.  Useful for making a local copy for iteration, to avoid
 	 * ConcurrentModificationExceptions.
 	 */
-	public static <T> ArrayList<T> ArrayList(Collection<T> c)
+	public static <T> ArrayList<T> arrayList(Collection<T> c)
 		{
 		if (c instanceof ArrayList)
 			{

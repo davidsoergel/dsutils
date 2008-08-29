@@ -117,11 +117,16 @@ public class FileUtils
 					}
 				else
 					{
-					file.delete();
+					if (!file.delete())
+						{
+						logger.warn(
+								"Unable to delete file: " + file.getAbsolutePath() + " while trying to delete " + path
+										.getAbsolutePath());
+						}
 					}
 				}
 			}
-		return (path.delete());
+		return path.delete();
 		}
 
 	/*	public static Set<File> getFilesWithNames(String[] filenames)
@@ -167,10 +172,7 @@ public class FileUtils
 						String dirname = f.substring(0, f.lastIndexOf(File.separator));
 						logger.info("Wildcard directory: " + dirname);
 						File dir = new File(dirname);
-						if (dir == null)
-							{
-							throw new RuntimeException("Directory not found: " + dirname);
-							}
+
 
 						// TODO full-blown pattern matching
 						final String prefix = f.substring(f.lastIndexOf(File.separator) + 1, f.length() - 1);
@@ -201,12 +203,15 @@ public class FileUtils
 		return files;
 		}
 
-	public static File getDirectory(String name)
+	public static File getDirectory(String name) throws IOException
 		{
 		File dir = new File(name);
 		if (!dir.exists())
 			{
-			dir.mkdirs();
+			if (!dir.mkdirs())
+				{
+				throw new IOException("Failed to create directory: " + name);
+				}
 			}
 		return dir;
 		}

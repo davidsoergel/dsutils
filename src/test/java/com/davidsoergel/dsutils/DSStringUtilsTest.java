@@ -61,10 +61,11 @@ public class DSStringUtilsTest
 	@Test
 	public void joinDoubleArrayToStringWithDelimiterWorks()
 		{
-		assert DSStringUtils.join(new double[]{
+		String s = DSStringUtils.join(new double[]{
 				1.234,
 				6.7346,
 				124.124
-		}, ",").equals("1.234, 6.7346, 124.124");
+		}, ", ");
+		assert s.equals("1.234, 6.7346, 124.124") : s;
 		}
 	}

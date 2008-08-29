@@ -41,6 +41,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,17 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 
 			s = is.readLine();
 			}
-		return new URLClassLoader(urls.toArray(new URL[]{}));
+		return getClassLoader(urls.toArray(new URL[]{}));
+		}
+
+	private static URLClassLoader getClassLoader(final URL[] urls)
+		{
+		return (URLClassLoader) AccessController.doPrivileged(new PrivilegedAction()
+		{
+		public Object run()
+			{
+			return new URLClassLoader(urls);
+			}
+		});
 		}
 	}

@@ -33,9 +33,9 @@
 
 package com.davidsoergel.dsutils;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,7 +84,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * @return The given string with any special characters replaced with the appropriate HTML codes.
 	 * @deprecated use {@link org.apache.commons.lang.StringEscapeUtils}.
 	 */
-	public static String HtmlEncode(String val)
+	public static String htmlEncode(String val)
 		{
 		return org.apache.commons.lang.StringEscapeUtils.escapeHtml(val);
 		/*if (val != null)
@@ -184,7 +184,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * @return A Set of tokens.
 	 * @deprecated use org.apache.commons.lang.StringUtils.split()
 	 */
-	public static Set TokenSet(String s, String delim)
+	public static Set tokenSet(String s, String delim)
 		{
 		//return new HashSet<String>(org.apache.commons.lang.StringUtils.split(s, delim));
 		StringTokenizer st = new StringTokenizer(s, delim);
@@ -235,7 +235,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 
 	public static String join(double[] doubles, String delim)
 		{
-		return join(Arrays.asList(doubles), delim);
+		return join(ArrayUtils.toObject(doubles), delim);
 		}
 
 	/**

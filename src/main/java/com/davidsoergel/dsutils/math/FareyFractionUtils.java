@@ -83,7 +83,7 @@ public class FareyFractionUtils
 		// be careful about long multiplication overflow
 		try
 			{
-			long mult = SafeIntegerArithmetic.Mul(lft.numerator, rgtDenominator);
+			long mult = SafeIntegerArithmetic.mul(lft.numerator, rgtDenominator);
 			long rgtNumerator = (mult + 1) / lft.denominator;
 			return new LongRational(rgtNumerator, rgtDenominator);
 			}

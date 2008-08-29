@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.apache.commons.collections15.CollectionUtils;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,12 +45,13 @@ import java.util.TreeSet;
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a SortedSet and thus maintain their natural order.
  */
-public class SortedSetHierarchyNode<T extends Comparable> extends ImmutableHierarchyNode<T, SortedSetHierarchyNode<T>>
-		implements Comparable
+public class SortedSetHierarchyNode<T extends Comparable<T>>
+		extends ImmutableHierarchyNode<T, SortedSetHierarchyNode<T>>
+		implements Comparable<SortedSetHierarchyNode<? extends T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private SortedSet<HierarchyNode<T, SortedSetHierarchyNode<T>>> children =
+	private final SortedSet<HierarchyNode<T, SortedSetHierarchyNode<T>>> children =
 			new TreeSet<HierarchyNode<T, SortedSetHierarchyNode<T>>>();
 
 
@@ -88,15 +91,52 @@ public class SortedSetHierarchyNode<T extends Comparable> extends ImmutableHiera
 
 	// --------------------- Interface Comparable ---------------------
 
-	public int compareTo(Object o)
+	public int compareTo(SortedSetHierarchyNode<? extends T> o)
 		{
-		T otherVal = ((SortedSetHierarchyNode<T>) o).getValue();
-		T thisVal = getValue();
-		if (otherVal == null || thisVal == null)
+		T oValue = o.getValue();
+		if (oValue == null || contents == null)
 			{
-			throw new Error("SortedSetHierarchyNode must contain a value");
+			throw new TreeRuntimeException("SortedSetHierarchyNode must contain a value");
 			}
-		return thisVal.compareTo(otherVal);
+		return contents.compareTo(oValue);
+		}
+
+	public boolean equals(Object o)
+		{
+		if (this == o)
+			{
+			return true;
+			}
+		if (o == null || getClass() != o.getClass())
+			{
+			return false;
+			}
+
+		SortedSetHierarchyNode<T> that = (SortedSetHierarchyNode<T>) o;
+
+		if (!CollectionUtils.isEqualCollection(children, that.children))
+			{
+			return false;
+			}
+		if (contents != null ? !contents.equals(that.contents) : that.contents != null)
+			{
+			return false;
+			}
+		if (parent != null ? !parent.equals(that.parent) : that.parent != null)
+			{
+			return false;
+			}
+
+		return true;
+		}
+
+	public int hashCode()
+		{
+		int result = 0;
+		//result = children != null ? children.hashCode() : 0;
+		result = 31 * result + (parent != null ? parent.hashCode() : 0);
+		result = 31 * result + (contents != null ? contents.hashCode() : 0);
+		return result;
 		}
 
 	// --------------------- Interface HierarchyNode ---------------------

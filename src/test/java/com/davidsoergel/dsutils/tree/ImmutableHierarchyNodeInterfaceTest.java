@@ -13,7 +13,7 @@ import java.util.List;
 public class ImmutableHierarchyNodeInterfaceTest<T extends ImmutableHierarchyNode>
 	{
 
-	private TestInstanceFactory<T> tif;
+	private TestInstanceFactory<? extends T> tif;
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------
@@ -22,7 +22,7 @@ public class ImmutableHierarchyNodeInterfaceTest<T extends ImmutableHierarchyNod
 		{
 		}
 
-	public ImmutableHierarchyNodeInterfaceTest(TestInstanceFactory<T> tif)
+	public ImmutableHierarchyNodeInterfaceTest(TestInstanceFactory<? extends T> tif)
 		{
 		this.tif = tif;
 		}
