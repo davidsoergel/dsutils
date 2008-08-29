@@ -60,7 +60,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(UrlContentCacheImpl.class);
+	private static final Logger logger = Logger.getLogger(UrlContentCacheImpl.class);
 	private final static int bufferSize = 16384;
 
 	private File cacheRootDir;

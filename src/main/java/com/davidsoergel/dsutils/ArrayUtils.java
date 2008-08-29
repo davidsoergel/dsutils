@@ -43,7 +43,7 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(ArrayUtils.class);
+	private static final Logger logger = Logger.getLogger(ArrayUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

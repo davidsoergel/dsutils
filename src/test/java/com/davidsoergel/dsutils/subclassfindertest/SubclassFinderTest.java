@@ -51,7 +51,7 @@ public class SubclassFinderTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(SubclassFinderTest.class);
+	private static final Logger logger = Logger.getLogger(SubclassFinderTest.class);
 
 
 	public TestGenericInterface<Number> testGenericFieldNumber;

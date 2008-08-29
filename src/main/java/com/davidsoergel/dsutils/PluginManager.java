@@ -54,7 +54,7 @@ public class PluginManager<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(PluginManager.class);
+	private static final Logger logger = Logger.getLogger(PluginManager.class);
 
 	//private static ThreadLocal<Map<Type, PluginManager>> _managers_tl = new ThreadLocal<Map<Type, PluginManager>>();
 

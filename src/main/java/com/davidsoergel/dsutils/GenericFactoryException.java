@@ -43,7 +43,7 @@ public class GenericFactoryException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(GenericFactoryException.class);
+	private static final Logger logger = Logger.getLogger(GenericFactoryException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

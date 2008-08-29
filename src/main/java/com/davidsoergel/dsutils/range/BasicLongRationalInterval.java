@@ -44,7 +44,7 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(BasicLongRationalInterval.class);
+	private static final Logger logger = Logger.getLogger(BasicLongRationalInterval.class);
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 

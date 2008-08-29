@@ -44,7 +44,7 @@ public class MathUtilsTest
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(MathUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(MathUtilsTest.class);
 
 
 	// -------------------------- OTHER METHODS --------------------------

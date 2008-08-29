@@ -43,7 +43,7 @@ public class TreeException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(TreeException.class);
+	private static final Logger logger = Logger.getLogger(TreeException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

@@ -51,7 +51,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(StringUtils.class);
+	private static final Logger logger = Logger.getLogger(StringUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

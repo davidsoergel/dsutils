@@ -47,7 +47,7 @@ public class ArrayUtilsTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(ArrayUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(ArrayUtilsTest.class);
 
 
 	double[] a;

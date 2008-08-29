@@ -50,7 +50,7 @@ public class WeakHashSet implements Set
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(WeakHashSet.class);
+	private static final Logger logger = Logger.getLogger(WeakHashSet.class);
 
 	HashSet _set = new HashSet();
 

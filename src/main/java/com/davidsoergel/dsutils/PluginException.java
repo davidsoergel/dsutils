@@ -43,7 +43,7 @@ public class PluginException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(PluginException.class);
+	private static final Logger logger = Logger.getLogger(PluginException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

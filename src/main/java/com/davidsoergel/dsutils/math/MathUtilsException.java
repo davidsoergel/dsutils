@@ -44,7 +44,7 @@ public class MathUtilsException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(MathUtilsException.class);
+	private static final Logger logger = Logger.getLogger(MathUtilsException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

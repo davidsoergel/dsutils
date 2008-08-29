@@ -44,5 +44,5 @@ public class SubclassFinderTestException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(SubclassFinderTestException.class);
+	private static final Logger logger = Logger.getLogger(SubclassFinderTestException.class);
 	}

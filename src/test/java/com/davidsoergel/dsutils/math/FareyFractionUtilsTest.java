@@ -41,7 +41,7 @@ public class FareyFractionUtilsTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(FareyFractionUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(FareyFractionUtilsTest.class);
 
 
 	// -------------------------- OTHER METHODS --------------------------

@@ -43,7 +43,7 @@ public class BasicInterval<T extends Number> implements Interval<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(BasicInterval.class);
+	private static final Logger logger = Logger.getLogger(BasicInterval.class);
 
 	protected T left, right;
 	boolean closedLeft, closedRight;

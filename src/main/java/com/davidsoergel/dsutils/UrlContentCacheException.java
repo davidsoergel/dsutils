@@ -40,7 +40,7 @@ public class UrlContentCacheException extends ChainedException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(UrlContentCacheException.class);
+	private static final Logger logger = Logger.getLogger(UrlContentCacheException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

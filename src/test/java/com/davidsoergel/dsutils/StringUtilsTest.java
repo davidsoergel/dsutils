@@ -46,7 +46,7 @@ public class StringUtilsTest
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(StringUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(StringUtilsTest.class);
 
 
 	// -------------------------- OTHER METHODS --------------------------

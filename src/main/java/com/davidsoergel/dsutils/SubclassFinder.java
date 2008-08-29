@@ -75,7 +75,7 @@ public class SubclassFinder
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(SubclassFinder.class);
+	private static final Logger logger = Logger.getLogger(SubclassFinder.class);
 
 	private static ClassLoader classLoader =
 			Thread.currentThread().getContextClassLoader();//ClassLoader.getSystemClassLoader();
@@ -245,7 +245,7 @@ public class SubclassFinder
 			String[] files = directory.list();
 			if (files == null)
 				{
-				File test = new File("/bin/sh");
+				//	File test = new File("/bin/sh");
 				new FileInputStream("/bin/sh");
 				throw new IOException("Could not read directory: " + url);
 				}

@@ -43,7 +43,7 @@ public class TreeRuntimeException extends ChainedRuntimeException
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(TreeRuntimeException.class);
+	private static final Logger logger = Logger.getLogger(TreeRuntimeException.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

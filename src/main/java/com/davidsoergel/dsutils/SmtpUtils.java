@@ -49,7 +49,7 @@ public class SmtpUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(SmtpUtils.class);
+	private static final Logger logger = Logger.getLogger(SmtpUtils.class);
 
 	private static String emailHost;
 	private static String emailFrom;

@@ -41,7 +41,7 @@ public class LongRationalTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(LongRationalTest.class);
+	private static final Logger logger = Logger.getLogger(LongRationalTest.class);
 
 
 	// -------------------------- OTHER METHODS --------------------------

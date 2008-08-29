@@ -791,12 +791,11 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
 		// SPEED TEST
 
-		final long SEED = 4357;
-
 		int xx;
 		long ms;
 		System.out.println("\nTime to test grabbing 100000000 ints");
 
+		long SEED = 4357;
 		Random rr = new Random(SEED);
 		xx = 0;
 		ms = System.currentTimeMillis();

@@ -51,7 +51,7 @@ public class FileUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(FileUtils.class);
+	private static final Logger logger = Logger.getLogger(FileUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

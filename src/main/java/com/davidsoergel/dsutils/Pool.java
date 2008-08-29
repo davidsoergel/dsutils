@@ -48,7 +48,7 @@ public class Pool<E>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(Pool.class);
+	private static final Logger logger = Logger.getLogger(Pool.class);
 
 	private CopyOnWriteArrayList<E> active = new CopyOnWriteArrayList<E>();
 	private CopyOnWriteArrayList<E> inactive = new CopyOnWriteArrayList<E>();

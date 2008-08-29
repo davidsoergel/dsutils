@@ -45,7 +45,7 @@ public abstract class SingletonRegistry
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(SingletonRegistry.class);
+	private static final Logger logger = Logger.getLogger(SingletonRegistry.class);
 
 	static private HashMap _registry = new HashMap();
 

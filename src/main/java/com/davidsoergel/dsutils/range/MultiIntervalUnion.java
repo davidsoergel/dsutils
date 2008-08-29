@@ -50,7 +50,7 @@ public class MultiIntervalUnion<T extends Number> extends TreeSet<Interval<T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
+	private static final Logger logger = Logger.getLogger(MultiIntervalIntersection.class);
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------

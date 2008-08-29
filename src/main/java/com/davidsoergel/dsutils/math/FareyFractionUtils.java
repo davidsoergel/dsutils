@@ -40,7 +40,7 @@ public class FareyFractionUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(FareyFractionUtils.class);
+	private static final Logger logger = Logger.getLogger(FareyFractionUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

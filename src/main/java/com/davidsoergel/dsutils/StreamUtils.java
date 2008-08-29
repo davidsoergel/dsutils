@@ -52,7 +52,7 @@ public class StreamUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static Logger logger = Logger.getLogger(StreamUtils.class);
+	private static final Logger logger = Logger.getLogger(StreamUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

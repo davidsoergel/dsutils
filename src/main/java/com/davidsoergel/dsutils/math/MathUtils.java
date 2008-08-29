@@ -59,7 +59,7 @@ public class MathUtils
 	private static double[] logBinIncrement;
 	private static double[] logBinLimit;
 
-	private static Logger logger = Logger.getLogger(MathUtils.class);
+	private static final Logger logger = Logger.getLogger(MathUtils.class);
 	private static final int FACTORIAL_LIMIT = 100;
 	private static double[] factorials = new double[FACTORIAL_LIMIT + 1];
 	// log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
