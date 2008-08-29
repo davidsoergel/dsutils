@@ -33,7 +33,7 @@
 
 package com.davidsoergel.dsutils.collections;
 
-import com.davidsoergel.dsutils.ArrayUtils;
+import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.math.MersenneTwisterFast;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import java.util.Set;
  * @author lorax
  * @version 1.0
  */
-public class CollectionUtils extends org.apache.commons.collections15.CollectionUtils
+public class DSCollectionUtils extends org.apache.commons.collections15.CollectionUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -108,7 +108,7 @@ public class CollectionUtils extends org.apache.commons.collections15.Collection
 		Double[] bb = b.toArray(new Double[]{});
 		Arrays.sort(aa);
 		Arrays.sort(bb);
-		return ArrayUtils.equalWithinFPError(aa, bb);
+		return DSArrayUtils.equalWithinFPError(aa, bb);
 		}
 
 	public static void retainRandom(List list, int numElements)

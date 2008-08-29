@@ -39,11 +39,11 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 
 
-public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
+public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static final Logger logger = Logger.getLogger(ArrayUtils.class);
+	private static final Logger logger = Logger.getLogger(DSArrayUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------

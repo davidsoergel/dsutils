@@ -38,7 +38,7 @@
 	<artifactId>dsutils</artifactId>
 
 	<name>dsutils</name>
-	<version>0.9-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<url>http://dev.davidsoergel.com/dsutils</url>
 	<description>Some generic utility classes.</description>
 

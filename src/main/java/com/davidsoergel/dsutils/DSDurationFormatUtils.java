@@ -33,7 +33,7 @@
 package com.davidsoergel.dsutils;
 
 
-public class DurationFormatUtils extends org.apache.commons.lang.time.DurationFormatUtils
+public class DSDurationFormatUtils extends org.apache.commons.lang.time.DurationFormatUtils
 	{
 	/**
 	 * Copied from super.formatDurationWords license http://www.apache.org/licenses/LICENSE-2.0
@@ -52,19 +52,19 @@ public class DurationFormatUtils extends org.apache.commons.lang.time.DurationFo
 		if (suppressLeadingZeroElements)
 			{
 			duration = " " + duration;
-			String tmp = StringUtils.replaceOnce(duration, " 0d", "");
+			String tmp = DSStringUtils.replaceOnce(duration, " 0d", "");
 			if (tmp.length() != duration.length())
 				{
 				duration = tmp;
-				tmp = StringUtils.replaceOnce(duration, " 0h", "");
+				tmp = DSStringUtils.replaceOnce(duration, " 0h", "");
 				if (tmp.length() != duration.length())
 					{
 					duration = tmp;
-					tmp = StringUtils.replaceOnce(duration, " 0m", "");
+					tmp = DSStringUtils.replaceOnce(duration, " 0m", "");
 					duration = tmp;
 					if (tmp.length() != duration.length())
 						{
-						duration = StringUtils.replaceOnce(tmp, " 0s", "");
+						duration = DSStringUtils.replaceOnce(tmp, " 0s", "");
 						}
 					}
 				}
@@ -77,18 +77,18 @@ public class DurationFormatUtils extends org.apache.commons.lang.time.DurationFo
 
 		if (suppressTrailingZeroElements)
 			{
-			String tmp = StringUtils.replaceOnce(duration, " 0s", "");
+			String tmp = DSStringUtils.replaceOnce(duration, " 0s", "");
 			if (tmp.length() != duration.length())
 				{
 				duration = tmp;
-				tmp = StringUtils.replaceOnce(duration, " 0m", "");
+				tmp = DSStringUtils.replaceOnce(duration, " 0m", "");
 				if (tmp.length() != duration.length())
 					{
 					duration = tmp;
-					tmp = StringUtils.replaceOnce(duration, " 0h", "");
+					tmp = DSStringUtils.replaceOnce(duration, " 0h", "");
 					if (tmp.length() != duration.length())
 						{
-						duration = StringUtils.replaceOnce(tmp, " 0d", "");
+						duration = DSStringUtils.replaceOnce(tmp, " 0d", "");
 						}
 					}
 				}

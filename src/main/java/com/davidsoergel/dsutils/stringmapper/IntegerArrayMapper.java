@@ -1,7 +1,7 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import com.davidsoergel.dsutils.DSStringUtils;
 import com.davidsoergel.dsutils.StringMapper;
-import com.davidsoergel.dsutils.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,6 +32,6 @@ public class IntegerArrayMapper extends StringMapper<Integer[]>
 
 	public String render(Integer[] value)
 		{
-		return StringUtils.join(value, ":");
+		return DSStringUtils.join(value, ":");
 		}
 	}

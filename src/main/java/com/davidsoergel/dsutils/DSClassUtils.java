@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClassUtils extends org.apache.commons.lang.ClassUtils
+public class DSClassUtils extends org.apache.commons.lang.ClassUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -82,9 +82,9 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 					// this should take care of the "widening" version, i.e. autoboxing
 					if (paramTypes[j].isPrimitive())
 						{
-						paramTypes[j] = ClassUtils.primitiveToWrapper(paramTypes[j]);
+						paramTypes[j] = DSClassUtils.primitiveToWrapper(paramTypes[j]);
 						}
-					if (!ClassUtils.isAssignable(paramClasses[j], paramTypes[j]))
+					if (!DSClassUtils.isAssignable(paramClasses[j], paramTypes[j]))
 						{
 						candidate = false;
 						}
@@ -96,7 +96,7 @@ public class ClassUtils extends org.apache.commons.lang.ClassUtils
 				}
 			}
 
-		throw new NoSuchMethodException("" + theClass + " (" + StringUtils.join(paramClasses, ", ") + ")");
+		throw new NoSuchMethodException("" + theClass + " (" + DSStringUtils.join(paramClasses, ", ") + ")");
 		}
 
 	private static Map<Type, Type> wrapperPrimitiveMap = new HashMap<Type, Type>();

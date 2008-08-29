@@ -47,11 +47,11 @@ import java.util.regex.Pattern;
  * @author lorax
  * @version 1.0
  */
-public class StringUtils extends org.apache.commons.lang.StringUtils
+public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static final Logger logger = Logger.getLogger(StringUtils.class);
+	private static final Logger logger = Logger.getLogger(DSStringUtils.class);
 
 
 	// -------------------------- STATIC METHODS --------------------------
@@ -230,7 +230,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 
 	public static String join(char[] chars, String delim)
 		{
-		return ArrayUtils.asString(chars, delim);
+		return DSArrayUtils.asString(chars, delim);
 		}
 
 	public static String join(double[] doubles, String delim)

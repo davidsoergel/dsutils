@@ -1,8 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import com.davidsoergel.dsutils.DSStringUtils;
 import com.davidsoergel.dsutils.StringMapper;
 import com.davidsoergel.dsutils.StringMapperException;
-import com.davidsoergel.dsutils.StringUtils;
 import com.davidsoergel.dsutils.TypedValueStringMapper;
 
 import java.lang.reflect.Type;
@@ -35,6 +35,6 @@ public class BooleanArrayMapper extends StringMapper<Boolean[]>
 
 	public String render(Boolean[] value)
 		{
-		return StringUtils.join(value, ":");
+		return DSStringUtils.join(value, ":");
 		}
 	}

@@ -29,6 +29,6 @@ public class IntArrayReader
 				System.out.println("Number=" + num);
 				}*/
 			}
-		return ArrayUtils.toPrimitive(theList.toArray(new Integer[]{}));
+		return DSArrayUtils.toPrimitive(theList.toArray(new Integer[]{}));
 		}
 	}

@@ -115,7 +115,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		{
 		try
 			{
-			return CollectionUtils.intersection(keyToKeyPairs.get(key1), keyToKeyPairs.get(key2)).iterator().next();
+			return DSCollectionUtils.intersection(keyToKeyPairs.get(key1), keyToKeyPairs.get(key2)).iterator().next();
 			}
 		catch (NoSuchElementException e)
 			{

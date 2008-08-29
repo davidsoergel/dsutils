@@ -43,11 +43,11 @@ import java.util.Arrays;
  * @author lorax
  * @version 1.0
  */
-public class ArrayUtilsTest//extends TestCase
+public class DSArrayUtilsTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static final Logger logger = Logger.getLogger(ArrayUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(DSArrayUtilsTest.class);
 
 
 	double[] a;
@@ -68,15 +68,15 @@ public class ArrayUtilsTest//extends TestCase
 	@Test
 	public void doubleArrayDecrementWorks()
 		{
-		ArrayUtils.decrementBy(c, b);
+		DSArrayUtils.decrementBy(c, b);
 
-		assert ArrayUtils.equalWithinFPError(a, c);
+		assert DSArrayUtils.equalWithinFPError(a, c);
 		}
 
 	@Test
 	public void doubleArrayIncrementWorks()
 		{
-		ArrayUtils.incrementBy(a, b);
+		DSArrayUtils.incrementBy(a, b);
 
 		assert Arrays.equals(a, c);
 		}
@@ -84,18 +84,18 @@ public class ArrayUtilsTest//extends TestCase
 	@Test
 	public void doubleArrayMinusWorks()
 		{
-		double[] result = ArrayUtils.minus(c, b);
+		double[] result = DSArrayUtils.minus(c, b);
 		assert result != a;
 		assert result != b;
 		assert result != c;
 
-		assert ArrayUtils.equalWithinFPError(result, a);
+		assert DSArrayUtils.equalWithinFPError(result, a);
 		}
 
 	@Test
 	public void doubleArrayPlusWorks()
 		{
-		double[] result = ArrayUtils.plus(a, b);
+		double[] result = DSArrayUtils.plus(a, b);
 		assert result != a;
 		assert result != b;
 		assert result != c;

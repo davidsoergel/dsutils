@@ -1,8 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
-import com.davidsoergel.dsutils.ArrayUtils;
+import com.davidsoergel.dsutils.DSArrayUtils;
+import com.davidsoergel.dsutils.DSStringUtils;
 import com.davidsoergel.dsutils.StringMapper;
-import com.davidsoergel.dsutils.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,11 +28,11 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 			{
 			result.add(Double.parseDouble(d));
 			}
-		return ArrayUtils.toPrimitive(result.toArray(new Double[]{}));
+		return DSArrayUtils.toPrimitive(result.toArray(new Double[]{}));
 		}
 
 	public String render(double[] value)
 		{
-		return StringUtils.join(ArrayUtils.toObject(value), ",");
+		return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
 		}
 	}

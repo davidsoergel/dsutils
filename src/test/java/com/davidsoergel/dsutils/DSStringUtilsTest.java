@@ -34,7 +34,6 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -42,11 +41,11 @@ import org.testng.annotations.Test;
  * @author lorax
  * @version 1.0
  */
-public class StringUtilsTest
+public class DSStringUtilsTest
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private static final Logger logger = Logger.getLogger(StringUtilsTest.class);
+	private static final Logger logger = Logger.getLogger(DSStringUtilsTest.class);
 
 
 	// -------------------------- OTHER METHODS --------------------------
@@ -56,12 +55,16 @@ public class StringUtilsTest
 		{
 		//logger.warn("StringUtilsTest.nullObjectStringConversionIsNotNull()");
 
-		assert StringUtils.s(null).equals("");
+		assert DSStringUtils.s(null).equals("");
 		}
 
-	@BeforeClass
-	public void setUp()
+	@Test
+	public void joinDoubleArrayToStringWithDelimiterWorks()
 		{
-		//logger.warn("StringUtilsTest.setUp()");
+		assert DSStringUtils.join(new double[]{
+				1.234,
+				6.7346,
+				124.124
+		}, ",").equals("1.234, 6.7346, 124.124");
 		}
 	}
