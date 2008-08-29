@@ -34,8 +34,15 @@
 
 <suite name="TestAll" verbose="1" parallel="false" thread-count="1">
 	<test name="TestAll">
+		<groups>
+			<run>
+				<exclude name="contract"/>
+			</run>
+		</groups>
+
 		<packages>
 			<package name="com.davidsoergel.dsutils"/>
+			<package name="com.davidsoergel.dsutils.*"/>
 		</packages>
 	</test>
 </suite>

@@ -10,15 +10,19 @@ import java.util.List;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class ImmutableHierarchyNodeInterfaceTest
+public class ImmutableHierarchyNodeInterfaceTest<T extends ImmutableHierarchyNode>
 	{
 
-	private TestInstanceFactory<? extends ImmutableHierarchyNode<String, ?>> tif;
+	private TestInstanceFactory<T> tif;
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public ImmutableHierarchyNodeInterfaceTest(TestInstanceFactory<? extends ImmutableHierarchyNode<String, ?>> tif)
+	public ImmutableHierarchyNodeInterfaceTest()
+		{
+		}
+
+	public ImmutableHierarchyNodeInterfaceTest(TestInstanceFactory<T> tif)
 		{
 		this.tif = tif;
 		}

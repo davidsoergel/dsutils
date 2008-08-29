@@ -45,32 +45,32 @@ import java.util.Queue;
  * @version $Id$
  */
 public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
-		implements TestInstanceFactory<ListHierarchyNode>
+		implements TestInstanceFactory<ListHierarchyNode<Object>>
 	{
 
-	public ListHierarchyNode<String> createInstance() throws Exception
+	public ListHierarchyNode<Object> createInstance() throws Exception
 		{
-		ListHierarchyNode<String> root = new ListHierarchyNode<String>("root");
-		ListHierarchyNode<String> a = root.newChild("a");
-		ListHierarchyNode<String> b = root.newChild("b");
-		ListHierarchyNode<String> c = root.newChild("c");
-		ListHierarchyNode<String> d = a.newChild("d");
-		ListHierarchyNode<String> e = a.newChild("e");
-		ListHierarchyNode<String> f = b.newChild("f");
-		ListHierarchyNode<String> g = b.newChild("g");
-		ListHierarchyNode<String> h = b.newChild("h");
-		ListHierarchyNode<String> i = c.newChild("i");
-		ListHierarchyNode<String> j = g.newChild("j");
-		ListHierarchyNode<String> k = g.newChild("k");
-		ListHierarchyNode<String> l = k.newChild("l");
-		ListHierarchyNode<String> m = l.newChild("m");
+		ListHierarchyNode<Object> root = new ListHierarchyNode<Object>("root");
+		ListHierarchyNode<Object> a = root.newChild("a");
+		ListHierarchyNode<Object> b = root.newChild("b");
+		ListHierarchyNode<Object> c = root.newChild("c");
+		ListHierarchyNode<Object> d = a.newChild("d");
+		ListHierarchyNode<Object> e = a.newChild("e");
+		ListHierarchyNode<Object> f = b.newChild("f");
+		ListHierarchyNode<Object> g = b.newChild("g");
+		ListHierarchyNode<Object> h = b.newChild("h");
+		ListHierarchyNode<Object> i = c.newChild("i");
+		ListHierarchyNode<Object> j = g.newChild("j");
+		ListHierarchyNode<Object> k = g.newChild("k");
+		ListHierarchyNode<Object> l = k.newChild("l");
+		ListHierarchyNode<Object> m = l.newChild("m");
 		return root;
 		}
 
 
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest(this)
+		theContractTests.add(new HierarchyNodeInterfaceTest<ListHierarchyNode<Object>>(this)
 		{
 		});
 		}
@@ -85,12 +85,12 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 	@Test
 	public void childrenAreInAdditionOrderAfterNewChild() throws Exception
 		{
-		ListHierarchyNode<String> n = createInstance();
+		ListHierarchyNode<Object> n = createInstance();
 		n.newChild("p");
 		n.newChild("o");
 		n.newChild("n");
 
-		Iterator<HierarchyNode<String, ListHierarchyNode<String>>> l = n.getChildren().iterator();
+		Iterator<HierarchyNode<Object, ListHierarchyNode<Object>>> l = n.getChildren().iterator();
 		assert l.next().getValue().equals("a");
 		assert l.next().getValue().equals("b");
 		assert l.next().getValue().equals("c");

@@ -45,33 +45,35 @@ import java.util.Queue;
  */
 
 public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
-		implements TestInstanceFactory<SetHierarchyNode>
+		implements TestInstanceFactory<SetHierarchyNode<Object>>
 	{
-	public SetHierarchyNode<String> createInstance() throws Exception
+	public SetHierarchyNode<Object> createInstance() throws Exception
 		{
-		SetHierarchyNode<String> root = new SetHierarchyNode<String>();
-		SetHierarchyNode<String> a = root.newChild();
-		SetHierarchyNode<String> b = root.newChild();
-		SetHierarchyNode<String> c = root.newChild();
-		SetHierarchyNode<String> d = a.newChild();
-		SetHierarchyNode<String> e = a.newChild();
-		SetHierarchyNode<String> f = b.newChild();
-		SetHierarchyNode<String> g = b.newChild();
-		SetHierarchyNode<String> h = b.newChild();
-		SetHierarchyNode<String> i = c.newChild();
-		SetHierarchyNode<String> j = g.newChild();
-		SetHierarchyNode<String> k = g.newChild();
-		SetHierarchyNode<String> l = k.newChild();
-		SetHierarchyNode<String> m = l.newChild();
+		SetHierarchyNode<Object> root = new SetHierarchyNode<Object>();
+		SetHierarchyNode<Object> a = root.newChild();
+		SetHierarchyNode<Object> b = root.newChild();
+		SetHierarchyNode<Object> c = root.newChild();
+		SetHierarchyNode<Object> d = a.newChild();
+		SetHierarchyNode<Object> e = a.newChild();
+		SetHierarchyNode<Object> f = b.newChild();
+		SetHierarchyNode<Object> g = b.newChild();
+		SetHierarchyNode<Object> h = b.newChild();
+		SetHierarchyNode<Object> i = c.newChild();
+		SetHierarchyNode<Object> j = g.newChild();
+		SetHierarchyNode<Object> k = g.newChild();
+		SetHierarchyNode<Object> l = k.newChild();
+		SetHierarchyNode<Object> m = l.newChild();
 		return root;
 		}
 
 
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest(this)
+		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Object>>(this)
 		{
-		});
+		}
+
+		);
 		}
 
 	@Factory

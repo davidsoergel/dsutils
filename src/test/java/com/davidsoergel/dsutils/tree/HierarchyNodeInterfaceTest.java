@@ -49,6 +49,10 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode>
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
+	public HierarchyNodeInterfaceTest()
+		{
+		}
+
 	public HierarchyNodeInterfaceTest(TestInstanceFactory<T> tif)
 		{
 		this.tif = tif;
