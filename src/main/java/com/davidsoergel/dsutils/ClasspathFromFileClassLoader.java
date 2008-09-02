@@ -54,7 +54,7 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 	{
 	private static final Logger logger = Logger.getLogger(ClasspathFromFileClassLoader.class);
 
-	public static URLClassLoader ClasspathFromFileClassLoader(File classpathFile) throws IOException
+	private URL[] getURLs(File classpathFile) throws IOException
 		{
 		List<URL> urls = new ArrayList<URL>();
 		BufferedReader is = new BufferedReader(new FileReader(classpathFile));
@@ -82,10 +82,15 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 
 			s = is.readLine();
 			}
-		return getClassLoader(urls.toArray(new URL[]{}));
+		return urls.toArray(new URL[]{});
 		}
 
-	private static URLClassLoader getClassLoader(final URL[] urls)
+	public URLClassLoader getClassLoader(File classpathFile) throws IOException
+		{
+		return getClassLoader(getURLs(classpathFile));
+		}
+
+	protected URLClassLoader getClassLoader(final URL[] urls)
 		{
 		return (URLClassLoader) AccessController.doPrivileged(new PrivilegedAction()
 		{

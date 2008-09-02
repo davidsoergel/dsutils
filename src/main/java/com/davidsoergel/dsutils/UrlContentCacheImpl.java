@@ -395,7 +395,20 @@ public class UrlContentCacheImpl implements UrlContentCache
 	 */
 	private boolean verifyChecksum(File file, String checksum) throws IOException
 		{
-		String localChecksum = new BufferedReader(new FileReader(getChecksumFile(file))).readLine().trim();
-		return localChecksum.equals(checksum);
+		BufferedReader br = null;
+		try
+			{
+			br = new BufferedReader(new FileReader(getChecksumFile(file)));
+			String s = br.readLine();
+			String localChecksum = s.trim();
+			return localChecksum.equals(checksum);
+			}
+		finally
+			{
+			if (br != null)
+				{
+				br.close();
+				}
+			}
 		}
 	}
