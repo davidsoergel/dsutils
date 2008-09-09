@@ -79,7 +79,7 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 	@Factory
 	public Object[] instantiateAllContractTests()
 		{
-		return super.instantiateAllContractTests();
+		return super.instantiateAllContractTestsWithName(SortedSetHierarchyNode.class.getCanonicalName());
 		}
 
 

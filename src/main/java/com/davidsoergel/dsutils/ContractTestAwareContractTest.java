@@ -30,60 +30,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils.tree;
-
-import com.davidsoergel.dsutils.ContractTestAware;
-import com.davidsoergel.dsutils.TestInstanceFactory;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import java.util.Queue;
+package com.davidsoergel.dsutils;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-
-public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
-		implements TestInstanceFactory<SetHierarchyNode<Object>>
+public abstract class ContractTestAwareContractTest<T> extends ContractTestAware<T> implements ContractTest
 	{
-	public SetHierarchyNode<Object> createInstance() throws Exception
+	String testName;
+
+	public void setTestName(String testName)
 		{
-		SetHierarchyNode<Object> root = new SetHierarchyNode<Object>();
-		SetHierarchyNode<Object> a = root.newChild();
-		SetHierarchyNode<Object> b = root.newChild();
-		SetHierarchyNode<Object> c = root.newChild();
-		SetHierarchyNode<Object> d = a.newChild();
-		SetHierarchyNode<Object> e = a.newChild();
-		SetHierarchyNode<Object> f = b.newChild();
-		SetHierarchyNode<Object> g = b.newChild();
-		SetHierarchyNode<Object> h = b.newChild();
-		SetHierarchyNode<Object> i = c.newChild();
-		SetHierarchyNode<Object> j = g.newChild();
-		SetHierarchyNode<Object> k = g.newChild();
-		SetHierarchyNode<Object> l = k.newChild();
-		SetHierarchyNode<Object> m = l.newChild();
-		return root;
+		this.testName = testName;
 		}
 
-
-	public void addContractTestsToQueue(Queue theContractTests)
+	public String getTestName()
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Object>>(this)
-		{
-		}
-
-		);
-		}
-
-	@Factory
-	public Object[] instantiateAllContractTests()
-		{
-		return super.instantiateAllContractTestsWithName(SetHierarchyNode.class.getCanonicalName());
-		}
-
-	@Test
-	public void bogusTest()
-		{
+		return testName;
 		}
 	}

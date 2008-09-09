@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import com.davidsoergel.dsutils.AtomicContractTest;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Test;
 
@@ -42,7 +43,7 @@ import java.util.List;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class HierarchyNodeInterfaceTest<T extends HierarchyNode>
+public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicContractTest
 	{
 	private TestInstanceFactory<T> tif;
 

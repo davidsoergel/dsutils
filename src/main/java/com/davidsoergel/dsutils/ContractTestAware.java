@@ -45,24 +45,38 @@ import java.util.Set;
 public abstract class ContractTestAware<T>
 	{
 
-	public abstract void addContractTestsToQueue(Queue theContractTests);
+	/**
+	 * Instantiate each of the Contract Tests directly applicable at this level of the test hierarchy (i.e., relating to
+	 * interfaces directly implemented or an abstract class directly extended), and add them to the given Queue.
+	 *
+	 * @param theContractTests the Queue to which to add the instantiated tests
+	 */
+	public abstract void addContractTestsToQueue(Queue<ContractTest> theContractTests);
 
-	//@Factory
-	public Object[] instantiateAllContractTests()
+	/**
+	 * Instantiate an instance of each of the applicable Contract Tests, recursively walking up the tree if some of the
+	 * Contract Tests are themselves ContractTestAware (e.g., in the case of a hierarchy of interfaces and/or abstract
+	 * classes)
+	 *
+	 * @param testName The name to apply to all of the generated test objects (See {@See ITest#getTestName()})
+	 * @return an Object[] of the test instances
+	 */
+	public Object[] instantiateAllContractTestsWithName(String testName)
 		{
 		Set result = new HashSet();
-		Queue queue = new LinkedList();
+		Queue<ContractTest> queue = new LinkedList<ContractTest>();
 
 		addContractTestsToQueue(queue);
 
 		// recursively find all applicable contract tests up the tree
 		while (!queue.isEmpty())
 			{
-			Object contractTest = queue.remove();
+			ContractTest contractTest = queue.remove();
 			result.add(contractTest);
-			if (contractTest instanceof ContractTestAware)
+			contractTest.setTestName(testName);
+			if (contractTest instanceof ContractTestAwareContractTest)
 				{
-				((ContractTestAware) contractTest).addContractTestsToQueue(queue);
+				((ContractTestAwareContractTest) contractTest).addContractTestsToQueue(queue);
 				}
 			}
 

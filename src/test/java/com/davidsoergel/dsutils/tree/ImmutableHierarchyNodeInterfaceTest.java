@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.tree;
 
+import com.davidsoergel.dsutils.AtomicContractTest;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Test;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class ImmutableHierarchyNodeInterfaceTest<T extends ImmutableHierarchyNode>
+public class ImmutableHierarchyNodeInterfaceTest<T extends ImmutableHierarchyNode> extends AtomicContractTest
 	{
 
 	private TestInstanceFactory<? extends T> tif;

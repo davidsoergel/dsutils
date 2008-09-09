@@ -78,7 +78,7 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 	@Factory
 	public Object[] instantiateAllContractTests()
 		{
-		return super.instantiateAllContractTests();
+		return super.instantiateAllContractTestsWithName(ListHierarchyNode.class.getCanonicalName());
 		}
 
 
