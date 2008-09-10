@@ -128,4 +128,9 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
+
+	public HierarchyNode<T, SetHierarchyNode<T>> getSelfNode()
+		{
+		return this;
+		}
 	}

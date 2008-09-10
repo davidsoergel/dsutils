@@ -184,4 +184,10 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
+
+
+	public HierarchyNode<T, SortedSetHierarchyNode<T>> getSelfNode()
+		{
+		return this;
+		}
 	}

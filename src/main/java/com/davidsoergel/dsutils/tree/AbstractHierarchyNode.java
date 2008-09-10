@@ -105,4 +105,9 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 		}
 
 	public abstract HierarchyNode<T, I> newChild(T contents);
+
+	public HierarchyNode<T, I> getSelf()
+		{
+		return this;
+		}
 	}

@@ -143,4 +143,9 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
+
+	public HierarchyNode<T, ListHierarchyNode<T>> getSelfNode()
+		{
+		return this;
+		}
 	}

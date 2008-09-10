@@ -80,4 +80,12 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 * @return the DepthFirstTreeIterator<T, I>
 	 */
 	DepthFirstTreeIterator<T, I> depthFirstIterator();
+
+	/**
+	 * In some cases we need to wrap a HierarchyNode in another object that provides a facade.  In this case, wthis method
+	 * return the underlying object; otherwise it just returns this.
+	 *
+	 * @return the most raw available HierarchyNode embedded within this facade (perhps just this object itself)
+	 */
+	HierarchyNode<T, I> getSelfNode();
 	}

@@ -91,14 +91,14 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicC
 		{
 		T n = tif.createInstance();
 		HierarchyNode c = n.newChild();
-		assert c.getParent() == n;
+		assert c.getParent() == n.getSelfNode();
 		}
 
 	@Test
-	public void ancestorPathIncludesThis() throws Exception
+	public void ancestorPathIncludesSelfNode() throws Exception
 		{
 		T n = tif.createInstance();
-		assert n.getAncestorPath().contains(n);
+		assert n.getAncestorPath().contains(n.getSelfNode());
 		}
 
 	/*	@Test
@@ -114,7 +114,7 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicC
 		T n = tif.createInstance();
 		List path = n.getAncestorPath();
 		Collections.reverse(path);
-		HierarchyNode p = n;
+		HierarchyNode p = n.getSelfNode();
 		while (p != null)
 			{
 			HierarchyNode p2 = p.getParent();
