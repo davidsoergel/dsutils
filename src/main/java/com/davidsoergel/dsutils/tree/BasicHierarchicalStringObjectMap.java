@@ -33,11 +33,14 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
@@ -49,8 +52,8 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	Map<String, Object> contents = new HashMap<String, Object>();
 
-	private List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> children =
-			new ArrayList<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>>();
+	private List<HierarchicalStringObjectMap> children =
+			new ArrayList<HierarchicalStringObjectMap>();//HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>
 
 	private HierarchicalStringObjectMap parent;
 
@@ -59,10 +62,31 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>> getChildren()
+	public List<HierarchicalStringObjectMap> getChildren()//HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>
 		{
 		return children;
 		}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public HierarchicalStringObjectMap getChild(Map<String, Object> id)
+		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
+
+		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
+
+		for (HierarchicalStringObjectMap child : children)
+			{
+			if (child.getValue() == id)
+				{
+				return child;
+				}
+			}
+		throw new NoSuchElementException();
+		}
+
 
 	/**
 	 * {@inheritDoc}

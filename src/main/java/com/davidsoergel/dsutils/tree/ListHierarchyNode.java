@@ -33,10 +33,13 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
@@ -46,8 +49,7 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private List<HierarchyNode<T, ListHierarchyNode<T>>> children =
-			new ArrayList<HierarchyNode<T, ListHierarchyNode<T>>>();
+	private List<ListHierarchyNode<T>> children = new ArrayList<ListHierarchyNode<T>>();
 
 	private ListHierarchyNode<T> parent;
 	private T contents;
@@ -63,9 +65,28 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public List<HierarchyNode<T, ListHierarchyNode<T>>> getChildren()
+	public List<ListHierarchyNode<T>> getChildren()
 		{
 		return children;
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public ListHierarchyNode<T> getChild(T id)
+		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
+
+		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
+
+		for (ListHierarchyNode<T> child : children)
+			{
+			if (child.getValue() == id)
+				{
+				return child;
+				}
+			}
+		throw new NoSuchElementException();
 		}
 
 	public T getValue()
@@ -144,7 +165,7 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
-	public HierarchyNode<T, ListHierarchyNode<T>> getSelfNode()
+	public ListHierarchyNode<T> getSelfNode()
 		{
 		return this;
 		}

@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +50,19 @@ import java.util.List;
 public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>
 	{
 
-	Collection<? extends HierarchyNode<T, I>> getChildren();
+	Collection<? extends I> getChildren();//? extends HierarchyNode<? extends T, I>>
+
+
+	/**
+	 * Get the child of this node which has the given value
+	 *
+	 * @param id the T value to search for among the children
+	 * @return the PhylogenyNode<T> child with the given value
+	 * @throws java.util.NoSuchElementException
+	 *          when a matching child is not found
+	 */
+	@NotNull
+	I getChild(T id);//HierarchyNode<T, I>
 
 	boolean isLeaf();
 
@@ -56,21 +70,38 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 
 	void setValue(T contents);
 
-	HierarchyNode<? extends T, I> getParent();
+	I getParent();//HierarchyNode<? extends T, I>
+
 
 	/**
 	 * Returns a List of nodes describing a path down the tree, starting with the root and ending with this node
 	 *
 	 * @return a List of nodes describing a path down the tree, starting with the root and ending with this node
 	 */
-	List<? extends HierarchyNode<T, I>> getAncestorPath();
+	List<? extends I> getAncestorPath();//? extends HierarchyNode<T, I>
 
 	/**
 	 * Creates a new child node of the appropriate type
 	 *
 	 * @return the new child node
 	 */
-	HierarchyNode<? extends T, ? extends I> newChild();
+	I newChild();//HierarchyNode<? extends T, I>
+
+	/**
+	 * Sets the parent node; also informs the parent node via addChild() so that it can maintain the reverse link, if
+	 * needed.
+	 *
+	 * @param parent
+	 */
+	void setParent(I parent);//HierarchyNode<T, I>
+
+	/**
+	 * Adds a child node.  Does not update the child's parent link!  The relationship is primarily owned by the child, so
+	 * child.setParent() should call this method, not the other way around.
+	 *
+	 * @param a the child node to add
+	 */
+	//	void addChild(HierarchyNode<? extends T, I> a);
 
 	/**
 	 * Get an iterator that returns all the nodes of the tree in depth-first order.  The breadth ordering may or may not be
@@ -87,5 +118,5 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the most raw available HierarchyNode embedded within this facade (perhps just this object itself)
 	 */
-	HierarchyNode<T, I> getSelfNode();
+	I getSelfNode();//HierarchyNode<T, I>
 	}

@@ -90,7 +90,7 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		n.newChild("o");
 		n.newChild("n");
 
-		Iterator<HierarchyNode<Object, ListHierarchyNode<Object>>> l = n.getChildren().iterator();
+		Iterator<ListHierarchyNode<Object>> l = n.getChildren().iterator();
 		assert l.next().getValue().equals("a");
 		assert l.next().getValue().equals("b");
 		assert l.next().getValue().equals("c");

@@ -9,7 +9,7 @@ public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode
 	/**
 	 * {@inheritDoc}
 	 */
-	public HierarchyNode<? extends T, ? extends I> newChild()
+	public I newChild()//HierarchyNode<? extends T, ? extends I>
 		{
 		throw new TreeRuntimeException("Can't create an immutable node without providing a value");
 		}

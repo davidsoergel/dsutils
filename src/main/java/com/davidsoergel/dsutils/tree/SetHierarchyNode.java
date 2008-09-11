@@ -33,10 +33,13 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -47,8 +50,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	protected Set<HierarchyNode<T, SetHierarchyNode<T>>> children =
-			new HashSet<HierarchyNode<T, SetHierarchyNode<T>>>();
+	protected Set<SetHierarchyNode<T>> children = new HashSet<SetHierarchyNode<T>>();
 
 	private SetHierarchyNode<T> parent;
 	private T contents;
@@ -56,9 +58,28 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public Set<HierarchyNode<T, SetHierarchyNode<T>>> getChildren()
+	public Set<SetHierarchyNode<T>> getChildren()
 		{
 		return children;
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public SetHierarchyNode<T> getChild(T id)
+		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
+
+		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
+
+		for (SetHierarchyNode<T> child : children)
+			{
+			if (child.getValue() == id)
+				{
+				return child;
+				}
+			}
+		throw new NoSuchElementException();
 		}
 
 	public T getValue()
@@ -129,7 +150,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
-	public HierarchyNode<T, SetHierarchyNode<T>> getSelfNode()
+	public SetHierarchyNode<T> getSelfNode()
 		{
 		return this;
 		}

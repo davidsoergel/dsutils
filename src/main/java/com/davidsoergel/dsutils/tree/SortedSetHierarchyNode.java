@@ -34,10 +34,12 @@
 package com.davidsoergel.dsutils.tree;
 
 import org.apache.commons.collections15.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -51,8 +53,7 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private final SortedSet<HierarchyNode<T, SortedSetHierarchyNode<T>>> children =
-			new TreeSet<HierarchyNode<T, SortedSetHierarchyNode<T>>>();
+	private final SortedSet<SortedSetHierarchyNode<T>> children = new TreeSet<SortedSetHierarchyNode<T>>();
 
 
 	private SortedSetHierarchyNode<T> parent;
@@ -65,10 +66,30 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public SortedSet<HierarchyNode<T, SortedSetHierarchyNode<T>>> getChildren()
+	public SortedSet<SortedSetHierarchyNode<T>> getChildren()
 		{
 		return children;
 		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public SortedSetHierarchyNode<T> getChild(T id)
+		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
+
+		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
+
+		for (SortedSetHierarchyNode<T> child : children)
+			{
+			if (child.getValue() == id)
+				{
+				return child;
+				}
+			}
+		throw new NoSuchElementException();
+		}
+
 
 	public T getValue()
 		{
@@ -186,7 +207,7 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 		}
 
 
-	public HierarchyNode<T, SortedSetHierarchyNode<T>> getSelfNode()
+	public SortedSetHierarchyNode<T> getSelfNode()
 		{
 		return this;
 		}

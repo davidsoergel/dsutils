@@ -45,11 +45,11 @@ import java.util.Collection;
  * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
+public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T, I>> implements HierarchyNode<T, I>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private HierarchyNode<? extends T, I> parent;
+	private I parent;//HierarchyNode<? extends T, I>
 	private T contents;
 
 
@@ -74,14 +74,15 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public HierarchyNode<? extends T, I> getParent()
+	public I getParent()//HierarchyNode<? extends T, I>
 		{
 		return parent;
 		}
 
-	public void setParent(HierarchyNode<? extends T, I> parent)
+	public void setParent(I parent)
 		{
 		this.parent = parent;
+		parent.getChildren().add((I) this);
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
@@ -94,16 +95,20 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract Collection<HierarchyNode<T, I>> getChildren();
+	public abstract Collection<I> getChildren();
 
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public void addChild(HierarchyNode<T, I> child)
-		{
-		getChildren().add(child);
-		}
-
+	/**
+	 * {@inheritDoc}
+	 */
+	/*	public void addChild(HierarchyNode<? extends T, I> child)
+	   {
+	   getChildren().add(child);
+	   // NO!
+	   // child.setParent(this);
+	   }*/
 	public abstract HierarchyNode<T, I> newChild(T contents);
 
 	public HierarchyNode<T, I> getSelf()

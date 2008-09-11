@@ -233,4 +233,9 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		//return (T)coll.toArray()[0];
 		return coll.iterator().next();
 		}
+
+	public static <T> Set<T> setOf(T... things)
+		{
+		return new HashSet<T>(Arrays.asList(things));
+		}
 	}

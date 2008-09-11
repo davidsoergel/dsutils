@@ -188,7 +188,7 @@ public abstract class HierarchicalStringObjectMap
 		return result;
 		}
 
-	public HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap> getSelfNode()
+	public HierarchicalStringObjectMap getSelfNode()//HierarchyNode<Map<String, Object>,
 		{
 		return this;
 		}
