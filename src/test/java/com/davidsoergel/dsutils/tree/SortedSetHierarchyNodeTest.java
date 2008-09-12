@@ -69,8 +69,6 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest<SortedSetHierarchyNode>(this)
-		{
-		}
 
 
 		);

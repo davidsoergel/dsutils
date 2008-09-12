@@ -70,9 +70,7 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest<ListHierarchyNode<Object>>(this)
-		{
-		});
+		theContractTests.add(new HierarchyNodeInterfaceTest<ListHierarchyNode<Object>>(this));
 		}
 
 	@Factory

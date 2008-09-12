@@ -35,7 +35,6 @@ package com.davidsoergel.dsutils.tree;
 import com.davidsoergel.dsutils.ContractTestAware;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
 
 import java.util.Queue;
 
@@ -70,8 +69,6 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Object>>(this)
-		{
-		}
 
 		);
 		}
@@ -80,10 +77,5 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 	public Object[] instantiateAllContractTests()
 		{
 		return super.instantiateAllContractTestsWithName(SetHierarchyNode.class.getCanonicalName());
-		}
-
-	@Test
-	public void bogusTest()
-		{
 		}
 	}

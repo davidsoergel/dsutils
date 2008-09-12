@@ -42,7 +42,16 @@
 
 		<packages>
 			<package name="com.davidsoergel.dsutils"/>
-			<package name="com.davidsoergel.dsutils.*"/>
+			<package name="com.davidsoergel.dsutils.collections"/>
+			<package name="com.davidsoergel.dsutils.math"/>
+			<package name="com.davidsoergel.dsutils.range"/>
+			<package name="com.davidsoergel.dsutils.subclassfindertest"/>
 		</packages>
+
+		<classes>
+			<class name="com.davidsoergel.dsutils.tree.ListHierarchyNodeTest"/>
+			<class name="com.davidsoergel.dsutils.tree.SetHierarchyNodeTest"/>
+			<class name="com.davidsoergel.dsutils.tree.SortedSetHierarchyNodeTest"/>
+		</classes>
 	</test>
 </suite>
