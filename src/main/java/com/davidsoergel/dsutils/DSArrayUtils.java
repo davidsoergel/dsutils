@@ -41,6 +41,7 @@ import java.util.Collection;
 
 public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
+
 	// ------------------------------ FIELDS ------------------------------
 
 	private static final Logger logger = Logger.getLogger(DSArrayUtils.class);
@@ -114,11 +115,12 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		}
 
-	@Deprecated
-	public static double[][] add(double[][] a, double[][] b)
-		{
-		return plus(a, b);
-		}
+	/*	@Deprecated
+	 public static double[][] add(double[][] a, double[][] b)
+		 {
+		 return plus(a, b);
+		 }
+ */
 
 	public static double[][] plus(double[][] a, double[][] b)
 		{
@@ -452,10 +454,13 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 				count++;
 				}
 			}
+		/*
 		// we allocated an array of size x.length.  We could now reallocate one of size count,
 		// but to avoid doing that we just put the count in the last element of the array.
 		// this hack assumes that the value is not found in _every_ position of x.
 		result[result.length - 1] = count;
+		*/
+		result = prefix(result, count);
 		return result;
 		}
 
@@ -536,6 +541,20 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 	/**
+	 * returns a new int[] containing the first i characters of s.
+	 *
+	 * @param s
+	 * @param i
+	 * @return
+	 */
+	public static int[] prefix(int[] s, int i)
+		{
+		int[] result = new int[i];
+		System.arraycopy(s, 0, result, 0, i);
+		return result;
+		}
+
+	/**
 	 * returns a new byte[] containing all characters of s starting from startPos
 	 *
 	 * @param s
@@ -584,7 +603,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			{
 			sum += counts[i];
 			}
-		return sum / counts.length;
+		return sum / (double) counts.length;
 		}
 
 	/**
@@ -602,7 +621,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			double dev = x[i] - mean;
 			sumsq += dev * dev;
 			}
-		return Math.sqrt(sumsq / x.length);
+		return Math.sqrt(sumsq / (double) x.length);
 		}
 
 	public static double[] times(double[] data, double scalar)

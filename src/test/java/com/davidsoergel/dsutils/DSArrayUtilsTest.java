@@ -58,6 +58,56 @@ public class DSArrayUtilsTest//extends TestCase
 	// -------------------------- OTHER METHODS --------------------------
 
 	@Test
+	public void doubleArrayDeepEqualsWorks()
+		{
+		double[] a1 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4
+		};
+		double[] a2 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4
+		};
+		double[] a3 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4004
+		};
+		assert DSArrayUtils.equalWithinFPError(a1, a2);
+		assert !DSArrayUtils.equalWithinFPError(a1, a3);
+		}
+
+	@Test
+	public void doubleObjectArrayDeepEqualsWorks()
+		{
+		Double[] a1 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4
+		};
+		Double[] a2 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4
+		};
+		Double[] a3 = {
+				0.1,
+				0.2,
+				0.3,
+				0.4004
+		};
+		assert DSArrayUtils.equalWithinFPError(a1, a2);
+		assert !DSArrayUtils.equalWithinFPError(a1, a3);
+		}
+
+	@Test
 	public void doubleArrayCloneIsDeepCopyAndEqualsIsElementwise()
 		{
 		double[] aclone = a.clone();
@@ -124,5 +174,199 @@ public class DSArrayUtilsTest//extends TestCase
 				11.2,
 				4.3
 		};
+		}
+
+
+	@Test
+	public void byteArrayPrefixReturnsFirstNBytes()
+		{
+		byte[] fourBytes = new byte[]{
+				34,
+				65,
+				123,
+				75
+		};
+		byte[] threeBytes = new byte[]{
+				34,
+				65,
+				123
+		};
+		byte[] twoBytes = new byte[]{
+				34,
+				65
+		};
+		assert Arrays.equals(DSArrayUtils.prefix(fourBytes, 3), threeBytes);
+
+		assert Arrays.equals(DSArrayUtils.prefix(fourBytes, 2), twoBytes);
+		}
+
+
+	@Test
+	public void byteArraySuffixOfLengthReturnsLastNBytes()
+		{
+		byte[] fourBytes = new byte[]{
+				34,
+				65,
+				123,
+				75
+		};
+		byte[] threeBytes = new byte[]{
+
+				65,
+				123,
+				75
+		};
+		byte[] twoBytes = new byte[]{
+				123,
+				75
+		};
+		assert Arrays.equals(DSArrayUtils.suffixOfLength(fourBytes, 3), threeBytes);
+
+		assert Arrays.equals(DSArrayUtils.suffixOfLength(fourBytes, 2), twoBytes);
+		}
+
+	@Test
+	public void byteArraySuffixReturnsLastBytesFromPos()
+		{
+		byte[] fourBytes = new byte[]{
+				34,
+				65,
+				123,
+				75
+		};
+		byte[] threeBytes = new byte[]{
+
+				65,
+				123,
+				75
+		};
+		byte[] twoBytes = new byte[]{
+				123,
+				75
+		};
+		assert Arrays.equals(DSArrayUtils.suffix(fourBytes, 1), threeBytes);
+
+		assert Arrays.equals(DSArrayUtils.suffix(fourBytes, 2), twoBytes);
+		}
+
+
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void byteArrayPrefixThrowsExceptionForTooLongRequest()
+		{
+		DSArrayUtils.prefix(new byte[]{
+				34,
+				65,
+				123,
+				75
+		}, 5);
+		}
+
+	@Test
+	public void bytePrependWorks()
+		{
+		byte[] fourBytes = new byte[]{
+				34,
+				65,
+				123,
+				75
+		};
+		byte[] threeBytes = new byte[]{
+
+				65,
+				123,
+				75
+		};
+		assert Arrays.equals(DSArrayUtils.prepend((byte) 34, threeBytes), fourBytes);
+		}
+
+	@Test
+	public void byteAppendWorks()
+		{
+		byte[] fourBytes = new byte[]{
+				34,
+				65,
+				123,
+				75
+		};
+		byte[] threeBytes = new byte[]{
+				34,
+				65,
+				123
+		};
+		assert Arrays.equals(DSArrayUtils.append(threeBytes, (byte) 75), fourBytes);
+		}
+
+	@Test
+	public void positionsWorks()
+		{
+		int[] aa = new int[]{
+				22,
+				45,
+				7,
+				5,
+				45,
+				7,
+				345,
+				66,
+				8,
+				8,
+				345,
+				7,
+				45,
+				7
+		};
+		int[] result = new int[]{
+				2,
+				5,
+				11,
+				13
+		};
+		assert Arrays.equals(DSArrayUtils.positions(aa, 7), result);
+		}
+
+	@Test
+	public void argMinReturnsFirstPositionOfMinimumValue()
+		{
+		double[] aa = new double[]{
+				22,
+				45,
+				7,
+				5,
+				45,
+				7,
+				345,
+				66,
+				8,
+				5,
+				345,
+				7,
+				5,
+				7
+		};
+
+		assert DSArrayUtils.argmin(aa) == 3;
+		}
+
+	@Test
+	public void argMaxReturnsFirstPositionOfMaximumValue()
+		{
+		double[] aa = new double[]{
+				22,
+				45,
+				7,
+				5,
+				45,
+				7,
+				345,
+				66,
+				8,
+				5,
+				345,
+				7,
+				5,
+				7
+		};
+
+		assert DSArrayUtils.argmax(aa) == 6;
 		}
 	}
