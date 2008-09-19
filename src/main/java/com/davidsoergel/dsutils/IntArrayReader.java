@@ -17,18 +17,25 @@ public class IntArrayReader
 		List<Integer> theList = new ArrayList<Integer>();
 
 		BufferedReader br = new BufferedReader(new FileReader(filename));
-		String line;
-		while ((line = br.readLine()) != null)
+		try
 			{
-			theList.add(Integer.parseInt(line));
-			/*
+			String line;
+			while ((line = br.readLine()) != null)
+				{
+				theList.add(Integer.parseInt(line));
+				/*
 			String[] numbers = line.split(" +");
 			for (int j = 0; j < numbers.length; j++)
 				{
 				int num = Integer.parseInt(numbers[j]);
 				System.out.println("Number=" + num);
 				}*/
+				}
+			return DSArrayUtils.toPrimitive(theList.toArray(new Integer[]{}));
 			}
-		return DSArrayUtils.toPrimitive(theList.toArray(new Integer[]{}));
+		finally
+			{
+			br.close();
+			}
 		}
 	}

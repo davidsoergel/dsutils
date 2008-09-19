@@ -87,8 +87,15 @@ public class PropertiesToMapAdapter implements Map<String, Object>
 			{
 			is = new FileInputStream(filename);
 			}
-		properties = new Properties();
-		properties.load(is);
+		try
+			{
+			properties = new Properties();
+			properties.load(is);
+			}
+		finally
+			{
+			is.close();
+			}
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------

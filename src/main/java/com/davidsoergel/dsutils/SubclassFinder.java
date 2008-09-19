@@ -129,7 +129,7 @@ public class SubclassFinder
 		// Code from JWhich
 		// ======
 		// Translate the package name into an absolute path
-		String name = new String(pckgname);
+		String name = pckgname;//new String(pckgname);
 		/*if (!name.startsWith("/"))
 			{
 			name = "/" + name;

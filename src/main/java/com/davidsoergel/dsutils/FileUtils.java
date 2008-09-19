@@ -91,9 +91,17 @@ public class FileUtils
 			//file.createNewFile();
 			FileOutputStream fos = new FileOutputStream(copyFile);
 
-			for (int bytes = 0; (bytes = fis.read(buff)) > -1;)
+			try
 				{
-				fos.write(buff, 0, bytes);
+				for (int bytes = 0; (bytes = fis.read(buff)) > -1;)
+					{
+					fos.write(buff, 0, bytes);
+					}
+				}
+			finally
+				{
+				fis.close();
+				fos.close();
 				}
 			}
 		catch (IOException e)
@@ -101,6 +109,7 @@ public class FileUtils
 			logger.error(e);
 			return false;
 			}
+
 		return true;
 		}
 

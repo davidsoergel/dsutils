@@ -36,6 +36,7 @@ package com.davidsoergel.dsutils.range;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
@@ -91,9 +92,11 @@ public class MultiIntervalIntersection<T extends Number> extends TreeSet<Interva
 
 		int openParens = 0;
 		MutableBasicInterval<T> currentInterval = null;
-		for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
+		for (Map.Entry<T, Integer> entry : fullLeftRightMap.entrySet())// the positions must be sorted!
+			//	for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
-			Integer parenDelta = fullLeftRightMap.get(position);
+			T position = entry.getKey();
+			Integer parenDelta = entry.getValue();
 			if (parenDelta != 0)//alternatively, could remove these entries from the map first
 				{
 				openParens += parenDelta;

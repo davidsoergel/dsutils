@@ -105,9 +105,10 @@ public class PropertiesUtils
 
 		Map<String, Properties> result = new HashMap<String, Properties>();
 
-		for (String key : pm.keySet())
+		for (Map.Entry<String, Object> entry : pm.entrySet())
+			//for (String key : pm.keySet())
 			{
-			String[] keyparts = key.split("\\.");
+			String[] keyparts = entry.getKey().split("\\.");
 			String dbname = keyparts[0];
 
 			///if (keyparts[1].equals("url") || keyparts[1].equals("username") || keyparts[1].equals("password")
@@ -121,7 +122,7 @@ public class PropertiesUtils
 					props = new Properties();
 					result.put(dbname, props);
 					}
-				props.put(keyparts[1], pm.get(key));
+				props.put(keyparts[1], entry.getValue());
 				}
 			//	}
 			//else

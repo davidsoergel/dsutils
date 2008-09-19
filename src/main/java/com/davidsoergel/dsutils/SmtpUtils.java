@@ -142,7 +142,7 @@ public class SmtpUtils
 
 			// logger.warn(servResponse);
 
-			if (servResponse.startsWith("4"))
+			if (servResponse == null || servResponse.startsWith("4"))
 				{
 				throw new Exception(servResponse);
 				}
@@ -161,7 +161,7 @@ public class SmtpUtils
 
 			// logger.warn(servResponse);
 
-			if (servResponse.startsWith("5"))
+			if (servResponse == null || servResponse.startsWith("5"))
 				{
 				throw new Exception(servResponse);
 				}
@@ -179,7 +179,7 @@ public class SmtpUtils
 
 				// logger.warn(servResponse);
 
-				if (servResponse.startsWith("5"))
+				if (servResponse == null || servResponse.startsWith("5"))
 					{
 					throw new Exception(servResponse);
 					}
@@ -191,7 +191,7 @@ public class SmtpUtils
 
 			// logger.warn(servResponse);
 
-			if (servResponse.startsWith("5"))
+			if (servResponse == null || servResponse.startsWith("5"))
 				{
 				throw new Exception(servResponse);
 				}
@@ -212,7 +212,7 @@ public class SmtpUtils
 
 			// logger.warn(servResponse);
 
-			if (servResponse.startsWith("5"))
+			if (servResponse == null || servResponse.startsWith("5"))
 				{
 				throw new Exception(servResponse);
 				}

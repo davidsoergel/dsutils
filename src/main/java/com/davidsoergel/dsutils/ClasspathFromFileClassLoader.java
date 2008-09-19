@@ -59,30 +59,37 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 		List<URL> urls = new ArrayList<URL>();
 		BufferedReader is = new BufferedReader(new FileReader(classpathFile));
 
-		String s = is.readLine();
-		while (s != null)
+		try
 			{
-			if (!s.contains(":") && !s.trim().startsWith("#"))
+			String s = is.readLine();
+			while (s != null)
 				{
-				if (!s.startsWith("/"))
+				if (!s.contains(":") && !s.trim().startsWith("#"))
 					{
-					throw new IOException("Classpath entries must be absolute: " + s);
-					}
-				if (!s.endsWith("/") && !s.endsWith(".jar"))
-					{
-					s = s + "/";
+					if (!s.startsWith("/"))
+						{
+						throw new IOException("Classpath entries must be absolute: " + s);
+						}
+					if (!s.endsWith("/") && !s.endsWith(".jar"))
+						{
+						s = s + "/";
+						}
+
+					s = "file:" + s;
+
+					URL url = new URL(s);
+					logger.debug("Adding classpath entry: " + url);
+					urls.add(url);
 					}
 
-				s = "file:" + s;
-
-				URL url = new URL(s);
-				logger.debug("Adding classpath entry: " + url);
-				urls.add(url);
+				s = is.readLine();
 				}
-
-			s = is.readLine();
+			return urls.toArray(new URL[]{});
 			}
-		return urls.toArray(new URL[]{});
+		finally
+			{
+			is.close();
+			}
 		}
 
 	public URLClassLoader getClassLoader(File classpathFile) throws IOException

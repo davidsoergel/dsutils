@@ -35,6 +35,8 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+
 /**
  * Encodes and decodes to and from Base64 notation.
  *
@@ -1553,7 +1555,7 @@ public class Base64
 			jframe.show();
 			}// end: Test Output Stream
 			}// end try
-		catch (Exception e)
+		catch (IOException e)
 			{
 			e.printStackTrace();
 			}

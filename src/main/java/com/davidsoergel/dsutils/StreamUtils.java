@@ -86,46 +86,56 @@ public class StreamUtils
 
 		try
 			{
-			inStream = new DataInputStream(new FileInputStream(pFile));
-			data = inStream.readUTF();
-
-			logger.debug("FileIndexReader:  next word: " + data);
-			}
-		catch (FileNotFoundException fnfe)
-			{
-			fnfe.printStackTrace();
-
-			throw fnfe;
-			}
-		catch (EOFException eof)
-			{
-			data = null;
-
-			logger.debug("Empty file: " + pFile.toString());
-			}
-		catch (java.io.IOException e)
-			{
-			e.printStackTrace();
-
-			throw e;
-			}
-
-		try
-			{
-			while (data != null)
+			try
 				{
-				returnBuffer.append(data);
-
+				inStream = new DataInputStream(new FileInputStream(pFile));
 				data = inStream.readUTF();
+
+				logger.debug("FileIndexReader:  next word: " + data);
+				}
+			catch (FileNotFoundException fnfe)
+				{
+				fnfe.printStackTrace();
+
+				throw fnfe;
+				}
+			catch (EOFException eof)
+				{
+				data = null;
+
+				logger.debug("Empty file: " + pFile.toString());
+				}
+			catch (java.io.IOException e)
+				{
+				e.printStackTrace();
+
+				throw e;
+				}
+
+			try
+				{
+				while (data != null)
+					{
+					returnBuffer.append(data);
+
+					data = inStream.readUTF();
+					}
+				}
+			catch (java.io.IOException ioe)
+				{
+				ioe.printStackTrace();
+
+				throw ioe;
+				}
+
+			return returnBuffer;
+			}
+		finally
+			{
+			if (inStream != null)
+				{
+				inStream.close();
 				}
 			}
-		catch (java.io.IOException ioe)
-			{
-			ioe.printStackTrace();
-
-			throw ioe;
-			}
-
-		return returnBuffer;
 		}
 	}

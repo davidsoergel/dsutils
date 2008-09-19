@@ -83,7 +83,12 @@ public abstract class SingletonRegistry
 
 				result = (SingletonRegistry) (_registry.get(byname.toLowerCase()));
 				}
-			catch (Exception e)
+			catch (InstantiationException e)
+				{
+				throw new ClassNotFoundException(
+						"Couldn't find class " + byname + ".  Check to make sure it was preloaded.");
+				}
+			catch (IllegalAccessException e)
 				{
 				throw new ClassNotFoundException(
 						"Couldn't find class " + byname + ".  Check to make sure it was preloaded.");

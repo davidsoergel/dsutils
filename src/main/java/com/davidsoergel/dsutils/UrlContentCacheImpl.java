@@ -161,7 +161,19 @@ public class UrlContentCacheImpl implements UrlContentCache
 		{
 		try
 			{
-			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			BufferedReader br = null;
+			try
+				{
+				br = new BufferedReader(new FileReader(getChecksumFile(getFile(s))));
+				return br.readLine();
+				}
+			finally
+				{
+				if (br != null)
+					{
+					br.close();
+					}
+				}
 			}
 		catch (IOException e)
 			{
@@ -249,8 +261,19 @@ public class UrlContentCacheImpl implements UrlContentCache
 		try
 			{
 			updateChecksum(getFile(s));
-
-			return new BufferedReader(new FileReader(getChecksumFile(getFile(s)))).readLine();
+			BufferedReader br = null;
+			try
+				{
+				br = new BufferedReader(new FileReader(getChecksumFile(getFile(s))));
+				return br.readLine();
+				}
+			finally
+				{
+				if (br != null)
+					{
+					br.close();
+					}
+				}
 			}
 		catch (IOException e)
 			{
@@ -278,10 +301,20 @@ public class UrlContentCacheImpl implements UrlContentCache
 				case HttpURLConnection.HTTP_NOT_MODIFIED:// only possible if force=false
 					return;// all done
 				case HttpURLConnection.HTTP_OK:
-					localFile.delete();
+					if (!localFile.delete())
+						{
+						//throw new UrlContentCacheException("Couldn't delete " + localFile);
+						// no problem, maybe the file didn't exist yet
+						}
 					ensureFreeSpace(conn.getContentLength());
-					localFile.getParentFile().mkdirs();
-					localFile.createNewFile();
+					if (!localFile.getParentFile().mkdirs())
+						{
+						throw new UrlContentCacheException("Couldn't create " + localFile.getParentFile());
+						}
+					if (!localFile.createNewFile())
+						{
+						throw new UrlContentCacheException("Couldn't create " + localFile);
+						}
 					FileOutputStream os = new FileOutputStream(localFile);
 					StreamUtils.pipe(conn.getInputStream(), os);
 					os.close();
@@ -321,8 +354,14 @@ public class UrlContentCacheImpl implements UrlContentCache
 				String key = filesByAccessDate.firstKey();
 				File f = filesByAccessDate.get(key);
 				cacheSize -= f.length();
-				f.delete();
-				getChecksumFile(f).delete();
+				if (!f.delete())
+					{
+					throw new UrlContentCacheException("Couldn't delete: " + f);
+					}
+				if (!getChecksumFile(f).delete())
+					{
+					throw new UrlContentCacheException("Couldn't delete: " + getChecksumFile(f));
+					}
 				filesByAccessDate.remove(key);
 				}
 			}
@@ -349,8 +388,14 @@ public class UrlContentCacheImpl implements UrlContentCache
 	private void updateChecksum(File file) throws IOException
 		{
 		File c = getChecksumFile(file);
-		c.delete();
-		c.createNewFile();
+		if (!c.delete())
+			{
+			// no problem
+			}
+		if (!c.createNewFile())
+			{
+			throw new IOException("Couldn't create " + c);
+			}
 		FileWriter w = new FileWriter(c);
 		w.write(getChecksumString(file));
 		w.close();
@@ -381,7 +426,10 @@ public class UrlContentCacheImpl implements UrlContentCache
 
 	private void updateLastAccessTime(File f) throws IOException
 		{
-		getChecksumFile(f).setLastModified(System.currentTimeMillis());
+		if (!getChecksumFile(f).setLastModified(System.currentTimeMillis()))
+			{
+			throw new IOException("Failed to update access time: " + f);
+			}
 		}
 
 	/**
@@ -400,6 +448,10 @@ public class UrlContentCacheImpl implements UrlContentCache
 			{
 			br = new BufferedReader(new FileReader(getChecksumFile(file)));
 			String s = br.readLine();
+			if (s == null)
+				{
+				throw new IOException("Couldn't read from " + file);
+				}
 			String localChecksum = s.trim();
 			return localChecksum.equals(checksum);
 			}
