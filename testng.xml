@@ -30,16 +30,16 @@
   ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   -->
 
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="TestAll" verbose="1" parallel="false" thread-count="1">
-	<test name="TestAll">
-		<groups>
-			<run>
-				<exclude name="contract"/>
-			</run>
-		</groups>
+<suite name="dsutils" verbose="1" parallel="false" thread-count="1">
 
+	<test name="dsutils">
+		<!--	<groups>
+		  <run>
+			  <exclude name="contract"/>
+		  </run>
+	  </groups>
+  -->
 		<packages>
 			<package name="com.davidsoergel.dsutils"/>
 			<package name="com.davidsoergel.dsutils.collections"/>
@@ -54,4 +54,6 @@
 			<class name="com.davidsoergel.dsutils.tree.SortedSetHierarchyNodeTest"/>
 		</classes>
 	</test>
+
+
 </suite>
