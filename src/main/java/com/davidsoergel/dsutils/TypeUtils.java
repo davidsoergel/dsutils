@@ -37,6 +37,11 @@ import org.jboss.aop.advice.annotation.assignability.VariableHierarchy;
 
 import java.lang.reflect.Type;
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class TypeUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------

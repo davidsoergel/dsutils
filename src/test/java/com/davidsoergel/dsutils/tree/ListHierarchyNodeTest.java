@@ -48,6 +48,9 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		implements TestInstanceFactory<ListHierarchyNode<Object>>
 	{
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ListHierarchyNode<Object> createInstance() throws Exception
 		{
 		ListHierarchyNode<Object> root = new ListHierarchyNode<Object>("root");
@@ -68,6 +71,10 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		}
 
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new HierarchyNodeInterfaceTest<ListHierarchyNode<Object>>(this));

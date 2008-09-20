@@ -39,6 +39,9 @@ import java.util.HashMap;
 
 /**
  * Use SingletonRegistry.instance(String) to access a given instance by name.
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
  */
 @Deprecated
 public abstract class SingletonRegistry

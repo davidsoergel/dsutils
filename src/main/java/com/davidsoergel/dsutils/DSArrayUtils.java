@@ -39,6 +39,11 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	{
 

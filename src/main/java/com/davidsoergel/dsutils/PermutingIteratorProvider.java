@@ -37,6 +37,11 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class PermutingIteratorProvider<T> extends IteratorProvider<T>
 	{
 

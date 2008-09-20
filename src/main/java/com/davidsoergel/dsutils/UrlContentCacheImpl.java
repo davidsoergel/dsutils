@@ -55,6 +55,9 @@ import java.util.zip.CRC32;
 /**
  * Cache URL contents in the filesystem.  Maintains checksum files for verification, and stores the last access time for
  * the file as the modified date on the checksum file (since that's the onl yone available to us in Java)
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
  */
 public class UrlContentCacheImpl implements UrlContentCache
 	{
@@ -309,7 +312,8 @@ public class UrlContentCacheImpl implements UrlContentCache
 					ensureFreeSpace(conn.getContentLength());
 					if (!localFile.getParentFile().mkdirs())
 						{
-						throw new UrlContentCacheException("Couldn't create " + localFile.getParentFile());
+						// probably OK: the dirs already exist
+						//throw new UrlContentCacheException("Couldn't create " + localFile.getParentFile());
 						}
 					if (!localFile.createNewFile())
 						{

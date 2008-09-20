@@ -37,6 +37,11 @@ import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class LongRationalTest//extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------

@@ -38,6 +38,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class IteratorProvider<T> implements Iterator<Iterator<T>>
 	{
 	protected Collection<T> underlyingCollection;

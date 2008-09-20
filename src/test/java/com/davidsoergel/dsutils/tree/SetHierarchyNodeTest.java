@@ -46,6 +46,9 @@ import java.util.Queue;
 public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 		implements TestInstanceFactory<SetHierarchyNode<Object>>
 	{
+	/**
+	 * {@inheritDoc}
+	 */
 	public SetHierarchyNode<Object> createInstance() throws Exception
 		{
 		SetHierarchyNode<Object> root = new SetHierarchyNode<Object>();
@@ -66,6 +69,10 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 		}
 
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Object>>(this)

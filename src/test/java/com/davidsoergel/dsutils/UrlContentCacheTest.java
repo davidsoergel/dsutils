@@ -44,6 +44,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class UrlContentCacheTest
 	{
 	// ------------------------------ FIELDS ------------------------------

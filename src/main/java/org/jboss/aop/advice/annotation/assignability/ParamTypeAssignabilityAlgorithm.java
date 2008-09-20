@@ -37,6 +37,7 @@ import java.lang.reflect.Type;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 class ParamTypeAssignabilityAlgorithm
 	{

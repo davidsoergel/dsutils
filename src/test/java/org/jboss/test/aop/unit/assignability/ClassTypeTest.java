@@ -41,6 +41,7 @@ import java.util.Set;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 public class ClassTypeTest extends VariableTargetAlgorithmTest
 	{

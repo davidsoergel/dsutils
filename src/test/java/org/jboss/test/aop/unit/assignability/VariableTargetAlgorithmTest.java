@@ -37,6 +37,7 @@ import org.jboss.aop.advice.annotation.assignability.VariableHierarchy;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 public abstract class VariableTargetAlgorithmTest extends TestCase
 	{
@@ -58,6 +59,10 @@ public abstract class VariableTargetAlgorithmTest extends TestCase
 
 	// -------------------------- OTHER METHODS --------------------------
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void setUp()
 		{
 		algorithm = AssignabilityAlgorithm.VARIABLE_TARGET;

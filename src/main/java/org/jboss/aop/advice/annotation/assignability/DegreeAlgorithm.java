@@ -41,6 +41,7 @@ import java.util.ArrayList;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 public class DegreeAlgorithm
 	{

@@ -41,6 +41,9 @@ import java.util.HashMap;
 /**
  * Handles mapping Java objects to Strings and back.  Intended for short, human-readable Strings (unlike the
  * Serializable infrastructure, or an XML mapping, etc.  Hence, limited to simple types.
+ *
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
  */
 public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 	{

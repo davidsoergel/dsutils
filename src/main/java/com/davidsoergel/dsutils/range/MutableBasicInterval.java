@@ -34,6 +34,11 @@
 package com.davidsoergel.dsutils.range;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class MutableBasicInterval<T extends Number> extends BasicInterval<T>
 	{
 	// --------------------------- CONSTRUCTORS ---------------------------

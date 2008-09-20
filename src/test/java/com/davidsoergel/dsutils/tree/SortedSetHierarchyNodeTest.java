@@ -47,6 +47,9 @@ import java.util.Queue;
 public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHierarchyNode>
 		implements TestInstanceFactory<SortedSetHierarchyNode<? extends Comparable>>
 	{
+	/**
+	 * {@inheritDoc}
+	 */
 	public SortedSetHierarchyNode<? extends Comparable> createInstance() throws Exception
 		{
 		SortedSetHierarchyNode root = new SortedSetHierarchyNode("root");
@@ -66,6 +69,10 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 		return root;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
 		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest<SortedSetHierarchyNode>(this)

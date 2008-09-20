@@ -44,6 +44,11 @@ import java.util.Map;
 import java.util.Properties;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class PropertiesUtils
 	{
 	private static final Logger logger = Logger.getLogger(PropertiesUtils.class);

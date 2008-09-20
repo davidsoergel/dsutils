@@ -40,11 +40,17 @@ public abstract class ContractTestAwareContractTest<T> extends ContractTestAware
 	{
 	String testName;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setTestName(String testName)
 		{
 		this.testName = testName;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getTestName()
 		{
 		return testName;

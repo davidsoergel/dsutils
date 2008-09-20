@@ -40,6 +40,11 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class DSClassUtils extends org.apache.commons.lang.ClassUtils
 	{
 

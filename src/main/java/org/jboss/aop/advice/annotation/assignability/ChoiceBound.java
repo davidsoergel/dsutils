@@ -39,6 +39,7 @@ import java.util.LinkedList;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 class ChoiceBound implements Type
 	{

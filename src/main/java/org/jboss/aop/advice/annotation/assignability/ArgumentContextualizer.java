@@ -41,6 +41,7 @@ import java.util.ListIterator;
  * Argument contextualizer. Performs contextualization of arguments through hierarchy
  *
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 class ArgumentContextualizer
 	{

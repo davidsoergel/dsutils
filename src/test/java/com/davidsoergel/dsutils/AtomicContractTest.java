@@ -40,11 +40,17 @@ public class AtomicContractTest implements ContractTest
 	{
 	String testName;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setTestName(String testName)
 		{
 		this.testName = testName;
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getTestName()
 		{
 		return testName;

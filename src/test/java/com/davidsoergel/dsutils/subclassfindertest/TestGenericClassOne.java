@@ -32,6 +32,11 @@
 
 package com.davidsoergel.dsutils.subclassfindertest;
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class TestGenericClassOne implements TestGenericInterface<Integer>
 	{
 	}

@@ -38,6 +38,7 @@ import java.util.List;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 public class GenericArrayTypeTest extends VariableTargetAlgorithmTest
 	{

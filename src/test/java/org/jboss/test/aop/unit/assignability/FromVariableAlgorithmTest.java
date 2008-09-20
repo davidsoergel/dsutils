@@ -41,6 +41,7 @@ import java.util.List;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
+ * @version $Id$
  */
 public class FromVariableAlgorithmTest extends TestCase
 	{
@@ -160,6 +161,10 @@ public class FromVariableAlgorithmTest extends TestCase
 		return called8(arg);
 		}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void setUp()
 		{
 		this.algorithm = AssignabilityAlgorithm.FROM_VARIABLE;

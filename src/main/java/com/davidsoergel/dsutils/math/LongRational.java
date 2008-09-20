@@ -34,6 +34,11 @@
 package com.davidsoergel.dsutils.math;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class LongRational extends Number implements Comparable
 	{
 	// ------------------------------ FIELDS ------------------------------

@@ -36,6 +36,11 @@ package com.davidsoergel.dsutils.math;
 import org.apache.log4j.Logger;
 
 
+/**
+ * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @version $Id$
+ */
+
 public class FareyFractionUtils
 	{
 	// ------------------------------ FIELDS ------------------------------
