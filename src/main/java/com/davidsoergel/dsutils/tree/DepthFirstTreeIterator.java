@@ -38,7 +38,7 @@ import java.util.Iterator;
 /**
  * An Iterator that provides all of the nodes of a tree in depth-first order.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public interface DepthFirstTreeIterator<T, I extends HierarchyNode<T, I>> extends Iterator<I>

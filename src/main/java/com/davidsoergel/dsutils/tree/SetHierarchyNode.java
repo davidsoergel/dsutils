@@ -46,7 +46,7 @@ import java.util.Set;
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a Set and are thus unordered.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>>

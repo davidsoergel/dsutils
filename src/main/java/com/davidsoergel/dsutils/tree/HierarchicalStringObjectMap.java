@@ -44,7 +44,7 @@ import java.util.Set;
  * interface and simply delegates to the contained Map.   The type of Collection that holds the children is up to the
  * implementation, so they may or may not be ordered.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public abstract class HierarchicalStringObjectMap

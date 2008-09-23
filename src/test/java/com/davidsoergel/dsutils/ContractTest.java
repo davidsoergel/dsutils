@@ -35,10 +35,17 @@ package com.davidsoergel.dsutils;
 import org.testng.ITest;
 
 /**
+ * Represents a test against an interface or abstract class.
+ *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public interface ContractTest extends ITest
 	{
+	/**
+	 * Return a name for this test instance, typically indicating which concrete class is being tested.
+	 *
+	 * @param testName
+	 */
 	void setTestName(String testName);
 	}

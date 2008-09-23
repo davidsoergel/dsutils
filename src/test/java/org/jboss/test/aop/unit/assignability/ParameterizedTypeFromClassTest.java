@@ -2362,7 +2362,7 @@ public class ParameterizedTypeFromClassTest extends ParameterizedTypeTest
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
@@ -2371,7 +2371,7 @@ class Class1 extends ArrayList<String>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class2<D> extends ArrayList<D>
@@ -2379,7 +2379,7 @@ class Class2<D> extends ArrayList<D>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class3<D> extends ArrayList<String>
@@ -2387,7 +2387,7 @@ class Class3<D> extends ArrayList<String>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class4 extends ArrayList
@@ -2395,7 +2395,7 @@ class Class4 extends ArrayList
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class5<A, B> extends HashMap<B, A>
@@ -2403,7 +2403,7 @@ class Class5<A, B> extends HashMap<B, A>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class6<D extends String> extends ArrayList<D>
@@ -2411,7 +2411,7 @@ class Class6<D extends String> extends ArrayList<D>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class7<A, B> extends ArrayList<String>
@@ -2419,7 +2419,7 @@ class Class7<A, B> extends ArrayList<String>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class Class8<A, B> extends HashMap<String, Integer>

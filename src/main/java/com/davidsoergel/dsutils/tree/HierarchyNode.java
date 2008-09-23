@@ -43,33 +43,56 @@ import java.util.List;
  * number of children, which are also HierarchyNodes of the same generic type.  The type of Collection that holds the
  * children is up to the implementation, so they may or may not be ordered.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  * @See com.davidsoergel.runutils.HierarchicalTypedPropertyNode
  */
 public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterable<I>
 	{
 
+	/**
+	 * Returns a Collection of nodes that are immediate children of this one.
+	 *
+	 * @return a Collection of nodes that are immediate children of this one.
+	 */
 	Collection<? extends I> getChildren();//? extends HierarchyNode<? extends T, I>>
 
 
 	/**
-	 * Get the child of this node which has the given value
+	 * Gets the child of this node which has the given value
 	 *
 	 * @param id the T value to search for among the children
 	 * @return the PhylogenyNode<T> child with the given value
 	 * @throws java.util.NoSuchElementException
-	 *          when a matching child is not found
+	 *          when no matching child is found
 	 */
 	@NotNull
 	I getChild(T id);//HierarchyNode<T, I>
 
+	/**
+	 * Tells whether this node is a leaf of the tree or not
+	 *
+	 * @return false if this node has any children; true otherwise
+	 */
 	boolean isLeaf();
 
+	/**
+	 * Returns the value contained in this node
+	 *
+	 * @return the value contained in this node
+	 */
 	T getValue();
 
+	/**
+	 * Sets the value contained in this node
+	 */
 	void setValue(T contents);
 
+	/**
+	 * Returns the immediate parent of this node in the tree
+	 *
+	 * @return the immediate parent of this node in the tree, or null if this node is the root.
+	 */
 	I getParent();//HierarchyNode<? extends T, I>
 
 

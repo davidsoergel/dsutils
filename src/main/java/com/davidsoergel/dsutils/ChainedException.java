@@ -40,7 +40,7 @@ import java.io.PrintWriter;
  * A superclass for exceptions that are caused by another exception.  Inheriting from this class facilitates printing a
  * stack trace not only of the wrapper exception but also of the ultimate cause.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class ChainedException extends java.lang.Exception

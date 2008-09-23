@@ -42,7 +42,7 @@ import java.util.Collection;
  * implement only getChildren() and newChild(), because they must choose what kind of Collection to use for the
  * children.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T, I>> implements HierarchyNode<T, I>

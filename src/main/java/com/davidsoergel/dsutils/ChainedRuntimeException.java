@@ -39,7 +39,7 @@ import java.io.PrintWriter;
 /**
  * This exception is used for wrapping another exception and rethrowing it as an uncaught exception.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class ChainedRuntimeException extends RuntimeException

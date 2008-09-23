@@ -56,7 +56,7 @@ import java.util.zip.CRC32;
  * Cache URL contents in the filesystem.  Maintains checksum files for verification, and stores the last access time for
  * the file as the modified date on the checksum file (since that's the onl yone available to us in Java)
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class UrlContentCacheImpl implements UrlContentCache
@@ -188,17 +188,17 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-	public File getFile(String url) throws UrlContentCacheException
+	public File getFile(String url) throws UrlContentCacheException, MalformedURLException
 		{
-		try
-			{
-			return getFile(new URL(url));
-			}
-		catch (MalformedURLException e)
-			{
-			logger.debug(e);
-			throw new UrlContentCacheException(e);
-			}
+		//try
+		//	{
+		return getFile(new URL(url));
+		//	}
+		//catch (MalformedURLException e)
+		//	{
+		//	logger.debug(e);
+		//	throw new UrlContentCacheException(e);
+		//	}
 		}
 
 	public File getFile(URL url) throws UrlContentCacheException
@@ -241,17 +241,17 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		}
 
-	public File getFile(String url, String checksum) throws UrlContentCacheException
+	public File getFile(String url, String checksum) throws UrlContentCacheException, MalformedURLException
 		{
-		try
-			{
-			return getFile(new URL(url), checksum);
-			}
-		catch (MalformedURLException e)
-			{
-			logger.debug(e);
-			throw new UrlContentCacheException(e);
-			}
+		//try
+		//	{
+		return getFile(new URL(url), checksum);
+		//	}
+		//catch (MalformedURLException e)
+		//	{
+		//	logger.debug(e);
+		//	throw new UrlContentCacheException(e);
+		//	}
 		}
 
 	public String recalculateChecksum(String s) throws MalformedURLException, UrlContentCacheException

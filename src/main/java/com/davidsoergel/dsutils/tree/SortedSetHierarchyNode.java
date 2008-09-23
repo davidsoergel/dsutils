@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a SortedSet and thus maintain their natural order.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class SortedSetHierarchyNode<T extends Comparable<T>>

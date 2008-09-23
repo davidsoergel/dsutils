@@ -35,7 +35,7 @@ package com.davidsoergel.dsutils;
 import java.util.BitSet;
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 

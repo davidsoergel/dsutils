@@ -45,7 +45,7 @@ import java.util.NoSuchElementException;
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
  * stored in a List and are thus ordered.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<T>>

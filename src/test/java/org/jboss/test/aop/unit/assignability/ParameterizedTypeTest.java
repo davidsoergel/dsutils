@@ -114,7 +114,7 @@ public class ParameterizedTypeTest extends VariableTargetAlgorithmTest
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
@@ -123,7 +123,7 @@ class MyClass1 extends MyClass2
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class MyClass2<A extends Runnable> extends MyClass3<A>
@@ -131,7 +131,7 @@ class MyClass2<A extends Runnable> extends MyClass3<A>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class MyClass3<A> extends ArrayList<A>
@@ -139,7 +139,7 @@ class MyClass3<A> extends ArrayList<A>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class NewClass2<A> extends NewClass1
@@ -147,7 +147,7 @@ class NewClass2<A> extends NewClass1
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class NewClass3<A> extends MyClass2
@@ -155,7 +155,7 @@ class NewClass3<A> extends MyClass2
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class NewClass1<A> extends NewClass
@@ -163,7 +163,7 @@ class NewClass1<A> extends NewClass
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class NewClass extends MyClass2<Runnable>
@@ -171,7 +171,7 @@ class NewClass extends MyClass2<Runnable>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class MyClass_<A extends Serializable, B> extends MyClass2_<A>
@@ -179,7 +179,7 @@ class MyClass_<A extends Serializable, B> extends MyClass2_<A>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class MyClass2_<A extends Serializable> extends HashMap<String, A>
@@ -187,7 +187,7 @@ class MyClass2_<A extends Serializable> extends HashMap<String, A>
 	}
 
 /**
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 class MyClass3_<A extends Serializable, B> extends MyClass2_

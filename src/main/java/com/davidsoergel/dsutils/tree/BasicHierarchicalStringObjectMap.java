@@ -46,7 +46,7 @@ import java.util.NoSuchElementException;
  * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
  * interface and simply delegates to the contained Map.  The children are stored in a List and are thus ordered.
  *
- * @author <a href="mailto:dev.davidsoergel.com">David Soergel</a>
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMap
