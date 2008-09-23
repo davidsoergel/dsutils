@@ -39,7 +39,7 @@ package com.davidsoergel.dsutils.range;
  * @version $Id$
  */
 
-public class MutableBasicInterval<T extends Number> extends BasicInterval<T>
+public class MutableBasicInterval<T extends Number & Comparable> extends BasicInterval<T>
 	{
 	// --------------------------- CONSTRUCTORS ---------------------------
 

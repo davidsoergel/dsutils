@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * @author lorax
  * @version 1.0
  */
-public class BasicInterval<T extends Number> implements Interval<T>
+public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 	{
 	// ------------------------------ FIELDS ------------------------------
 

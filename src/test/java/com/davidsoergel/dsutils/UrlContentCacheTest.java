@@ -58,7 +58,7 @@ public class UrlContentCacheTest
 	// -------------------------- OTHER METHODS --------------------------
 
 	@Test
-	public void accessTimeIsUpdated() throws UrlContentCacheException, InterruptedException
+	public void accessTimeIsUpdated() throws UrlContentCacheException, InterruptedException, MalformedURLException
 		{
 		cache.getFile("http://www.davidsoergel.com/testfile");
 		long origDate = new File("/tmp/test/www.davidsoergel.com/testfile.crc32").lastModified();
@@ -69,7 +69,7 @@ public class UrlContentCacheTest
 		}
 
 	@Test
-	public void cacheCanBeCleared() throws UrlContentCacheException
+	public void cacheCanBeCleared() throws UrlContentCacheException, MalformedURLException
 		{
 		cache.getFile("http://www.davidsoergel.com/testfile");
 		assert (new File("/tmp/test").exists());
@@ -78,7 +78,7 @@ public class UrlContentCacheTest
 		}
 
 	@Test
-	public void checksumFileIsWritten() throws UrlContentCacheException
+	public void checksumFileIsWritten() throws UrlContentCacheException, MalformedURLException
 		{
 		cache.getFile("http://www.davidsoergel.com/testfile");
 
@@ -107,7 +107,7 @@ public class UrlContentCacheTest
 		}
 
 	@Test
-	public void remoteFileIsCached() throws UrlContentCacheException
+	public void remoteFileIsCached() throws UrlContentCacheException, MalformedURLException
 		{
 		cache.getFile("http://www.davidsoergel.com/testfile");
 		assert (new File("/tmp/test/www.davidsoergel.com/testfile").exists());
