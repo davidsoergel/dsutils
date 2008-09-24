@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * @author Ross Morgan-Linial
  * @author David Soergel
- * @version 1.0
+ * @version $Id$
  */
 public class WeakHashSet implements Set
 	{

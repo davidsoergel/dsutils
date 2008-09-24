@@ -134,7 +134,7 @@ import java.util.Random;
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version 13
+ * @version $Id$
  */
 
 // Note: this class is hard-inlined in all of its methods.  This makes some of

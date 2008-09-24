@@ -1,7 +1,5 @@
 package com.davidsoergel.dsutils.stringmapper;
 
-import com.davidsoergel.dsutils.StringMapper;
-import com.davidsoergel.dsutils.StringMapperException;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Type;

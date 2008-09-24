@@ -37,8 +37,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class MathUtils
 	{

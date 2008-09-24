@@ -32,38 +32,30 @@
 
 package com.davidsoergel.dsutils;
 
-import org.apache.commons.lang.NotImplementedException;
-
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
+ * A Factory for new Iterators based on a List, where each new Iterator provides the contents in a random order.
+ *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
-public class IteratorProvider<T> implements Iterator<Iterator<T>>
+public class PermutingCollectionIteratorFactory<T> extends CollectionIteratorFactory<T>
 	{
-	protected Collection<T> underlyingCollection;
 
-	public IteratorProvider(Collection<T> underlyingCollection)
+	public PermutingCollectionIteratorFactory(List<T> underlyingList)
 		{
-		this.underlyingCollection = underlyingCollection;
+		super(underlyingList);
 		}
 
-	public boolean hasNext()
-		{
-		return true;
-		}
 
 	public Iterator<T> next()
 		{
-		return underlyingCollection.iterator();
-		}
-
-	public void remove()
-		{
-		throw new NotImplementedException();
+		Collections.shuffle((List<T>) underlyingCollection);
+		return super.next();
 		}
 	}

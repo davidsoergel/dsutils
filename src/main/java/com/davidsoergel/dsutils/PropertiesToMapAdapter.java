@@ -45,6 +45,11 @@ import java.util.Set;
 
 
 /**
+ * An Adapter that makes a Properties object appear as a Map<String, Object>.
+ * <p/>
+ * For historical reasons,java.util.Properties is a Hashtable<Object,Object>but the keys must all be Strings. Here we
+ * just enforce that and make the generic stuff work right.
+ *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */

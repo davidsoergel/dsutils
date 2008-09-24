@@ -46,9 +46,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// REVIEW  PluginManager may be redundant with other mechanisms for achieving the same thing...
+
 /**
- * @author lorax
- * @version 1.0
+ * A clearinghouse for dynamically loaded plugin classes, i.e. classes that are not necessarily known at compile time
+ * but which must be identified and instantiated at runtime.
+ * <p/>
+ * This may be redundant with other mechanisms for achieving the same thing...
+ *
+ * @version $Id$
  */
 public class PluginManager<T>
 	{

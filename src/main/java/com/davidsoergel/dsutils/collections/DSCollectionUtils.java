@@ -47,8 +47,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class DSCollectionUtils extends org.apache.commons.collections15.CollectionUtils
 	{

@@ -41,7 +41,7 @@ package com.davidsoergel.dsutils.math;
  * Experience, 32 (2002) 669..701. DOI:  10.1002/spe.454 http://psc.informatik.uni-jena.de/Themen/pap-talk/java-arith.pdf
  *
  * @author J F H Winkler
- * @version 1.0
+ * @version $Id$
  * @date 2001.Mar.18
  */
 public class SafeIntegerArithmetic

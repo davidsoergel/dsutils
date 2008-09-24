@@ -1,9 +1,6 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSStringUtils;
-import com.davidsoergel.dsutils.StringMapper;
-import com.davidsoergel.dsutils.StringMapperException;
-import com.davidsoergel.dsutils.TypedValueStringMapper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

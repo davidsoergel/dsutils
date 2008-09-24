@@ -69,7 +69,7 @@ import java.io.IOException;
  * Class declaration
  *
  * @author
- * @version %I%, %G%
+ * @version $Id$
  */
 public class Base64
 	{

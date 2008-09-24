@@ -40,12 +40,9 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	{
@@ -184,11 +181,11 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * @return A Set of tokens.
 	 * @deprecated use org.apache.commons.lang.StringUtils.split()
 	 */
-	public static Set tokenSet(String s, String delim)
+	public static Set<String> tokenSet(String s, String delim)
 		{
 		//return new HashSet<String>(org.apache.commons.lang.StringUtils.split(s, delim));
 		StringTokenizer st = new StringTokenizer(s, delim);
-		Set result = new HashSet();
+		Set<String> result = new HashSet<String>();
 
 		while (st.hasMoreTokens())
 			{
@@ -298,44 +295,6 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 			return substituteAll(s, hm);
 		}*/
 
-
-	/**
-	 * Find the first regex match in a string.
-	 *
-	 * @param s       The string to search in.
-	 * @param pattern The regular expression to look for.
-	 * @return the first substring of the given string matching the given regular expression, or null if no match.
-	 */
-	public static String matchRE(String s, String pattern)
-		{
-		return matchRE(s, pattern, 0);
-		}
-
-	/**
-	 * Find the nth regex match in a string.
-	 *
-	 * @param s        The string to search in.
-	 * @param pattern  The regular expression to look for.
-	 * @param groupnum Look for the groupnum'th match (0-based).
-	 * @return the first substring of the given string matching the given regular expression, or null if no match.
-	 */
-	public static String matchRE(String s, String pattern, int groupnum)
-		{
-		Pattern p = Pattern.compile(pattern);
-		Matcher m = p.matcher(s);
-		if (!m.find())
-			{
-			return null;
-			}
-		try
-			{
-			return m.group(groupnum);
-			}
-		catch (IllegalStateException e)
-			{
-			return null;
-			}
-		}
 
 	/**
 	 * Converts a string into an html encoded string.

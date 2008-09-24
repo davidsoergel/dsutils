@@ -44,8 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class FileUtils
 	{

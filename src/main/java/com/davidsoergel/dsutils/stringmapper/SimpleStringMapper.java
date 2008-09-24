@@ -1,7 +1,5 @@
 package com.davidsoergel.dsutils.stringmapper;
 
-import com.davidsoergel.dsutils.StringMapper;
-
 import java.lang.reflect.Type;
 
 /**

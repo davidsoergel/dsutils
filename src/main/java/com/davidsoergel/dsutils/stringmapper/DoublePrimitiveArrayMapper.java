@@ -2,7 +2,6 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.DSStringUtils;
-import com.davidsoergel.dsutils.StringMapper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

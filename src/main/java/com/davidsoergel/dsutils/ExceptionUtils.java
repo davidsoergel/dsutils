@@ -37,8 +37,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class ExceptionUtils
 	{

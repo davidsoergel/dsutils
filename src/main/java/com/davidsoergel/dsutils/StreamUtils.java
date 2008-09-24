@@ -45,8 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class StreamUtils
 	{

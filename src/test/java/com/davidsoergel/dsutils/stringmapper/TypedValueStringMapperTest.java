@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.stringmapper;
 
 import junit.framework.TestCase;
 import org.testng.annotations.Test;
@@ -33,7 +33,8 @@ public class TypedValueStringMapperTest extends TestCase
 	@Test
 	public void testClassMappingWorks() throws StringMapperException
 		{
-		assert TypedValueStringMapper.get(Class.class).parse("com.davidsoergel.dsutils.TypedValueStringMapper")
+		assert TypedValueStringMapper.get(Class.class)
+				.parse("com.davidsoergel.dsutils.stringmapper.TypedValueStringMapper")
 				.equals(TypedValueStringMapper.class);
 		}
 

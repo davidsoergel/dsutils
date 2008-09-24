@@ -69,7 +69,7 @@ import java.util.zip.ZipEntry;
  * (RunTime Subclass Identification)
  *
  * @author <a href="mailto:daniel@satlive.org">Daniel Le Berre</a>
- * @version 1.0
+ * @version $Id$
  */
 public class SubclassFinder
 	{

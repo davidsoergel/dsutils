@@ -44,8 +44,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class MultiIntervalIntersection<T extends Number & Comparable> extends TreeSet<Interval<T>>
 	{

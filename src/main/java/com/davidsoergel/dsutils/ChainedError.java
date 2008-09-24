@@ -37,8 +37,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class ChainedError extends Error
 	{

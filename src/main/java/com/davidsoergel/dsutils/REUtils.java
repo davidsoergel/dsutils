@@ -39,8 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class REUtils
 	{
@@ -88,6 +87,7 @@ public class REUtils
 			return null;
 			}
 		}
+
 
 	/**
 	 * Find the nth regex match in a string.

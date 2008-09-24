@@ -30,8 +30,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.stringmapper;
 
+import com.davidsoergel.dsutils.SubclassFinder;
+import com.davidsoergel.dsutils.TypeUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

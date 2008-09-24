@@ -30,11 +30,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.stringmapper;
+
+import com.davidsoergel.dsutils.ChainedRuntimeException;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class StringMapperException extends ChainedRuntimeException
 	{

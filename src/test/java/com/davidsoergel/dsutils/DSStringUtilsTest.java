@@ -38,8 +38,7 @@ import org.testng.annotations.Test;
 
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class DSStringUtilsTest
 	{

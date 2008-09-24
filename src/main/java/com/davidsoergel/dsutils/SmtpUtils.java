@@ -42,8 +42,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class SmtpUtils
 	{

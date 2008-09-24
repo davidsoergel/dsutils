@@ -39,10 +39,13 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Should we use org.apache.commons.lang.Pool instead?
+ * An object pool, to allow reusing objects that are expensive to instantiate.
+ * <p/>
+ * Should we use org.apache.commons.lang.Pool instead?  Or that high-performance realtime library thing?  Or nothing,
+ * because object pooling is now Considered Harmful?
  *
- * @author lorax
- * @version 1.0
+ * @version $Id$
+ * @Deprecated
  */
 public class Pool<E>
 	{

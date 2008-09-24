@@ -40,8 +40,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 
 /**
- * @author lorax
- * @version 1.0
+ * @version $Id$
  */
 public class DSArrayUtilsTest//extends TestCase
 	{
@@ -151,6 +150,13 @@ public class DSArrayUtilsTest//extends TestCase
 		assert result != c;
 
 		assert Arrays.equals(result, c);
+		}
+
+
+	@Test
+	public void twoDimensionalDoubleArrayPlusWorks()
+		{
+		assert false;
 		}
 
 	@BeforeMethod
@@ -368,5 +374,23 @@ public class DSArrayUtilsTest//extends TestCase
 		};
 
 		assert DSArrayUtils.argmax(aa) == 6;
+		}
+
+	@Test
+	public void weightedDecrementWorks()
+		{
+		assert false;
+		}
+
+	@Test
+	public void weightedIncrementWorks()
+		{
+		assert false;
+		}
+
+	@Test
+	public void stubTest()
+		{
+		assert false;
 		}
 	}

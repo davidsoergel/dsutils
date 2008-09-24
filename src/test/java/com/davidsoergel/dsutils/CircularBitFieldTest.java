@@ -30,31 +30,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.davidsoergel.dsutils;
 
-package com.davidsoergel.dsutils.math;
-
-import com.davidsoergel.dsutils.ChainedException;
-import org.apache.log4j.Logger;
+import org.testng.annotations.Test;
 
 /**
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class MathUtilsException extends ChainedException
+public class CircularBitFieldTest
 	{
-	// ------------------------------ FIELDS ------------------------------
-
-	private static final Logger logger = Logger.getLogger(MathUtilsException.class);
-
-
-	// --------------------------- CONSTRUCTORS ---------------------------
-
-	public MathUtilsException(String s)
+	@Test
+	public void stubTest()
 		{
-		super(s);
-		}
-
-	public MathUtilsException(Throwable t)
-		{
-		super(t);
+		assert false;
 		}
 	}

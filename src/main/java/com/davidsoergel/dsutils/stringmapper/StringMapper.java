@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.stringmapper;
 
 import java.lang.reflect.Type;
 
