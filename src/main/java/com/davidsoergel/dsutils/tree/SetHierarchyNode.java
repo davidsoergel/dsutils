@@ -66,6 +66,16 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 		return children;
 		}
 
+	public void registerChild(SetHierarchyNode<T> child)
+		{
+		children.add(child);
+		}
+
+	public void unregisterChild(SetHierarchyNode<T> child)
+		{
+		children.remove(child);
+		}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -102,7 +112,15 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 
 	public void setParent(SetHierarchyNode<T> parent)
 		{
+		if (this.parent != null)
+			{
+			this.parent.unregisterChild(this);
+			}
 		this.parent = parent;
+		if (this.parent != null)
+			{
+			this.parent.registerChild(this);
+			}
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
@@ -112,11 +130,11 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 
 	public SetHierarchyNode<T> newChild()
 		{
-		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		SetHierarchyNode<T> child = new SetHierarchyNode<T>();
 		//result.setContents(contents);
-		children.add(result);
-		result.setParent(this);
-		return result;
+		//children.add(result);
+		child.setParent(this);
+		return child;
 		}
 
 	public boolean isLeaf()

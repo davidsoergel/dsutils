@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils;
 
+import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -53,6 +54,7 @@ public class DSArrayUtilsTest//extends TestCase
 	double[] b;
 	double[] c;
 
+	double[] aPlusQuarterB;
 
 	// -------------------------- OTHER METHODS --------------------------
 
@@ -131,6 +133,22 @@ public class DSArrayUtilsTest//extends TestCase
 		}
 
 	@Test
+	public void doubleArrayWeightedDecrementWorks()
+		{
+		DSArrayUtils.decrementByWeighted(aPlusQuarterB, b, .25);
+
+		assert DSArrayUtils.equalWithinFPError(aPlusQuarterB, a);
+		}
+
+	@Test
+	public void doubleArrayWeightedIncrementWorks()
+		{
+		DSArrayUtils.incrementByWeighted(a, b, .25);
+
+		assert Arrays.equals(a, aPlusQuarterB);
+		}
+
+	@Test
 	public void doubleArrayMinusWorks()
 		{
 		double[] result = DSArrayUtils.minus(c, b);
@@ -156,7 +174,70 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void twoDimensionalDoubleArrayPlusWorks()
 		{
-		assert false;
+		double[][] aa = new double[3][];
+		aa[0] = a;
+		aa[1] = b;
+		aa[2] = c;
+
+		double[][] bb = new double[3][];
+		bb[0] = DSArrayUtils.times(a, 2.5);
+		bb[1] = DSArrayUtils.times(b, 2.5);
+		bb[2] = DSArrayUtils.times(c, 2.5);
+
+		double[][] aabb = DSArrayUtils.plus(aa, bb);
+
+		assert DSArrayUtils.equalWithinFPError(aabb[0], DSArrayUtils.times(a, 3.5));
+		assert DSArrayUtils.equalWithinFPError(aabb[1], DSArrayUtils.times(b, 3.5));
+		assert DSArrayUtils.equalWithinFPError(aabb[2], DSArrayUtils.times(c, 3.5));
+		}
+
+	@Test
+	public void twoDimensionalDoubleArraySumNColumnsWorks()
+		{
+		double[][] aa = new double[3][];
+		aa[0] = a;
+		aa[1] = b;
+		aa[2] = c;
+
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aa, 2), 29.);
+		}
+
+
+	@Test
+	public void twoDimensionalDoubleArrayCopyWithMoreColumnsWorks()
+		{
+		double[][] aa = new double[3][];
+		aa[0] = a;
+		aa[1] = b;
+		aa[2] = c;
+
+		double[][] aax = DSArrayUtils.deepcopy(aa, 2, 5);
+
+		assert aax[0].length == 6;
+
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sum(aa), 60.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aax, 4), 60.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aa, 2), 29.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aax, 2), 29.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sum(aax), 90.);
+		}
+
+	@Test
+	public void twoDimensionalDoubleArrayCopyWithFewerColumnsWorks()
+		{
+		double[][] aa = new double[3][];
+		aa[0] = a;
+		aa[1] = b;
+		aa[2] = c;
+
+		double[][] aax = DSArrayUtils.deepcopy(aa, -2, 5);
+
+		assert aax[0].length == 2;
+
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sum(aa), 60.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aa, 2), 29.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sumFirstNColumns(aax, 2), 29.);
+		assert MathUtils.equalWithinFPError(DSArrayUtils.sum(aax), 29.);
 		}
 
 	@BeforeMethod
@@ -179,6 +260,12 @@ public class DSArrayUtilsTest//extends TestCase
 				9.4,
 				11.2,
 				4.3
+		};
+		aPlusQuarterB = new double[]{
+				2.1,
+				4.15,
+				6.55,
+				3.325
 		};
 		}
 
@@ -377,20 +464,57 @@ public class DSArrayUtilsTest//extends TestCase
 		}
 
 	@Test
-	public void weightedDecrementWorks()
+	public void rescaleInterpolates()
 		{
-		assert false;
+
 		}
 
 	@Test
-	public void weightedIncrementWorks()
+	public void intArrayCompareConsidersColumnsInOrder()
 		{
-		assert false;
+		int[] ai = new int[]{
+				2,
+				3,
+				7,
+				6,
+				8
+		};
+		int[] bi = new int[]{
+				2,
+				3,
+				8,
+				6,
+				8
+		};
+		assert DSArrayUtils.compare(ai, ai) == 0;
+		assert DSArrayUtils.compare(bi, bi) == 0;
+		assert DSArrayUtils.compare(ai, bi) == -1;
+		assert DSArrayUtils.compare(bi, ai) == 1;
 		}
 
 	@Test
-	public void stubTest()
+	public void intArrayCompareConsidersArrayLength()
 		{
-		assert false;
+		int[] ai = new int[]{
+				2,
+				3,
+				7,
+				6,
+				8
+		};
+		int[] bi = new int[]{
+				2,
+				3,
+				7,
+				6,
+				8,
+				2
+		};
+		assert DSArrayUtils.compare(ai, ai) == 0;
+		assert DSArrayUtils.compare(bi, bi) == 0;
+		assert DSArrayUtils.compare(ai, bi) == -1;
+		assert DSArrayUtils.compare(bi, ai) == 1;
 		}
+
+	// TODO add more tests of DSArrayUtils
 	}

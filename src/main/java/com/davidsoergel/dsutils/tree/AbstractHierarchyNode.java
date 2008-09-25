@@ -81,8 +81,16 @@ public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T
 
 	public void setParent(I parent)
 		{
+		if (this.parent != null)
+			{
+			this.parent.unregisterChild((I) this);
+			}
 		this.parent = parent;
-		parent.getChildren().add((I) this);
+		if (this.parent != null)
+			{
+			this.parent.registerChild((I) this);
+			}
+		//	parent.getChildren().add((I) this);
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------

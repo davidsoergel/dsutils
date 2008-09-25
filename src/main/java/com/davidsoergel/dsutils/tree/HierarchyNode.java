@@ -57,7 +57,6 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 */
 	Collection<? extends I> getChildren();//? extends HierarchyNode<? extends T, I>>
 
-
 	/**
 	 * Gets the child of this node which has the given value
 	 *
@@ -124,7 +123,15 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @param a the child node to add
 	 */
-	//	void addChild(HierarchyNode<? extends T, I> a);
+	void registerChild(I a);
+
+	/**
+	 * Removes a child node.  Does not update the child's parent link!  The relationship is primarily owned by the child,
+	 * so child.setParent() should call this method, not the other way around.
+	 *
+	 * @param a the child node to add
+	 */
+	void unregisterChild(I a);
 
 	/**
 	 * Get an iterator that returns all the nodes of the tree in depth-first order.  The breadth ordering may or may not be

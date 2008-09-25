@@ -107,7 +107,15 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 
 	public void setParent(SortedSetHierarchyNode<T> parent)
 		{
+		if (this.parent != null)
+			{
+			this.parent.unregisterChild(this);
+			}
 		this.parent = parent;
+		if (this.parent != null)
+			{
+			this.parent.registerChild(this);
+			}
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
@@ -168,10 +176,11 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 
 	public SortedSetHierarchyNode<T> newChild(final T value)
 		{
-		SortedSetHierarchyNode<T> result = new SortedSetHierarchyNode<T>(value);
-		children.add(result);
-		result.setParent(this);
-		return result;
+		SortedSetHierarchyNode<T> child = new SortedSetHierarchyNode<T>(value);
+		children.add(child);
+		child.parent = this;
+		//child.setParent(this);
+		return child;
 		}
 
 

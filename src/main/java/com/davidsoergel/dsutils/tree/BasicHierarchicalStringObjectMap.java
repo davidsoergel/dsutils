@@ -71,6 +71,19 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 		}
 
 
+	public void registerChild(HierarchicalStringObjectMap child)
+		{
+		children.add(child);
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void unregisterChild(HierarchicalStringObjectMap child)
+		{
+		children.remove(child);
+		}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -118,7 +131,15 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 
 	public void setParent(HierarchicalStringObjectMap parent)
 		{
+		if (this.parent != null)
+			{
+			this.parent.unregisterChild(this);
+			}
 		this.parent = parent;
+		if (this.parent != null)
+			{
+			this.parent.registerChild(this);
+			}
 		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
@@ -133,11 +154,11 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	public HierarchicalStringObjectMap newChild()
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
-		BasicHierarchicalStringObjectMap result = new BasicHierarchicalStringObjectMap();
-
+		BasicHierarchicalStringObjectMap child = new BasicHierarchicalStringObjectMap();
+		child.setParent(this);
 		//result.setContents(contents);
-		children.add(result);
-		return result;
+		//children.add(result);
+		return child;
 		}
 
 	// --------------------- Interface Map ---------------------

@@ -22,6 +22,16 @@ public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode
 		throw new TreeRuntimeException("Node is immutable");
 		}
 
+	public void registerChild(I contents)
+		{
+		throw new TreeRuntimeException("Node is immutable");
+		}
+
+	public void unregisterChild(I contents)
+		{
+		throw new TreeRuntimeException("Node is immutable");
+		}
+
 	/**
 	 * Creates a new child node of the appropriate type
 	 *

@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils;
 
 import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -184,6 +185,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		}
 
+	@Nullable
 	public static double[][] deepcopy(double[][] copyFrom)
 		{
 		return deepcopy(copyFrom, 0, 0);
@@ -211,6 +213,8 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return deepcopy(copyFrom, 0, ' ');
 		}
 
+
+	@Nullable
 	public static double[][] deepcopy(double[][] copyFrom, int newcolumns, double newval)
 		{
 		if (copyFrom == null)
