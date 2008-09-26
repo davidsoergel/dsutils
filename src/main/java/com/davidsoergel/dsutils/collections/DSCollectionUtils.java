@@ -237,4 +237,22 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		{
 		return new HashSet<T>(Arrays.asList(things));
 		}
+
+	public static <K, V> boolean isEqualMap(Map<K, V> mapA, Map<K, V> mapB)
+		{
+		if (mapA.size() != mapB.size())
+			{
+			return false;
+			}
+
+		for (Map.Entry<K, V> entry : mapA.entrySet())
+			{
+			if (!(entry.getValue().equals(mapB.get(entry.getKey()))))
+				{
+				return false;
+				}
+			}
+
+		return true;
+		}
 	}
