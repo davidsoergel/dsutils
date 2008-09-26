@@ -94,13 +94,20 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 			{
 			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class))
 				{
-				if (TypeUtils.isAssignableFrom(StringMapper.class, c))
+				if (!c.equals(StringMapper.class) && TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{
+					//try
+					//	{
 					StringMapper sm = (StringMapper) (c.newInstance());
 					for (Type t : sm.basicTypes())
 						{
 						put(t, sm);
 						}
+					/*	}
+					catch (InstantiationException e)
+						{
+						logger.warn("Could not instantiate string mapper: " + c);
+						}*/
 					}
 				}
 			}
