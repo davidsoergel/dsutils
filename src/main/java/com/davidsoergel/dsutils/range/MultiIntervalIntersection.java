@@ -33,10 +33,11 @@
 
 package com.davidsoergel.dsutils.range;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
@@ -57,11 +58,25 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 
 	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
-	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> intervalSets)
+	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> possiblyOverlappingIntervalSets)
 		{
+		Set<Set<U>> intervalSets = new HashSet<Set<U>>();
+
+		// guarantee that each constraint contains no internal overlaps
+		for (Set<U> intervalSet : possiblyOverlappingIntervalSets)
+			{
+			intervalSets.add(new MultiIntervalUnion(intervalSet));
+			}
+
 		//private
 		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
-		Set<T> openClosedSet = new HashSet<T>();
+		//SortedMap<T, Integer> closedLeftRightMap = new TreeMap<T, Integer>();
+		//Set<T> allEndpoints = new HashSet<T>();
+
+		//	SortedMap<T, Integer> openEndpointMap = new TreeMap<T, Integer>();
+
+		Set<T> excludedEndpoints = new HashSet<T>();
+		Multiset<T> includedEndpoints = new HashMultiset<T>();
 
 		int numberOfConstraints = intervalSets.size();
 		for (Set<U> intervalSet : intervalSets)
@@ -72,30 +87,46 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 				T right = i.getMax();
 
 				Integer leftCount = fullLeftRightMap.get(left);
-				Integer rightCount = fullLeftRightMap.get(right);
-
 				fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
+
+				Integer rightCount = fullLeftRightMap.get(right);
 				fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
 
-				// if any bound in ever inclusive, that overrides any exclusive bound at the same point
 				if (i.isClosedLeft())
 					{
-					openClosedSet.add(left);
+					includedEndpoints.add(left);
 					}
+				else
+
+					{
+					excludedEndpoints.add(left);
+					}
+
 				if (i.isClosedRight())
 					{
-					openClosedSet.add(right);
+					includedEndpoints.add(right);
+					}
+				else
+					{
+					excludedEndpoints.add(right);
 					}
 				}
 			}
 
+
 		int openParens = 0;
 		MutableBasicInterval<T> currentInterval = null;
-		for (Map.Entry<T, Integer> entry : fullLeftRightMap.entrySet())// the positions must be sorted!
-			//	for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
+		for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
-			T position = entry.getKey();
-			Integer parenDelta = entry.getValue();
+			/*Integer openDelta = openLeftRightMap.get(position);
+			int openDeltaI = openDelta == null ? 0 : openDelta;
+
+			Integer closedDelta = closedLeftRightMap.get(position);
+			int closedDeltaI = closedDelta == null ? 0 : closedDelta;
+*/
+			int parenDelta = fullLeftRightMap.get(position);
+			//openDeltaI + closedDeltaI;
+
 			if (parenDelta != 0)//alternatively, could remove these entries from the map first
 				{
 				openParens += parenDelta;
@@ -105,32 +136,70 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 						{
 						currentInterval = new MutableBasicInterval<T>();
 						currentInterval.setLeft(position);
-						currentInterval.setClosedLeft(openClosedSet.contains(position));
+						currentInterval.setClosedLeft(!excludedEndpoints.contains(position));
 						}
 					}
 				else
 					{
 					assert openParens < numberOfConstraints;
-					// hogwash, each constraint may have multiple intervals  // but they shouldn't overlap
-
-					// Sure they can overlap, especially if some are descendants of others.  That's OK... but we should handle it elsewhere.
+					// note we guaranteed previously that each constraint contains no overlaps
 
 					currentInterval.setRight(position);
-					currentInterval.setClosedRight(openClosedSet.contains(position));
-					if (!currentInterval.isZeroWidth())
-						{
-						this.add(currentInterval);
-						}
+					currentInterval.setClosedRight(!excludedEndpoints.contains(position));
+
+
+					//if (!currentInterval.isZeroWidth())
+					//	{
+					add(currentInterval);
+					//	}
 					currentInterval = null;
 					}
 				}
+			else if (!includedEndpoints.contains(position))
+				{
+				// there is an excluded point
+				assert currentInterval != null;
+
+				currentInterval.setRight(position);
+				currentInterval.setClosedRight(false);
+
+				add(currentInterval);
+
+
+				currentInterval = new MutableBasicInterval<T>();
+				currentInterval.setLeft(position);
+				currentInterval.setClosedLeft(false);
+				}
 			}
 		assert openParens == 0;
+
+		// include any remaining closed endpoints that are not already included, by adding a zero-width interval
+
+		for (T position : includedEndpoints)
+			{
+			// the only points we're interested in are those that are closed endpoints in every constraint.
+			// note we guaranteed previously that each constraint contains no overlaps, so includedEndpoints.count(position)
+			// should contain at most one count for each constraint.
+
+			// if all of the constraints share a closed left or right endpoint, then the postition is already encompassed.
+			// this is fr points that are sometimes closed right and sometimes closed left
+
+			if (includedEndpoints.count(position) == numberOfConstraints && !encompassesValue(position))
+				{
+				currentInterval = new MutableBasicInterval<T>();
+				currentInterval.setLeft(position);
+				currentInterval.setClosedLeft(true);
+				currentInterval.setRight(position);
+				currentInterval.setClosedRight(true);
+				add(currentInterval);
+				}
+			}
 		}
+
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public boolean encompassesValue(T value)
+	public final boolean encompassesValue(T value)
 		{
 		// efficient?
 		try

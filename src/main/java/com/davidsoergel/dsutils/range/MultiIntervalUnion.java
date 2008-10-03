@@ -57,11 +57,18 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 
 	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
+	/**
+	 * Find the minimal set of intervals that spans exactly the space given by the input set.  Merges overlapping
+	 * intervals, as well as immeditely adjacent intervals (unless both endpoints are open).
+	 *
+	 * @param intervalSet
+	 * @return
+	 */
 	public <U extends Interval<T>> MultiIntervalUnion(Set<U> intervalSet)
 		{
 		//private
 		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
-		Set<T> openClosedSet = new HashSet<T>();
+		Set<T> includedEndpoints = new HashSet<T>();
 
 		//int numberOfConstraints = intervalSets.size();
 		//	for (Set<U> intervalSet : intervalSets)
@@ -80,11 +87,11 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 			// if any bound in ever inclusive, that overrides any exclusive bound at the same point
 			if (i.isClosedLeft())
 				{
-				openClosedSet.add(left);
+				includedEndpoints.add(left);
 				}
 			if (i.isClosedRight())
 				{
-				openClosedSet.add(right);
+				includedEndpoints.add(right);
 				}
 			}
 		//		}
@@ -95,7 +102,7 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 			{
 			T position = entry.getKey();
 			Integer parenDelta = entry.getValue();
-			if (parenDelta != 0)//alternatively, could remove these entries from the map first
+			if (parenDelta != 0)
 				{
 				openParens += parenDelta;
 				if (currentInterval == null)
@@ -104,7 +111,7 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 						{
 						currentInterval = new MutableBasicInterval<T>();
 						currentInterval.setLeft(position);
-						currentInterval.setClosedLeft(openClosedSet.contains(position));
+						currentInterval.setClosedLeft(includedEndpoints.contains(position));
 						}
 					}
 				else
@@ -112,14 +119,29 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 					if (openParens == 0)
 						{
 						currentInterval.setRight(position);
-						currentInterval.setClosedRight(openClosedSet.contains(position));
-						if (!currentInterval.isZeroWidth())
-							{
-							this.add(currentInterval);
-							}
+						currentInterval.setClosedRight(includedEndpoints.contains(position));
+						//if (!currentInterval.isZeroWidth())
+						//	{
+						add(currentInterval);
+						//	}
 						currentInterval = null;
 						}
 					}
+				}
+			else if (!includedEndpoints.contains(position))
+				{
+				// there is an excluded point
+				assert currentInterval != null;
+
+				currentInterval.setRight(position);
+				currentInterval.setClosedRight(false);
+
+				add(currentInterval);
+
+
+				currentInterval = new MutableBasicInterval<T>();
+				currentInterval.setLeft(position);
+				currentInterval.setClosedLeft(false);
 				}
 			}
 		assert openParens == 0;

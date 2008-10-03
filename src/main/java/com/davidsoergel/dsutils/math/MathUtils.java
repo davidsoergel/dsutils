@@ -302,10 +302,20 @@ public class MathUtils
 			return true;
 			}// covers Infinity cases
 
+		double u = Math.ulp(a);
+
+		if (b >= a - u && b <= a + u)
+			{
+			return true;
+			}
+
+		return false;
+		/*
 		double nearlyZero = a - b;
 		// these errors are generally in the vicinity of 1e-15
 		// let's be extra permissive, 1e-10 is good enough anyway
 		return -1e-10 < nearlyZero && nearlyZero < 1e-10;
+		*/
 		}
 
 	/**
