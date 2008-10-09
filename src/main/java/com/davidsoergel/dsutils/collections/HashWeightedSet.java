@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils.collections;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A WeightedSet backed by a HashMap.  Note this is not thread-safe in any way (i.e., it does not use AtomicInteger and
@@ -124,5 +125,22 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 	public int getItemCount()
 		{
 		return itemCount;
+		}
+
+	public Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels)
+		{
+		Map.Entry<T, Double> result = null;
+		// PERF lots of different ways to do this, probably with different performance
+		for (Map.Entry<T, Double> entry : entrySet())
+			{
+			if (mutuallyExclusiveLabels.contains(entry.getKey()))
+				{
+				if (result == null || entry.getValue() > result.getValue())
+					{
+					result = entry;
+					}
+				}
+			}
+		return result;
 		}
 	}

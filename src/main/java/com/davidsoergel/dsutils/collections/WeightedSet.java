@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A Set that associates a double value with each key.  This is something like a MultiSet, except that it maps to
@@ -74,10 +75,9 @@ public interface WeightedSet<T> extends Map<T, Double>
 	double getNormalized(T key);
 
 	/**
-	 * Returns a map from keys the mean of the values provided for that key so far, normalized by the total number of
+	 * Returns a map from keys to the mean of the values provided for that key so far, normalized by the total number of
 	 * items.
 	 *
-	 * @param key
 	 * @return
 	 */
 	Map<T, Double> getNormalizedMap();
@@ -90,4 +90,6 @@ public interface WeightedSet<T> extends Map<T, Double>
 	 * @return the itemCount
 	 */
 	int getItemCount();
+
+	Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels);
 	}
