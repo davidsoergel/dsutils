@@ -49,6 +49,22 @@ import java.util.Set;
 public interface WeightedSet<T> extends Map<T, Double>
 	{
 	/**
+	 * Increment the indicated value in this WeightedSet by the values in the argument, and increase the number of items by
+	 * one.
+	 *
+	 * @param increment
+	 */
+	void add(T key, double increment);
+
+	/**
+	 * Decrement the indicated value in this WeightedSet by the values in the argument, and decrease the number of items by
+	 * one.
+	 *
+	 * @param increment
+	 */
+	void remove(T key, double decrement);
+
+	/**
 	 * Increment all the values in this WeightedSet by the values in the argument, and increase the number of items
 	 * accordingly.
 	 *

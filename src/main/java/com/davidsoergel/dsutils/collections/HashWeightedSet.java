@@ -70,12 +70,10 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 			Double val = get(entry.getKey());
 			if (val == null)
 				{
-				val = entry.getValue();
+				val = 0.;
 				}
-			else
-				{
-				val = val + entry.getValue();
-				}
+			val = val + entry.getValue();
+
 			put(entry.getKey(), val);
 			}
 		}
@@ -88,15 +86,46 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 			Double val = get(entry.getKey());
 			if (val == null)
 				{
-				val = entry.getValue();
+				val = 0.;
 				}
-			else
-				{
-				val = val - entry.getValue();
-				}
+			val = val - entry.getValue();
+
 			put(entry.getKey(), val);
 			}
 		}
+
+	public void add(T key, double addVal)
+		{
+		itemCount++;
+
+		Double val = get(key);
+
+		if (val == null)
+			{
+			val = 0.;
+			}
+		val = val + addVal;
+
+		put(key, val);
+		}
+
+
+	public void remove(T key, double remVal)
+		{
+		itemCount++;
+
+		Double val = get(key);
+
+		if (val == null)
+			{
+			val = 0.;
+			}
+
+		val = val - remVal;
+
+		put(key, val);
+		}
+
 
 	/**
 	 * Given a key, returns the mean of the values provided for that key so far, normalized by the total number of entries
