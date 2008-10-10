@@ -60,7 +60,7 @@ public interface WeightedSet<T> extends Map<T, Double>
 	 * Decrement the indicated value in this WeightedSet by the values in the argument, and decrease the number of items by
 	 * one.
 	 *
-	 * @param increment
+	 * @param decrement
 	 */
 	void remove(T key, double decrement);
 
@@ -107,5 +107,7 @@ public interface WeightedSet<T> extends Map<T, Double>
 	 */
 	int getItemCount();
 
-	Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels);
+	//	Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels);
+
+	T getDominantKeyInSet(Set<T> mutuallyExclusiveLabels);
 	}

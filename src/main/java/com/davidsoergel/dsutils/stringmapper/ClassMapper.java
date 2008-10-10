@@ -33,14 +33,18 @@ public class ClassMapper extends StringMapper<Class>
 
 	public Class parse(String s) throws StringMapperException
 		{
+		if (s == null || s.trim().length() == 0)
+			{
+			throw new StringMapperException("Empty plugin class name");
+			}
 		try
 			{
 			return Class.forName(s, true, classLoader);
 			}
 		catch (ClassNotFoundException e)
 			{
-			logger.debug(e);
-			e.printStackTrace();
+			//logger.debug(e);
+			//e.printStackTrace();
 			throw new StringMapperException(e);
 			}
 		}

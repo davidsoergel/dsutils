@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils.collections;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -156,7 +157,7 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 		return itemCount;
 		}
 
-	public Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels)
+	/*public Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels)
 		{
 		Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
@@ -171,5 +172,27 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 				}
 			}
 		return result;
+		}*/
+
+
+	public T getDominantKeyInSet(Set<T> mutuallyExclusiveLabels)
+		{
+		Map.Entry<T, Double> result = null;
+		// PERF lots of different ways to do this, probably with different performance
+		for (Map.Entry<T, Double> entry : entrySet())
+			{
+			if (mutuallyExclusiveLabels.contains(entry.getKey()))
+				{
+				if (result == null || entry.getValue() > result.getValue())
+					{
+					result = entry;
+					}
+				}
+			}
+		if (result == null)
+			{
+			throw new NoSuchElementException();
+			}
+		return result.getKey();
 		}
 	}
