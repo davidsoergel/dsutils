@@ -38,7 +38,8 @@ import java.util.List;
 
 
 /**
- * A Factory for new Iterators based on a List, where each new Iterator provides the contents in a random order.
+ * A Factory for new Iterators based on a List, where each new Iterator provides the contents in a random order.  The
+ * shuffling is done in place on the underlying collection.
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
