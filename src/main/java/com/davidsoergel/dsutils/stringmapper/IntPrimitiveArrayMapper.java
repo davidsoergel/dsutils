@@ -11,45 +11,44 @@ import java.util.List;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
+public class IntPrimitiveArrayMapper extends StringMapper<int[]>
 	{
 	public Type[] basicTypes()
 		{
 		return new Type[]{
-				double[].class
+				int[].class
 		};
 		}
 
-	public double[] parse(String s)
+	public int[] parse(String s)
 		{
-		List<Double> result = new ArrayList<Double>();
+		List<Integer> result = new ArrayList<Integer>();
 		for (String d : s.split(","))
 			{
-			result.add(Double.parseDouble(d));
+			result.add(Integer.parseInt(d));
 			}
-		return DSArrayUtils.toPrimitive(result.toArray(new Double[]{}));
+		return DSArrayUtils.toPrimitive(result.toArray(new Integer[]{}));
 		}
 
-	public String render(double[] value)
+	public String render(int[] value)
 		{
 		return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
 		}
 
-	public String renderHtml(double[] ss)
+	public String renderHtml(int[] ss)
 		{
 		if (ss == null || ss.length == 0)
 			{
 			return "";
 			}
 
-
 		StringBuffer sb = new StringBuffer("<html>");
-		sb.append("Array of ").append(ss.length).append(" Doubles:<P>");
+		sb.append("Array of ").append(ss.length).append(" Integers:<P>");
 		if (ss.length <= 20)
 			{
-			for (Double s : ss)
+			for (Integer s : ss)
 				{
-				sb.append(String.format("%g", s)).append("<BR>");
+				sb.append(String.format("%d", s)).append("<BR>");
 				}
 			}
 		else
@@ -57,7 +56,7 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 			//Iterator<Integer> si = ss.iterator();
 			for (int i = 0; i < ss.length; i++)
 				{
-				sb.append(String.format("%g  ", ss[i]));
+				sb.append(String.format("%d  ", ss[i]));
 				if (i % 10 == 0)
 					{
 					sb.append("<br>");
