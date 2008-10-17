@@ -59,7 +59,7 @@ public class PropertiesUtils
 		{
 		File result;
 
-		String propsFilename = System.getProperty(environmentVariableName);
+		String propsFilename = System.getenv(environmentVariableName);
 		logger.debug("Looking for properties file: " + propsFilename);
 		if (propsFilename != null)
 			{
