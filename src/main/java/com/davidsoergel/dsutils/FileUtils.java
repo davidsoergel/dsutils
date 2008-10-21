@@ -196,7 +196,7 @@ public class FileUtils
 							}
 						}))
 							{
-							logger.info("Adding " + r + " to " + files);
+							logger.info("Adding " + r + " to file list");
 							files.add(r);
 							//	inputFilesList.add(r);
 							}
