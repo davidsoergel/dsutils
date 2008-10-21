@@ -182,6 +182,8 @@ public class FileUtils
 						logger.info("Wildcard directory: " + dirname);
 						File dir = new File(dirname);
 
+						logger.info("is directory: " + dir.isDirectory());
+						logger.info("Canonical path = " + dir.getCanonicalPath());
 
 						// TODO full-blown pattern matching
 						final String prefix = f.substring(f.lastIndexOf(File.separator) + 1, f.length() - 1);
