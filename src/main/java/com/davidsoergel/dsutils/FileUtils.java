@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -184,6 +185,9 @@ public class FileUtils
 
 						// TODO full-blown pattern matching
 						final String prefix = f.substring(f.lastIndexOf(File.separator) + 1, f.length() - 1);
+						logger.info("Looking for files with prefix '" + prefix + "' in " + dir);
+						logger.info("all files: " + StringUtils.join(dir.list(), ", "));
+
 						for (File r : dir.listFiles(new FilenameFilter()
 						{
 						public boolean accept(File file, String string)
@@ -192,6 +196,7 @@ public class FileUtils
 							}
 						}))
 							{
+							logger.info("Adding " + r + " to " + files);
 							files.add(r);
 							//	inputFilesList.add(r);
 							}
