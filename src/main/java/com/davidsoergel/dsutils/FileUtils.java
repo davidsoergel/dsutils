@@ -210,6 +210,8 @@ public class FileUtils
 				}
 			catch (Exception e)
 				{
+				logger.debug(e);
+				e.printStackTrace();
 				throw new RuntimeException("trouble listing files.", e);
 				}
 			}
