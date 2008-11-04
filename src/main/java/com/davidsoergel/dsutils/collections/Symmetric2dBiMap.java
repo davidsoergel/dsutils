@@ -36,6 +36,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +69,6 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	private SortedSet<KeyPair<K>> keyPairsInValueOrder = new TreeSet<KeyPair<K>>(new Comparator<KeyPair<K>>()
 	{
-
 	public int compare(KeyPair<K> o1, KeyPair<K> o2)
 		{
 		V v1 = keyPairToValue.get(o1);
@@ -209,6 +209,11 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	public int numPairs()
 		{
 		return keyPairsInValueOrder.size();
+		}
+
+	public Collection<V> values()
+		{
+		return keyPairToValue.values();
 		}
 
 
