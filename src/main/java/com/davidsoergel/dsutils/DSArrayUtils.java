@@ -633,6 +633,36 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return Math.sqrt(sumsq / (double) x.length);
 		}
 
+
+	public static double mean(Collection<Double> counts)
+		{
+		double sum = 0;
+		for (Double d : counts)
+			{
+			sum += d;
+			}
+		return sum / (double) counts.size();
+		}
+
+	/**
+	 * Since we will often have computed the mean already when calling this, we just pass it in instead of recomputing it
+	 *
+	 * @param x
+	 * @param mean
+	 * @return
+	 */
+	public static double stddev(Collection<Double> x, double mean)
+		{
+		double sumsq = 0;
+		for (Double d : x)
+			{
+			double dev = d - mean;
+			sumsq += dev * dev;
+			}
+		return Math.sqrt(sumsq / (double) x.size());
+		}
+
+
 	public static double[] times(double[] data, double scalar)
 		{
 		double[] result = data.clone();// does this work??
