@@ -48,7 +48,8 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 	{
 	//Map<T, Double> backingMap = new HashMap<T, Double>();
 
-	int itemCount;// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
+	int itemCount;
+// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 
 	public HashWeightedSet(Map<? extends T, ? extends Double> map)
 		{
@@ -175,13 +176,13 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 		}*/
 
 
-	public T getDominantKeyInSet(Set<T> mutuallyExclusiveLabels)
+	public T getDominantKeyInSet(Set<T> keys)
 		{
 		Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
 		for (Map.Entry<T, Double> entry : entrySet())
 			{
-			if (mutuallyExclusiveLabels.contains(entry.getKey()))
+			if (keys.contains(entry.getKey()))
 				{
 				if (result == null || entry.getValue() > result.getValue())
 					{

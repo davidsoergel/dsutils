@@ -109,5 +109,5 @@ public interface WeightedSet<T> extends Map<T, Double>
 
 	//	Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels);
 
-	T getDominantKeyInSet(Set<T> mutuallyExclusiveLabels);
+	T getDominantKeyInSet(Set<T> keys);
 	}
