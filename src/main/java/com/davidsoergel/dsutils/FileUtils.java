@@ -176,18 +176,18 @@ public class FileUtils
 					{
 					if (f.endsWith("*"))
 						{
-						//	logger.info("Separator: " + File.separator);
+						logger.info("Separator: " + File.separator);
 						String dirname = f.substring(0, f.lastIndexOf(File.separator));
-						//	logger.info("Wildcard directory: " + dirname);
+						logger.info("Wildcard directory: " + dirname);
 						File dir = new File(dirname);
 
-						//	logger.info("is directory: " + dir.isDirectory());
-						//	logger.info("Canonical path = " + dir.getCanonicalPath());
+						logger.info("is directory: " + dir.isDirectory());
+						logger.info("Canonical path = " + dir.getCanonicalPath());
 
 						// TODO full-blown pattern matching
 						final String prefix = f.substring(f.lastIndexOf(File.separator) + 1, f.length() - 1);
-						//	logger.info("Looking for files with prefix '" + prefix + "' in " + dir);
-						//	logger.info("all files: " + StringUtils.join(dir.list(), ", "));
+						logger.info("Looking for files with prefix '" + prefix + "' in " + dir);
+						logger.info("all files: " + DSStringUtils.join(dir.list(), ", "));
 
 						for (File r : dir.listFiles(new FilenameFilter()
 						{
