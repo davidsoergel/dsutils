@@ -189,6 +189,11 @@ public class FileUtils
 						logger.info("Looking for files with prefix '" + prefix + "' in " + dir);
 						logger.info("all files: " + DSStringUtils.join(dir.list(), ", "));
 
+						if (dir.list() == null || dir.listFiles() == null)
+							{
+							logger.error("Directory list is empty: " + dir.getCanonicalPath());
+							}
+
 						for (File r : dir.listFiles(new FilenameFilter()
 						{
 						public boolean accept(File file, String string)
