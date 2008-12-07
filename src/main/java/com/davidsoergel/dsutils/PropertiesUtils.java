@@ -129,6 +129,16 @@ public class PropertiesUtils
 					}
 				props.put(keyparts[1], entry.getValue());
 				}
+			else
+				{
+				Properties props = result.get("NODATABASE");
+				if (props == null)
+					{
+					props = new Properties();
+					result.put("NODATABASE", props);
+					}
+				props.put(keyparts[0], entry.getValue());
+				}
 			//	}
 			//else
 			//	{
