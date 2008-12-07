@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * @version $Id$
@@ -224,6 +225,11 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 		return join(s.iterator(), delim);
 		}
 
+
+	public static String joinSorted(Set s, String delim)
+		{
+		return join(new TreeSet(s), delim);
+		}
 
 	public static String join(char[] chars, String delim)
 		{
