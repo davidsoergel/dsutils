@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils.collections;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * A Set that associates a double value with each key.  This is something like a MultiSet, except that it maps to
@@ -46,7 +47,7 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface WeightedSet<T> extends Map<T, Double>
+public interface WeightedSet<T> //extends Map<T, Double>
 	{
 	/**
 	 * Increment the indicated value in this WeightedSet by the values in the argument, and increase the number of items by
@@ -99,9 +100,8 @@ public interface WeightedSet<T> extends Map<T, Double>
 	Map<T, Double> getNormalizedMap();
 
 	/**
-	 * Returns the number of items represented by this WeightedSet.  A newly created WeightedSet is generally considered to
-	 * contain one item (for this reason, only constructors that set some values, e.g. by taking a Map<T, Double> argument,
-	 * should be allowed).  When WeightedSets are aggregated via addAll, their item counts are added together.
+	 * Returns the number of items represented by this WeightedSet.  This may differ both from the number of keys and from
+	 * the sum of the values.  When WeightedSets are aggregated via addAll, their item counts are added together.
 	 *
 	 * @return the itemCount
 	 */
@@ -110,4 +110,16 @@ public interface WeightedSet<T> extends Map<T, Double>
 	//	Map.Entry<T, Double> getDominantEntryInSet(Set<T> mutuallyExclusiveLabels);
 
 	T getDominantKeyInSet(Set<T> keys);
+
+	Set<Map.Entry<T, Double>> entrySet();
+
+	double get(T s);
+
+	//int size();
+
+	double getWeightSum();
+
+	Set<T> keySet();
+
+	SortedSet<T> keysInDecreasingWeightOrder();
 	}

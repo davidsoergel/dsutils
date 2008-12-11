@@ -32,10 +32,13 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A WeightedSet backed by a HashMap.  Note this is not thread-safe in any way (i.e., it does not use AtomicInteger and
@@ -44,55 +47,86 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSet<T>
+public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, Double>
 	{
-	//Map<T, Double> backingMap = new HashMap<T, Double>();
+	Map<T, Double> backingMap = new HashMap<T, Double>();
 
-	int itemCount;
+	private int itemCount = 0;
+	private double weightSum = 0;
 // this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
+	// note the itemCount is different from the sum of the weights
 
 	public HashWeightedSet(Map<? extends T, ? extends Double> map)
 		{
-		super(map);
-		this.itemCount = 1;
+		for (Map.Entry<? extends T, ? extends Double> entry : map.entrySet())
+			{
+			add(entry.getKey(), entry.getValue());
+			}
 		}
 
+	public double getWeightSum()
+		{
+		return weightSum;
+		}
 
 	public HashWeightedSet()
 		{
 		super();
-		this.itemCount = 0;
+		itemCount = 0;
 		}
+
+/*	@Override
+	public Double put(T key, Double value)
+		{
+		if (backingMap.containsKey(key))
+			{
+			itemCount--;
+			}
+		Double result = backingMap.put(key, value);
+		itemCount++;
+		return result;
+		}
+*/
+
+	/*	@Override
+	 public void putAll(Map<? extends T, ? extends Double> m)
+		 {
+		 super.putAll(m);
+		 }
+ */
 
 	public void addAll(WeightedSet<T> increment)
 		{
 		itemCount += increment.getItemCount();
 		for (Map.Entry<T, Double> entry : increment.entrySet())
 			{
-			Double val = get(entry.getKey());
+			Double val = backingMap.get(entry.getKey());
 			if (val == null)
 				{
 				val = 0.;
 				}
 			val = val + entry.getValue();
+			weightSum += entry.getValue();
 
-			put(entry.getKey(), val);
+			backingMap.put(entry.getKey(), val);
 			}
 		}
+
 
 	public void removeAll(WeightedSet<T> increment)
 		{
 		itemCount -= increment.getItemCount();
 		for (Map.Entry<T, Double> entry : increment.entrySet())
 			{
-			Double val = get(entry.getKey());
+			Double val = backingMap.get(entry.getKey());
 			if (val == null)
 				{
 				val = 0.;
 				}
 			val = val - entry.getValue();
+			weightSum -= entry.getValue();
 
-			put(entry.getKey(), val);
+			backingMap.put(entry.getKey(), val);
 			}
 		}
 
@@ -100,15 +134,16 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 		{
 		itemCount++;
 
-		Double val = get(key);
+		Double val = backingMap.get(key);
 
 		if (val == null)
 			{
 			val = 0.;
 			}
 		val = val + addVal;
+		weightSum += addVal;
 
-		put(key, val);
+		backingMap.put(key, val);
 		}
 
 
@@ -116,7 +151,7 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 		{
 		itemCount++;
 
-		Double val = get(key);
+		Double val = backingMap.get(key);
 
 		if (val == null)
 			{
@@ -124,8 +159,9 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 			}
 
 		val = val - remVal;
+		weightSum -= remVal;
 
-		put(key, val);
+		backingMap.put(key, val);
 		}
 
 
@@ -139,12 +175,16 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 	 */
 	public double getNormalized(T key)
 		{
-		return get(key) / (double) itemCount;
+		return backingMap.get(key) / (double) itemCount;
 		}
 
 	public Map<T, Double> getNormalizedMap()
 		{
-		Map<T, Double> result = new HashMap<T, Double>(this.size());
+		if (itemCount == 0)
+			{
+			throw new NoSuchElementException("Can't normalize and empty HashWeightedSet");
+			}
+		Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
 		double dEntries = (double) itemCount;
 		for (Map.Entry<T, Double> entry : entrySet())
 			{
@@ -195,5 +235,33 @@ public class HashWeightedSet<T> extends HashMap<T, Double> implements WeightedSe
 			throw new NoSuchElementException();
 			}
 		return result.getKey();
+		}
+
+	public Set<Map.Entry<T, Double>> entrySet()
+		{
+		return backingMap.entrySet();
+		}
+
+	public double get(T s)
+		{
+		return backingMap.get(s);
+		}
+
+	public Set<T> keySet()
+		{
+		return backingMap.keySet();
+		}
+
+	public SortedSet<T> keysInDecreasingWeightOrder()
+		{
+		SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
+		{
+		public int compare(T o1, T o2)
+			{
+			return -backingMap.get(o1).compareTo(backingMap.get(o2));
+			}
+		});
+		result.addAll(backingMap.keySet());
+		return result;
 		}
 	}
