@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public class CachedResourceReleaser
 		return _instance;
 		}*/
 
-	private static Set<HasReleaseableResources> resourceHogs;
+	private static Set<HasReleaseableResources> resourceHogs = new HashSet<HasReleaseableResources>();
 
 	public static void register(HasReleaseableResources obj)
 		{
