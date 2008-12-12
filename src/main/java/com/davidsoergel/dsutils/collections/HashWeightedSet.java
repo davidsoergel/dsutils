@@ -271,4 +271,13 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		result.addAll(backingMap.keySet());
 		return result;
 		}
+
+	public void multiplyBy(int multiplier)
+		{
+		for (Map.Entry<T, Double> entry : backingMap.entrySet())
+			{
+			entry.setValue(entry.getValue() * multiplier);
+			}
+		weightSum *= multiplier;
+		}
 	}

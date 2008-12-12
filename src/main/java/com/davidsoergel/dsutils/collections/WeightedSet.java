@@ -123,4 +123,6 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	Set<T> keySet();
 
 	SortedSet<T> keysInDecreasingWeightOrder(Comparator secondarySort);
+
+	void multiplyBy(int multiplier);
 	}
