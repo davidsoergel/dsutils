@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -47,7 +48,7 @@ import java.util.SortedSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface WeightedSet<T> //extends Map<T, Double>
+public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	{
 	/**
 	 * Increment the indicated value in this WeightedSet by the values in the argument, and increase the number of items by
@@ -121,5 +122,5 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	Set<T> keySet();
 
-	SortedSet<T> keysInDecreasingWeightOrder();
+	SortedSet<T> keysInDecreasingWeightOrder(Comparator secondarySort);
 	}

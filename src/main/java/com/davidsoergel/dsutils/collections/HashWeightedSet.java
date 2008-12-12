@@ -47,13 +47,13 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, Double>
+public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //extends HashMap<T, Double>
 	{
 	Map<T, Double> backingMap = new HashMap<T, Double>();
 
 	private int itemCount = 0;
 	private double weightSum = 0;
-// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
+	// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 	// note the itemCount is different from the sum of the weights
 
 	public HashWeightedSet(Map<? extends T, ? extends Double> map)
@@ -75,18 +75,18 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		itemCount = 0;
 		}
 
-/*	@Override
-	public Double put(T key, Double value)
-		{
-		if (backingMap.containsKey(key))
-			{
-			itemCount--;
-			}
-		Double result = backingMap.put(key, value);
-		itemCount++;
-		return result;
-		}
-*/
+	/*	@Override
+	 public Double put(T key, Double value)
+		 {
+		 if (backingMap.containsKey(key))
+			 {
+			 itemCount--;
+			 }
+		 Double result = backingMap.put(key, value);
+		 itemCount++;
+		 return result;
+		 }
+ */
 
 	/*	@Override
 	 public void putAll(Map<? extends T, ? extends Double> m)
@@ -252,13 +252,20 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return backingMap.keySet();
 		}
 
-	public SortedSet<T> keysInDecreasingWeightOrder()
+
+	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)
 		{
 		SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
 		{
-		public int compare(T o1, T o2)
+		public int compare(Comparable o1, Comparable o2)
 			{
-			return -backingMap.get(o1).compareTo(backingMap.get(o2));
+			int result = -backingMap.get(o1).compareTo(backingMap.get(o2));
+			if (result == 0)
+				{
+				result = secondarySort.compare(o1, o2);
+				//	result = o1.compareTo(o2);
+				}
+			return result;
 			}
 		});
 		result.addAll(backingMap.keySet());
