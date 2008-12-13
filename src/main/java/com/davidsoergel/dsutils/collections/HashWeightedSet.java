@@ -56,8 +56,9 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 	// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 	// note the itemCount is different from the sum of the weights
 
-	public HashWeightedSet(Map<? extends T, ? extends Double> map)
+	public HashWeightedSet(Map<? extends T, ? extends Double> map, int items)
 		{
+		itemCount = items;
 		for (Map.Entry<? extends T, ? extends Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
@@ -132,8 +133,6 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 
 	public void add(T key, double addVal)
 		{
-		itemCount++;
-
 		Double val = backingMap.get(key);
 
 		if (val == null)
@@ -146,11 +145,18 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		backingMap.put(key, val);
 		}
 
+	public void incrementItems()
+		{
+		itemCount++;
+		}
+
+	public void decrementItems()
+		{
+		itemCount--;
+		}
 
 	public void remove(T key, double remVal)
 		{
-		itemCount++;
-
 		Double val = backingMap.get(key);
 
 		if (val == null)
@@ -178,7 +184,7 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return backingMap.get(key) / (double) itemCount;
 		}
 
-	public Map<T, Double> getNormalizedMap()
+	public Map<T, Double> getItemNormalizedMap()
 		{
 		if (itemCount == 0)
 			{
@@ -193,6 +199,12 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return result;
 		}
 
+	/*
+	 public Map<T, Double> getBackingMap()
+	 {
+
+	 }
+ */
 	public int getItemCount()
 		{
 		return itemCount;

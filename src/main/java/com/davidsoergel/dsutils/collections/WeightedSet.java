@@ -51,16 +51,21 @@ import java.util.SortedSet;
 public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	{
 	/**
-	 * Increment the indicated value in this WeightedSet by the values in the argument, and increase the number of items by
-	 * one.
+	 * Increment the indicated value in this WeightedSet by the values in the argument.  Does not alter the number of
+	 * items; use incrementItems() for that (since there may be multiple add() calls for a single item).
 	 *
 	 * @param increment
 	 */
 	void add(T key, double increment);
 
+	void incrementItems();
+
+	void decrementItems();
+
+
 	/**
-	 * Decrement the indicated value in this WeightedSet by the values in the argument, and decrease the number of items by
-	 * one.
+	 * Decrement the indicated value in this WeightedSet by the values in the argument.  Does not alter the number of
+	 * items; use incrementItems() for that (since there may be multiple add() calls for a single item).
 	 *
 	 * @param decrement
 	 */
@@ -98,7 +103,7 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	 *
 	 * @return
 	 */
-	Map<T, Double> getNormalizedMap();
+	Map<T, Double> getItemNormalizedMap();
 
 	/**
 	 * Returns the number of items represented by this WeightedSet.  This may differ both from the number of keys and from
@@ -125,4 +130,6 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	SortedSet<T> keysInDecreasingWeightOrder(Comparator secondarySort);
 
 	void multiplyBy(int multiplier);
+
+	//Map<String, Double> getBackingMap();
 	}

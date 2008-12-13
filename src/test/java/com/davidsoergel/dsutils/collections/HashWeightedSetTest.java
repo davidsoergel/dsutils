@@ -68,7 +68,7 @@ public class HashWeightedSetTest
 	@Test
 	public void atomicConstructorWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA);
+		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
 
 		assert a.getItemCount() == 1;
 		assert a.get("a") == .1;
@@ -76,7 +76,7 @@ public class HashWeightedSetTest
 		assert a.get("e") == .5;
 		assert a.get("f") == .06;
 
-		Map<String, Double> mapAextracted = a.getNormalizedMap();
+		Map<String, Double> mapAextracted = a.getItemNormalizedMap();
 
 		assert DSCollectionUtils.isEqualMap(mapA, mapAextracted);
 		}
@@ -84,8 +84,8 @@ public class HashWeightedSetTest
 	@Test
 	public void addAllWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA);
-		WeightedSet<String> b = new HashWeightedSet(mapB);
+		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
+		WeightedSet<String> b = new HashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 
@@ -103,12 +103,12 @@ public class HashWeightedSetTest
 	@Test
 	public void addAndGetNormalizedWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA);
-		WeightedSet<String> b = new HashWeightedSet(mapB);
+		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
+		WeightedSet<String> b = new HashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 
-		Map<String, Double> mapAextracted = a.getNormalizedMap();
+		Map<String, Double> mapAextracted = a.getItemNormalizedMap();
 
 
 		assert mapAextracted.get("a") == (.1 * 1 + 0. * 1) / 2.;
@@ -122,7 +122,7 @@ public class HashWeightedSetTest
 		a.addAll(b);
 
 		//		Map<String, Double>
-		mapAextracted = a.getNormalizedMap();
+		mapAextracted = a.getItemNormalizedMap();
 
 		assert mapAextracted.get("a") == (.1 * 1 + 0. * 3) / 4.;
 		assert mapAextracted.get("b") == (.2 * 1 + 0. * 3) / 4.;
