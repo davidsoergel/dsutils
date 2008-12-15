@@ -132,4 +132,6 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	void multiplyBy(int multiplier);
 
 	//Map<String, Double> getBackingMap();
+
+	void clear();
 	}

@@ -76,6 +76,13 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		itemCount = 0;
 		}
 
+	public void clear()
+		{
+		backingMap = new HashMap<T, Double>();
+		itemCount = 0;
+		weightSum = 0;
+		}
+
 	/*	@Override
 	 public Double put(T key, Double value)
 		 {
