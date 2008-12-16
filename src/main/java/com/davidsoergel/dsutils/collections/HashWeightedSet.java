@@ -195,7 +195,7 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		{
 		if (itemCount == 0)
 			{
-			throw new NoSuchElementException("Can't normalize and empty HashWeightedSet");
+			throw new NoSuchElementException("Can't normalize an empty HashWeightedSet");
 			}
 		Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
 		double dEntries = (double) itemCount;
@@ -271,6 +271,10 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return backingMap.keySet();
 		}
 
+	public SortedSet<T> keysInDecreasingWeightOrder()
+		{
+		return keysInDecreasingWeightOrder(null);
+		}
 
 	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)
 		{
@@ -279,7 +283,7 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		public int compare(Comparable o1, Comparable o2)
 			{
 			int result = -backingMap.get(o1).compareTo(backingMap.get(o2));
-			if (result == 0)
+			if (result == 0 && secondarySort != null)
 				{
 				result = secondarySort.compare(o1, o2);
 				//	result = o1.compareTo(o2);
