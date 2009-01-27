@@ -43,8 +43,7 @@ public class ClassMapper extends StringMapper<Class>
 			}
 		catch (ClassNotFoundException e)
 			{
-			//logger.debug(e);
-			//e.printStackTrace();
+			//logger.error(e);
 			throw new StringMapperException(e);
 			}
 		}

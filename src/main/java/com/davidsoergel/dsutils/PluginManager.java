@@ -149,15 +149,15 @@ public class PluginManager<T>
 		Class result = classes.get(s);
 		if (result == null)
 			{
-			logger.warn("Classes: " + classes);
-			logger.warn("Classpath: " + System.getProperty("java.class.path"));
+			logger.trace("Classes: " + classes);
+			logger.trace("Classpath: " + System.getProperty("java.class.path"));
 
 
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-			logger.debug("contextClassLoader: " + contextClassLoader);
+			logger.trace("contextClassLoader: " + contextClassLoader);
 
 			ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-			logger.debug("systemClassLoader: " + systemClassLoader);
+			logger.trace("systemClassLoader: " + systemClassLoader);
 
 			String name =
 					theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString();
@@ -200,11 +200,11 @@ public class PluginManager<T>
 					}
 				catch (InstantiationException e)
 					{
-					logger.debug(e);
+					logger.error(e);
 					}
 				catch (IllegalAccessException e)
 					{
-					logger.debug(e);
+					logger.error(e);
 					}
 				}
 			else
@@ -252,11 +252,11 @@ public class PluginManager<T>
 				}
 			catch (InstantiationException e)
 				{
-				logger.debug(e);
+				logger.error(e);
 				}
 			catch (IllegalAccessException e)
 				{
-				logger.debug(e);
+				logger.error(e);
 				}*/
 				}
 			}

@@ -95,6 +95,16 @@ public class ChainedException extends java.lang.Exception
 
 	// -------------------------- OTHER METHODS --------------------------
 
+	public void printStackTrace()
+		{
+		if (parent != null)
+			{
+			parent.printStackTrace();
+			}
+
+		super.printStackTrace();
+		}
+
 	/**
 	 * Method declaration
 	 *

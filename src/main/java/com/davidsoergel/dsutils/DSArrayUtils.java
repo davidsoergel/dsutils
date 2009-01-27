@@ -102,7 +102,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			//logger.debug("Adding cells: " + i + ", " + j);
+			//logger.trace("Adding cells: " + i + ", " + j);
 			a[i] -= b[i];
 			}
 		}
@@ -116,7 +116,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			//logger.debug("Adding cells: " + i + ", " + j);
+			//logger.trace("Adding cells: " + i + ", " + j);
 			a[i] -= b[i] * weight;
 			}
 		}
@@ -144,7 +144,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 				}
 			for (int j = 0; j < a[i].length; j++)
 				{
-				//logger.debug("Adding cells: " + i + ", " + j);
+				//logger.trace("Adding cells: " + i + ", " + j);
 				result[i][j] = a[i][j] + b[i][j];
 				}
 			}
@@ -166,7 +166,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			//logger.debug("Adding cells: " + i + ", " + j);
+			//logger.trace("Adding cells: " + i + ", " + j);
 			a[i] += b[i];
 			}
 		}
@@ -180,7 +180,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		for (int i = 0; i < a.length; i++)
 			{
-			//logger.debug("Adding cells: " + i + ", " + j);
+			//logger.trace("Adding cells: " + i + ", " + j);
 			a[i] += b[i] * weight;
 			}
 		}
@@ -674,7 +674,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		{
 		for (int i = 0; i < a.length; i++)
 			{
-			//logger.debug("Adding cells: " + i + ", " + j);
+			//logger.trace("Adding cells: " + i + ", " + j);
 			a[i] *= scalar;
 			}
 		}

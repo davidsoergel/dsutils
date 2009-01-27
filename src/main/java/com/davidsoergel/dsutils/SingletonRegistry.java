@@ -63,7 +63,7 @@ public abstract class SingletonRegistry
 		{
 		// byname = byname.toLowerCase();
 
-		logger.debug("SingletonRegistry.instance(\"" + byname + "\")");
+		logger.trace("SingletonRegistry.instance(\"" + byname + "\")");
 
 		SingletonRegistry result = (SingletonRegistry) (_registry.get(byname.toLowerCase()));
 
@@ -109,7 +109,7 @@ public abstract class SingletonRegistry
 	 */
 	protected SingletonRegistry()
 		{
-		logger.debug("SingletonRegistry registered: " + this.getClass().getName());
+		logger.trace("SingletonRegistry registered: " + this.getClass().getName());
 		_registry.put(this.getClass().getName().toLowerCase(), this);
 
 		// _registry.put(this.getClass().getName(), this);

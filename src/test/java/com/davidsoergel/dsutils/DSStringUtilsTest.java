@@ -52,7 +52,7 @@ public class DSStringUtilsTest
 	@Test
 	public void nullObjectStringConversionIsNotNull()
 		{
-		//logger.warn("StringUtilsTest.nullObjectStringConversionIsNotNull()");
+		//logger.trace("StringUtilsTest.nullObjectStringConversionIsNotNull()");
 
 		assert DSStringUtils.s(null).equals("");
 		}

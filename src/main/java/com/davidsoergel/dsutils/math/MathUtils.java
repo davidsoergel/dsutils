@@ -247,11 +247,7 @@ public class MathUtils
 			result = Double.NEGATIVE_INFINITY;
 			//xklogger.info("Log sum produced NaN: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")", new Exception());
 			//logger.debug("Log sum produced NaN!");
-			//			try
-			//				{
-			//			throw new Exception("bogus");
-			//				}
-			//				catch(Exception e) { e.printStackTrace(); }
+			//logger.error(new Throwable());
 			}
 
 		//	logger.debug("Log sum: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")");

@@ -189,8 +189,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			   }
 		   catch (NullPointerException e)
 			   {
-			   logger.debug(e);
-			   e.printStackTrace();
+			   logger.error(e);
 			   }*/
 			}
 		keyToKeyPairs.removeAll(b);

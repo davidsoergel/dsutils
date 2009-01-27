@@ -258,9 +258,9 @@ public class SmtpUtils
 		StringBuffer sb = new StringBuffer(s);
 		int c = 0;
 
-		if (logger.isDebugEnabled())
+		if (logger.isTraceEnabled())
 			{
-			logger.debug("BEFORE: " + sb.length());
+			logger.trace("BEFORE: " + sb.length());
 			}
 
 		c = sb.toString().indexOf('\n', c);
@@ -285,9 +285,9 @@ public class SmtpUtils
 					}
 
 				c = sb.toString().indexOf('\n', c + 1);
-				if (logger.isDebugEnabled())
+				if (logger.isTraceEnabled())
 					{
-					logger.debug(c + ":" + sb
+					logger.trace(c + ":" + sb
 							.substring((c - 5 < 0 ? 0 : c - 5), (c + 5) > sb.length() ? sb.length() : (c + 5)));
 					}
 				}
@@ -314,21 +314,21 @@ public class SmtpUtils
 
 				c = sb.toString().indexOf('\r', c + 1);
 
-				if (logger.isDebugEnabled())
+				if (logger.isTraceEnabled())
 					{
-					logger.debug(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
+					logger.trace(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
 					}
 				}
 			}
 		catch (StringIndexOutOfBoundsException e)
 			{
-			logger.debug("Couldn't fix CR -> CRLF at position " + c);
+			logger.trace("Couldn't fix CR -> CRLF at position " + c);
 			}
 
 
-		if (logger.isDebugEnabled())
+		if (logger.isTraceEnabled())
 			{
-			logger.debug("AFTER: " + sb.length());
+			logger.trace("AFTER: " + sb.length());
 			}
 
 
@@ -365,9 +365,9 @@ public class SmtpUtils
 
 				c = sb.toString().indexOf('\r', c + 1);
 
-				if (logger.isDebugEnabled())
+				if (logger.isTraceEnabled())
 					{
-					logger.debug(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
+					logger.trace(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
 					}
 				}
 			}
@@ -389,9 +389,9 @@ public class SmtpUtils
 
 				c = sb.toString().indexOf('\r', c);
 
-				if (logger.isDebugEnabled())
+				if (logger.isTraceEnabled())
 					{
-					logger.debug(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
+					logger.trace(c + ":" + sb.substring((c - 5 < 0 ? 0 : c - 5), c + 5));
 					}
 				}
 			}

@@ -140,8 +140,8 @@ public class SubclassFinder
 
 
 		Enumeration e = null;
-		logger.debug("Looking for resources: " + name);
-		//logger.debug("The first resource found is: " + ClassLoader.getSystemResource(name));
+		logger.trace("Looking for resources: " + name);
+		//logger.trace("The first resource found is: " + ClassLoader.getSystemResource(name));
 		//try
 		//	{
 		//e = ClassLoader.getSystemResources(name);
@@ -161,7 +161,7 @@ public class SubclassFinder
 		while (e.hasMoreElements())
 			{
 			URL url = (URL) e.nextElement();
-			logger.debug("Found resource: " + url);
+			logger.trace("Found resource: " + url);
 			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation,
 			                   requiredParameterizedType));
 			}
@@ -240,7 +240,7 @@ public class SubclassFinder
 		// ======
 		if (directory.exists() && directory.isDirectory())
 			{
-			logger.debug("Directory to check: " + directory);
+			logger.trace("Directory to check: " + directory);
 			// Get the list of the files contained in the package
 			String[] files = directory.list();
 			if (files == null)
@@ -249,15 +249,15 @@ public class SubclassFinder
 				new FileInputStream("/bin/sh");
 				throw new IOException("Could not read directory: " + url);
 				}
-			logger.debug("Files to check: " + files.length);
+			logger.trace("Files to check: " + files.length);
 			for (int i = 0; i < files.length; i++)
 				{
 				// we are only interested in directories and .class files
-				logger.debug("Checking: " + url.getFile() + "/" + files[i]);
+				logger.trace("Checking: " + url.getFile() + "/" + files[i]);
 				if (recurse && new File(url.getFile() + "/" + files[i]).isDirectory())
 					//if(files[i].endsWith("/"))
 					{
-					logger.debug("Recursing into package: " + pckgname + "." + files[i]);
+					logger.trace("Recursing into package: " + pckgname + "." + files[i]);
 					try
 						{
 						result.addAll(find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i],
@@ -266,7 +266,7 @@ public class SubclassFinder
 						}
 					catch (MalformedURLException e)
 						{
-						logger.debug(e);
+						logger.error(e);
 						}
 					}
 				else if (files[i].endsWith(".class"))
@@ -275,9 +275,9 @@ public class SubclassFinder
 					String classname = files[i].substring(0, files[i].length() - 6);
 					try
 						{
-						logger.debug("Checking class file: " + pckgname + "." + classname);
+						logger.trace("Checking class file: " + pckgname + "." + classname);
 						Class c = Class.forName(pckgname + "." + classname, true, classLoader);
-						logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
+						logger.trace("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
 						if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !(
 								Modifier.isAbstract(c.getModifiers()) || c.isInterface())))
@@ -286,7 +286,7 @@ public class SubclassFinder
 
 						if (tosubclass.isInstance(o))*/
 							{
-							logger.debug("......YES!");
+							logger.trace("......YES!");
 							if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
 								{
 								if (requiredParameterizedType == null)
@@ -298,7 +298,7 @@ public class SubclassFinder
 									List<Type> types = Arrays.asList(c.getGenericInterfaces());
 									for (Type t : types)
 										{
-										logger.info(t);
+										logger.trace(t);
 										if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
 											{
 											result.add(c);
@@ -311,14 +311,13 @@ public class SubclassFinder
 						}
 					catch (ClassNotFoundException cnfex)
 						{
-						logger.debug(cnfex);
+						logger.error(cnfex);
 						}
 
 					catch (ExceptionInInitializerError ex)
 						{
-						ex.getCause().printStackTrace();
-						ex.printStackTrace();
-						logger.debug(ex);
+						logger.error(ex.getCause());
+						logger.error(ex);
 						}
 					}
 				}
@@ -338,14 +337,14 @@ public class SubclassFinder
 					ZipEntry entry = (ZipEntry) e.nextElement();
 					String entryname = entry.getName();
 
-					logger.debug("Checking: " + entryname);
+					logger.trace("Checking: " + entryname);
 					/*	String shortEntryname;
 					 try {shortEntryname= entryname.substring(entryname.lastIndexOf("/"));}
 						 catch (IndexOutOfBoundsException j) { shortEntryname = ""; }
 					 // we are only interested in directories and .class files
 				 if(entryname.startsWith(starts) && entry.isDirectory())
 					 {
-					 logger.debug("Recursing into package: " + url.toString()+"/"+shortEntryname);
+					 logger.trace("Recursing into package: " + url.toString()+"/"+shortEntryname);
 					 try
 						 {
 						 result.addAll(find(new URL(url.toString()+"/"+shortEntryname), pckgname+"."+entryname, tosubclass));
@@ -373,9 +372,9 @@ public class SubclassFinder
 							{
 							// Try to create an instance of the object
 
-							logger.debug("Checking class in jar: " + classname);
+							logger.trace("Checking class in jar: " + classname);
 							Class c = Class.forName(classname, true, classLoader);
-							logger.debug("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
+							logger.trace("Is " + c.getName() + " an instance of " + tosubclass.getName() + "?");
 
 							if (tosubclass.isAssignableFrom(c) && (includeInterfaces || !c.isInterface()))
 
@@ -383,7 +382,7 @@ public class SubclassFinder
 
 							if (tosubclass.isInstance(o))*/
 								{
-								logger.debug("......YES!");
+								logger.trace("......YES!");
 								if (requiredAnnotation == null || c.isAnnotationPresent(requiredAnnotation))
 									{
 									if (requiredParameterizedType == null)
@@ -395,7 +394,7 @@ public class SubclassFinder
 										List<Type> types = Arrays.asList(c.getGenericInterfaces());
 										for (Type t : types)
 											{
-											logger.info(t);
+											logger.trace(t);
 											if (TypeUtils.isAssignableFrom(requiredParameterizedType, t))
 												{
 												result.add(c);
@@ -408,13 +407,12 @@ public class SubclassFinder
 							}
 						catch (ClassNotFoundException cnfex)
 							{
-							logger.debug(cnfex);
+							logger.error(cnfex);
 							}
 						catch (ExceptionInInitializerError ex)
 							{
-							ex.getCause().printStackTrace();
-							ex.printStackTrace();
-							logger.debug(ex);
+							logger.error(ex.getCause());
+							logger.error(ex);
 							}
 						/*catch (InstantiationException iex)
 							{
@@ -431,7 +429,7 @@ public class SubclassFinder
 				}
 			catch (IOException ioex)
 				{
-				logger.debug(ioex);
+				logger.error(ioex);
 				}
 			}
 		return result;

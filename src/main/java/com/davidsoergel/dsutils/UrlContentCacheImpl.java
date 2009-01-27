@@ -84,7 +84,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		this.cacheRootDir = new File(cacheRootDirCanonicalPath);
@@ -106,7 +106,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -196,7 +196,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		//	}
 		//catch (MalformedURLException e)
 		//	{
-		//	logger.debug(e);
+		//	logger.error(e);
 		//	throw new UrlContentCacheException(e);
 		//	}
 		}
@@ -216,7 +216,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		return f;
@@ -236,7 +236,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -249,7 +249,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		//	}
 		//catch (MalformedURLException e)
 		//	{
-		//	logger.debug(e);
+		//	logger.error(e);
 		//	throw new UrlContentCacheException(e);
 		//	}
 		}
@@ -332,7 +332,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -371,13 +371,13 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (NoSuchElementException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(
 					"Disk too full: cache is empty, and still we can't store " + contentLength + " bytes.");
 			}
 		catch (IOException e)
 			{
-			logger.debug(e);
+			logger.error(e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -424,7 +424,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		in.close();
 		millis = System.currentTimeMillis() - millis;
-		logger.debug("Calculated checksum for " + file.getName() + " in " + (millis / 1000L) + " seconds.");
+		logger.trace("Calculated checksum for " + file.getName() + " in " + (millis / 1000L) + " seconds.");
 		return "" + checksum.getValue();
 		}
 

@@ -90,42 +90,43 @@ public class StreamUtils
 				inStream = new DataInputStream(new FileInputStream(pFile));
 				data = inStream.readUTF();
 
-				logger.debug("FileIndexReader:  next word: " + data);
+				logger.trace("FileIndexReader:  next word: " + data);
 				}
-			catch (FileNotFoundException fnfe)
+		/*	catch (FileNotFoundException fnfe)
 				{
-				fnfe.printStackTrace();
+
+			logger.error(fnfe);
 
 				throw fnfe;
-				}
+				}*/
 			catch (EOFException eof)
 				{
 				data = null;
 
-				logger.debug("Empty file: " + pFile.toString());
+				logger.warn("Empty file: " + pFile.toString());
 				}
-			catch (java.io.IOException e)
+			/*catch (java.io.IOException e)
 				{
-				e.printStackTrace();
+			logger.error(e);
 
 				throw e;
-				}
+				}*/
 
-			try
-				{
+			//try
+			//	{
 				while (data != null)
 					{
 					returnBuffer.append(data);
 
 					data = inStream.readUTF();
 					}
-				}
-			catch (java.io.IOException ioe)
+			//	}
+			/*catch (java.io.IOException ioe)
 				{
-				ioe.printStackTrace();
+			logger.error(ioe);
 
 				throw ioe;
-				}
+				}*/
 
 			return returnBuffer;
 			}

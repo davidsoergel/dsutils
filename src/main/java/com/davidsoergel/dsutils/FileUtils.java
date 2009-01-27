@@ -127,7 +127,7 @@ public class FileUtils
 					{
 					if (!file.delete())
 						{
-						logger.warn(
+						logger.error(
 								"Unable to delete file: " + file.getAbsolutePath() + " while trying to delete " + path
 										.getAbsolutePath());
 						}
@@ -192,7 +192,7 @@ public class FileUtils
 						if (dir.list() == null || dir.listFiles() == null)
 							{
 							logger.error("Directory list is empty: " + dir.getCanonicalPath());
-							logger.info("is directory: " + dir.isDirectory());
+							logger.debug("is directory: " + dir.isDirectory());
 							}
 
 						for (File r : dir.listFiles(new FilenameFilter()
@@ -217,8 +217,7 @@ public class FileUtils
 				}
 			catch (Exception e)
 				{
-				logger.debug(e);
-				e.printStackTrace();
+				logger.error(e);
 				throw new RuntimeException("trouble listing files.", e);
 				}
 			}
