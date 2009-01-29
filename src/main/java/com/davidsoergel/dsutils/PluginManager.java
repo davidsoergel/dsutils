@@ -161,9 +161,9 @@ public class PluginManager<T>
 
 			String name =
 					theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString();
-			throw new PluginException("Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org
-					.apache.commons.lang.StringUtils
-					.join(classes.keySet().iterator(), "\n"));
+			throw new PluginException(
+					"Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org.apache.commons.lang
+							.StringUtils.join(classes.keySet().iterator(), "\n"));
 			}
 		return result;
 		}
@@ -200,21 +200,21 @@ public class PluginManager<T>
 					}
 				catch (InstantiationException e)
 					{
-					logger.error(e);
+					logger.error("Error", e);
 					}
 				catch (IllegalAccessException e)
 					{
-					logger.error(e);
+					logger.error("Error", e);
 					}
 				}
 			else
 				{
-				String name = theInterface instanceof Class ? ((Class) theInterface).getSimpleName() :
-						theInterface.toString();
+				String name =
+						theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString()
+						;
 				throw new PluginException(
 						"Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org.apache.commons
-								.lang.StringUtils
-								.join(classes.keySet().iterator(), "\n"));
+								.lang.StringUtils.join(classes.keySet().iterator(), "\n"));
 				}
 			}
 		return result;

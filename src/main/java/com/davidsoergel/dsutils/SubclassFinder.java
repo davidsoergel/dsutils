@@ -77,8 +77,8 @@ public class SubclassFinder
 
 	private static final Logger logger = Logger.getLogger(SubclassFinder.class);
 
-	private static ClassLoader classLoader =
-			Thread.currentThread().getContextClassLoader();//ClassLoader.getSystemClassLoader();
+	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			//ClassLoader.getSystemClassLoader();
 
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -260,13 +260,13 @@ public class SubclassFinder
 					logger.trace("Recursing into package: " + pckgname + "." + files[i]);
 					try
 						{
-						result.addAll(find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i],
-						                   tosubclass, recurse, includeInterfaces, requiredAnnotation,
-						                   requiredParameterizedType));
+						result.addAll(
+								find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i], tosubclass,
+								     recurse, includeInterfaces, requiredAnnotation, requiredParameterizedType));
 						}
 					catch (MalformedURLException e)
 						{
-						logger.error(e);
+						logger.error("Error", e);
 						}
 					}
 				else if (files[i].endsWith(".class"))
@@ -311,13 +311,13 @@ public class SubclassFinder
 						}
 					catch (ClassNotFoundException cnfex)
 						{
-						logger.error(cnfex);
+						logger.error("Error", cnfex);
 						}
 
 					catch (ExceptionInInitializerError ex)
 						{
-						logger.error(ex.getCause());
-						logger.error(ex);
+						logger.error("Error", ex.getCause());
+						logger.error("Error", ex);
 						}
 					}
 				}
@@ -407,12 +407,12 @@ public class SubclassFinder
 							}
 						catch (ClassNotFoundException cnfex)
 							{
-							logger.error(cnfex);
+							logger.error("Error", cnfex);
 							}
 						catch (ExceptionInInitializerError ex)
 							{
-							logger.error(ex.getCause());
-							logger.error(ex);
+							logger.error("Error", ex.getCause());
+							logger.error("Error", ex);
 							}
 						/*catch (InstantiationException iex)
 							{
@@ -429,7 +429,7 @@ public class SubclassFinder
 				}
 			catch (IOException ioex)
 				{
-				logger.error(ioex);
+				logger.error("Error", ioex);
 				}
 			}
 		return result;

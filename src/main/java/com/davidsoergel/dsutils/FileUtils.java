@@ -105,7 +105,7 @@ public class FileUtils
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			return false;
 			}
 
@@ -217,7 +217,7 @@ public class FileUtils
 				}
 			catch (Exception e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				throw new RuntimeException("trouble listing files.", e);
 				}
 			}

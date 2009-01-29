@@ -380,7 +380,7 @@ public class Base64
 			}// end try
 		catch (java.io.IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			return null;
 			}// end catch
 		finally
@@ -870,9 +870,9 @@ public class Base64
 			// int outBuff =   ( ( DECODABET[ source[ srcOffset     ] ] << 24 ) >>>  6 )
 			// | ( ( DECODABET[ source[ srcOffset + 1 ] ] << 24 ) >>> 12 )
 			// | ( ( DECODABET[ source[ srcOffset + 2 ] ] << 24 ) >>> 18 );
-			int outBuff = ((DECODABET[source[srcOffset]] & 0xFF) << 18)
-					| ((DECODABET[source[srcOffset + 1]] & 0xFF) << 12) | ((DECODABET[source[srcOffset + 2]] & 0xFF)
-					<< 6);
+			int outBuff =
+					((DECODABET[source[srcOffset]] & 0xFF) << 18) | ((DECODABET[source[srcOffset + 1]] & 0xFF) << 12)
+							| ((DECODABET[source[srcOffset + 2]] & 0xFF) << 6);
 			destination[destOffset] = (byte) (outBuff >>> 16);
 			destination[destOffset + 1] = (byte) (outBuff >>> 8);
 			return 2;
@@ -890,8 +890,8 @@ public class Base64
 				// | ( ( DECODABET[ source[ srcOffset + 3 ] ] << 24 ) >>> 24 );
 				int outBuff = ((DECODABET[source[srcOffset]] & 0xFF) << 18)
 						| ((DECODABET[source[srcOffset + 1]] & 0xFF) << 12)
-						| ((DECODABET[source[srcOffset + 2]] & 0xFF) << 6) | ((DECODABET[source[srcOffset + 3]]
-						& 0xFF));
+						| ((DECODABET[source[srcOffset + 2]] & 0xFF) << 6) | ((DECODABET[source[srcOffset + 3]] & 0xFF))
+						;
 				destination[destOffset] = (byte) (outBuff >> 16);
 				destination[destOffset + 1] = (byte) (outBuff >> 8);
 				destination[destOffset + 2] = (byte) (outBuff);
@@ -928,12 +928,12 @@ public class Base64
 			}// end try
 		catch (java.io.IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			return null;
 			}// end catch
 		catch (java.lang.ClassNotFoundException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			return null;
 			}// end catch
 		finally
@@ -1390,6 +1390,9 @@ public class Base64
 	 * <p/>
 	 * Encodes a byte array into Base64 notation.
 	 *
+	 * @param source The data to convert
+	 * @param off    Offset in array where conversion should begin
+	 * @param len    Length of data to convert
 	 * @param source The data to convert
 	 * @param off    Offset in array where conversion should begin
 	 * @param len    Length of data to convert

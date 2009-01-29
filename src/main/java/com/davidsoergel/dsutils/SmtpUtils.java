@@ -234,7 +234,7 @@ public class SmtpUtils
 			}
 		catch (Exception e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 
 			try
 				{
@@ -245,7 +245,7 @@ public class SmtpUtils
 				}
 			catch (Exception f)
 				{
-				logger.error(f);
+				logger.error("Error", f);
 				}
 			}
 		}

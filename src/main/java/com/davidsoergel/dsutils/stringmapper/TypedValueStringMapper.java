@@ -113,17 +113,17 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 			}
 		catch (IllegalAccessException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new Error(e);
 			}
 		catch (InstantiationException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new Error(e);
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new Error(e);
 			}
 		return this;

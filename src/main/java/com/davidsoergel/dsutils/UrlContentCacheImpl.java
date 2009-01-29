@@ -84,7 +84,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		this.cacheRootDir = new File(cacheRootDirCanonicalPath);
@@ -106,7 +106,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -216,7 +216,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		return f;
@@ -236,7 +236,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -290,8 +290,8 @@ public class UrlContentCacheImpl implements UrlContentCache
 		{
 		try
 			{
-			HttpURLConnection conn = (HttpURLConnection) url
-					.openConnection();// Http only supported for now; ClassCastException otherwise
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection()
+					;// Http only supported for now; ClassCastException otherwise
 			FtpURLConnection f;
 			File localFile = new File(urlToLocalFilename(url));
 			if (localFile.exists() && !force)
@@ -332,7 +332,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		}
@@ -371,13 +371,13 @@ public class UrlContentCacheImpl implements UrlContentCache
 			}
 		catch (NoSuchElementException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(
 					"Disk too full: cache is empty, and still we can't store " + contentLength + " bytes.");
 			}
 		catch (IOException e)
 			{
-			logger.error(e);
+			logger.error("Error", e);
 			throw new UrlContentCacheException(e);
 			}
 		}
