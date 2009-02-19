@@ -341,6 +341,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static double sumOfSquares(double[] a)
+		{
+		double result = 0;
+		for (int i = 0; i < a.length; i++)
+			{
+			result += a[i] * a[i];
+			}
+		return result;
+		}
+
 	public static double sum(Collection<Double> a)
 		{
 		int result = 0;

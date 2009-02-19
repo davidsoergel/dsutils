@@ -271,6 +271,11 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return backingMap.keySet();
 		}
 
+	public boolean isEmpty()
+		{
+		return backingMap.isEmpty();
+		}
+
 	public SortedSet<T> keysInDecreasingWeightOrder()
 		{
 		return keysInDecreasingWeightOrder(null);
@@ -295,7 +300,7 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return result;
 		}
 
-	public void multiplyBy(int multiplier)
+	public void multiplyBy(double multiplier)
 		{
 		for (Map.Entry<T, Double> entry : backingMap.entrySet())
 			{

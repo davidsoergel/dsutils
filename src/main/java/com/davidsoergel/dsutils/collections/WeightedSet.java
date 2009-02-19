@@ -131,9 +131,13 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 
 	SortedSet<T> keysInDecreasingWeightOrder(Comparator secondarySort);
 
-	void multiplyBy(int multiplier);
+	//void multiplyBy(int multiplier);
+
+	void multiplyBy(double multiplier);
 
 	//Map<String, Double> getBackingMap();
 
 	void clear();
+
+	boolean isEmpty();
 	}
