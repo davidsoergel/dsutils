@@ -120,6 +120,23 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 			}
 		}
 
+	public void addAll(WeightedSet<T> increment, double weight)
+		{
+		itemCount += increment.getItemCount();
+		for (Map.Entry<T, Double> entry : increment.entrySet())
+			{
+			Double val = backingMap.get(entry.getKey());
+			if (val == null)
+				{
+				val = 0.;
+				}
+			final Double d = entry.getValue() * weight;
+			val = val + d;
+			weightSum += d;
+
+			backingMap.put(entry.getKey(), val);
+			}
+		}
 
 	public void removeAll(WeightedSet<T> increment)
 		{

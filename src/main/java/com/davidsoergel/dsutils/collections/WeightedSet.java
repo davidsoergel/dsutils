@@ -80,6 +80,14 @@ public interface WeightedSet<T extends Comparable> //extends Map<T, Double>
 	void addAll(WeightedSet<T> increment);
 
 	/**
+	 * Increment all the values in this WeightedSet by the values in the argument, and increase the number of items
+	 * accordingly.
+	 *
+	 * @param increment
+	 */
+	void addAll(WeightedSet<T> increment, double weight);
+
+	/**
 	 * Decrement all the values in this WeightedSet by the values in the argument, and decrease the number of items
 	 * accordingly.
 	 *
