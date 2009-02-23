@@ -50,9 +50,9 @@ public class CollectionIteratorFactory<T> implements Iterator<Iterator<T>>
 	{
 	protected Collection<T> underlyingCollection;
 
-	public CollectionIteratorFactory(Collection<T> underlyingCollection)
+	public CollectionIteratorFactory(Collection<? extends T> underlyingCollection)
 		{
-		this.underlyingCollection = underlyingCollection;
+		this.underlyingCollection = (Collection<T>) underlyingCollection;
 		}
 
 	public boolean hasNext()
