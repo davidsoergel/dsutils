@@ -22,7 +22,12 @@ public class IntDoubleMapReader
 			String line;
 			while ((line = br.readLine()) != null)
 				{
-				String[] numbers = line.split(" +");
+				line = line.trim();
+				if (line.isEmpty())
+					{
+					continue;
+					}
+				String[] numbers = line.split("[ ,\t]+");
 				Integer key = new Integer(numbers[0]);
 				Double value = new Double(numbers[1]);
 				result.put(key, value);
