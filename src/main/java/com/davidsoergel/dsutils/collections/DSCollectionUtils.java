@@ -219,6 +219,20 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return o;
 		}
 
+	public static <T> Collection<T> getAllFirstElements(Set<List<T>> theLists)
+		{
+		Set<T> result = new HashSet<T>();
+		for (List<T> l : theLists)
+			{
+			if (l.isEmpty())
+				{
+				throw new IndexOutOfBoundsException("Can't get first element from an empty list.");
+				}
+			result.add(l.get(0));
+			}
+		return result;
+		}
+
 	public static <T> T chooseRandom(Collection<T> coll)
 		{
 		T[] ar = (T[]) coll.toArray();
