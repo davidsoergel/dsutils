@@ -39,7 +39,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -80,7 +79,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 	 * {@inheritDoc}
 	 */
 	@NotNull
-	public SetHierarchyNode<T> getChild(T id)
+	public SetHierarchyNode<T> getChild(T id) throws NoSuchNodeException
 		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
 
 		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
@@ -92,7 +91,7 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 				return child;
 				}
 			}
-		throw new NoSuchElementException();
+		throw new NoSuchNodeException();
 		}
 
 	public T getValue()

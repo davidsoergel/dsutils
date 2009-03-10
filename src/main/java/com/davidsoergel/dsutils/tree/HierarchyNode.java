@@ -55,18 +55,18 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return a Collection of nodes that are immediate children of this one.
 	 */
-	Collection<? extends I> getChildren();//? extends HierarchyNode<? extends T, I>>
+	@NotNull
+	Collection<? extends I> getChildren();//throws NoSuchNodeException;//? extends HierarchyNode<? extends T, I>>
 
 	/**
 	 * Gets the child of this node which has the given value
 	 *
 	 * @param id the T value to search for among the children
 	 * @return the PhylogenyNode<T> child with the given value
-	 * @throws java.util.NoSuchElementException
-	 *          when no matching child is found
+	 * @throws NoSuchNodeException when no matching child is found
 	 */
 	@NotNull
-	I getChild(T id);//HierarchyNode<T, I>
+	I getChild(T id) throws NoSuchNodeException;//HierarchyNode<T, I>
 
 	/**
 	 * Tells whether this node is a leaf of the tree or not

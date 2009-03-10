@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * A node in a simple hierarchy, where a value of the given generic type is attached at each node.  The children are
@@ -87,7 +86,7 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 	 * {@inheritDoc}
 	 */
 	@NotNull
-	public ListHierarchyNode<T> getChild(T id)
+	public ListHierarchyNode<T> getChild(T id) throws NoSuchNodeException
 		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
 
 		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
@@ -99,7 +98,7 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 				return child;
 				}
 			}
-		throw new NoSuchElementException();
+		throw new NoSuchNodeException();
 		}
 
 	public T getValue()
