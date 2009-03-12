@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //extends HashMap<T, Double>
+public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, Double>
 	{
 	Map<T, Double> backingMap = new HashMap<T, Double>();
 
@@ -282,6 +282,25 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		return result.getKey();
 		}
 
+
+	public T getDominantKey()
+		{
+		Map.Entry<T, Double> result = null;
+		// PERF lots of different ways to do this, probably with different performance
+		for (Map.Entry<T, Double> entry : entrySet())
+			{
+			if (result == null || entry.getValue() > result.getValue())
+				{
+				result = entry;
+				}
+			}
+		if (result == null)
+			{
+			throw new NoSuchElementException();
+			}
+		return result.getKey();
+		}
+
 	public Set<Map.Entry<T, Double>> entrySet()
 		{
 		return backingMap.entrySet();
@@ -289,7 +308,9 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 
 	public double get(T s)
 		{
-		return backingMap.get(s);
+		final Double d = backingMap.get(s);
+
+		return d == null ? 0.0 : d;
 		}
 
 	public Set<T> keySet()
@@ -311,7 +332,7 @@ public class HashWeightedSet<T extends Comparable> implements WeightedSet<T> //e
 		{
 		SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
 		{
-		public int compare(Comparable o1, Comparable o2)
+		public int compare(T o1, T o2)
 			{
 			int result = -backingMap.get(o1).compareTo(backingMap.get(o2));
 			if (result == 0 && secondarySort != null)

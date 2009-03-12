@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -170,6 +171,31 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
+	public static <T> T getDominantFirstElement(Set<List<T>> theLists, int numberThatMustAgree)
+		{
+		WeightedSet<T> counts = new HashWeightedSet<T>();
+		for (List<T> l : theLists)
+			{
+			/*if (l.isEmpty())
+				{
+				throw new IndexOutOfBoundsException("Can't get first element from an empty list.");
+				}*/
+
+			// if a list is exhausted, just ignore it.
+			// If that turns out to make the count less than it needs to be, then we'll throw the appropriate exception below.
+			if (!l.isEmpty())
+				{
+				counts.add(l.get(0), 1);
+				}
+			}
+		T result = counts.getDominantKey();
+		if (counts.get(result) < numberThatMustAgree)
+			{
+			throw new NoSuchElementException();
+			}
+		return result;
+		}
+
 	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists)
 		{
 		Object o = null;
@@ -203,6 +229,45 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 				}
 			}
 		return true;
+		}
+
+	public static <T> Set<List<T>> filterByAndRemoveFirstElement(Set<List<T>> theLists, T firstElement)
+		{
+
+		// this doesn't work, maybe because the list contents are changing and that screws up the HashSet?? (eg hashcode issues)
+
+		/*
+		T o = null;
+		for (Iterator<List<T>> iter = theLists.iterator(); iter.hasNext();)
+			{
+			List<T> theAncestorList = iter.next();
+			if (theAncestorList.isEmpty() || (theAncestorList.get(0) != firstElement))
+				{
+				iter.remove();
+				}
+			else
+				{
+				theAncestorList.remove(0);
+				}
+			}*/
+
+		//just do the slow way for now
+		Set<List<T>> result = new HashSet<List<T>>();
+		T o = null;
+		for (Iterator<List<T>> iter = theLists.iterator(); iter.hasNext();)
+			{
+			List<T> theAncestorList = iter.next();
+			if (theAncestorList.isEmpty() || (theAncestorList.get(0) != firstElement))
+				{
+				//iter.remove();
+				}
+			else
+				{
+				theAncestorList.remove(0);
+				result.add(theAncestorList);
+				}
+			}
+		return result;
 		}
 
 	public static <T> T removeAllFirstElements(Set<List<T>> theLists)
