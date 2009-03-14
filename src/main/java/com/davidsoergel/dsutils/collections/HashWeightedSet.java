@@ -32,8 +32,13 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import com.google.common.collect.Multiset;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -71,6 +76,15 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		for (Map.Entry<? extends T, Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
+			}
+		}
+
+	public HashWeightedSet(Multiset<T> m)
+		{
+		itemCount = m.size();
+		for (T o : m.elementSet())
+			{
+			add(o, m.count(o));
 			}
 		}
 
@@ -326,6 +340,13 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	public SortedSet<T> keysInDecreasingWeightOrder()
 		{
 		return keysInDecreasingWeightOrder(null);
+		}
+
+	public List<Double> weightsInDecreasingOrder()
+		{
+		List<Double> result = new ArrayList<Double>(backingMap.values());
+		Collections.sort(result, Collections.reverseOrder());
+		return result;
 		}
 
 	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)

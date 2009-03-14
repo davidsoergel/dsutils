@@ -20,11 +20,11 @@ public class StringArrayMapper extends StringMapper<String[]>
 	public String[] parse(String s)
 		{
 		//List<Double> result = new ArrayList<String>();
-		return s.split(":");
+		return s.split(",");
 		}
 
 	public String render(String[] value)
 		{
-		return DSStringUtils.join(value, ":");
+		return DSStringUtils.join(value, ",");
 		}
 	}
