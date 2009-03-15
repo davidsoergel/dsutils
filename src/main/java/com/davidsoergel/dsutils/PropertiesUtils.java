@@ -166,4 +166,25 @@ public class PropertiesUtils
 		{
 		return splitPeriodDelimitedPropertiesFromStream(new FileInputStream(propsFile));
 		}
+
+	public static Properties loadPropsFromFile(File propsFile) throws IOException
+		{
+		Properties props;
+
+		props = new Properties();
+		FileInputStream inStream = null;
+		try
+			{
+			inStream = new FileInputStream(propsFile);
+			props.load(inStream);
+			}
+		finally
+			{
+			if (inStream != null)
+				{
+				inStream.close();
+				}
+			}
+		return props;
+		}
 	}

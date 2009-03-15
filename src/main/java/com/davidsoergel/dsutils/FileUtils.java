@@ -142,7 +142,7 @@ public class FileUtils
 
 	   }*/
 
-	public static List<File> getFilesWithNames(String[] filenames)
+	public static List<File> getFilesWithNames(String root, String[] filenames)
 		{
 		/*
 
@@ -179,7 +179,7 @@ public class FileUtils
 						//logger.info("Separator: " + File.separator);
 						String dirname = f.substring(0, f.lastIndexOf(File.separator));
 						//logger.info("Wildcard directory: " + dirname);
-						File dir = new File(dirname);
+						File dir = new File(root + File.separator + dirname);
 
 						//logger.info("is directory: " + dir.isDirectory());
 						//logger.info("Canonical path = " + dir.getCanonicalPath());
@@ -210,7 +210,7 @@ public class FileUtils
 						}
 					else
 						{
-						files.add(new File(f));
+						files.add(new File(root + File.separator + f));
 						//	inputFilesList.add(new File(f));
 						}
 					}
