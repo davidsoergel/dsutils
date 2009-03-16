@@ -126,6 +126,8 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	T getDominantKeyInSet(Set<T> keys);
 
+	//T getSecondKeyInSet(Set<T> keys);
+
 	Set<Map.Entry<T, Double>> entrySet();
 
 	double get(T s);
