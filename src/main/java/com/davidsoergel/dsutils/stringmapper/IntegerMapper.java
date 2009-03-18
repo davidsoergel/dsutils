@@ -18,6 +18,10 @@ public class IntegerMapper extends StringMapper<Integer>
 
 	public Integer parse(String s)
 		{
+		if (s == null || s.trim().isEmpty())
+			{
+			return null;
+			}
 		return new Integer(s);
 		}
 

@@ -20,17 +20,18 @@ public class BooleanMapper extends StringMapper<Boolean>
 	 * Return false if the given string is "false", "no", "n", "none", or "0"; return true otherwise. Note this is entirely
 	 * different from {@link Boolean#parseBoolean(String)}
 	 *
-	 * @param d
+	 * @param s
 	 * @return
 	 */
-	public Boolean parse(String d)
+	public Boolean parse(String s)
 		{
-		String p = d.trim();
-		if (p.equals(""))
+		if (s == null || s.trim().isEmpty())
 			{
 			return null;
 			}
-		return !(p.equals("false") || p.equals("no") || p.equals("n") || p.equals("none") || p.equals("0"));
+		s = s.trim();
+
+		return !(s.equals("false") || s.equals("no") || s.equals("n") || s.equals("none") || s.equals("0"));
 		}
 
 	public String render(Boolean value)

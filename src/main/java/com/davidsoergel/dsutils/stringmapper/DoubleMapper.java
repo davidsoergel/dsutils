@@ -18,6 +18,10 @@ public class DoubleMapper extends StringMapper<Double>
 
 	public Double parse(String s)
 		{
+		if (s == null || s.trim().isEmpty())
+			{
+			return null;
+			}
 		return new Double(s);
 		}
 

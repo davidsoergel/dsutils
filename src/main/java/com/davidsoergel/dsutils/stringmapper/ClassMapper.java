@@ -11,8 +11,8 @@ import java.lang.reflect.Type;
 public class ClassMapper extends StringMapper<Class>
 	{
 	private static final Logger logger = Logger.getLogger(ClassMapper.class);
-	private static ClassLoader classLoader =
-			Thread.currentThread().getContextClassLoader();//ClassLoader.getSystemClassLoader();
+	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//ClassLoader.getSystemClassLoader();
 
 	public static void setClassLoader(ClassLoader classLoader)
 		{
@@ -33,7 +33,7 @@ public class ClassMapper extends StringMapper<Class>
 
 	public Class parse(String s) throws StringMapperException
 		{
-		if (s == null || s.trim().length() == 0)
+		if (s == null || s.trim().isEmpty())
 			{
 			throw new StringMapperException("Empty plugin class name");
 			}

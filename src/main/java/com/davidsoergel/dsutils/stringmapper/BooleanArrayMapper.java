@@ -21,6 +21,10 @@ public class BooleanArrayMapper extends StringMapper<Boolean[]>
 
 	public Boolean[] parse(String s) throws StringMapperException
 		{
+		if (s == null || s.trim().isEmpty())
+			{
+			return null;
+			}
 		List<Boolean> result = new ArrayList<Boolean>();
 		StringMapper<Boolean> booleanMapper = TypedValueStringMapper.get(Boolean.class);
 		for (String d : s.split(":"))
@@ -29,6 +33,7 @@ public class BooleanArrayMapper extends StringMapper<Boolean[]>
 			}
 		return result.toArray(new Boolean[]{});
 		}
+
 
 	public String render(Boolean[] value)
 		{

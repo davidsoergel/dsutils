@@ -28,4 +28,6 @@ public abstract class StringMapper<T>
 		{
 		return render(s);//"renderHtml not implemented";
 		}
+
+	//public abstract T getNull();
 	}

@@ -19,6 +19,10 @@ public class StringArrayMapper extends StringMapper<String[]>
 
 	public String[] parse(String s)
 		{
+		if (s == null || s.trim().isEmpty())
+			{
+			return new String[0];
+			}
 		//List<Double> result = new ArrayList<String>();
 		return s.split(",");
 		}

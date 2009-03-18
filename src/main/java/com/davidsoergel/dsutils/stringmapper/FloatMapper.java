@@ -18,6 +18,10 @@ public class FloatMapper extends StringMapper<Float>
 
 	public Float parse(String s)
 		{
+		if (s == null || s.trim().isEmpty())
+			{
+			return null;
+			}
 		return new Float(s);
 		}
 
