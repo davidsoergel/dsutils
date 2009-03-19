@@ -45,6 +45,11 @@ import java.util.SortedSet;
  * <p/>
  * The purpose of this is to be able to add up a bunch of items, each of which has a set of weighted properties, and
  * then to get the average weight for each property in the set of all the items.
+ * <p/>
+ * Note there is no requirement or expectation that the keys be mutually exclusive and thus that the double values can
+ * be normalized to proabilities.  On the contrary, the values for each key are totally independent.  In a way it should
+ * be thought of as a Map<T, Collection<Double>> that just provides the mean of the collection, weighted according to
+ * the number of "items".
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$

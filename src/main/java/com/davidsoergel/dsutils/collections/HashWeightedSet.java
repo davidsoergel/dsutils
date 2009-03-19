@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import com.google.common.collect.Multiset;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -275,7 +276,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		}*/
 
 
-	public T getDominantKeyInSet(Set<T> keys)
+	public T getDominantKeyInSet(@NotNull Set<T> keys)
 		{
 		Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
