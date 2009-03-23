@@ -38,4 +38,9 @@ public class BooleanMapper extends StringMapper<Boolean>
 		{
 		return value.toString();
 		}
+
+	public String renderAbbreviated(Boolean value)
+		{
+		return value.toString();
+		}
 	}

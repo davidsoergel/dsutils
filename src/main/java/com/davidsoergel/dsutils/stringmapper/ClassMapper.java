@@ -52,4 +52,9 @@ public class ClassMapper extends StringMapper<Class>
 		{
 		return value == null ? "null" : value.getCanonicalName();
 		}
+
+	public String renderAbbreviated(Class value)
+		{
+		return value == null ? "null" : value.getSimpleName();
+		}
 	}

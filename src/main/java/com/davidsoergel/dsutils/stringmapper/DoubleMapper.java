@@ -29,4 +29,9 @@ public class DoubleMapper extends StringMapper<Double>
 		{
 		return value.toString();
 		}
+
+	public String renderAbbreviated(Double value)
+		{
+		return String.format("%.2g", value);
+		}
 	}
