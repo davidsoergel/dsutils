@@ -5,9 +5,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Provides both the data model and the selection model for a st of named multi-selectable lists.
@@ -15,11 +15,11 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class DefaultMultiListModel implements MultiListModel
+public class DefaultMultiListModel<T> implements MultiListModel<T>
 	{
-	Map<Object, Collection> theValuesPerKey;
+	Map<T, Collection> theValuesPerKey;
 
-	Map<Object, Collection> theSelections;
+	Map<T, Collection> theSelections;
 
 
 	/**
@@ -73,33 +73,34 @@ public class DefaultMultiListModel implements MultiListModel
 		{
 		}
 
-	public void setLists(Map<Object, Collection> theLists)
+	public void setLists(Map<T, Collection> theLists)
 		{
 		//** this is not a defensive copy; changes to the original list can mess with the UI
 		theValuesPerKey = theLists;
-		theSelections = new HashMap<Object, Collection>();
-		for (Object s : theLists.keySet())
+		theSelections = new HashMap<T, Collection>();
+
+		// selections start off empty
+		/*for (T s : theLists.keySet())
 			{
-			// selections start off empty
 			theSelections.put(s, new HashSet());
-			}
+			}*/
 		fireStateChanged();
 		}
 
-	public Map<Object, Collection> getLists()
+	public Map<T, Collection> getLists()
 		{
 		return theValuesPerKey;
 		}
 
-	public Map<Object, Collection> getSelections()
+	public Map<T, Collection> getSelections()
 		{
 		return theSelections;
 		}
 
-	public Set<Object> getSelectedKeys()
+	public SortedSet<T> getSelectedKeys()
 		{
-		Set<Object> result = new HashSet<Object>();
-		for (Map.Entry<Object, Collection> entry : theSelections.entrySet())
+		SortedSet<T> result = new TreeSet<T>();
+		for (Map.Entry<T, Collection> entry : theSelections.entrySet())
 			{
 			if (!entry.getValue().isEmpty())
 				{
@@ -109,9 +110,16 @@ public class DefaultMultiListModel implements MultiListModel
 		return result;
 		}
 
-	public void updateSelections(Object key, Collection selectedValues)
+	public void updateSelections(T key, Collection selectedValues)
 		{
-		theSelections.put(key, selectedValues);
+		if (selectedValues == null || selectedValues.isEmpty())
+			{
+			theSelections.remove(key);
+			}
+		else
+			{
+			theSelections.put(key, selectedValues);
+			}
 		fireStateChanged();
 		}
 	}

@@ -24,10 +24,10 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class JMultiList extends JPanel
+public class JMultiList<T> extends JPanel
 	{
 	private static final Logger logger = Logger.getLogger(JMultiList.class);
-	protected MultiListModel model;
+	protected MultiListModel<T> model;
 
 
 	public JMultiList() //throws NullPointerException, IllegalArgumentException
@@ -39,14 +39,14 @@ public class JMultiList extends JPanel
 		setLayout(new WrapLayout(FlowLayout.LEADING)); //new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		}
 
-	public void setLists(Map<Object, Collection> lists)
+	public void setLists(Map<T, Collection> lists)
 		{
 		logger.warn("Old Size: " + getSize());
 		logger.warn("Old Preferred Size: " + getPreferredSize());
 		model.setLists(lists);
 
 		removeAll();
-		for (Map.Entry<Object, Collection> entry : model.getLists().entrySet())
+		for (Map.Entry<T, Collection> entry : model.getLists().entrySet())
 			{
 			JNamedList listRow = new JNamedList(entry.getKey(), entry.getValue());
 			//listRow.addChangeListener(model);
@@ -67,12 +67,12 @@ public class JMultiList extends JPanel
 		return model;
 		}
 
-	public Map<Object, Collection> getSelections()
+	public Map<T, Collection> getSelections()
 		{
 		return model.getSelections();
 		}
 
-	public Map<Object, Collection> getLists()
+	public Map<T, Collection> getLists()
 		{
 		return model.getLists();
 		}
@@ -92,7 +92,7 @@ public class JMultiList extends JPanel
 		JList jlist;
 
 
-		public JNamedList(final Object key, Collection list)
+		public JNamedList(final T key, Collection list)
 			{
 			StringMapper mapper = TypedValueStringMapper.get(key.getClass());
 			String s = mapper.renderAbbreviated(key);
@@ -102,7 +102,7 @@ public class JMultiList extends JPanel
 			jlist = new JList(list.toArray());
 			jlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			jlist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			jlist.setVisibleRowCount(1); //list.size());
+			jlist.setVisibleRowCount(2); //list.size());
 			jlist.setCellRenderer(renderer);
 
 			jlist.addListSelectionListener(new ListSelectionListener()
@@ -164,6 +164,16 @@ public class JMultiList extends JPanel
 			{
 			StringMapper mapper = TypedValueStringMapper.get(value.getClass());
 			String s = mapper.renderAbbreviated(value);
+
+			//** hack workaround...
+			if (s.contains("/"))
+				{
+				s = s.substring(s.lastIndexOf("/") + 1);
+				}
+			else if (s.contains("."))
+				{
+				s = s.substring(s.lastIndexOf(".") + 1);
+				}
 			//= value.toString();
 			setText(s);
 			setToolTipText(mapper.render(value));

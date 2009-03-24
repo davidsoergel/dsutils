@@ -3,15 +3,15 @@ package com.davidsoergel.dsutils.swing.jmultilist;
 import javax.swing.event.ChangeListener;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface MultiListModel
+public interface MultiListModel<T>
 	{
-	public void setLists(Map<Object, Collection> lists);
+	public void setLists(Map<T, Collection> lists);
 
 	//public int getListCount();
 
@@ -34,11 +34,11 @@ public interface MultiListModel
 	 */
 	void removeChangeListener(ChangeListener x);
 
-	Map<Object, Collection> getSelections();
+	Map<T, Collection> getSelections();
 
-	Map<Object, Collection> getLists();
+	Map<T, Collection> getLists();
 
-	void updateSelections(Object key, Collection selectedValues);
+	void updateSelections(T key, Collection selectedValues);
 
-	Set getSelectedKeys();
+	SortedSet getSelectedKeys();
 	}
