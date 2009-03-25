@@ -46,6 +46,11 @@ public class EnvironmentUtils
 			{
 			throw new Error(e);
 			}
+
+		if (!cacheRoot.endsWith(File.separator))
+			{
+			cacheRoot += File.separator;
+			}
 		}
 
 	public static String getCacheRoot()
