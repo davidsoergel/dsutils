@@ -75,10 +75,22 @@ public class CacheManager
 	public static Object get(Object source, String key)
 		{
 		String filename = buildFilename(source, key);
-		return get(filename);
+		return getFromFile(filename);
 		}
 
-	private static Object get(String filename)
+	/**
+	 * Load a serialized object from disk
+	 *
+	 * @param classNamePlusKey
+	 * @return
+	 */
+	public static Object get(String classNamePlusKey)
+		{
+		String filename = buildFilename(classNamePlusKey);
+		return getFromFile(filename);
+		}
+
+	private static Object getFromFile(String filename)
 		{
 		FileInputStream fin = null;
 		ObjectInputStream ois = null;
@@ -132,15 +144,31 @@ public class CacheManager
 	/**
 	 * Serialize an object to disk, overwriting if it's already there
 	 *
+	 * @param classNamePlusKey
+	 * @param o
+	 */
+	public static void put(String classNamePlusKey, Object o)
+		{
+		String filename = buildFilename(classNamePlusKey);
+		putToFile(filename, o);
+		}
+
+
+	/**
+	 * Serialize an object to disk, overwriting if it's already there
+	 *
 	 * @param source
 	 * @param key
 	 * @param o
 	 */
 	public static void put(Object source, String key, Object o)
 		{
-
 		String filename = buildFilename(source, key);
+		putToFile(filename, o);
+		}
 
+	private static void putToFile(String filename, Object o)
+		{
 		File cacheFile = new File(filename);
 		cacheFile.getParentFile().mkdirs();
 		FileOutputStream fout = null;
@@ -249,15 +277,17 @@ public class CacheManager
 	private static String buildFilename(Object source, String key)
 		{
 		String className = source.getClass().getCanonicalName();
-
-		//deal with classnames like edu.berkeley.compbio.ncbitaxonomy.NcbiTaxonomyServiceImpl$$EnhancerByCGLIB$$8a577667
-
 		int i = className.indexOf('$');
 		if (i >= 0)
 			{
 			className = className.substring(0, i);
 			}
 		return EnvironmentUtils.getCacheRoot() + className + File.separator + key;
+		}
+
+	private static String buildFilename(String classNamePlusKey)
+		{
+		return EnvironmentUtils.getCacheRoot() + classNamePlusKey;
 		}
 
 
@@ -273,7 +303,8 @@ public class CacheManager
 				}
 			catch (Throwable e)
 				{
-				logger.error(e);
+
+				logger.error("Error", e);
 				}
 			finally
 				{

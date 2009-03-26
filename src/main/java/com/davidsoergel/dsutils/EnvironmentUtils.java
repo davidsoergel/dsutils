@@ -1,7 +1,10 @@
 package com.davidsoergel.dsutils;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -10,25 +13,29 @@ import java.util.Properties;
  */
 public class EnvironmentUtils
 	{
+	private static final Logger logger = Logger.getLogger(EnvironmentUtils.class);
+
 	static
 		{
 		//	File propFile = new File("system.properties");
 		//	init(propFile);
 		}
 
-	static String cacheRoot;
+	static String cacheRoot = "/tmp/";
 	//static String inputRoot;
 	//static String outputRoot;
 
 	public static void init(File propFile)
 		{
+		FileInputStream in = null;
 		try
 			{
+			in = new FileInputStream(propFile);
 			// set up new properties object
 			// from file "myProperties.txt"
 
 			Properties p = new Properties(System.getProperties());
-			p.load(new FileInputStream(propFile));
+			p.load(in);
 
 			// set the system properties
 			System.setProperties(p);
@@ -39,12 +46,26 @@ public class EnvironmentUtils
 
 			if (cacheRoot == null)
 				{
-				cacheRoot = "/tmp";
+				cacheRoot = "/tmp/";
 				}
 			}
 		catch (Exception e)
 			{
 			throw new Error(e);
+			}
+		finally
+			{
+			if (in != null)
+				{
+				try
+					{
+					in.close();
+					}
+				catch (IOException e)
+					{
+					logger.error("Error", e);
+					}
+				}
 			}
 
 		if (!cacheRoot.endsWith(File.separator))

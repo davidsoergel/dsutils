@@ -196,7 +196,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists)
+	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists) //, boolean ignoreNull)
 		{
 		Object o = null;
 		if (theLists.isEmpty())
@@ -207,7 +207,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			{
 			if (l.isEmpty())
 				{
+				/*	if (ignoreNull)
+				   {
+				   continue;
+				   }
+			   else
+				   {*/
 				return false;
+				//	}
 				}
 			if (o != null)
 				{
@@ -270,14 +277,24 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> T removeAllFirstElements(Set<List<T>> theLists)
+	public static <T> T removeAllFirstElements(Set<List<T>> theLists) //, boolean ignoreEmpty)
 		{
 		T o = null;
 		for (List<T> l : theLists)
 			{
 			if (l.isEmpty())
 				{
-				throw new IndexOutOfBoundsException("Can't remove first element from an empty list.");
+				if (l.isEmpty())
+					{
+					/*if (ignoreEmpty)
+						{
+						continue;
+						}
+					else
+						{*/
+					throw new IndexOutOfBoundsException("Can't remove first element from an empty list.");
+					//	}
+					}
 				}
 			o = l.remove(0);
 			}
