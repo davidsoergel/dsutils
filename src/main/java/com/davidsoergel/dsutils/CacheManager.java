@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils;
 
 import com.google.common.collect.MapMaker;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.HashMap;
@@ -25,6 +27,43 @@ import java.util.concurrent.ConcurrentMap;
 public class CacheManager
 	{
 	private static final Logger logger = Logger.getLogger(CacheManager.class);
+	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//ClassLoader.getSystemClassLoader();
+
+	public static void setClassLoader(ClassLoader classLoader)
+		{
+		CacheManager.classLoader = classLoader;
+		}
+
+	static
+		{
+		Runtime.getRuntime().addShutdownHook(new Thread()
+		{
+		public void run()
+			{
+			logger.debug("Running cleanup thread");
+			try
+				{
+				syncAccumulatingMaps();
+				}
+			catch (Exception e)
+				{
+				logger.error("Error", e);
+				}
+			}
+		});
+		}
+
+	/**
+	 * ideally this is not necessary because each map finalizes itself
+	 */
+	public static void syncAccumulatingMaps()
+		{
+		for (AccumulatingMap accumulatingMap : accumulatingMaps.values())
+			{
+			accumulatingMap.mergeToDisk();
+			}
+		}
 
 	/**
 	 * Load a serialized object from disk
@@ -35,7 +74,7 @@ public class CacheManager
 	 */
 	public static Object get(Object source, String key)
 		{
-		String filename = EnvironmentUtils.getCacheRoot() + source.getClass().getCanonicalName() + File.separator + key;
+		String filename = buildFilename(source, key);
 		return get(filename);
 		}
 
@@ -46,7 +85,7 @@ public class CacheManager
 		try
 			{
 			fin = new FileInputStream(filename);
-			ois = new ObjectInputStream(fin);
+			ois = new CustomClassloaderObjectInputStream(fin, classLoader);
 			return ois.readObject();
 			}
 		catch (FileNotFoundException e)
@@ -99,7 +138,8 @@ public class CacheManager
 	 */
 	public static void put(Object source, String key, Object o)
 		{
-		String filename = EnvironmentUtils.getCacheRoot() + source.getClass().getCanonicalName() + File.separator + key;
+
+		String filename = buildFilename(source, key);
 
 		File cacheFile = new File(filename);
 		cacheFile.getParentFile().mkdirs();
@@ -194,7 +234,7 @@ public class CacheManager
 
 	public static <K, V> Map<K, V> getAccumulatingMap(Object source, String key, Map<K, V> prototype)
 		{
-		String filename = EnvironmentUtils.getCacheRoot() + source.getClass().getCanonicalName() + File.separator + key;
+		String filename = buildFilename(source, key);
 
 		AccumulatingMap<K, V> result = accumulatingMaps.get(filename);
 		if (result == null)
@@ -206,26 +246,44 @@ public class CacheManager
 		return result;
 		}
 
-	public static void syncAccumulatingMaps()
+	private static String buildFilename(Object source, String key)
 		{
-		for (AccumulatingMap accumulatingMap : accumulatingMaps.values())
+		String className = source.getClass().getCanonicalName();
+
+		//deal with classnames like edu.berkeley.compbio.ncbitaxonomy.NcbiTaxonomyServiceImpl$$EnhancerByCGLIB$$8a577667
+
+		int i = className.indexOf('$');
+		if (i >= 0)
 			{
-			accumulatingMap.mergeToDisk();
+			className = className.substring(0, i);
 			}
+		return EnvironmentUtils.getCacheRoot() + className + File.separator + key;
 		}
 
-	private static class AccumulatingMap<K, V> extends HashMap<K, V>
-		{
-		public void finalize()
-			{
-			mergeToDisk();
 
+	private static class AccumulatingMap<K, V> extends HashMap<K, V> implements Serializable
+		{
+		protected void finalize() throws Throwable
+			{
 			// we'll only reach this point when this object is being removed from the weak map anyway
-			//accumulatingMaps.remove(filename);
+			// accumulatingMaps.remove(filename);
+			try
+				{
+				mergeToDisk();
+				}
+			catch (Throwable e)
+				{
+				logger.error(e);
+				}
+			finally
+				{
+				super.finalize();
+				}
 			}
 
-		Set<K> alteredKeys = new HashSet<K>();
-		private String filename;
+
+		transient Set<K> alteredKeys = new HashSet<K>();
+		transient private String filename;
 
 		public AccumulatingMap(String filename)
 			{
@@ -259,8 +317,13 @@ public class CacheManager
 
 		public void mergeToDisk()
 			{
-			if (!alteredKeys.isEmpty())
+			if (alteredKeys.isEmpty())
 				{
+				logger.warn("AccumulatingMap did not change: " + filename);
+				}
+			else
+				{
+				logger.warn("Writing AccumulatingMap: " + filename);
 
 				FileOutputStream fout = null;
 				ObjectOutputStream oos = null;
@@ -271,6 +334,7 @@ public class CacheManager
 					{
 					// prepare a new file and lock it
 					File cacheFile = new File(filename + ".new");
+					cacheFile.getParentFile().mkdirs();
 					fout = new FileOutputStream(cacheFile);
 					channel = fout.getChannel();
 					lock = channel.lock();
@@ -278,15 +342,42 @@ public class CacheManager
 					// load the latest version, without locking
 					Map<K, V> theMap = (Map<K, V>) CacheManager.get(filename);
 
-					// merge in the new data
-					defensiveBidirectionalSync(theMap);
+					if (theMap == null)
+						{
+						// it seems inefficient to copy the whole map before writing it out, but this way it's a clean HashMap
+						//theMap = new HashMap<K,V>();
 
-					// write the merged map
+						// no problem, just write it as av AccumulatingMap
+						theMap = this;
+						}
+					else
+						{
+						// merge the local changes into the disk version
+						defensiveBidirectionalSync(theMap);
+						}
+
+					// write the merged map (or just this, if this is the first time)
 					oos = new ObjectOutputStream(fout);
 					oos.writeObject(theMap);
 
-					// great, it's done
-					clearAlteredKeys();
+					// replace the old file with the new one
+					File oldFile = new File(filename);
+					if (oldFile.delete())
+						{
+						if (cacheFile.renameTo(oldFile))
+							{
+							// great, it's done
+							clearAlteredKeys();
+							}
+						else
+							{
+							logger.warn("Can't rename merged cached file " + cacheFile + " to " + oldFile);
+							}
+						}
+					else
+						{
+						logger.warn("Can't delete existing cache: " + oldFile);
+						}
 					}
 				catch (FileNotFoundException e)
 					{
@@ -349,7 +440,7 @@ public class CacheManager
 				}
 			}
 
-		private void defensiveBidirectionalSync(Map<K, V> theMap)
+		private void defensiveBidirectionalSync(@NotNull Map<K, V> theMap)
 			{
 			for (K alteredKey : alteredKeys)
 				{
