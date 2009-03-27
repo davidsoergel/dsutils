@@ -17,6 +17,8 @@ public abstract class StringMapper<T>
 
 	public abstract String render(T value);
 
+	//** basicTypes should be split into parserForTypes and rendererForTypes, since they're different
+
 	public abstract Type[] basicTypes();
 
 	public String renderAbbreviated(T s)

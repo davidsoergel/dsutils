@@ -102,15 +102,15 @@ public class CacheManager
 			}
 		catch (FileNotFoundException e)
 			{
-			logger.debug("Cache not found: " + filename, e);
+			logger.debug("Cache not found: " + filename + ", " + e.getMessage());
 			}
 		catch (IOException e)
 			{// no problem
-			logger.warn("Error reading cache: " + filename, e);
+			logger.warn("Error reading cache: " + filename + ", " + e.getMessage());
 			}
 		catch (ClassNotFoundException e)
 			{// no problem
-			logger.warn("Error reading cache: " + filename, e);
+			logger.warn("Error reading cache: " + filename + ", " + e.getMessage());
 			}
 		finally
 			{
@@ -302,7 +302,7 @@ public class CacheManager
 			try
 				{
 				// when we reload a serialized instance, the transient values are null
-				// we copied out what we needed anyway though, so there's no need to merge 
+				// we copied out what we needed anyway though, so there's no need to merge
 				if (filename != null)
 					{
 					mergeToDisk();
