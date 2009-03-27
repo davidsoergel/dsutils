@@ -293,17 +293,23 @@ public class CacheManager
 
 	private static class AccumulatingMap<K, V> extends HashMap<K, V> implements Serializable
 		{
+		private static final long serialVersionUID = 20090326L;
+
 		protected void finalize() throws Throwable
 			{
 			// we'll only reach this point when this object is being removed from the weak map anyway
 			// accumulatingMaps.remove(filename);
 			try
 				{
-				mergeToDisk();
+				// when we reload a serialized instance, the transient values are null
+				// we copied out what we needed anyway though, so there's no need to merge 
+				if (filename != null)
+					{
+					mergeToDisk();
+					}
 				}
 			catch (Throwable e)
 				{
-
 				logger.error("Error", e);
 				}
 			finally
@@ -320,11 +326,12 @@ public class CacheManager
 			{
 			this.filename = filename;
 
-			Map<K, V> theMap = (Map<K, V>) CacheManager.get(filename);
+			Map<K, V> theMap = (Map<K, V>) CacheManager.getFromFile(filename);
 			if (theMap != null)
 				{
-				super.putAll(theMap); // avoid messing with alteredKeys
+				super.putAll(theMap); // too bad we have to copy
 				}
+			//clearAlteredKeys();
 			}
 
 		@Override
@@ -341,7 +348,7 @@ public class CacheManager
 			super.putAll(map);
 			}
 
-		public void clearAlteredKeys()
+		private void clearAlteredKeys()
 			{
 			alteredKeys = new HashSet<K>();
 			}
@@ -378,7 +385,7 @@ public class CacheManager
 						// it seems inefficient to copy the whole map before writing it out, but this way it's a clean HashMap
 						//theMap = new HashMap<K,V>();
 
-						// no problem, just write it as av AccumulatingMap
+						// no problem, just write it as an AccumulatingMap
 						theMap = this;
 						}
 					else
@@ -393,7 +400,7 @@ public class CacheManager
 
 					// replace the old file with the new one
 					File oldFile = new File(filename);
-					if (oldFile.delete())
+					if (!oldFile.exists() || oldFile.delete())
 						{
 						if (cacheFile.renameTo(oldFile))
 							{
