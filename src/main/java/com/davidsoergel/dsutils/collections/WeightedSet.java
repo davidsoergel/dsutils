@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -160,4 +161,6 @@ public interface WeightedSet<T> //extends Map<T, Double>
 	T getDominantKey();
 
 	List<Double> weightsInDecreasingOrder();
+
+	public void retainKeys(Collection<T> okKeys);
 	}

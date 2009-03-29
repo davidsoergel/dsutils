@@ -36,6 +36,7 @@ import com.google.common.collect.Multiset;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -348,6 +349,22 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		List<Double> result = new ArrayList<Double>(backingMap.values());
 		Collections.sort(result, Collections.reverseOrder());
 		return result;
+		}
+
+	public void retainKeys(Collection<T> okKeys)
+		{
+		Map<T, Double> limitedMap = backingMap;
+		for (T okKey : okKeys)
+			{
+			Double val = backingMap.get(okKey);
+			if (val != null)
+				{
+				limitedMap.put(okKey, val);
+				}
+			}
+		backingMap = limitedMap;
+		// leave the item count the same
+
 		}
 
 	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)
