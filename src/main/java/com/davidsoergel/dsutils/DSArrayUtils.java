@@ -774,4 +774,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return 0;
 		}
+
+	public static double[] toPrimitiveArray(Collection<Double> c)
+		{
+		double[] result = new double[c.size()];
+		int i = 0;
+		for (Double d : c)
+			{
+			result[i] = d;
+			i++;
+			}
+		return result;
+		}
 	}
