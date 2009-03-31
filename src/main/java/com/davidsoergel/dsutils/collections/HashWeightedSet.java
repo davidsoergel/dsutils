@@ -357,7 +357,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		for (T okKey : okKeys)
 			{
 			Double val = backingMap.get(okKey);
-			if (val != null)
+			if (val != null && !val.equals(0.0))
 				{
 				limitedMap.put(okKey, val);
 				}

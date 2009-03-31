@@ -334,6 +334,11 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return new HashSet<T>(Arrays.asList(things));
 		}
 
+	public static <T> List<T> listOf(T... things)
+		{
+		return new ArrayList<T>(Arrays.asList(things));  // copy so that we return a mutable array
+		}
+
 	public static <K, V> boolean isEqualMap(Map<K, V> mapA, Map<K, V> mapB)
 		{
 		if (mapA.size() != mapB.size())
