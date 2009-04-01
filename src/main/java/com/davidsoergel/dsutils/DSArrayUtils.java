@@ -353,10 +353,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	public static double sum(Collection<Double> a)
 		{
-		int result = 0;
-		for (double i : a)
+		double result = 0.0;
+		for (double d : a)
 			{
-			result += i;
+			result += d;
 			}
 		return result;
 		}
