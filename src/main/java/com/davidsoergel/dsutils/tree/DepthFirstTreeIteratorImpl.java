@@ -77,7 +77,7 @@ public class DepthFirstTreeIteratorImpl<T, I extends HierarchyNode<T, I>> implem
 	 * Returns the next element in the iteration.  Calling this method repeatedly until the {@link #hasNext()} method
 	 * returns false will return each element in the underlying collection exactly once.
 	 *
-	 * @return the next element in the iteration.
+	 * @return the next element in the iteration
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
