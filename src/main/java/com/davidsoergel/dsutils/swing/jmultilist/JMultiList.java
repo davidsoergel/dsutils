@@ -102,7 +102,7 @@ public class JMultiList<T> extends JPanel
 			jlist = new JList(list.toArray());
 			jlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			jlist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			jlist.setVisibleRowCount(2); //list.size());
+			jlist.setVisibleRowCount((int) Math.sqrt(list.size())); //list.size());
 			jlist.setCellRenderer(renderer);
 
 			jlist.addListSelectionListener(new ListSelectionListener()
