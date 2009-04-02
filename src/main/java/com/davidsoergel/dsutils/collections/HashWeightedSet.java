@@ -233,7 +233,9 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return backingMap.get(key) / (double) itemCount;
 		}
 
-	public Map<T, Double> getItemNormalizedMap()
+	public
+	@NotNull
+	Map<T, Double> getItemNormalizedMap()
 		{
 		if (itemCount == 0)
 			{
@@ -353,7 +355,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 
 	public void retainKeys(Collection<T> okKeys)
 		{
-		Map<T, Double> limitedMap = backingMap;
+		Map<T, Double> limitedMap = new HashMap<T, Double>();
 		for (T okKey : okKeys)
 			{
 			Double val = backingMap.get(okKey);
