@@ -20,6 +20,7 @@ public class IntDoubleMapReader
 		try
 			{
 			String line;
+			int i = 0;
 			while ((line = br.readLine()) != null)
 				{
 				line = line.trim();
@@ -28,9 +29,17 @@ public class IntDoubleMapReader
 					continue;
 					}
 				String[] numbers = line.split("[ ,\t]+");
-				Integer key = new Integer(numbers[0]);
-				Double value = new Double(numbers[1]);
-				result.put(key, value);
+				try
+					{
+					Integer key = new Integer(numbers[0]);
+					Double value = new Double(numbers[1]);
+					result.put(key, value);
+					i++;
+					}
+				catch (NumberFormatException e)
+					{
+					throw new NumberFormatException("Could not read line " + i + " of " + filename + ": " + line);
+					}
 				}
 			return result;
 			}
