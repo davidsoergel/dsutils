@@ -1,8 +1,11 @@
 package com.davidsoergel.dsutils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,9 +19,24 @@ public class StringSetIntMapReader
 	{
 	public static Map<String, Set<Integer>> read(String filename) throws IOException
 		{
+		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
+		//ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+
+		//URL res1 = classClassLoader.getResource(filename);
+		URL res = threadClassLoader.getResource(filename);
+		if (res == null)
+			{
+			File f = new File(filename);
+			if (f.exists())
+				{
+				res = new URL("file://" + filename);
+				}
+			}
+		InputStream is = res.openStream();
+
 		Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
 			{
 			String line;
