@@ -356,4 +356,21 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 
 		return true;
 		}
+
+
+	public static boolean allElementsEqual(Collection list, Object o)
+		{
+		if (list == null)
+			{
+			return o == null;
+			}
+		for (Object p : list)
+			{
+			if (!p.equals(o))
+				{
+				return false;
+				}
+			}
+		return true;
+		}
 	}
