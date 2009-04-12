@@ -44,7 +44,7 @@ public class StringSetIntMapReader
 			while ((line = br.readLine()) != null)
 				{
 				line = line.trim();
-				if (line.isEmpty())
+				if (line.equals("")) //line.isEmpty())   // JDK 1.5 compatibility
 					{
 					continue;
 					}

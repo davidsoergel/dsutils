@@ -21,7 +21,7 @@ public class BooleanArrayMapper extends StringMapper<Boolean[]>
 
 	public Boolean[] parse(String s) throws StringMapperException
 		{
-		if (s == null || s.trim().isEmpty())
+		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
 			return null;
 			}

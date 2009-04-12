@@ -33,7 +33,7 @@ public class ClassMapper extends StringMapper<Class>
 
 	public Class parse(String s) throws StringMapperException
 		{
-		if (s == null || s.trim().isEmpty())
+		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
 			throw new StringMapperException("Empty plugin class name");
 			}

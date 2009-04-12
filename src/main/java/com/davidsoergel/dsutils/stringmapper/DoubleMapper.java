@@ -18,7 +18,7 @@ public class DoubleMapper extends StringMapper<Double>
 
 	public Double parse(String s)
 		{
-		if (s == null || s.trim().isEmpty())
+		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
 			return null;
 			}

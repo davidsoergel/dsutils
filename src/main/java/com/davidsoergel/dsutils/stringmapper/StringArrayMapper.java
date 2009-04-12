@@ -19,7 +19,7 @@ public class StringArrayMapper extends StringMapper<String[]>
 
 	public String[] parse(String s)
 		{
-		if (s == null || s.trim().isEmpty())
+		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
 			return new String[0];
 			}
