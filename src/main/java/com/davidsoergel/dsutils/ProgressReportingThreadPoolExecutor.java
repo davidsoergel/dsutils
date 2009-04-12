@@ -20,6 +20,8 @@ public class ProgressReportingThreadPoolExecutor extends ThreadPoolExecutor
 		      TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		}
 
+	//Collection<Future> futures = new HashSet<Future>();
+
 	public void finish(String s, int reportEveryNSeconds)
 		{
 		shutdown();
@@ -40,4 +42,12 @@ public class ProgressReportingThreadPoolExecutor extends ThreadPoolExecutor
 			}
 		logger.debug(String.format(s, getCompletedTaskCount()));
 		}
+
+	/*@Override
+	public Future<?> submit(Runnable task)
+		{
+		Future<?> fut = super.submit(task);
+		futures.add(fut);
+		return fut;
+		}*/
 	}

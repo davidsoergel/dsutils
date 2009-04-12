@@ -95,15 +95,30 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return weightSum;
 		}
 
+	private Integer initialCapacity = null;
+
+	public HashWeightedSet(int initialCapacity)
+		{
+		this.initialCapacity = initialCapacity;
+		itemCount = 0;
+		}
+
 	public HashWeightedSet()
 		{
-		super();
 		itemCount = 0;
 		}
 
 	public void clear()
 		{
-		backingMap = new HashMap<T, Double>();
+		if (initialCapacity == null)
+			{
+
+			backingMap = new HashMap<T, Double>();
+			}
+		else
+			{
+			backingMap = new HashMap<T, Double>(initialCapacity);
+			}
 		itemCount = 0;
 		weightSum = 0;
 		}
