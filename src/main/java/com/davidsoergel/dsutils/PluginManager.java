@@ -78,10 +78,10 @@ public class PluginManager<T>
 	 * Note plugins are registered only within a thread!
 	 */
 
-	public static <T> void registerPackage(String packagename, Type T) throws IOException
+	public static <T> void registerPackage(String packagename, Type T, Incrementable incrementor) throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
-		m.registerPackage(packagename);
+		m.registerPackage(packagename, incrementor);
 		}
 
 	public static <T> PluginManager<T> getManagerForInterface(Type T)
@@ -209,9 +209,8 @@ public class PluginManager<T>
 				}
 			else
 				{
-				String name =
-						theInterface instanceof Class ? ((Class) theInterface).getSimpleName() : theInterface.toString()
-						;
+				String name = theInterface instanceof Class ? ((Class) theInterface).getSimpleName() :
+						theInterface.toString();
 				throw new PluginException(
 						"Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org.apache.commons
 								.lang.StringUtils.join(classes.keySet().iterator(), "\n"));
@@ -220,7 +219,7 @@ public class PluginManager<T>
 		return result;
 		}
 
-	public void registerPackage(String packagename) throws IOException
+	public void registerPackage(String packagename, Incrementable incrementor) throws IOException
 		{
 		if (!registeredPackages.contains(packagename))
 			{
@@ -228,11 +227,11 @@ public class PluginManager<T>
 			List<Class> found;
 			if (theInterface instanceof Class)
 				{
-				found = SubclassFinder.findRecursive(packagename, (Class) theInterface);
+				found = SubclassFinder.findRecursive(packagename, (Class) theInterface, incrementor);
 				}
 			else if (theInterface instanceof ParameterizedType)
 				{
-				found = SubclassFinder.findRecursive(packagename, (ParameterizedType) theInterface);
+				found = SubclassFinder.findRecursive(packagename, (ParameterizedType) theInterface, incrementor);
 				}
 			else
 				{

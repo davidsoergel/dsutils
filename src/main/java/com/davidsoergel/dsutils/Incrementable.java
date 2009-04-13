@@ -9,4 +9,8 @@ public interface Incrementable
 	public void increment();
 
 	void setMaximum(int i);
+
+	void setNote(String n);
+
+	void incrementMaximum(int length);
 	}

@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils.stringmapper;
 
+import com.davidsoergel.dsutils.BasicIncrementable;
 import com.davidsoergel.dsutils.SubclassFinder;
 import com.davidsoergel.dsutils.TypeUtils;
 import org.apache.log4j.Logger;
@@ -92,7 +93,8 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		{
 		try
 			{
-			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class))
+			for (Class c : SubclassFinder
+					.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class, new BasicIncrementable()))
 				{
 				if (!c.equals(StringMapper.class) && TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{

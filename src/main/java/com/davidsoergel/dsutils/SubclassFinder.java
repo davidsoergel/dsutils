@@ -78,13 +78,14 @@ public class SubclassFinder
 	private static final Logger logger = Logger.getLogger(SubclassFinder.class);
 
 	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			//ClassLoader.getSystemClassLoader();
+	//ClassLoader.getSystemClassLoader();
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static List<Class> findRecursive(String pckgname, Class tosubclass) throws IOException
+	public static List<Class> findRecursive(String pckgname, Class tosubclass, Incrementable incrementor)
+			throws IOException
 		{
-		return find(pckgname, tosubclass, true, false, null);
+		return find(pckgname, tosubclass, true, false, null, incrementor);
 		}
 
 	public static void setClassLoader(ClassLoader classLoader)
@@ -99,17 +100,18 @@ public class SubclassFinder
 	 * @param tosubclass the Class object to inherit from
 	 */
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
-	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation)
-			throws IOException
+	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
+	                                Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null);
+		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null, incrementor);
 		}
 
-	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass) throws IOException
+	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass, Incrementable incrementor)
+			throws IOException
 		{
 		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
 		Class c = (Class) tosubclass.getRawType();
-		return find(pckgname, c, true, false, null, tosubclass);
+		return find(pckgname, c, true, false, null, tosubclass, incrementor);
 		}
 
 	/**
@@ -120,7 +122,8 @@ public class SubclassFinder
 	 */
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
-	                                ParameterizedType requiredParameterizedType) throws IOException
+	                                ParameterizedType requiredParameterizedType, Incrementable incrementor)
+			throws IOException
 		//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
@@ -163,55 +166,57 @@ public class SubclassFinder
 			URL url = (URL) e.nextElement();
 			logger.trace("Found resource: " + url);
 			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation,
-			                   requiredParameterizedType));
+			                   requiredParameterizedType, incrementor));
 			}
 		return result;
 		}
 
 	public static List<Class> findRecursive(String pckgname, Class tosubclass,
-	                                        Class<? extends Annotation> requiredAnnotation) throws IOException
+	                                        Class<? extends Annotation> requiredAnnotation, Incrementable incrementor)
+			throws IOException
 		{
-		return find(pckgname, tosubclass, true, false, requiredAnnotation);
+		return find(pckgname, tosubclass, true, false, requiredAnnotation, incrementor);
 		}
 
-	public static List<Class> find(String pckgname, Class tosubclass) throws IOException
+	public static List<Class> find(String pckgname, Class tosubclass, Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, false, false, null);
+		return find(pckgname, tosubclass, false, false, null, incrementor);
 		}
 
 
-	public static List<Class> find(String pckgname, ParameterizedType tosubclass) throws IOException
+	public static List<Class> find(String pckgname, ParameterizedType tosubclass, Incrementable incrementor)
+			throws IOException
 		{
 		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
 		Class c = (Class) tosubclass.getRawType();
-		return find(pckgname, c, false, false, null, tosubclass);
+		return find(pckgname, c, false, false, null, tosubclass, incrementor);
 		}
 
-	public static List<Class> find(String pckgname, Type tosubclass) throws IOException
+	public static List<Class> find(String pckgname, Type tosubclass, Incrementable incrementor) throws IOException
 		{
 		if (tosubclass instanceof Class)
 			{
-			return find(pckgname, (Class) tosubclass);
+			return find(pckgname, (Class) tosubclass, incrementor);
 			}
 
 		if (tosubclass instanceof ParameterizedType)
 			{
-			return find(pckgname, (ParameterizedType) tosubclass);
+			return find(pckgname, (ParameterizedType) tosubclass, incrementor);
 			}
 
 		throw new Error("Unknown Type: " + tosubclass);
 		}
 
 
-	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation)
-			throws IOException
+	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation,
+	                               Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, false, false, requiredAnnotation);
+		return find(pckgname, tosubclass, false, false, requiredAnnotation, incrementor);
 		}
 
 	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
 	                         Class<? extends Annotation> requiredAnnotation,
-	                         ParameterizedType requiredParameterizedType) throws IOException
+	                         ParameterizedType requiredParameterizedType, Incrementable incrementor) throws IOException
 		{
 		List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
@@ -243,6 +248,7 @@ public class SubclassFinder
 			logger.trace("Directory to check: " + directory);
 			// Get the list of the files contained in the package
 			String[] files = directory.list();
+			incrementor.incrementMaximum(files.length);
 			if (files == null)
 				{
 				//	File test = new File("/bin/sh");
@@ -252,6 +258,7 @@ public class SubclassFinder
 			logger.trace("Files to check: " + files.length);
 			for (int i = 0; i < files.length; i++)
 				{
+				incrementor.increment();
 				// we are only interested in directories and .class files
 				logger.trace("Checking: " + url.getFile() + "/" + files[i]);
 				if (recurse && new File(url.getFile() + "/" + files[i]).isDirectory())
@@ -262,7 +269,8 @@ public class SubclassFinder
 						{
 						result.addAll(
 								find(new URL(url.toString() + "/" + files[i]), pckgname + "." + files[i], tosubclass,
-								     recurse, includeInterfaces, requiredAnnotation, requiredParameterizedType));
+								     recurse, includeInterfaces, requiredAnnotation, requiredParameterizedType,
+								     incrementor));
 						}
 					catch (MalformedURLException e)
 						{
@@ -335,6 +343,7 @@ public class SubclassFinder
 				while (e.hasMoreElements())
 					{
 					ZipEntry entry = (ZipEntry) e.nextElement();
+					incrementor.increment();
 					String entryname = entry.getName();
 
 					logger.trace("Checking: " + entryname);
@@ -435,26 +444,29 @@ public class SubclassFinder
 		return result;
 		}
 
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
+	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass, Incrementable incrementor)
+			throws IOException
 		{
-		return find(pckgname, tosubclass, false, true, null);
+		return find(pckgname, tosubclass, false, true, null, incrementor);
 		}
 
 	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
-	                                                  Class<? extends Annotation> requiredAnnotation) throws IOException
+	                                                  Class<? extends Annotation> requiredAnnotation,
+	                                                  Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, false, true, requiredAnnotation);
+		return find(pckgname, tosubclass, false, true, requiredAnnotation, incrementor);
 		}
 
-	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass) throws IOException
+	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass,
+	                                                           Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, true, true, null);
+		return find(pckgname, tosubclass, true, true, null, incrementor);
 		}
 
 	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
-	                                                           Class<? extends Annotation> requiredAnnotation)
-			throws IOException
+	                                                           Class<? extends Annotation> requiredAnnotation,
+	                                                           Incrementable incrementor) throws IOException
 		{
-		return find(pckgname, tosubclass, true, true, requiredAnnotation);
+		return find(pckgname, tosubclass, true, true, requiredAnnotation, incrementor);
 		}
 	}// RTSI
