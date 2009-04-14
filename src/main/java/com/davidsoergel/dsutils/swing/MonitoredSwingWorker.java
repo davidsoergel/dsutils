@@ -63,7 +63,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 	public class Incrementor implements Incrementable
 		{
 		int i = 0;
-		private int total;
+		private int total = 0;
 
 		/*	public Incrementor(int total)
 			  {
@@ -100,6 +100,14 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 			{
 			firePropertyChange("note", oldNote, newNote);
 			oldNote = newNote;
+			}
+
+		public void resetWithNote(String s)
+
+			{
+			i = 0;
+			setProgress(0);
+			setNote(s);
 			}
 		}
 

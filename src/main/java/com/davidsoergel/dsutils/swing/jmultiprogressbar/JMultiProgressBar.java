@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.swing.jmultiprogressbar;
 
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -16,7 +17,10 @@ public class JMultiProgressBar extends JPanel implements PropertyChangeListener
 	public JMultiProgressBar()
 		{
 		//setAlignmentX(0);
-		//setLayout(new WrapLayout(FlowLayout.LEADING)); //new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		Dimension oneBar = new JProgressBar().getPreferredSize();
+
+		setPreferredSize(new Dimension(500, (int) oneBar.getHeight() * 6));
 		}
 
 	//java.util.List<SwingWorker> theWorkers = new LinkedList<SwingWorker>();
@@ -66,37 +70,43 @@ public class JMultiProgressBar extends JPanel implements PropertyChangeListener
 		public void run()
 			{
 			SwingWorker sw = (SwingWorker) evt.getSource();
-			JProgressBar bar = theBars.get(sw);
-			JLabel label = theLabels.get(sw);
-			if (bar == null)
+			if (sw.isDone())
 				{
-				label = new JLabel("");
-				theLabels.put(sw, label);
-				add(label);
-
-				bar = new JProgressBar(0, 100);
-				//theWorkers.add(sw);
-				theBars.put(sw, bar);
-				add(bar);
+				remove(sw);
+				revalidate();
+				repaint();
 				}
-
-			if ("progress" == evt.getPropertyName())
+			else
 				{
-				int value = (Integer) evt.getNewValue();
-				bar.setValue(value);
-				bar.setIndeterminate(value == 0);
-				}
-			if ("note" == evt.getPropertyName())
-				{
-				String note = (String) evt.getNewValue();
-				label.setText(note);
-				}
-			if ("state" == evt.getPropertyName())
-				{
-				SwingWorker.StateValue state = (SwingWorker.StateValue) evt.getNewValue();
-				if (state == SwingWorker.StateValue.DONE)
+				JProgressBar bar = theBars.get(sw);
+				JLabel label = theLabels.get(sw);
+				if (bar == null && !sw.isDone())
 					{
-					remove(sw);
+					label = new JLabel("");
+					theLabels.put(sw, label);
+					add(label);
+
+					bar = new JProgressBar(0, 100);
+					//theWorkers.add(sw);
+					theBars.put(sw, bar);
+					add(bar);
+					revalidate();
+					repaint();
+					}
+
+				if ("progress" == evt.getPropertyName())
+					{
+					int value = (Integer) evt.getNewValue();
+					bar.setValue(value);
+					bar.setIndeterminate(value == 0);
+					//revalidate(); // unnecessary
+					}
+				if ("note" == evt.getPropertyName())
+					{
+					String note = (String) evt.getNewValue();
+					label.setText(note);
+					revalidate();
+					repaint();
 					}
 				}
 			}
