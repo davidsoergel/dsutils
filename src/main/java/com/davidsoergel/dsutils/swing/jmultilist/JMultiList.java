@@ -3,7 +3,6 @@ package com.davidsoergel.dsutils.swing.jmultilist;
 
 import com.davidsoergel.dsutils.stringmapper.StringMapper;
 import com.davidsoergel.dsutils.stringmapper.TypedValueStringMapper;
-import com.davidsoergel.dsutils.swing.WrapLayout;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -24,10 +23,12 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class JMultiList<T> extends JPanel
+public class JMultiList<T> extends JPanel implements Scrollable
 	{
 	private static final Logger logger = Logger.getLogger(JMultiList.class);
 	protected MultiListModel<T> model;
+
+	int maxRows = 10;
 
 
 	public JMultiList() //throws NullPointerException, IllegalArgumentException
@@ -35,8 +36,9 @@ public class JMultiList<T> extends JPanel
 		logger.warn("Init Size: " + getSize());
 		logger.warn("Init Preferred Size: " + getPreferredSize());
 		model = new DefaultMultiListModel();
+
 		setAlignmentX(0);
-		setLayout(new WrapLayout(FlowLayout.LEADING)); //new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));  //(new WrapLayout(FlowLayout.LEADING)); //
 		}
 
 	public void setLists(Map<T, Collection> lists)
@@ -46,15 +48,30 @@ public class JMultiList<T> extends JPanel
 		model.setLists(lists);
 
 		removeAll();
+		int width = 0;
 		for (Map.Entry<T, Collection> entry : model.getLists().entrySet())
 			{
 			JNamedList listRow = new JNamedList(entry.getKey(), entry.getValue());
 			//listRow.addChangeListener(model);
 			listRow.setAlignmentX(0);
 			add(listRow);
+
+			width += listRow.getPreferredSize().getWidth();
+			}
+
+		if (lists.isEmpty())
+			{
+			setPreferredSize(new Dimension(0, 0));
+			}
+		else
+			{
+			int height = (int) getPreferredSize().getHeight();
+
+			setPreferredSize(new Dimension(width, height));
 			}
 		logger.warn("Mid Size: " + getSize());
 		logger.warn("Mid Preferred Size: " + getPreferredSize());
+
 		revalidate();
 		logger.warn("New Preferred Size: " + getPreferredSize());
 		logger.warn("New Size: " + getSize());
@@ -102,7 +119,12 @@ public class JMultiList<T> extends JPanel
 			jlist = new JList(list.toArray());
 			jlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			jlist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			jlist.setVisibleRowCount((int) Math.sqrt(list.size())); //list.size());
+
+			int rows = Math.max(maxRows, list.size());
+			int cols = list.size() / rows + 1;
+			rows = list.size() / cols;
+
+			jlist.setVisibleRowCount(rows);  //(int) Math.sqrt(list.size()))
 			jlist.setCellRenderer(renderer);
 
 			jlist.addListSelectionListener(new ListSelectionListener()
@@ -119,7 +141,7 @@ public class JMultiList<T> extends JPanel
 
 			setPreferredSize(preferredSize);
 			*/
-			//setLayout(new FlowLayout());
+			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			add(jlabel);
 			add(jlist);
 			}
@@ -193,5 +215,30 @@ public class JMultiList<T> extends JPanel
 			setOpaque(true);
 			return this;
 			}
+		}
+
+	public Dimension getPreferredScrollableViewportSize()
+		{
+		return getPreferredSize();
+		}
+
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
+		{
+		return 1;
+		}
+
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction)
+		{
+		return 10;
+		}
+
+	public boolean getScrollableTracksViewportWidth()
+		{
+		return false;
+		}
+
+	public boolean getScrollableTracksViewportHeight()
+		{
+		return true;
 		}
 	}
