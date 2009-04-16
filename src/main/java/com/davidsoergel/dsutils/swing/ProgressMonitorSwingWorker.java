@@ -55,6 +55,13 @@ public abstract class ProgressMonitorSwingWorker<A, B> extends SwingWorker<A, B>
 			firePropertyChange("note", oldNote, newNote);
 			oldNote = newNote;
 			}
+
+		public void resetWithNote(String s)
+			{
+			i = 0;
+			setNote(s);
+			setProgress(0);
+			}
 		}
 
 	ProgressMonitor pm;

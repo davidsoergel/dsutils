@@ -94,6 +94,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 			total += more;
 			}
 
+
 		String oldNote = "";
 
 		public void setNote(String newNote)
@@ -115,6 +116,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 		{
 		//monitor.update(this, 0, text);
 		addPropertyChangeListener(monitor);
+		setProgress(0);
 		execute();
 		}
 	}

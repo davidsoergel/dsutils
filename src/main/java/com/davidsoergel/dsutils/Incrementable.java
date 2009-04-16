@@ -13,4 +13,6 @@ public interface Incrementable
 	void setNote(String n);
 
 	void incrementMaximum(int length);
+
+	void resetWithNote(String s);
 	}

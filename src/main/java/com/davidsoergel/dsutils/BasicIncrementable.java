@@ -29,4 +29,9 @@ public class BasicIncrementable implements Incrementable
 		{
 		return i;
 		}
+
+	public void resetWithNote(String s)
+		{
+		i = 0;
+		}
 	}
