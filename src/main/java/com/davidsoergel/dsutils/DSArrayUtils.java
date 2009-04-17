@@ -351,16 +351,6 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double sum(Collection<Double> a)
-		{
-		double result = 0.0;
-		for (double d : a)
-			{
-			result += d;
-			}
-		return result;
-		}
-
 	public static double sum(double[][] a)
 		{
 		return sumFirstNColumns(a, a[0].length);

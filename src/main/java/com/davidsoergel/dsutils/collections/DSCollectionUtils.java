@@ -373,4 +373,25 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		return true;
 		}
+
+
+	public static double sum(Iterable<Double> a)
+		{
+		double result = 0.0;
+		for (double d : a)
+			{
+			result += d;
+			}
+		return result;
+		}
+/*
+	public static double sum(Iterable<Integer> a)
+		{
+		double result = 0.0;
+		for (double d : a)
+			{
+			result += d;
+			}
+		return result;
+		}*/
 	}
