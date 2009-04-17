@@ -75,7 +75,14 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 			i++;
 			if (total != 0)
 				{
-				setProgress(100 * i / total);
+				int p = 100 * i / total;
+				if (p > 100)
+					{
+					// avoid throwing an exception that breaks the process
+					logger.warn("progress counter exceeds maximum");
+					p = 100;
+					}
+				setProgress(p);
 				}
 			else
 				{
