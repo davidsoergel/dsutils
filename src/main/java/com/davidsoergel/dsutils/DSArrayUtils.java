@@ -776,4 +776,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return result;
 		}
+
+	public static boolean allValuesAreNumeric(double[] value)
+		{
+		for (double v : value)
+			{
+			if (Double.isInfinite(v) || Double.isNaN(v))
+				{
+				return false;
+				}
+			}
+		return true;
+		}
 	}
