@@ -20,7 +20,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 	private static JMultiProgressBarFrame monitorFrame;
 	public static JMultiProgressBar monitor;
 
-	static
+	public static void init()
 		{
 		if (SwingUtilities.isEventDispatchThread())
 			{
