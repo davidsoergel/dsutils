@@ -432,4 +432,29 @@ public class MathUtils
 		{
 		return extendedGCD(x, y)[2];
 		}
+
+	// running mean is obvious; running stddev from http://en.wikipedia.org/wiki/Standard_deviation
+
+	public static double runningMean(int sampleCount, double priorMean, double value)
+		{
+		double d = sampleCount;  // cast only once
+		return priorMean + (value - priorMean) / d;
+		}
+
+	public static double runningStddevQ(int sampleCount, double priorQ, double value)
+		{
+		double d = value - priorQ;
+		return priorQ + ((sampleCount - 1) * d * d / sampleCount);
+		}
+
+	public static double[] runningStddevQtoStddev(double[] stddevQ, int sampleCount)
+		{
+		double[] result = new double[stddevQ.length];
+		double d = sampleCount;  // cast only once
+		for (int i = 0; i < result.length; i++)
+			{
+			result[i] = Math.sqrt(stddevQ[i] / d);
+			}
+		return result;
+		}
 	}
