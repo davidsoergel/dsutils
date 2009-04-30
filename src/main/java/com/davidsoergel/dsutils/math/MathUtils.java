@@ -441,9 +441,9 @@ public class MathUtils
 		return priorMean + (value - priorMean) / d;
 		}
 
-	public static double runningStddevQ(int sampleCount, double priorQ, double value)
+	public static double runningStddevQ(int sampleCount, double priorMean, double priorQ, double value)
 		{
-		double d = value - priorQ;
+		double d = value - priorMean;
 		return priorQ + ((sampleCount - 1) * d * d / sampleCount);
 		}
 
