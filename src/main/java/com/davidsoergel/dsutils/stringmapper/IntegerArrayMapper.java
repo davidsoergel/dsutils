@@ -22,7 +22,7 @@ public class IntegerArrayMapper extends StringMapper<Integer[]>
 	public Integer[] parse(String s)
 		{
 		List<Integer> result = new ArrayList<Integer>();
-		for (String d : s.split(":"))
+		for (String d : s.split(","))
 			{
 			result.add(Integer.parseInt(d));
 			}
