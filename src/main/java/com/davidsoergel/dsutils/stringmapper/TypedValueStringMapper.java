@@ -93,6 +93,7 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		{
 		try
 			{
+			// Don't use PluginManager here; no need to allow other packages or to cache the results
 			for (Class c : SubclassFinder
 					.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class, new BasicIncrementable()))
 				{

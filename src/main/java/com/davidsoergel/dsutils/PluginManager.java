@@ -35,6 +35,9 @@ package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -52,7 +55,8 @@ import java.util.Set;
  * A clearinghouse for dynamically loaded plugin classes, i.e. classes that are not necessarily known at compile time
  * but which must be identified and instantiated at runtime.
  * <p/>
- * This may be redundant with other mechanisms for achieving the same thing...
+ * This may be redundant with other mechanisms for achieving the same thing, in particular the SubclassFinder.  This
+ * class basically wraps SubclassFinder and caches the results.
  *
  * @version $Id$
  */
@@ -62,8 +66,6 @@ public class PluginManager<T>
 
 	private static final Logger logger = Logger.getLogger(PluginManager.class);
 
-	//private static ThreadLocal<Map<Type, PluginManager>> _managers_tl = new ThreadLocal<Map<Type, PluginManager>>();
-
 	private static Map<Type, PluginManager> _managers = new HashMap<Type, PluginManager>();
 
 	private Type theInterface;
@@ -71,14 +73,44 @@ public class PluginManager<T>
 	private HashMap<String, Class> classes = new HashMap<String, Class>();
 	private HashMap<String, T> instances = new HashMap<String, T>();
 
+	private static Collection<String> defaultPackageNames;
 
-	// -------------------------- STATIC METHODS --------------------------
+	public static void setDefaultPackageNames(Collection<String> defaultPackageNames)
+		{
+		PluginManager.defaultPackageNames = defaultPackageNames;
+		}
 
-	/*
-	 * Note plugins are registered only within a thread!
-	 */
+	public static void setDefaultPackageNames(File defaultPackageNameFile) throws IOException
+		{
+		PluginManager.defaultPackageNames = new HashSet<String>();
+		BufferedReader br = new BufferedReader(new FileReader(defaultPackageNameFile));
+		for (String line = br.readLine(); line != null; line = br.readLine())
+			{
+			defaultPackageNames.add(line);
+			}
+		}
+// -------------------------- STATIC METHODS --------------------------
 
-	public static <T> void registerPackage(String packagename, Type T, Incrementable incrementor) throws IOException
+
+	public static <T> void registerPluginsFromDefaultPackages(Type T, Incrementable incrementor) throws IOException
+		{
+		if (defaultPackageNames == null || defaultPackageNames.isEmpty())
+			{
+			logger.error("Can't search for plugins of type " + T + ": no default search packages have been set");
+			}
+		PluginManager<T> m = getManagerForInterface(T);
+		m.registerPackages(defaultPackageNames, incrementor);
+		}
+
+	public static <T> void registerPluginsFromPackages(Type T, Collection<String> packagenames,
+	                                                   Incrementable incrementor) throws IOException
+		{
+		PluginManager<T> m = getManagerForInterface(T);
+		m.registerPackages(packagenames, incrementor);
+		}
+
+	public static <T> void registerPluginsFromPackage(Type T, String packagename, Incrementable incrementor)
+			throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackage(packagename, incrementor);
@@ -217,6 +249,14 @@ public class PluginManager<T>
 				}
 			}
 		return result;
+		}
+
+	public void registerPackages(Collection<String> packagenames, Incrementable incrementor) throws IOException
+		{
+		for (String packagename : packagenames)
+			{
+			registerPackage(packagename, incrementor);
+			}
 		}
 
 	public void registerPackage(String packagename, Incrementable incrementor) throws IOException
