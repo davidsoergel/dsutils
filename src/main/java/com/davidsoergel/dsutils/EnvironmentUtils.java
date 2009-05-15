@@ -21,7 +21,7 @@ public class EnvironmentUtils
 		//	init(propFile);
 		}
 
-	static String cacheRoot = "/tmp/";
+	static String cacheRoot = null; //"/tmp/";
 	//static String inputRoot;
 	//static String outputRoot;
 
@@ -46,6 +46,7 @@ public class EnvironmentUtils
 
 			if (cacheRoot == null)
 				{
+				logger.warn("No CACHEROOT set, using /tmp");
 				cacheRoot = "/tmp/";
 				}
 			}
@@ -76,6 +77,10 @@ public class EnvironmentUtils
 
 	public static String getCacheRoot()
 		{
+		if (cacheRoot == null)
+			{
+			throw new Error("EnvironmentUtils has not been initialized");
+			}
 		return cacheRoot;
 		}
 /*
