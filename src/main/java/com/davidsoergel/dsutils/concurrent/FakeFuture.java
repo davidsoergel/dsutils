@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.concurrent;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

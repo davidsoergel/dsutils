@@ -93,4 +93,9 @@ public class EnvironmentUtils
 		{
 		return outputRoot;
 		}*/
+
+	public static void setCacheRoot(String cacheRoot)
+		{
+		EnvironmentUtils.cacheRoot = cacheRoot;
+		}
 	}

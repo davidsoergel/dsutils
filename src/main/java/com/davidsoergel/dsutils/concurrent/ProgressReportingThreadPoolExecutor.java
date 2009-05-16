@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.concurrent;
 
 import org.apache.log4j.Logger;
 
