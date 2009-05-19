@@ -16,5 +16,5 @@ public interface TreeExecutorService //extends ExecutorService
 
 //	void submitTaskGroup(TaskGroup tg);
 
-	void shutdown();
+	ThreadPoolPerformanceStats shutdown();
 	}

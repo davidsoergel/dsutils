@@ -32,6 +32,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 	//** allow unbounded queue
 //	private Semaphore queueCount;  // need to do this manually because PriorityBlockingQueue is unbounded
 
+
 	public DepthFirstThreadPoolExecutor()
 		{
 		//int cpus = Runtime.getRuntime().availableProcessors();
@@ -40,14 +41,27 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		     Runtime.getRuntime().availableProcessors());  // *2 ?? should be enough to keep the threads busy, but no so much that we prematurely commit to execute low-priority tasks
 		}
 
+	private final TrackedThreadFactory threadFactory;
+
 	public DepthFirstThreadPoolExecutor(int threads, int queueSizePerTaskGroup)
 		{
+		if (threads == 0)
+			{
+			Runtime.getRuntime().availableProcessors();
+			}
+		if (queueSizePerTaskGroup == 0)
+			{
+			queueSizePerTaskGroup = threads;
+			}
 
 		this.queueSizePerTaskGroup = queueSizePerTaskGroup;
 
+		threadFactory = new TrackedThreadFactory();
+
 		//** unbounded queue...?  use queueSize?
 		underlyingExecutor = new ThreadPoolExecutor(threads, threads, 0L, TimeUnit.MILLISECONDS,
-		                                            new PriorityBlockingQueue<Runnable>());  // new LinkedBlockingQueue()); //
+		                                            new PriorityBlockingQueue<Runnable>(),
+		                                            threadFactory);  // new LinkedBlockingQueue()); //
 		//		queueCount = new Semaphore(queueSize);
 		underlyingExecutor
 				.prestartAllCoreThreads();  // this ensures that new tasks get queued rather than being executed immediately, so the queue has the opportunity to proioritize them
@@ -263,9 +277,12 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		submitAndWaitForAll(tasks.iterator());
 		}
 
-	public void shutdown()
+
+	public ThreadPoolPerformanceStats shutdown()
 		{
+		ThreadPoolPerformanceStats stats = threadFactory.getStats();
 		underlyingExecutor.shutdown();
+		return stats;
 		}
 
 	/**
@@ -312,8 +329,8 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 
 		//	boolean isWorkerThread = workers.contains(Thread.currentThread());  // can't do this because workers is private
 
-		boolean isWorkerThread =
-				Thread.currentThread().getName().contains("pool"); // ** lame workaround; should use ThreadGroup instead
+		boolean isWorkerThread = Thread.currentThread().getThreadGroup() == threadFactory.group;
+//						getGroup() getName().contains("pool"); // ** lame workaround; should use ThreadGroup instead
 
 		// detangle spaghetti by splitting the two cases
 		if (isWorkerThread)
