@@ -3,17 +3,10 @@ package com.davidsoergel.dsutils.concurrent;
 import com.davidsoergel.dsutils.DSArrayUtils;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -21,27 +14,135 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements TreeExecutorService
+public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 	{
 	private static final Logger logger = Logger.getLogger(DepthFirstThreadPoolExecutor.class);
 
-	/**
-	 * Keep track of the priority of the currently executing task on each thread.  Priorities are tree-structured: the
-	 * subtasks of a given task inherit the priority of their parent, but also may have internal order.
-	 */
-	ThreadLocal<int[]> _currentTaskPriority = new ThreadLocal<int[]>();
+
+	// we can't bound this one because a newly added task may turn out to have the highest priority
+//	private PriorityQueue<ComparableFutureTask> priorityQueue = new PriorityQueue<ComparableFutureTask>();
+
+	private ThreadPoolExecutor underlyingExecutor;
+	private int queueSizePerTaskGroup;
+
+
+	//private static final int DEFAULT_QUEUE_SIZE = 1000;
+
+
+	//** allow unbounded queue
+//	private Semaphore queueCount;  // need to do this manually because PriorityBlockingQueue is unbounded
 
 	public DepthFirstThreadPoolExecutor()
 		{
-		this(Runtime.getRuntime().availableProcessors());
+		//int cpus = Runtime.getRuntime().availableProcessors();
+		//int queueSize = cpus * 2;
+		this(Runtime.getRuntime().availableProcessors(),// - 1,  // account for callerRunsPolicy
+		     Runtime.getRuntime().availableProcessors());  // *2 ?? should be enough to keep the threads busy, but no so much that we prematurely commit to execute low-priority tasks
 		}
 
-	public DepthFirstThreadPoolExecutor(int threads)
+	public DepthFirstThreadPoolExecutor(int threads, int queueSizePerTaskGroup)
 		{
-		super(threads, threads, 0L, TimeUnit.MILLISECONDS, new PriorityBlockingQueue<Runnable>());
+
+		this.queueSizePerTaskGroup = queueSizePerTaskGroup;
+
+		//** unbounded queue...?  use queueSize?
+		underlyingExecutor = new ThreadPoolExecutor(threads, threads, 0L, TimeUnit.MILLISECONDS,
+		                                            new PriorityBlockingQueue<Runnable>());  // new LinkedBlockingQueue()); //
+		//		queueCount = new Semaphore(queueSize);
+		underlyingExecutor
+				.prestartAllCoreThreads();  // this ensures that new tasks get queued rather than being executed immediately, so the queue has the opportunity to proioritize them
+
+		// don't use CallerRunsPolicy, since we'll often end up with CPUs + 1 threads that way.
+		// instead we'll just block in execute() below
+
+		// ** unbounded queue
+		//underlyingExecutor.setRejectedExecutionHandler(new CallerRunsFromQueuePolicy());  // throttle requests on full queue
 		}
 
-	@Override
+	/**
+	 * A handler for rejected tasks that runs the rejected task directly in the calling thread of the <tt>execute</tt>
+	 * method, unless the executor has been shut down, in which case the task is discarded.
+	 */
+	private static class CallerRunsFromQueuePolicy implements RejectedExecutionHandler
+		{
+		/**
+		 * Creates a <tt>CallerRunsPolicy</tt>.
+		 */
+		public CallerRunsFromQueuePolicy()
+			{
+			}
+
+		/**
+		 * Executes task r in the caller's thread, unless the executor has been shut down, in which case the task is
+		 * discarded.
+		 *
+		 * @param r the runnable task requested to be executed
+		 * @param e the executor attempting to execute this task
+		 */
+		public void rejectedExecution(Runnable r, ThreadPoolExecutor e)
+			{
+			if (!e.isShutdown())
+				{
+				// run the highest-priority job...
+				Runnable queueJob = e.getQueue().poll();
+
+				// ...but don't forget the submitted one
+				e.execute(r);
+
+
+				logger.debug(
+						"Rejected " + DSArrayUtils.asString(((ComparableFutureTask) r).priority, ",") + ", running "
+						+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
+
+				if (queueJob != null)
+					{
+					queueJob.run();
+					}
+				}
+			}
+		}
+
+	/*	@Override
+	 protected void beforeExecute(Thread t, Runnable r)
+		 {
+		 // the task was pulled off the queue
+		 queueCount.release();
+
+		 super.beforeExecute(t, r);
+		 }
+ */
+
+
+//	public void submit(ComparableFutureTask ftask)
+//		{
+//		// submit this job to the queue
+//
+//		priorityQueue.add(ftask);
+//		// then perform the highest-priority job from the queue.  Recall CallerRunsFromQueuePolicy
+//		ComparableFutureTask highPriorityTask = priorityQueue.poll();
+//		logger.debug("Prioritizing " + DSArrayUtils.asString(ftask.priority, ",") + "; submitting " + DSArrayUtils
+//				.asString(highPriorityTask.priority, ","));
+//
+//		underlyingExecutor.execute(highPriorityTask);
+//
+//		/*// the task will be put on the queue
+//			queueCount.acquireUninterruptibly();  // block until the queue is not saturated
+//
+//		//	super.execute(command);
+//
+//		if (queueCount.tryAcquire())
+//			{
+//			super.execute(command);
+//			}
+//		else
+//			{
+//			//super.reject(command);
+//			assert !getQueue().isEmpty();
+//			getRejectedExecutionHandler().rejectedExecution(command, this);
+//			}*/
+//		}
+
+/*	@Override
 	protected <T> RunnableFuture<T> newTaskFor(Callable<T> tCallable)
 		{
 		return new ComparableFutureTask(tCallable, _currentTaskPriority.get());
@@ -53,26 +154,48 @@ public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements 
 		{
 		return super.newTaskFor(runnable, t);
 		}
-
+*/
 	/**
 	 * Indicate that the caller is running on this very thread pool, but that it is about to block waiting for other tasks
 	 * to complete on the same pool.  Since the worker thread will be idle, we want to increment the number of allowed
 	 * threads to keep the CPUs busy.
 	 */
-	private void waitingForChildren()
+/*	private synchronized void waitingForChildren()
 		{
-		setMaximumPoolSize(getMaximumPoolSize() + 1);
-		}
+		try
+			{
+			setMaximumPoolSize(getMaximumPoolSize() + 1);
+			}
+		catch (IllegalArgumentException e)
+			{
+			logger.error("Could not increment maximum pool size: " + getMaximumPoolSize(),e);
+			}
 
+		setCorePoolSize(getCorePoolSize() + 1);
+		// this ensures that new tasks get queued rather than being executed immediately, so the queue has the opportunity to proioritize them
+		prestartCoreThread();
+		}
+*/
 
 	/**
 	 * Indicate that the caller's children have all completed, so its thread will now continue; decrement the number of
 	 * allowed threads to account for this
 	 */
-	private void doneWaitingForChildren()
+/*	private synchronized void doneWaitingForChildren()
 		{
-		setMaximumPoolSize(getMaximumPoolSize() + 1);
+		setCorePoolSize(getCorePoolSize() - 1);
+
+		try
+			{
+			setMaximumPoolSize(getMaximumPoolSize() - 1);
+			}
+		catch (IllegalArgumentException e)
+			{
+			logger.error("Could not decrement maximum pool size: " + getMaximumPoolSize(),e);
+			}
+
 		}
+*/
 
 	/**
 	 * Submit a collection of tasks to the thread pool, and block until they complete.  Temporarily increments the maximum
@@ -83,9 +206,11 @@ public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements 
 	 * @param <T>
 	 * @return
 	 */
-	public <T> Collection<T> submitAndGetAll(Collection<Callable<T>> tasks) //, String format, int intervalSeconds)
+/*	public <T> Collection<T> submitAndGetAll(Iterable<Callable<T>> tasks) //, String format, int intervalSeconds)
 		{
 		Set<Future<T>> futures = new HashSet<Future<T>>();
+
+		//	waitingForChildren();  // must call this before the execute() calls
 
 		int[] p = _currentTaskPriority.get();
 
@@ -95,12 +220,10 @@ public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements 
 			{
 			// then start each successive task with a worse priority
 			subp++;
-			FutureTask<T> ftask = new ComparableFutureTask(task, DSArrayUtils.add(p, subp));
+			ComparableFutureTask<T> ftask = new ComparableFutureTask(task, DSArrayUtils.add(p, subp));
 			futures.add(ftask);
-			execute(ftask);
+			submit(ftask);  // may block if the underlying queue is full
 			}
-
-		waitingForChildren();
 
 		Set<T> result = new HashSet<T>();
 
@@ -122,62 +245,141 @@ public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements 
 			throw new Error(e);
 			}
 
-		doneWaitingForChildren();
+//		doneWaitingForChildren();
 
 		return result;
 		}
+*/
 
 	/**
-	 * Submit a collection of tasks to the thread pool, and block until they complete.  Temporarily increments the maximum
-	 * number of threads while blocking, to account for the case that the calling method was running on a worker thread of
-	 * this very pool.
+	 * Submit a collection of tasks to the thread pool, and block until they complete.  If the caller is running on a
+	 * worker thread of this very pool, then temporarily increments the maximum number of threads while blocking.
 	 *
 	 * @param tasks
 	 * @return
 	 */
-	public void submitAndWaitForAll(Collection<Runnable> tasks) //, String reportFormat, int reportEveryNSeconds)
+	public void submitAndWaitForAll(Iterable<Runnable> tasks) //, String reportFormat, int reportEveryNSeconds)
 		{
-		List<Future> futures = new ArrayList<Future>(tasks.size());
+		submitAndWaitForAll(tasks.iterator());
+		}
 
-		int[] p = _currentTaskPriority.get();
+	public void shutdown()
+		{
+		underlyingExecutor.shutdown();
+		}
 
-		int subp = 0;  // start the first task with the best priority
+	/**
+	 * Submit a collection of tasks to the pool.  Do not block until they complete, but run the TaskGroup's completed() callback then.
+	 * @param tg
+	 */
+	/*	public void submitTaskGroup(TaskGroup tg)
+		 {
+		 int[] currentTaskPriority = _currentTaskPriority.get();
 
-		for (Runnable task : tasks)
+ //			if (isWorkerThread)
+ //			  {
+ //			  logger.debug("Adding a thread while " + DSArrayUtils.asString(currentTaskPriority,",") + " suspends");
+ //			  waitingForChildren();  // must call this before the execute() calls
+ //			  }
+ //
+
+		 int subPriority = 0;  // start the first task with the best priority
+
+		 Iterator<Callable> tasks = tg.getTaskIterator();
+
+		 while (tasks.hasNext())
+			 {
+			 Callable task = tasks.next();
+			 // then start each successive task with a worse priority
+			 subPriority++;
+			 int[] s = DSArrayUtils.add(currentTaskPriority, subPriority);
+			 FutureTask ftask = new ComparableFutureTask(task, s, tg);
+			 tg.add(ftask);
+			 underlyingExecutor.execute(ftask);  // remember CallerRunsPolicy
+			 }
+		 }
+ */
+	/**
+	 * Submit a collection of tasks to the thread pool, and block until they complete.  If the caller is running on a
+	 * worker thread of this very pool, then temporarily increments the maximum number of threads while blocking.
+	 *
+	 * @param tasks
+	 * @return
+	 */
+	public void submitAndWaitForAll(Iterator<Runnable> tasks) //, String reportFormat, int reportEveryNSeconds)
+		{
+		TaskGroup taskGroup = new TaskGroup(tasks, queueSizePerTaskGroup); //, currentTaskPriority);
+
+		//	boolean isWorkerThread = workers.contains(Thread.currentThread());  // can't do this because workers is private
+
+		boolean isWorkerThread =
+				Thread.currentThread().getName().contains("pool"); // ** lame workaround; should use ThreadGroup instead
+
+		// detangle spaghetti by splitting the two cases
+		if (isWorkerThread)
 			{
-			// then start each successive task with a worse priority
-			subp++;
-			FutureTask ftask = new ComparableFutureTask(task, DSArrayUtils.add(p, subp));
-			futures.add(ftask);
-			execute(ftask);
+			submitAndWaitForAllFromWorkerThread(taskGroup);
+			}
+		else
+			{
+			submitAndWaitForAllFromNonWorkerThread(taskGroup);
+			}
+		}
+
+	private void submitAndWaitForAllFromWorkerThread(final TaskGroup taskGroup)
+		{
+		//** reporting missing
+
+		/*
+		  while (taskGroup.hasNext())
+			  {
+			  // instead of blocking while higher-priority tasks complete, go ahead and execute something
+			  while (!taskGroup.hasPermits())
+				  {
+				  runTaskFromQueue();
+				  }
+
+			  // ** need synchronized here?
+
+			  // now there are permits available, so this should not block
+			  ComparableFutureTask ftask = taskGroup.next();
+			  underlyingExecutor.execute(ftask);
+  }*/
+
+
+		while (taskGroup.hasNext())
+			{
+			// try to get a permit
+			ComparableFutureTask ftask = taskGroup.nextIfPermitAvailable();
+
+			// execute other tasks until a permit is available
+			while (taskGroup.hasNext() && ftask == null)
+				{
+				runTaskFromQueueOrSleep();
+				ftask = taskGroup.nextIfPermitAvailable();
+				}
+
+			// got one
+
+			// it should be impossible for the taskGroup to become exhausted since no one else should be draining it
+			assert ftask != null;
+			underlyingExecutor.execute(ftask);
 			}
 
-		waitingForChildren();
 
-		int doneCount = 0;
+		// now all the tasks have been enqueued, but we need to wait for them to finish
+
+		// instead of blocking while the tasks complete, go ahead and execute something
+		while (!taskGroup.isDone())
+			{
+			runTaskFromQueueOrSleep();
+			// if we just slept, cycle with this thread idle anyway... the taskGroup should be done soon enough
+			}
 
 		try
 			{
-			// request the futures in their priority order, so we don't block forever waiting for the last one
-			// ** alternatively maybe it's more efficient to block on the last one on purpose, but then we can't monitor progress as easily
-
-			//** reporting missing
-
-			for (Future future : futures)
-				{
-				future.get();
-				doneCount++;
-/*
-				if(secondsSinceLastReport >= reportEveryNSeconds)
-					{
-					logger.debug(String.format(reportFormat, doneCount));
-					secondsSin
-					}*/
-				}
-
-
-			//	logger.debug(String.format(reportFormat, doneCount));
-
+			// all tasks are already done, but we still need to report any exceptions
+			taskGroup.getAllExceptions();
 			}
 		catch (ExecutionException e)
 			{
@@ -189,56 +391,70 @@ public class DepthFirstThreadPoolExecutor extends ThreadPoolExecutor implements 
 			logger.error("Error", e);
 			throw new Error(e);
 			}
-
-		doneWaitingForChildren();
 		}
 
-
-	private class ComparableFutureTask<T> extends FutureTask<T> implements Comparable<ComparableFutureTask>
+	private void submitAndWaitForAllFromNonWorkerThread(final TaskGroup taskGroup)
 		{
-		int[] priority;
+		//** reporting missing
 
-		public ComparableFutureTask(Callable<T> tCallable, int[] priority)
+		while (taskGroup.hasNext())
 			{
-			super(tCallable);
-			this.priority = priority;
+			// block until a permit is available
+			ComparableFutureTask ftask = taskGroup.next();
+			underlyingExecutor.execute(ftask);
 			}
 
-		public ComparableFutureTask(Runnable tCallable, int[] priority)
-			{
-			super(tCallable, null);
-			this.priority = priority;
-			}
+		// now all the tasks have been enqueued, but we need to wait for them to finish
 
-		/**
-		 * Tree-structured comparison
-		 *
-		 * @param o
-		 * @return
-		 */
-		public int compareTo(ComparableFutureTask o)
+		try
 			{
-			for (int i = 0; i < i; i++)
+			// block until all tasks are done
+			taskGroup.blockUntilDone();
+			taskGroup.getAllExceptions();
+			}
+		catch (ExecutionException e)
+			{
+			logger.error("Error", e);
+			throw new Error(e);
+			}
+		catch (InterruptedException e)
+			{
+			logger.error("Error", e);
+			throw new Error(e);
+			}
+		}
+
+	/**
+	 * Careful: beforeExecute and afterExecute don't run this way
+	 */
+	private void runTaskFromQueueOrSleep() //TaskGroup taskGroup)
+		{
+		// BAD messing with the queue is "strongly discouraged"; does it work anyway?
+		ComparableFutureTask task = (ComparableFutureTask) underlyingExecutor.getQueue().poll();
+		if (task == null)
+			{
+			// workaround synchronization issue
+			// a moment ago the task group was not done, but now that the queue is empty, it must be done after all
+			//assert taskGroup.isDone();
+
+			// either there was a synchronization issue and the taskGroup really is done now,
+			// or there simply are no more tasks in the queue and we have to wait for other threads to complete the taskGroup
+
+			try
 				{
-				if (priority[i] < o.priority[i])
-					{
-					return -1;
-					}
-				if (priority[i] > o.priority[i])
-					{
-					return 1;
-					}
+				Thread.sleep(100);
 				}
-			return 0;
+			catch (InterruptedException e)
+				{
+				// no problem
+				}
 			}
-
-		@Override
-		public void run()
+		else
 			{
-			int[] lastPriority = _currentTaskPriority.get();
-			_currentTaskPriority.set(priority);
-			super.run();
-			_currentTaskPriority.set(lastPriority);
+			//underlyingExecutor.beforeExecute(task, getThread());
+			task.run();
+			//afterExecute
+			//	task.done();
 			}
 		}
 	}
