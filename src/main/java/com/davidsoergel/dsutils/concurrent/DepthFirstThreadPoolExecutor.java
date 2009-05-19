@@ -47,7 +47,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		{
 		if (threads == 0)
 			{
-			Runtime.getRuntime().availableProcessors();
+			threads = Runtime.getRuntime().availableProcessors();
 			}
 		if (queueSizePerTaskGroup == 0)
 			{
@@ -106,7 +106,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 
 				logger.debug(
 						"Rejected " + DSArrayUtils.asString(((ComparableFutureTask) r).priority, ",") + ", running "
-						+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
+								+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
 
 				if (queueJob != null)
 					{
