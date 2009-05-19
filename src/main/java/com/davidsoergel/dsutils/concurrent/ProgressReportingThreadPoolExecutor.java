@@ -14,10 +14,24 @@ public class ProgressReportingThreadPoolExecutor extends ThreadPoolExecutor
 	{
 	private static final Logger logger = Logger.getLogger(ProgressReportingThreadPoolExecutor.class);
 
+	public ProgressReportingThreadPoolExecutor(int threads, int queueSize)
+		{/*
+		if (threads == 0)
+			{
+			threads = Runtime.getRuntime().availableProcessors();
+			}
+		if (queueSize == 0)
+			{
+			queueSize = threads * 2;
+			}*/
+		super(threads == 0 ? Runtime.getRuntime().availableProcessors() : threads,
+		      queueSize == 0 ? Runtime.getRuntime().availableProcessors() * 2 : queueSize, 0L, TimeUnit.MILLISECONDS,
+		      new LinkedBlockingQueue<Runnable>());
+		}
+
 	public ProgressReportingThreadPoolExecutor()
 		{
-		super(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors(), 0L,
-		      TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+		this(0, 0);
 		}
 
 	//Collection<Future> futures = new HashSet<Future>();
