@@ -16,16 +16,16 @@ import java.util.concurrent.Semaphore;
  */
 class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implements Iterator<FutureTask>  // could be
 	{
-	private Set<ComparableFutureTask> futuresEnqueued = new HashSet<ComparableFutureTask>();
+	private final Set<ComparableFutureTask> futuresEnqueued = new HashSet<ComparableFutureTask>();
 
-	private Set<ComparableFutureTask> futuresDoneAwaitingResultCollection = new HashSet<ComparableFutureTask>();
+	private final Set<ComparableFutureTask> futuresDoneAwaitingResultCollection = new HashSet<ComparableFutureTask>();
 
-	public static ThreadLocal<int[]> _currentTaskPriority = new ThreadLocal<int[]>();
+	public final static ThreadLocal<int[]> _currentTaskPriority = new ThreadLocal<int[]>();
 
 	private int[] currentTaskPriority;
 	private int subPriority = 0;  // start the first task with the best priority
 
-	Semaphore outstandingTasks;
+	private final Semaphore outstandingTasks;
 
 	protected TaskGroup(final Iterator<Runnable> taskIterator, int queueSize) //, int[] currentTaskPriority)
 		{
@@ -41,7 +41,10 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 	 */
 	public synchronized boolean isDone()
 		{
-		return futuresEnqueued.isEmpty() && !super.hasNext();
+		synchronized (futuresEnqueued)
+			{
+			return futuresEnqueued.isEmpty() && !super.hasNext();
+			}
 		}
 
 	public void blockUntilDone() throws ExecutionException, InterruptedException
@@ -96,14 +99,17 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 			}
 		}
 
-	public synchronized ComparableFutureTask function(final Runnable task)
+	public ComparableFutureTask function(final Runnable task)
 		{
-		// then start each successive task with a worse priority
-		int[] s = DSArrayUtils.add(currentTaskPriority, subPriority);
-		ComparableFutureTask ftask = new ComparableFutureTask(task, s, this);
-		futuresEnqueued.add(ftask);
-		subPriority++;
-		return ftask;
+		synchronized (futuresEnqueued)
+			{
+			// then start each successive task with a worse priority
+			int[] s = DSArrayUtils.add(currentTaskPriority, subPriority);
+			ComparableFutureTask ftask = new ComparableFutureTask(task, s, this);
+			futuresEnqueued.add(ftask);
+			subPriority++;
+			return ftask;
+			}
 		}
 
 	public ComparableFutureTask next()
@@ -144,13 +150,16 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 		return outstandingTasks.availablePermits() > 0;
 		}
 
-	public synchronized void reportDone(final ComparableFutureTask task)
+	public void reportDone(final ComparableFutureTask task)
 		{
-		if (!futuresEnqueued.remove(task))
+		synchronized (futuresEnqueued)
 			{
-			throw new ThreadingException("Can't report a task complete on the wrong TaskGroup");
+			if (!futuresEnqueued.remove(task))
+				{
+				throw new ThreadingException("Can't report a task complete on the wrong TaskGroup");
+				}
+			futuresDoneAwaitingResultCollection.add(task);
+			outstandingTasks.release();
 			}
-		futuresDoneAwaitingResultCollection.add(task);
-		outstandingTasks.release();
 		}
 	}
