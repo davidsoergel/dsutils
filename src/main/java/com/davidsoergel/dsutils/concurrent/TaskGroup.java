@@ -51,10 +51,15 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 		// slightly weird to avoid ConcurrentModificationException
 		while (!futuresEnqueued.isEmpty())
 			{
-			FutureTask future = futuresEnqueued.iterator().next();
+			FutureTask future;
+			synchronized (futuresEnqueued)
+				{
+				future = futuresEnqueued.iterator().next();
+				}
 			if (future != null)
 				{
 				future.get();  // this removes the task from futuresEnqueued, via reportDone, so we'll get a different one the next time around
+				Thread.sleep(10);
 				}
 /*
 			Iterator<ComparableFutureTask> futuresEnqueuedIterator = futuresEnqueued.iterator();
