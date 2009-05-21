@@ -38,7 +38,8 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		//int cpus = Runtime.getRuntime().availableProcessors();
 		//int queueSize = cpus * 2;
 		this(Runtime.getRuntime().availableProcessors(),// - 1,  // account for callerRunsPolicy
-		     Runtime.getRuntime().availableProcessors());  // *2 ?? should be enough to keep the threads busy, but no so much that we prematurely commit to execute low-priority tasks
+		     Runtime.getRuntime().availableProcessors()
+		     * 2);  // *2 ?? should be enough to keep the threads busy, but not so much that we prematurely commit to execute low-priority tasks
 		}
 
 	private final TrackedThreadFactory threadFactory;
@@ -106,7 +107,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 
 				logger.debug(
 						"Rejected " + DSArrayUtils.asString(((ComparableFutureTask) r).priority, ",") + ", running "
-								+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
+						+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
 
 				if (queueJob != null)
 					{
