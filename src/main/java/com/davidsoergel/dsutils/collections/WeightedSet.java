@@ -63,11 +63,19 @@ public interface WeightedSet<T> //extends Map<T, Double>
 	 *
 	 * @param increment
 	 */
-	void add(T key, double increment);
+
+/*	void add(T key, double increment);
 
 	void incrementItems();
 
 	void decrementItems();
+*/
+
+	void add(Map<T, Double> weights);
+
+	void add(Map<T, Double> weights, int items);
+
+	void add(T key, double increment, int items);
 
 
 	/**
@@ -140,7 +148,7 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	//int size();
 
-	double getWeightSum();
+	//double getWeightSum();
 
 	Set<T> keySet();
 

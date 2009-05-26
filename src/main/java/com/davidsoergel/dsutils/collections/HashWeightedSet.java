@@ -59,7 +59,9 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	Map<T, Double> backingMap = new HashMap<T, Double>();
 
 	private int itemCount = 0;
-	private double weightSum = 0;
+
+	//private double weightSum = 0;
+
 	// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 	// note the itemCount is different from the sum of the weights
 
@@ -90,11 +92,11 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	public double getWeightSum()
+	/*public double getWeightSum()
 		{
 		return weightSum;
 		}
-
+*/
 	private Integer initialCapacity = null;
 
 	public HashWeightedSet(int initialCapacity)
@@ -120,7 +122,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			backingMap = new HashMap<T, Double>(initialCapacity);
 			}
 		itemCount = 0;
-		weightSum = 0;
+		//	weightSum = 0;
 		}
 
 	/*	@Override
@@ -154,7 +156,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 				val = 0.;
 				}
 			val = val + entry.getValue();
-			weightSum += entry.getValue();
+			//weightSum += entry.getValue();
 
 			backingMap.put(entry.getKey(), val);
 			}
@@ -172,7 +174,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 				}
 			final Double d = entry.getValue() * weight;
 			val = val + d;
-			weightSum += d;
+			//weightSum += d;
 
 			backingMap.put(entry.getKey(), val);
 			}
@@ -189,13 +191,13 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 				val = 0.;
 				}
 			val = val - entry.getValue();
-			weightSum -= entry.getValue();
+			//weightSum -= entry.getValue();
 
 			backingMap.put(entry.getKey(), val);
 			}
 		}
 
-	public void add(T key, double addVal)
+	private void add(T key, double addVal)
 		{
 		Double val = backingMap.get(key);
 
@@ -204,11 +206,11 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			val = 0.;
 			}
 		val = val + addVal;
-		weightSum += addVal;
+		//weightSum += addVal;
 
 		backingMap.put(key, val);
 		}
-
+/*
 	public void incrementItems()
 		{
 		itemCount++;
@@ -217,6 +219,28 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	public void decrementItems()
 		{
 		itemCount--;
+		}
+		*/
+
+	public void add(final Map<T, Double> weights)
+		{
+		add(weights, 1);
+		}
+
+	public void add(final Map<T, Double> weights, final int items)
+		{
+		for (Map.Entry<T, Double> entry : weights.entrySet())
+			{
+			add(entry.getKey(), entry.getValue() * items);
+			}
+
+		itemCount += items;
+		}
+
+	public void add(final T key, final double increment, final int items)
+		{
+		add(key, increment * items);
+		itemCount += items;
 		}
 
 	public void remove(T key, double remVal)
@@ -229,7 +253,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 
 		val = val - remVal;
-		weightSum -= remVal;
+		//weightSum -= remVal;
 
 		backingMap.put(key, val);
 		}
@@ -409,6 +433,6 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			{
 			entry.setValue(entry.getValue() * multiplier);
 			}
-		weightSum *= multiplier;
+		//weightSum *= multiplier;
 		}
 	}

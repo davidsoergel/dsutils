@@ -185,7 +185,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			// If that turns out to make the count less than it needs to be, then we'll throw the appropriate exception below.
 			if (!l.isEmpty())
 				{
-				counts.add(l.get(0), 1);
+				counts.add(l.get(0), 1, 1);
 				}
 			}
 		T result = counts.getDominantKey();
