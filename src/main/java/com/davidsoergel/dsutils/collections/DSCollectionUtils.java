@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils.collections;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.math.MersenneTwisterFast;
+import com.google.common.base.Function;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,12 +147,22 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		}
 
-	public static <K, V> Collection<V> mapAll(Map<K, V> m, Iterable<K> keys)
+	public static <K, V> Set<V> mapAll(Map<K, V> m, Iterable<K> keys)
 		{
-		Set result = new HashSet<V>();
+		Set<V> result = new HashSet<V>();
 		for (K key : keys)
 			{
 			result.add(m.get(key));
+			}
+		return result;
+		}
+
+	public static <K, V> Set<V> mapAll(Function<K, V> f, Iterable<K> keys)
+		{
+		Set<V> result = new HashSet<V>();
+		for (K key : keys)
+			{
+			result.add(f.apply(key));
 			}
 		return result;
 		}
@@ -394,4 +405,9 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		return result;
 		}*/
+
+	public static <T> Set<T> intersectionSet(Collection<T> a, Collection<T> b)
+		{
+		return new HashSet<T>(intersection(a, b));
+		}
 	}
