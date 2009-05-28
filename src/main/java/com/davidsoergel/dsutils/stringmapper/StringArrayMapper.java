@@ -12,9 +12,7 @@ public class StringArrayMapper extends StringMapper<String[]>
 	{
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				String[].class
-		};
+		return new Type[]{String[].class};
 		}
 
 	public String[] parse(String s)
@@ -24,11 +22,13 @@ public class StringArrayMapper extends StringMapper<String[]>
 			return new String[0];
 			}
 		//List<Double> result = new ArrayList<String>();
-		return s.split(",");
+		String[] result = s.split(",");
+		DSStringUtils.trimAll(result);
+		return result;
 		}
 
 	public String render(String[] value)
 		{
-		return DSStringUtils.join(value, ",");
+		return DSStringUtils.join(value, ", ");
 		}
 	}

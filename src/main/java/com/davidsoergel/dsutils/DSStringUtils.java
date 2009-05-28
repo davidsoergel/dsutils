@@ -456,4 +456,12 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 		 return sb.toString();
 		 }
  */
+
+	public static void trimAll(final String[] result)
+		{
+		for (int i = 0; i < result.length; i++)
+			{
+			result[i] = result[i].trim();
+			}
+		}
 	}
