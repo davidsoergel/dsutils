@@ -65,6 +65,26 @@ public class CacheManager
 			}
 		}
 
+
+	private static String hashAndVerify(final Object source, final String idString)
+		{
+		String idHash = String.valueOf(idString.hashCode());
+		String cachedString = (String) get(source, idHash + ".idString");
+
+		if (cachedString == null)  // idstring file didn't exist
+			{
+			CacheManager.put(source, idHash + ".idString", idString); // just to test for hash collisions
+			}
+		else if (!cachedString.equals(idString))
+			{
+			throw new Error("Hashcode collision, this is highly unlikely");
+			}
+
+		return idHash;
+		}
+
+	private static final int MAX_KEY_LENGTH = 100;
+
 	/**
 	 * Load a serialized object from disk
 	 *
@@ -74,6 +94,11 @@ public class CacheManager
 	 */
 	public static Object get(Object source, String key)
 		{
+		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
+			{
+			key = hashAndVerify(source, key);
+			}
+
 		String filename = buildFilename(source, key);
 		return getFromFile(filename);
 		}
@@ -163,6 +188,11 @@ public class CacheManager
 	 */
 	public static void put(Object source, String key, Object o)
 		{
+		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
+			{
+			key = hashAndVerify(source, key);
+			}
+
 		String filename = buildFilename(source, key);
 		putToFile(filename, o);
 		}
@@ -260,8 +290,13 @@ public class CacheManager
 
 	static ConcurrentMap<String, AccumulatingMap> accumulatingMaps = new MapMaker().weakValues().makeMap();
 
-	public static <K, V> Map<K, V> getAccumulatingMap(Object source, String key, Map<K, V> prototype)
+	public static <K, V> Map<K, V> getAccumulatingMap(Object source, String key) //, Map<K, V> prototype)
 		{
+		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
+			{
+			key = hashAndVerify(source, key);
+			}
+
 		String filename = buildFilename(source, key);
 
 		AccumulatingMap<K, V> result = accumulatingMaps.get(filename);
