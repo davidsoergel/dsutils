@@ -176,5 +176,8 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	List<Double> weightsInDecreasingOrder();
 
-	public void retainKeys(Collection<T> okKeys);
+	// void retainKeys(Collection<T> okKeys);
+
+
+	WeightedSet<T> extractWithKeys(Collection<T> okKeys);
 	}

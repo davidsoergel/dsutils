@@ -431,7 +431,21 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return result;
 		}
 
-	public void retainKeys(Collection<T> okKeys)
+	// dangerous: not immutable
+
+	/*	public void retainKeys(Collection<T> okKeys)
+		 {
+		 backingMap = limitBackingMap(okKeys);
+		 // leave the item count the same
+		 }
+ */
+	public WeightedSet<T> extractWithKeys(Collection<T> okKeys)
+		{
+		// leave the item count the same
+		return new HashWeightedSet<T>(limitBackingMap(okKeys), itemCount);
+		}
+
+	private Map<T, Double> limitBackingMap(Collection<T> okKeys)
 		{
 		Map<T, Double> limitedMap = new HashMap<T, Double>();
 		for (T okKey : okKeys)
@@ -442,9 +456,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 				limitedMap.put(okKey, val);
 				}
 			}
-		backingMap = limitedMap;
-		// leave the item count the same
-
+		return limitedMap;
 		}
 
 	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)
