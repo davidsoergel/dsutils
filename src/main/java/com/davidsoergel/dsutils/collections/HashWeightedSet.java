@@ -210,6 +210,11 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 
 		backingMap.put(key, val);
 		}
+
+	private void put(T key, double val)
+		{
+		backingMap.put(key, val);
+		}
 /*
 	public void incrementItems()
 		{
@@ -241,6 +246,40 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		{
 		add(key, increment * items);
 		itemCount += items;
+		}
+
+	public void put(final Map<T, Double> weights)
+		{
+		put(weights, 1);
+		}
+
+	public void put(final Map<T, Double> weights, final int items)
+		{
+		for (Map.Entry<T, Double> entry : weights.entrySet())
+			{
+			put(entry.getKey(), entry.getValue() * items);
+			}
+		if (itemCount == 0)
+			{
+			itemCount = items;
+			}
+		else if (itemCount != items)
+			{
+			throw new CollectionRuntimeException("Can't update a HashWeightedSet with a different number of items");
+			}
+		}
+
+	public void put(final T key, final double increment, final int items)
+		{
+		put(key, increment * items);
+		if (itemCount == 0)
+			{
+			itemCount = items;
+			}
+		else if (itemCount != items)
+			{
+			throw new CollectionRuntimeException("Can't update a HashWeightedSet with a different number of items");
+			}
 		}
 
 	public void remove(T key, double remVal)
@@ -427,6 +466,8 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return result;
 		}
 
+	// dangerous: doesn't update itemCount
+	/*
 	public void multiplyBy(double multiplier)
 		{
 		for (Map.Entry<T, Double> entry : backingMap.entrySet())
@@ -434,5 +475,5 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			entry.setValue(entry.getValue() * multiplier);
 			}
 		//weightSum *= multiplier;
-		}
+		}*/
 	}

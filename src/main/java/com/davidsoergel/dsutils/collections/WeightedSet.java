@@ -73,9 +73,15 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	void add(Map<T, Double> weights);
 
+	void put(Map<T, Double> weights);
+
 	void add(Map<T, Double> weights, int items);
 
+	void put(Map<T, Double> weights, int items);
+
 	void add(T key, double increment, int items);
+
+	void put(T key, double val, int items);
 
 
 	/**
@@ -158,7 +164,7 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	//void multiplyBy(int multiplier);
 
-	void multiplyBy(double multiplier);
+//	void multiplyBy(double multiplier);
 
 	//Map<String, Double> getBackingMap();
 
