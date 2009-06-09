@@ -535,6 +535,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static double[] castToDouble(float[] p)
+		{
+		double[] result = new double[p.length];
+		for (int i = 0; i < p.length; i++)
+			{
+			result[i] = p[i];
+			}
+		return result;
+		}
+
 	/**
 	 * returns a new byte[] containing the first i characters of s.
 	 *
