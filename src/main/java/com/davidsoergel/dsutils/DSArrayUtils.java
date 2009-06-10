@@ -787,6 +787,18 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static int[] toPrimitiveArray(Collection<Integer> c)
+		{
+		int[] result = new int[c.size()];
+		int i = 0;
+		for (Integer d : c)
+			{
+			result[i] = d;
+			i++;
+			}
+		return result;
+		}
+
 	public static boolean allValuesAreNumeric(double[] value)
 		{
 		for (double v : value)

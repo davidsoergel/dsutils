@@ -20,6 +20,13 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 	private static JMultiProgressBarFrame monitorFrame;
 	public static JMultiProgressBar monitor;
 
+	String initialNote;
+
+	protected MonitoredSwingWorker(final String initialNote)
+		{
+		this.initialNote = initialNote;
+		}
+
 	public static void init()
 		{
 		if (SwingUtilities.isEventDispatchThread())
@@ -124,6 +131,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 		//monitor.update(this, 0, text);
 		addPropertyChangeListener(monitor);
 		setProgress(0);
+		incrementor.setNote(initialNote);
 		execute();
 		}
 	}
