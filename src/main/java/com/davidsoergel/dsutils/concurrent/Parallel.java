@@ -57,18 +57,21 @@ public class Parallel
 			{
 			public void run()
 				{
+
+				T o;
 				try
 					{
-					T o;
-					try
-						{
-						o = iter.next();
-						}
-					catch (NoSuchElementException e)
-						{
-						hasNext = false;
-						throw e;
-						}
+					o = iter.next();
+					}
+				catch (NoSuchElementException e)
+					{
+					// happens all the time due to concurrency, no problem
+					hasNext = false;
+					throw e;
+					}
+
+				try
+					{
 					performAction(o);
 					}
 				catch (Throwable e)
