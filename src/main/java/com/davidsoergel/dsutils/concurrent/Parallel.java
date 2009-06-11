@@ -67,7 +67,7 @@ public class Parallel
 					{
 					// happens all the time due to concurrency, no problem
 					hasNext = false;
-					throw e;
+					return;
 					}
 
 				try
