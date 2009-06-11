@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils.concurrent;
 import com.davidsoergel.dsutils.collections.NextOnlyIterator;
 import com.davidsoergel.dsutils.collections.NextOnlyIteratorAsNormalIterator;
 import com.google.common.base.Function;
+import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,6 +14,8 @@ import java.util.NoSuchElementException;
  */
 public class Parallel
 	{
+	private static final Logger logger = Logger.getLogger(Parallel.class);
+
 	public static <T> void forEach(NextOnlyIterator<T> tasks, final Function<T, Void> function)
 		{
 		forEach(new NextOnlyIteratorAsNormalIterator<T>(tasks), function);
@@ -54,17 +57,24 @@ public class Parallel
 			{
 			public void run()
 				{
-				T o;
 				try
 					{
-					o = iter.next();
+					T o;
+					try
+						{
+						o = iter.next();
+						}
+					catch (NoSuchElementException e)
+						{
+						hasNext = false;
+						throw e;
+						}
+					performAction(o);
 					}
-				catch (NoSuchElementException e)
+				catch (Throwable e)
 					{
-					hasNext = false;
-					throw e;
+					logger.error("Error", e);
 					}
-				performAction(o);
 				}
 			};
 			}
