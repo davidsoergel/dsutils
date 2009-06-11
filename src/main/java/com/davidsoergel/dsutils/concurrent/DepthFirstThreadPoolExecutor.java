@@ -18,6 +18,16 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 	{
 	private static final Logger logger = Logger.getLogger(DepthFirstThreadPoolExecutor.class);
 
+	private static DepthFirstThreadPoolExecutor _instance = null;
+
+	public static DepthFirstThreadPoolExecutor getInstance()
+		{
+		if (_instance == null)
+			{
+			_instance = new DepthFirstThreadPoolExecutor();
+			}
+		return _instance;
+		}
 
 	// we can't bound this one because a newly added task may turn out to have the highest priority
 //	private PriorityQueue<ComparableFutureTask> priorityQueue = new PriorityQueue<ComparableFutureTask>();
@@ -52,7 +62,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			}
 		if (queueSizePerTaskGroup == 0)
 			{
-			queueSizePerTaskGroup = threads;
+			queueSizePerTaskGroup = threads * 2;
 			}
 
 		this.queueSizePerTaskGroup = queueSizePerTaskGroup;
@@ -317,6 +327,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			 }
 		 }
  */
+
 	/**
 	 * Submit a collection of tasks to the thread pool, and block until they complete.  If the caller is running on a
 	 * worker thread of this very pool, then temporarily increments the maximum number of threads while blocking.
