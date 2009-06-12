@@ -89,4 +89,9 @@ public class Parallel
 
 		public abstract void performAction(T o);
 		}
+
+	public static void shutdown()
+		{
+		DepthFirstThreadPoolExecutor.getInstance().shutdown();
+		}
 	}
