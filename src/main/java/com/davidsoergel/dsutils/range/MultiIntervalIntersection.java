@@ -76,7 +76,7 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 		//	SortedMap<T, Integer> openEndpointMap = new TreeMap<T, Integer>();
 
 		Set<T> excludedEndpoints = new HashSet<T>();
-		Multiset<T> includedEndpoints = new HashMultiset<T>();
+		Multiset<T> includedEndpoints = HashMultiset.create();
 
 		int numberOfConstraints = intervalSets.size();
 		for (Set<U> intervalSet : intervalSets)

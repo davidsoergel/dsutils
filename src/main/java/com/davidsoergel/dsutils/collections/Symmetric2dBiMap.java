@@ -32,8 +32,8 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -63,7 +63,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	//private V smallestValue;
 	//private KeyPair<K> keyPairWithSmallestValue;
 
-	private Multimap<K, KeyPair<K>> keyToKeyPairs = Multimaps.newHashMultimap();
+	private Multimap<K, KeyPair<K>> keyToKeyPairs = HashMultimap.create();
 
 	private Map<KeyPair<K>, V> keyPairToValue = new HashMap<KeyPair<K>, V>();
 
