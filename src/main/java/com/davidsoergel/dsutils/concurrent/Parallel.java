@@ -70,14 +70,15 @@ public class Parallel
 					return;
 					}
 
-				try
-					{
-					performAction(o);
-					}
-				catch (Throwable e)
-					{
-					logger.error("Error", e);
-					}
+				//		try
+				//			{
+				performAction(
+						o); // exceptions are thrown from DepthFirstThneadPoolIterator wrapped in RuntimeExecutionException and ExecutionException
+				/*			}
+			   catch (Throwable e)
+				   {
+				   logger.error("Error", e);
+				   }*/
 				}
 			};
 			}

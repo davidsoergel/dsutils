@@ -413,12 +413,12 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		catch (ExecutionException e)
 			{
 			logger.error("Error", e);
-			throw new Error(e);
+			throw new RuntimeExecutionException(e);
 			}
 		catch (InterruptedException e)
 			{
 			logger.error("Error", e);
-			throw new Error(e);
+			throw new RuntimeExecutionException(e);
 			}
 		}
 
