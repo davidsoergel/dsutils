@@ -160,7 +160,7 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	SortedSet<T> keysInDecreasingWeightOrder();
 
-	SortedSet<T> keysInDecreasingWeightOrder(Comparator secondarySort);
+	SortedSet<T> keysInDecreasingWeightOrder(Comparator<T> secondarySort);
 
 	//void multiplyBy(int multiplier);
 

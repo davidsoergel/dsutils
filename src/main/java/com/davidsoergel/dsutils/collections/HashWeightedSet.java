@@ -46,6 +46,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A WeightedSet backed by a HashMap.  Note this is not thread-safe in any way (i.e., it does not use AtomicInteger and
@@ -56,7 +57,7 @@ import java.util.TreeSet;
  */
 public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, Double>
 	{
-	Map<T, Double> backingMap = new HashMap<T, Double>();
+	private Map<T, Double> backingMap = new ConcurrentHashMap<T, Double>();
 
 	private int itemCount = 0;
 
@@ -65,28 +66,31 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 	// note the itemCount is different from the sum of the weights
 
-	public HashWeightedSet(Map<? extends T, Double> map, int items)
+	public HashWeightedSet(final Map<? extends T, Double> map, final int items)
 		{
+		this.initialCapacity = 16;
 		itemCount = items;
-		for (Map.Entry<? extends T, Double> entry : map.entrySet())
+		for (final Map.Entry<? extends T, Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
 			}
 		}
 
-	public HashWeightedSet(Map<? extends T, Double> map)
+	public HashWeightedSet(final Map<? extends T, Double> map)
 		{
+		this.initialCapacity = 16;
 		itemCount = 1;
-		for (Map.Entry<? extends T, Double> entry : map.entrySet())
+		for (final Map.Entry<? extends T, Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
 			}
 		}
 
-	public HashWeightedSet(Multiset<T> m)
+	public HashWeightedSet(final Multiset<T> m)
 		{
+		this.initialCapacity = 16;
 		itemCount = m.size();
-		for (T o : m.elementSet())
+		for (final T o : m.elementSet())
 			{
 			add(o, m.count(o));
 			}
@@ -97,9 +101,9 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return weightSum;
 		}
 */
-	private Integer initialCapacity = null;
+	private final Integer initialCapacity;
 
-	public HashWeightedSet(int initialCapacity)
+	public HashWeightedSet(final int initialCapacity)
 		{
 		this.initialCapacity = initialCapacity;
 		itemCount = 0;
@@ -107,22 +111,17 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 
 	public HashWeightedSet()
 		{
+		this.initialCapacity = 16;
 		itemCount = 0;
 		}
 
-	public void clear()
+	public synchronized void clear()
 		{
-		if (initialCapacity == null)
-			{
+		backingMap = new HashMap<T, Double>(initialCapacity);
 
-			backingMap = new HashMap<T, Double>();
-			}
-		else
-			{
-			backingMap = new HashMap<T, Double>(initialCapacity);
-			}
 		itemCount = 0;
 		//	weightSum = 0;
+
 		}
 
 	/*	@Override
@@ -145,10 +144,10 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		 }
  */
 
-	public void addAll(WeightedSet<T> increment)
+	public synchronized void addAll(final WeightedSet<T> increment)
 		{
 		itemCount += increment.getItemCount();
-		for (Map.Entry<T, Double> entry : increment.entrySet())
+		for (final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
@@ -162,10 +161,10 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	public void addAll(WeightedSet<T> increment, double weight)
+	public synchronized void addAll(final WeightedSet<T> increment, final double weight)
 		{
 		itemCount += increment.getItemCount();
-		for (Map.Entry<T, Double> entry : increment.entrySet())
+		for (final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
@@ -180,10 +179,10 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	public void removeAll(WeightedSet<T> increment)
+	public synchronized void removeAll(final WeightedSet<T> increment)
 		{
 		itemCount -= increment.getItemCount();
-		for (Map.Entry<T, Double> entry : increment.entrySet())
+		for (final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
@@ -197,7 +196,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	private void add(T key, double addVal)
+	private void add(final T key, final double addVal)
 		{
 		Double val = backingMap.get(key);
 
@@ -211,7 +210,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		backingMap.put(key, val);
 		}
 
-	private void put(T key, double val)
+	private void put(final T key, final double val)
 		{
 		backingMap.put(key, val);
 		}
@@ -227,14 +226,14 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		}
 		*/
 
-	public void add(final Map<T, Double> weights)
+	public synchronized void add(final Map<T, Double> weights)
 		{
 		add(weights, 1);
 		}
 
-	public void add(final Map<T, Double> weights, final int items)
+	public synchronized void add(final Map<T, Double> weights, final int items)
 		{
-		for (Map.Entry<T, Double> entry : weights.entrySet())
+		for (final Map.Entry<T, Double> entry : weights.entrySet())
 			{
 			add(entry.getKey(), entry.getValue() * items);
 			}
@@ -242,20 +241,20 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		itemCount += items;
 		}
 
-	public void add(final T key, final double increment, final int items)
+	public synchronized void add(final T key, final double increment, final int items)
 		{
 		add(key, increment * items);
 		itemCount += items;
 		}
 
-	public void put(final Map<T, Double> weights)
+	public synchronized void put(final Map<T, Double> weights)
 		{
 		put(weights, 1);
 		}
 
-	public void put(final Map<T, Double> weights, final int items)
+	public synchronized void put(final Map<T, Double> weights, final int items)
 		{
-		for (Map.Entry<T, Double> entry : weights.entrySet())
+		for (final Map.Entry<T, Double> entry : weights.entrySet())
 			{
 			put(entry.getKey(), entry.getValue() * items);
 			}
@@ -269,7 +268,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	public void put(final T key, final double increment, final int items)
+	public synchronized void put(final T key, final double increment, final int items)
 		{
 		put(key, increment * items);
 		if (itemCount == 0)
@@ -282,7 +281,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			}
 		}
 
-	public void remove(T key, double remVal)
+	public synchronized void remove(final T key, final double remVal)
 		{
 		Double val = backingMap.get(key);
 
@@ -306,12 +305,12 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	 * @param key
 	 * @return
 	 */
-	public double getNormalized(T key)
+	public synchronized double getNormalized(final T key)
 		{
 		return backingMap.get(key) / (double) itemCount;
 		}
 
-	public
+	public synchronized
 	@NotNull
 	Map<T, Double> getItemNormalizedMap()
 		{
@@ -319,9 +318,9 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 			{
 			throw new NoSuchElementException("Can't normalize an empty HashWeightedSet");
 			}
-		Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
-		double dEntries = (double) itemCount;
-		for (Map.Entry<T, Double> entry : entrySet())
+		final Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
+		final double dEntries = (double) itemCount;
+		for (final Map.Entry<T, Double> entry : entrySet())
 			{
 			result.put(entry.getKey(), entry.getValue() / dEntries);
 			}
@@ -357,11 +356,11 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		}*/
 
 
-	public T getDominantKeyInSet(@NotNull Set<T> keys)
+	public T getDominantKeyInSet(@NotNull final Set<T> keys)
 		{
 		Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
-		for (Map.Entry<T, Double> entry : entrySet())
+		for (final Map.Entry<T, Double> entry : entrySet())
 			{
 			if (keys.contains(entry.getKey()))
 				{
@@ -383,7 +382,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		{
 		Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
-		for (Map.Entry<T, Double> entry : entrySet())
+		for (final Map.Entry<T, Double> entry : entrySet())
 			{
 			if (result == null || entry.getValue() > result.getValue())
 				{
@@ -402,7 +401,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return backingMap.entrySet();
 		}
 
-	public double get(T s)
+	public double get(final T s)
 		{
 		final Double d = backingMap.get(s);
 
@@ -426,7 +425,7 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 
 	public List<Double> weightsInDecreasingOrder()
 		{
-		List<Double> result = new ArrayList<Double>(backingMap.values());
+		final List<Double> result = new ArrayList<Double>(backingMap.values());
 		Collections.sort(result, Collections.reverseOrder());
 		return result;
 		}
@@ -439,18 +438,20 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		 // leave the item count the same
 		 }
  */
-	public WeightedSet<T> extractWithKeys(Collection<T> okKeys)
+
+	public synchronized WeightedSet<T> extractWithKeys(final Collection<T> okKeys)
 		{
 		// leave the item count the same
 		return new HashWeightedSet<T>(limitBackingMap(okKeys), itemCount);
 		}
 
-	private Map<T, Double> limitBackingMap(Collection<T> okKeys)
+	private synchronized Map<T, Double> limitBackingMap(final Collection<T> okKeys)
 		{
-		Map<T, Double> limitedMap = new HashMap<T, Double>();
-		for (T okKey : okKeys)
+		final Map<T, Double> limitedMap = new HashMap<T, Double>();
+
+		for (final T okKey : okKeys)
 			{
-			Double val = backingMap.get(okKey);
+			final Double val = backingMap.get(okKey);
 			if (val != null && !val.equals(0.0))
 				{
 				limitedMap.put(okKey, val);
@@ -459,11 +460,11 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 		return limitedMap;
 		}
 
-	public SortedSet<T> keysInDecreasingWeightOrder(final Comparator secondarySort)
+	public synchronized SortedSet<T> keysInDecreasingWeightOrder(final Comparator<T> secondarySort)
 		{
-		SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
+		final SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
 		{
-		public int compare(T o1, T o2)
+		public int compare(final T o1, final T o2)
 			{
 			int result = -backingMap.get(o1).compareTo(backingMap.get(o2));
 			if (result == 0 && secondarySort != null)
