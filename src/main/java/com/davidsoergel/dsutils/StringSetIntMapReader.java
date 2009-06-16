@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +31,10 @@ public class StringSetIntMapReader
 			if (f.exists())
 				{
 				res = new URL("file://" + filename);
+				}
+			else
+				{
+				throw new FileNotFoundException("File not found: " + filename);
 				}
 			}
 		InputStream is = res.openStream();

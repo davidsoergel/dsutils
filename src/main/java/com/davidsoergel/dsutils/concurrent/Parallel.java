@@ -33,6 +33,12 @@ public class Parallel
 		});
 		}
 
+
+	public static <T> void forEach(Iterable<T> tasks, final Function<T, Void> function)
+		{
+		forEach(tasks.iterator(), function);
+		}
+
 	// unlike RunnableForEach, this one puts the Iterator.next() call within each Runnable
 	// it will iterate forever until one of the Runnables throws an exception, so it's important to throttle elsewhere, e.g. via the permits in DepthFirstTPE.
 	private abstract static class ForEach<T> implements Iterator<Runnable>

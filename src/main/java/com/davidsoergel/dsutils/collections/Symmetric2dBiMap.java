@@ -63,31 +63,32 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	//private V smallestValue;
 	//private KeyPair<K> keyPairWithSmallestValue;
 
-	private Multimap<K, KeyPair<K>> keyToKeyPairs = HashMultimap.create();
+	private Multimap<K, UnorderedPair<K>> keyToKeyPairs = HashMultimap.create();
 
-	private Map<KeyPair<K>, V> keyPairToValue = new HashMap<KeyPair<K>, V>();
+	private Map<UnorderedPair<K>, V> keyPairToValue = new HashMap<UnorderedPair<K>, V>();
 
-	private SortedSet<KeyPair<K>> keyPairsInValueOrder = new TreeSet<KeyPair<K>>(new Comparator<KeyPair<K>>()
-	{
-	public int compare(KeyPair<K> o1, KeyPair<K> o2)
-		{
-		V v1 = keyPairToValue.get(o1);
-		V v2 = keyPairToValue.get(o2);
-		if (v1 == null)
+	private SortedSet<UnorderedPair<K>> keyPairsInValueOrder =
+			new TreeSet<UnorderedPair<K>>(new Comparator<UnorderedPair<K>>()
 			{
-			if (v2 == null)
+			public int compare(UnorderedPair<K> o1, UnorderedPair<K> o2)
 				{
-				return 0;
+				V v1 = keyPairToValue.get(o1);
+				V v2 = keyPairToValue.get(o2);
+				if (v1 == null)
+					{
+					if (v2 == null)
+						{
+						return 0;
+						}
+					return 1;
+					}
+				if (v2 == null)
+					{
+					return -1;
+					}
+				return v1.compareTo(v2);
 				}
-			return 1;
-			}
-		if (v2 == null)
-			{
-			return -1;
-			}
-		return v1.compareTo(v2);
-		}
-	});
+			});
 
 
 	/*SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double> theDistanceMatrix =
@@ -99,19 +100,19 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		put(getOrCreateKeyPair(key1, key2), d);
 		}
 
-	private KeyPair getOrCreateKeyPair(K key1, K key2)
+	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
 		{
-		KeyPair<K> pair = getKeyPair(key1, key2);
+		UnorderedPair<K> pair = getKeyPair(key1, key2);
 		if (pair == null)
 			{
-			pair = new KeyPair(key1, key2);
+			pair = new UnorderedPair(key1, key2);
 			keyToKeyPairs.put(key1, pair);
 			keyToKeyPairs.put(key2, pair);
 			}
 		return pair;
 		}
 
-	private KeyPair<K> getKeyPair(K key1, K key2)
+	private UnorderedPair<K> getKeyPair(K key1, K key2)
 		{
 		try
 			{
@@ -123,7 +124,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			}
 		}
 
-	private void put(KeyPair keyPair, V d)
+	private void put(UnorderedPair keyPair, V d)
 		{
 		V oldValue = keyPairToValue.get(keyPair);
 		if (oldValue != null)
@@ -138,7 +139,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		//valueToKeyPair.put(d, keyPair);
 		}
 
-	private KeyPair<K> getKeyPairWithSmallestValue()
+	private UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
 		return keyPairsInValueOrder.first();//valueToKeyPair.get(getSmallestValue()).first();
 		}
@@ -164,7 +165,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		return get(getKeyPair(key1, key2));
 		}
 
-	private V get(KeyPair keyPair)
+	private V get(UnorderedPair keyPair)
 		{
 		return keyPairToValue.get(keyPair);
 		}
@@ -176,7 +177,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	 */
 	public void remove(K b)
 		{
-		for (KeyPair<K> pair : keyToKeyPairs.get(b))
+		for (UnorderedPair<K> pair : keyToKeyPairs.get(b))
 			{
 			keyPairsInValueOrder.remove(pair);
 			keyPairToValue.remove(pair);
@@ -213,83 +214,5 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	public Collection<V> values()
 		{
 		return keyPairToValue.values();
-		}
-
-
-	/**
-	 * Represent a pair of keys, guaranteeing that node1 <= node2 for the sake of symmetry
-	 */
-	private class KeyPair<K> implements Comparable
-		{
-		private K key1;
-		private K key2;
-
-		private KeyPair(K key1, K key2)
-			{
-			if (key1.hashCode() <= key2.hashCode())
-				//if (node1.getValue().compareTo(node2.getValue()) <= 0)
-				{
-				this.key1 = key1;
-				this.key2 = key2;
-				}
-			else
-				{
-				this.key1 = key2;
-				this.key2 = key1;
-				}
-			}
-
-		public boolean equals(Object o)
-			{
-			if (this == o)
-				{
-				return true;
-				}
-			if (!(o instanceof KeyPair))
-				{
-				return false;
-				}
-
-			KeyPair keyPair = (KeyPair) o;
-
-			if (key1 != null ? !key1.equals(keyPair.key1) : keyPair.key1 != null)
-				{
-				return false;
-				}
-			if (key2 != null ? !key2.equals(keyPair.key2) : keyPair.key2 != null)
-				{
-				return false;
-				}
-
-			return true;
-			}
-
-		public int hashCode()
-			{
-			int result;
-			result = (key1 != null ? key1.hashCode() : 0);
-			result = 31 * result + (key2 != null ? key2.hashCode() : 0);
-			return result;
-			}
-
-		public K getKey1()
-			{
-			return key1;
-			}
-
-		public K getKey2()
-			{
-			return key2;
-			}
-
-		public int compareTo(Object o)
-			{
-			return key1.toString().compareTo(o.toString());
-			}
-
-		public String toString()
-			{
-			return "[" + key1 + ", " + key2 + "]";
-			}
 		}
 	}

@@ -114,7 +114,6 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 				// ...but don't forget the submitted one
 				e.execute(r);
 
-
 				logger.debug(
 						"Rejected " + DSArrayUtils.asString(((ComparableFutureTask) r).priority, ",") + ", running "
 						+ DSArrayUtils.asString(((ComparableFutureTask) queueJob).priority, ",") + " instead");
