@@ -40,7 +40,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -97,10 +96,13 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	public void put(K key1, K key2, V d)
 		{
-		put(getOrCreateKeyPair(key1, key2), d);
+		UnorderedPair<K> pair = new UnorderedPair(key1, key2);
+		put(pair, d);
+		keyToKeyPairs.put(key1, pair);
+		keyToKeyPairs.put(key2, pair);
 		}
 
-	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
+/*	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
 		{
 		UnorderedPair<K> pair = getKeyPair(key1, key2);
 		if (pair == null)
@@ -110,19 +112,21 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			keyToKeyPairs.put(key2, pair);
 			}
 		return pair;
-		}
-
+		}*/
+/*
 	private UnorderedPair<K> getKeyPair(K key1, K key2)
 		{
 		try
 			{
-			return DSCollectionUtils.intersection(keyToKeyPairs.get(key1), keyToKeyPairs.get(key2)).iterator().next();
+			return //DSCollectionUtils
+					Sets.intersection(keyToKeyPairs.get(key1), keyToKeyPairs.get(key2)).iterator().next();
 			}
 		catch (NoSuchElementException e)
 			{
 			return null;
 			}
 		}
+*/
 
 	private void put(UnorderedPair keyPair, V d)
 		{
@@ -162,10 +166,10 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	public V get(K key1, K key2)
 		{
-		return get(getKeyPair(key1, key2));
+		return get(new UnorderedPair<K>(key1, key2)); //getKeyPair(key1, key2));
 		}
 
-	private V get(UnorderedPair keyPair)
+	private V get(UnorderedPair<K> keyPair)
 		{
 		return keyPairToValue.get(keyPair);
 		}
