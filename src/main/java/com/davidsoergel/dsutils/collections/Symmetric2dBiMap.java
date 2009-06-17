@@ -94,7 +94,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 						new SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double>();*/
 
 
-	public void put(K key1, K key2, V d)
+	public synchronized void put(K key1, K key2, V d)
 		{
 		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
 		put(pair, d);
@@ -128,16 +128,21 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		}
 */
 
-	private void put(UnorderedPair keyPair, V d)
+	private synchronized void put(UnorderedPair<K> keyPair, V d)
 		{
-		V oldValue = keyPairToValue.get(keyPair);
-		if (oldValue != null)
-			{
-			keyPairsInValueOrder.remove(keyPair);
-			keyPairToValue.remove(keyPair);
-			//valueToKeyPair.remove(oldValue, keyPair);
-			}
+		//V oldValue = keyPairToValue.remove(keyPair);
+		//if (oldValue != null)
+		//	{
+
+
+		//	keyPairToValue.remove(keyPair);
+		//valueToKeyPair.remove(oldValue, keyPair);
+		//	}
+
 		keyPairToValue.put(keyPair, d);
+
+		// update the sort order
+		keyPairsInValueOrder.remove(keyPair);
 		keyPairsInValueOrder.add(keyPair);
 
 		//valueToKeyPair.put(d, keyPair);
@@ -179,7 +184,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	 *
 	 * @param b
 	 */
-	public void remove(K b)
+	public synchronized void remove(K b)
 		{
 		for (UnorderedPair<K> pair : keyToKeyPairs.get(b))
 			{
