@@ -96,7 +96,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	public void put(K key1, K key2, V d)
 		{
-		UnorderedPair<K> pair = new UnorderedPair(key1, key2);
+		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
 		put(pair, d);
 		keyToKeyPairs.put(key1, pair);
 		keyToKeyPairs.put(key2, pair);

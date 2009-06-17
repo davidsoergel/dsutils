@@ -359,6 +359,9 @@ public class HashWeightedSet<T> implements WeightedSet<T> //extends HashMap<T, D
 	public T getDominantKeyInSet(@NotNull final Set<T> keys)
 		{
 		Map.Entry<T, Double> result = null;
+
+		//Sets.intersection(keySet(), keys);
+
 		// PERF lots of different ways to do this, probably with different performance
 		for (final Map.Entry<T, Double> entry : entrySet())
 			{
