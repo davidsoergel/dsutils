@@ -60,7 +60,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 			}
 		}
 
-	protected Incrementor incrementor = new Incrementor();
+	protected final Incrementor incrementor = new Incrementor();
 
 	public static void setVisible(boolean visible)
 		{
