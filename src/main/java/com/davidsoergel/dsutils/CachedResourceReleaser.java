@@ -17,12 +17,16 @@ public class CachedResourceReleaser
 
 	private static Set<HasReleaseableResources> resourceHogs = new HashSet<HasReleaseableResources>();
 
-	public static void register(HasReleaseableResources obj)
+	public static synchronized void register(HasReleaseableResources obj)
 		{
 		resourceHogs.add(obj);
 		}
 
-	public static void release()
+	/**
+	 * this should never be called from within a context that is synchronized on a HasReleaseableResources object, since
+	 * that runs the risk of deadlock if we try to release it
+	 */
+	public static synchronized void release()
 		{
 		for (HasReleaseableResources resourceHog : resourceHogs)
 			{
