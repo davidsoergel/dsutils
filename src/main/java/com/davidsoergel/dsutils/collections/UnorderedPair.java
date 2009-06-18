@@ -8,7 +8,7 @@ public class UnorderedPair<K> implements Comparable<UnorderedPair<K>>
 	final private K key1;
 	final private K key2;
 
-	UnorderedPair(K key1, K key2)
+	public UnorderedPair(K key1, K key2)
 		{
 		if (key1.hashCode() <= key2.hashCode())
 			//if (node1.getValue().compareTo(node2.getValue()) <= 0)
