@@ -50,7 +50,7 @@ public class UnorderedPairIterator<A extends Comparable<A>> implements Iterator<
 	public synchronized boolean hasNext()
 		{
 		final boolean canAdvanceB = aTrav != null && iterB.hasNext();
-		return canAdvanceB || advanceA();
+		return canAdvanceB || iterA.hasNext(); //advanceA();
 		}
 
 	private synchronized boolean advanceA()
