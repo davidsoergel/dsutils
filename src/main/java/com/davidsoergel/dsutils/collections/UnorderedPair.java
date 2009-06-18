@@ -3,7 +3,7 @@ package com.davidsoergel.dsutils.collections;
 /**
  * Represent a pair of keys, guaranteeing that node1 <= node2 for the sake of symmetry
  */
-public class UnorderedPair<K> implements Comparable
+public class UnorderedPair<K> implements Comparable<UnorderedPair<K>>
 	{
 	final private K key1;
 	final private K key2;
@@ -66,9 +66,21 @@ public class UnorderedPair<K> implements Comparable
 		return key2;
 		}
 
-	public int compareTo(Object o)
+	public int compareTo(UnorderedPair<K> o)
 		{
-		return key1.toString().compareTo(o.toString());
+		int h1 = hashCode();
+		int h2 = o.hashCode();
+
+		if (h1 < h2)
+			{
+			return -1;
+			}
+		if (h1 == h2)
+			{
+			return 0;
+			}
+		return 1;
+//		return key1.toString().compareTo(o.toString());
 		}
 
 	public String toString()

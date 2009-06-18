@@ -85,7 +85,8 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 					{
 					return -1;
 					}
-				return v1.compareTo(v2);
+				int result = v1.compareTo(v2);
+				return result == 0 ? o1.compareTo(o2) : result;
 				}
 			});
 
