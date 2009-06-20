@@ -291,7 +291,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	public static <T> T removeAllFirstElements(Set<List<T>> theLists) //, boolean ignoreEmpty)
 		{
 		T o = null;
-		for (List<T> l : theLists)
+		for (List<? extends T> l : theLists)
 			{
 			if (l.isEmpty())
 				{

@@ -364,31 +364,55 @@ public class CacheManager
 			Map<K, V> theMap = (Map<K, V>) CacheManager.getFromFile(filename);
 			if (theMap != null)
 				{
-				super.putAll(theMap); // too bad we have to copy
+
+				// too bad we have to copy
+				// but not like this, since super.putAll calls the local put which then calls mergeToDisk unnecessarily
+				//	super.putAll(theMap);
+
+				for (Map.Entry<K, V> entry : theMap.entrySet())
+					{
+					super.put(entry.getKey(), entry.getValue());
+					}
 				}
 			//clearAlteredKeys();
 			}
 
 		@Override
-		public V put(K k, V v)
+		public synchronized V put(K k, V v)
 			{
 			alteredKeys.add(k);
-			return super.put(k, v);
+			V result = super.put(k, v);
+
+			// write to disk whenever the new items are 10% or more of the existing items
+			if ((double) alteredKeys.size() / (double) size() > 0.1)
+				{
+				mergeToDisk();
+				}
+
+			return result;
 			}
 
 		@Override
-		public void putAll(Map<? extends K, ? extends V> map)
+		public synchronized void putAll(Map<? extends K, ? extends V> map)
 			{
 			alteredKeys.addAll(map.keySet());
 			super.putAll(map);
+
+			// super.putAll just calls this.put() anyway
+
+			// write to disk whenever the new items are 10% or more of the existing items
+//			if ((double) alteredKeys.size() / (double) size() > 0.1)
+//				{
+//				mergeToDisk();
+//				}
 			}
 
-		private void clearAlteredKeys()
+		private synchronized void clearAlteredKeys()
 			{
 			alteredKeys = new HashSet<K>();
 			}
 
-		public void mergeToDisk()
+		public synchronized void mergeToDisk()
 			{
 			if (alteredKeys.isEmpty())
 				{
@@ -396,7 +420,8 @@ public class CacheManager
 				}
 			else
 				{
-				logger.warn("Writing AccumulatingMap: " + filename);
+				logger.warn("Writing AccumulatingMap: " + filename + ", " + this.size() + " entries, " + alteredKeys
+				            + " new.");
 
 				FileOutputStream fout = null;
 				ObjectOutputStream oos = null;
@@ -513,7 +538,7 @@ public class CacheManager
 				}
 			}
 
-		private void defensiveBidirectionalSync(@NotNull Map<K, V> theMap)
+		private synchronized void defensiveBidirectionalSync(@NotNull Map<K, V> theMap)
 			{
 			for (K alteredKey : alteredKeys)
 				{
