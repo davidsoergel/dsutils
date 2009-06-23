@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.concurrent;
 
+import com.davidsoergel.dsutils.collections.IntegerIterator;
 import com.davidsoergel.dsutils.collections.NextOnlyIterator;
 import com.davidsoergel.dsutils.collections.NextOnlyIteratorAsNormalIterator;
 import com.google.common.base.Function;
@@ -31,6 +32,19 @@ public class Parallel
 			function.apply(o);
 			}
 		});
+		}
+
+	public static <T> void forEach(int repetitions, final Function<Integer, Void> function)
+		{
+
+		DepthFirstThreadPoolExecutor.getInstance()
+				.submitAndWaitForAll(new ForEach<Integer>(new IntegerIterator(0, repetitions))
+				{
+				public void performAction(final Integer o)
+					{
+					function.apply(o);
+					}
+				});
 		}
 
 
