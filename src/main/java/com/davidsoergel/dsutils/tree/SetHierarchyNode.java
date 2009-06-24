@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -73,6 +74,11 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 	public void unregisterChild(SetHierarchyNode<T> child)
 		{
 		children.remove(child);
+		}
+
+	public void setName(final String name)
+		{
+		throw new NotImplementedException();
 		}
 
 	/**

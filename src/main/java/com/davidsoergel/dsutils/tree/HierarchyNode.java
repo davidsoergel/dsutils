@@ -109,6 +109,8 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 */
 	I newChild();//HierarchyNode<? extends T, I>
 
+	void setName(String name);
+
 	/**
 	 * Sets the parent node; also informs the parent node via addChild() so that it can maintain the reverse link, if
 	 * needed.

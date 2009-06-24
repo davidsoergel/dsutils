@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -60,6 +61,11 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	private HierarchicalStringObjectMap parent;
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
+
+	public void setName(final String name)
+		{
+		throw new NotImplementedException();
+		}
 
 	/**
 	 * {@inheritDoc}
