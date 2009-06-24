@@ -18,12 +18,12 @@ public class IntegerIterator implements Iterator<Integer>
 		this.maxExclusive = maxExclusive;
 		}
 
-	public boolean hasNext()
+	public synchronized boolean hasNext()
 		{
 		return trav < maxExclusive;
 		}
 
-	public Integer next()
+	public synchronized Integer next()
 		{
 		if (!hasNext())
 			{
@@ -34,7 +34,7 @@ public class IntegerIterator implements Iterator<Integer>
 		return result;
 		}
 
-	public void remove()
+	public synchronized void remove()
 		{
 		throw new UnsupportedOperationException();
 		}
