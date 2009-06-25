@@ -429,7 +429,10 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			{
 			// block until a permit is available
 			ComparableFutureTask ftask = taskGroup.next();
-			underlyingExecutor.execute(ftask);
+			if (ftask != null) // possible concurrency issue
+				{
+				underlyingExecutor.execute(ftask);
+				}
 			}
 
 		// now all the tasks have been enqueued, but we need to wait for them to finish
