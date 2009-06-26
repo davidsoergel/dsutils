@@ -810,4 +810,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		return true;
 		}
+
+	public static double[] createIncrementingDoubleArray(final int size, final double start, final double increment)
+		{
+		double[] result = new double[size];
+		double trav = start;
+		for (int i = 0; i < size; i++)
+			{
+			result[i] = trav;
+			trav += increment;
+			}
+		return result;
+		}
 	}
