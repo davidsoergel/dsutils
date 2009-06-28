@@ -37,6 +37,7 @@ import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 
@@ -821,5 +822,17 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			trav += increment;
 			}
 		return result;
+		}
+
+	public static int floorElement(final int[] nastWidths, final int nastWidth)
+		{
+		int i = Arrays.binarySearch(nastWidths, nastWidth);
+		if (i >= 0)
+			{
+			return nastWidths[i];
+			}
+
+		int insertionPoint = -(i + 1);
+		return nastWidths[insertionPoint];
 		}
 	}
