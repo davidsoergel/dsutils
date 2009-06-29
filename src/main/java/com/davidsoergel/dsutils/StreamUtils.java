@@ -92,13 +92,13 @@ public class StreamUtils
 
 				logger.trace("FileIndexReader:  next word: " + data);
 				}
-		/*	catch (FileNotFoundException fnfe)
-				{
+			/*	catch (FileNotFoundException fnfe)
+			   {
 
-			logger.error(fnfe);
+		   logger.error(fnfe);
 
-				throw fnfe;
-				}*/
+			   throw fnfe;
+			   }*/
 			catch (EOFException eof)
 				{
 				data = null;
@@ -107,19 +107,19 @@ public class StreamUtils
 				}
 			/*catch (java.io.IOException e)
 				{
-			logger.error(e);
+			logger.error("Error", e);
 
 				throw e;
 				}*/
 
 			//try
 			//	{
-				while (data != null)
-					{
-					returnBuffer.append(data);
+			while (data != null)
+				{
+				returnBuffer.append(data);
 
-					data = inStream.readUTF();
-					}
+				data = inStream.readUTF();
+				}
 			//	}
 			/*catch (java.io.IOException ioe)
 				{

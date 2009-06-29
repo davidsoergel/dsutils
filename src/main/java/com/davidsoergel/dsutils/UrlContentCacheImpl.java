@@ -196,7 +196,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		//	}
 		//catch (MalformedURLException e)
 		//	{
-		//	logger.error(e);
+		//	logger.error("Error", e);
 		//	throw new UrlContentCacheException(e);
 		//	}
 		}
@@ -249,7 +249,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		//	}
 		//catch (MalformedURLException e)
 		//	{
-		//	logger.error(e);
+		//	logger.error("Error", e);
 		//	throw new UrlContentCacheException(e);
 		//	}
 		}
@@ -290,8 +290,8 @@ public class UrlContentCacheImpl implements UrlContentCache
 		{
 		try
 			{
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection()
-					;// Http only supported for now; ClassCastException otherwise
+			HttpURLConnection conn = (HttpURLConnection) url
+					.openConnection();// Http only supported for now; ClassCastException otherwise
 			FtpURLConnection f;
 			File localFile = new File(urlToLocalFilename(url));
 			if (localFile.exists() && !force)

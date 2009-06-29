@@ -21,9 +21,7 @@ public class ClassMapper extends StringMapper<Class>
 
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Class.class
-		};
+		return new Type[]{Class.class};
 		}
 
 	public ClassMapper()
@@ -43,7 +41,7 @@ public class ClassMapper extends StringMapper<Class>
 			}
 		catch (ClassNotFoundException e)
 			{
-			//logger.error(e);
+			//logger.error("Error", e);
 			throw new StringMapperException(e);
 			}
 		}

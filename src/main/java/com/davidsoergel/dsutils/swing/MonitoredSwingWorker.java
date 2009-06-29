@@ -49,12 +49,12 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 				}
 			catch (InterruptedException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				throw new Error(e);
 				}
 			catch (InvocationTargetException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				throw new Error(e);
 				}
 			}

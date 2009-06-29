@@ -63,7 +63,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	//private KeyPair<K> keyPairWithSmallestValue;
 
 	private Multimap<K, UnorderedPair<K>> keyToKeyPairs = HashMultimap.create();
-			// Multimaps.synchronizedSetMultimap(HashMultimap.create());
+	// Multimaps.synchronizedSetMultimap(HashMultimap.create());
 
 	private Map<UnorderedPair<K>, V> keyPairToValue = new HashMap<UnorderedPair<K>, V>();
 
@@ -201,7 +201,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			   }
 		   catch (NullPointerException e)
 			   {
-			   logger.error(e);
+			   logger.error("Error", e);
 			   }*/
 			}
 		keyToKeyPairs.removeAll(b);

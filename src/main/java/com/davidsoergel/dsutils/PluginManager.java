@@ -242,7 +242,7 @@ public class PluginManager<T>
 			else
 				{
 				String name = theInterface instanceof Class ? ((Class) theInterface).getSimpleName() :
-						theInterface.toString();
+				              theInterface.toString();
 				throw new PluginException(
 						"Can't find plugin " + s + ".  Available plugins of type " + name + ": \n" + org.apache.commons
 								.lang.StringUtils.join(classes.keySet().iterator(), "\n"));
@@ -291,11 +291,11 @@ public class PluginManager<T>
 				}
 			catch (InstantiationException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			catch (IllegalAccessException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}*/
 				}
 			}

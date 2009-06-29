@@ -148,7 +148,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			try
 				{
@@ -159,7 +159,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			}
 
@@ -234,7 +234,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			try
 				{
@@ -245,7 +245,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 
 			// the closed channel maybe already closes the associated streams??
@@ -259,7 +259,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			try
 				{
@@ -270,7 +270,7 @@ public class CacheManager
 				}
 			catch (IOException e)
 				{
-				logger.error(e);
+				logger.error("Error", e);
 				}
 			}
 		}
@@ -496,7 +496,7 @@ public class CacheManager
 						}
 					catch (IOException e)
 						{
-						logger.error(e);
+						logger.error("Error", e);
 						}
 					try
 						{
@@ -507,7 +507,7 @@ public class CacheManager
 						}
 					catch (IOException e)
 						{
-						logger.error(e);
+						logger.error("Error", e);
 						}
 
 					// the closed channel maybe already closes the associated streams??
@@ -521,7 +521,7 @@ public class CacheManager
 						}
 					catch (IOException e)
 						{
-						logger.error(e);
+						logger.error("Error", e);
 						}
 					try
 						{
@@ -532,7 +532,7 @@ public class CacheManager
 						}
 					catch (IOException e)
 						{
-						logger.error(e);
+						logger.error("Error", e);
 						}
 					}
 				}
