@@ -835,4 +835,14 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		int insertionPoint = -(i + 1);
 		return nastWidths[insertionPoint];
 		}
+
+	public static int[] castToInt(final Double[] p)
+		{
+		int[] result = new int[p.length];
+		for (int i = 0; i < p.length; i++)
+			{
+			result[i] = p[i].intValue();
+			}
+		return result;
+		}
 	}

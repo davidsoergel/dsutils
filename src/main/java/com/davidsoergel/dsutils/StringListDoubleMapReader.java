@@ -7,18 +7,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class StringSetIntMapReader
+public class StringListDoubleMapReader
 	{
-	public static Map<String, Set<Integer>> read(String filename) throws IOException
+	public static Map<String, List<Double>> read(String filename) throws IOException
 		{
 		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
 		//ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
@@ -39,7 +39,7 @@ public class StringSetIntMapReader
 			}
 		InputStream is = res.openStream();
 
-		Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
+		Map<String, List<Double>> result = new HashMap<String, List<Double>>();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
@@ -57,12 +57,12 @@ public class StringSetIntMapReader
 				try
 					{
 					String key = numbers[0];
-					Integer value = new Integer(numbers[1]);
+					Double value = new Double(numbers[1]);
 
-					Set<Integer> resultSet = result.get(key);
+					List<Double> resultSet = result.get(key);
 					if (resultSet == null)
 						{
-						resultSet = new HashSet<Integer>();
+						resultSet = new ArrayList<Double>();
 						result.put(key, resultSet);
 						}
 					resultSet.add(value);
