@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +14,8 @@ import java.util.Map;
  */
 public class StringIntMapReader
 	{
+	private static final Logger logger = Logger.getLogger(StringIntMapReader.class);
+
 	public static Map<String, Integer> read(String filename) throws IOException
 		{
 		Map<String, Integer> result = new HashMap<String, Integer>();
@@ -38,7 +42,8 @@ public class StringIntMapReader
 					}
 				catch (NumberFormatException e)
 					{
-					throw new NumberFormatException("Could not read line " + i + " of " + filename + ": " + line);
+					//throw new NumberFormatException
+					logger.warn("Could not read line " + i + " of " + filename + ": " + line);
 					}
 				}
 			return result;

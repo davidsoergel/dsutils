@@ -57,15 +57,17 @@ public class StringListDoubleMapReader
 				try
 					{
 					String key = numbers[0];
-					Double value = new Double(numbers[1]);
 
-					List<Double> resultSet = result.get(key);
-					if (resultSet == null)
+					List<Double> resultList = new ArrayList<Double>();
+
+					// skip first element
+					for (int j = 1; j < numbers.length; j++)
 						{
-						resultSet = new ArrayList<Double>();
-						result.put(key, resultSet);
+						resultList.add(new Double(numbers[j]));
 						}
-					resultSet.add(value);
+
+					result.put(key, resultList);
+
 					i++;
 					}
 				catch (NumberFormatException e)
