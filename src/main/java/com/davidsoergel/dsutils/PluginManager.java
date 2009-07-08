@@ -279,7 +279,8 @@ public class PluginManager<T>
 				}
 			for (Class c : found)
 				{
-				if (!(c.isInterface() || Modifier.isAbstract(c.getModifiers())))
+				if (!(c.isInterface() || Modifier.isAbstract(c.getModifiers())
+				      || c.getAnnotation(Deprecated.class) != null))
 					{
 					classes.put(c.getCanonicalName(), c);
 					}
