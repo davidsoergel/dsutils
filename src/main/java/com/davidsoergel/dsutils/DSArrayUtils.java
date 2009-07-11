@@ -561,6 +561,20 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 	/**
+	 * returns a new double[] containing the first i characters of s.
+	 *
+	 * @param s
+	 * @param i
+	 * @return
+	 */
+	public static double[] prefix(double[] s, int i)
+		{
+		double[] result = new double[i];
+		System.arraycopy(s, 0, result, 0, i);
+		return result;
+		}
+
+	/**
 	 * returns a new int[] containing the first i characters of s.
 	 *
 	 * @param s
@@ -585,6 +599,21 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	public static byte[] suffix(byte[] s, int startpos)
 		{
 		byte[] result = new byte[s.length - startpos];
+		System.arraycopy(s, startpos, result, 0, s.length - startpos);
+		return result;
+		}
+
+	/**
+	 * returns a new double[] containing all characters of s starting from startPos
+	 *
+	 * @param s
+	 * @param startpos
+	 * @return
+	 * @see #suffixOfLength
+	 */
+	public static double[] suffix(double[] s, int startpos)
+		{
+		double[] result = new double[s.length - startpos];
 		System.arraycopy(s, startpos, result, 0, s.length - startpos);
 		return result;
 		}
