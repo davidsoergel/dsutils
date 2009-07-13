@@ -70,7 +70,13 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 			if (future != null)
 				{
 				future.get();  // this removes the task from futuresEnqueued, via reportDone, so we'll get a different one the next time around
-				Thread.sleep(10);
+
+				if (!futuresEnqueued.isEmpty())
+					{
+					// give the tasks some time to finish without churning this polling thread
+					// PERF task granularity trouble; we waste time here
+					Thread.sleep(10);
+					}
 				}
 /*
 			Iterator<ComparableFutureTask> futuresEnqueuedIterator = futuresEnqueued.iterator();

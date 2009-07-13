@@ -8,7 +8,7 @@ public class OrderedPair<A, B> implements Comparable
 	private final A key1;
 	private final B key2;
 
-	OrderedPair(A key1, B key2)
+	public OrderedPair(A key1, B key2)
 		{
 		this.key1 = key1;
 		this.key2 = key2;
