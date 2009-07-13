@@ -57,7 +57,15 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 			FutureTask future;
 			synchronized (futuresEnqueued)
 				{
-				future = futuresEnqueued.iterator().next();
+				Iterator<ComparableFutureTask> it = futuresEnqueued.iterator();
+				if (it.hasNext())
+					{
+					future = it.next();
+					}
+				else
+					{
+					future = null;
+					}
 				}
 			if (future != null)
 				{
