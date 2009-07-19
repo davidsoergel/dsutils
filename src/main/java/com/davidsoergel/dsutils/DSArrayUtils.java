@@ -214,6 +214,11 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return deepcopy(copyFrom, 0, ' ');
 		}
 
+	public static byte[][] deepcopy(byte[][] copyFrom)
+		{
+		return deepcopy(copyFrom, 0, (byte) ' ');
+		}
+
 
 	@Nullable
 	public static double[][] deepcopy(double[][] copyFrom, int newcolumns, double newval)
@@ -289,6 +294,35 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		for (int i = 0; i < copyFrom.length; i++)
 			{
 			to[i] = new char[copyFrom[i].length + newcolumns];
+
+			if (newcolumns < 0)
+				{
+				for (int j = 0; j < (copyFrom[i].length + newcolumns); j++)
+					{
+					to[i][j] = copyFrom[i][j];
+					}
+				}
+			else
+				{
+				for (int j = 0; j < copyFrom[i].length; j++)
+					{
+					to[i][j] = copyFrom[i][j];
+					}
+				for (int j = copyFrom[i].length; j < copyFrom[i].length + newcolumns; j++)
+					{
+					to[i][j] = newval;
+					}
+				}
+			}
+		return to;
+		}
+
+	public static byte[][] deepcopy(byte[][] copyFrom, int newcolumns, byte newval)
+		{
+		byte[][] to = new byte[copyFrom.length][];
+		for (int i = 0; i < copyFrom.length; i++)
+			{
+			to[i] = new byte[copyFrom[i].length + newcolumns];
 
 			if (newcolumns < 0)
 				{
@@ -873,5 +907,21 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			result[i] = p[i].intValue();
 			}
 		return result;
+		}
+
+	public static byte[] castToByte(final char[] p)
+		{
+		byte[] result = new byte[p.length];
+		for (int i = 0; i < p.length; i++)
+			{
+			result[i] = (byte) p[i];
+			}
+		return result;
+		}
+
+
+	public static byte[] toByteArray(final String s)
+		{
+		return castToByte(s.toCharArray());
 		}
 	}
