@@ -290,7 +290,8 @@ public class CacheManager
 
 	static ConcurrentMap<String, AccumulatingMap> accumulatingMaps = new MapMaker().weakValues().makeMap();
 
-	public static <K, V> Map<K, V> getAccumulatingMap(Object source, String key) //, Map<K, V> prototype)
+	public static <K extends Serializable, V extends Serializable> Map<K, V> getAccumulatingMap(Object source,
+	                                                                                            String key) //, Map<K, V> prototype)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
@@ -326,7 +327,8 @@ public class CacheManager
 		}
 
 
-	private static class AccumulatingMap<K, V> extends HashMap<K, V> implements Serializable
+	private static class AccumulatingMap<K extends Serializable, V extends Serializable> extends HashMap<K, V>
+			implements Serializable
 		{
 		private static final long serialVersionUID = 20090326L;
 
@@ -438,7 +440,7 @@ public class CacheManager
 					lock = channel.lock();
 
 					// load the latest version, without locking
-					Map<K, V> theMap = (Map<K, V>) CacheManager.get(filename);
+					AccumulatingMap<K, V> theMap = (AccumulatingMap<K, V>) CacheManager.get(filename);
 
 					if (theMap == null)
 						{
@@ -538,7 +540,7 @@ public class CacheManager
 				}
 			}
 
-		private synchronized void defensiveBidirectionalSync(@NotNull Map<K, V> theMap)
+		private synchronized void defensiveBidirectionalSync(@NotNull AccumulatingMap<K, V> theMap)
 			{
 			for (K alteredKey : alteredKeys)
 				{
