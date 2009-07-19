@@ -172,7 +172,7 @@ public class CacheManager
 	 * @param classNamePlusKey
 	 * @param o
 	 */
-	public static void put(String classNamePlusKey, Object o)
+	public static void put(String classNamePlusKey, Serializable o)
 		{
 		String filename = buildFilename(classNamePlusKey);
 		putToFile(filename, o);
@@ -186,7 +186,7 @@ public class CacheManager
 	 * @param key
 	 * @param o
 	 */
-	public static void put(Object source, String key, Object o)
+	public static void put(Object source, String key, Serializable o)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
@@ -197,7 +197,7 @@ public class CacheManager
 		putToFile(filename, o);
 		}
 
-	private static void putToFile(String filename, Object o)
+	private static void putToFile(String filename, Serializable o)
 		{
 		File cacheFile = new File(filename);
 		cacheFile.getParentFile().mkdirs();
