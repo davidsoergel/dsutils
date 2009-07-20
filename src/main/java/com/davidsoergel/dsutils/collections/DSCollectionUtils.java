@@ -207,7 +207,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> boolean allFirstElementsEqual(Set<List<T>> theLists) //, boolean ignoreNull)
+	public static <T> boolean allFirstElementsEqual(Set<List<? extends T>> theLists) //, boolean ignoreNull)
 		{
 		Object o = null;
 		if (theLists.isEmpty())
@@ -288,7 +288,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> T removeAllFirstElements(Set<List<T>> theLists) //, boolean ignoreEmpty)
+	public static <T> T removeAllFirstElements(Set<List<? extends T>> theLists) //, boolean ignoreEmpty)
 		{
 		T o = null;
 		for (List<? extends T> l : theLists)
