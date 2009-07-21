@@ -290,6 +290,11 @@ public class CacheManager
 
 	static ConcurrentMap<String, AccumulatingMap> accumulatingMaps = new MapMaker().weakValues().makeMap();
 
+	public static Map getAccumulatingMapAssumeSerializable(Object source, String key) //, Map<K, V> prototype)
+		{
+		return getAccumulatingMap(source, key);
+		}
+
 	public static <K extends Serializable, V extends Serializable> Map<K, V> getAccumulatingMap(Object source,
 	                                                                                            String key) //, Map<K, V> prototype)
 		{
