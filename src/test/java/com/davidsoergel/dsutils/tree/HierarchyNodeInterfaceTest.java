@@ -36,6 +36,7 @@ import com.davidsoergel.dsutils.AtomicContractTest;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicC
 	public void ancestorPathExtendsFromRootToImmediateParent() throws Exception
 		{
 		T n = tif.createInstance();
-		List path = n.getAncestorPath();
+		List path = new ArrayList(n.getAncestorPath());
 		Collections.reverse(path);
 		HierarchyNode p = n.getSelfNode();
 		while (p != null)
