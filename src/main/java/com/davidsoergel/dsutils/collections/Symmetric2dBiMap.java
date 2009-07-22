@@ -130,6 +130,12 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		}
 */
 
+	/**
+	 * Does not populate keyToKeyPairs!!
+	 *
+	 * @param keyPair
+	 * @param d
+	 */
 	private synchronized void put(UnorderedPair<K> keyPair, V d)
 		{
 		//V oldValue = keyPairToValue.remove(keyPair);
@@ -140,6 +146,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		//	keyPairToValue.remove(keyPair);
 		//valueToKeyPair.remove(oldValue, keyPair);
 		//	}
+
 
 		keyPairToValue.put(keyPair, d);
 
@@ -231,7 +238,10 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		{
 		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
-			put(entry.getKey(), entry.getValue());
+			UnorderedPair<K> pair = entry.getKey();
+			keyToKeyPairs.put(pair.getKey1(), pair);
+			keyToKeyPairs.put(pair.getKey2(), pair);
+			put(pair, entry.getValue());
 			}
 		}
 	}
