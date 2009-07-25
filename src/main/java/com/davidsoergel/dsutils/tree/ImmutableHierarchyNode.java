@@ -39,4 +39,16 @@ public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode
 	 * @return the new child node
 	 */
 	public abstract I newChild(final T value);
+
+	private String name;
+
+	public String getName()
+		{
+		return name;
+		}
+
+	public void setName(final String name)
+		{
+		throw new TreeRuntimeException("Node is immutable");
+		}
 	}

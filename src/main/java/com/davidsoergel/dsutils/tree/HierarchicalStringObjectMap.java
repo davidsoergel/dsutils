@@ -50,6 +50,18 @@ import java.util.Set;
 public abstract class HierarchicalStringObjectMap
 		implements HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>, Map<String, Object>
 	{
+
+	private String name;
+
+	public String getName()
+		{
+		return name;
+		}
+
+	public void setName(final String name)
+		{
+		this.name = name;
+		}
 	// ------------------------ INTERFACE METHODS ------------------------
 
 

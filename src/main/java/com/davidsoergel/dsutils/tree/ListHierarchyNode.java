@@ -33,7 +33,6 @@
 
 package com.davidsoergel.dsutils.tree;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -62,9 +61,16 @@ public class ListHierarchyNode<T> implements HierarchyNode<T, ListHierarchyNode<
 		this.contents = contents;
 		}
 
+	private String name;
+
+	public String getName()
+		{
+		return name;
+		}
+
 	public void setName(final String name)
 		{
-		throw new NotImplementedException();
+		this.name = name;
 		}
 
 	public ListHierarchyNode()

@@ -34,7 +34,6 @@
 package com.davidsoergel.dsutils.tree;
 
 import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -62,10 +61,6 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 	private SortedSetHierarchyNode<T> parent;
 	private final T contents;
 
-	public void setName(final String name)
-		{
-		throw new NotImplementedException();
-		}
 
 	public SortedSetHierarchyNode(final T contents)
 		{
