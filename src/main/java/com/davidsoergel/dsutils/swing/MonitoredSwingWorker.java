@@ -124,6 +124,11 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 			setProgress(0);
 			setNote(s);
 			}
+
+		public int getCount()
+			{
+			return i;
+			}
 		}
 
 	public void executeWithProgressMonitor()
