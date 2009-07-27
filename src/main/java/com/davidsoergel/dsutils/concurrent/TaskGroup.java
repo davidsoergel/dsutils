@@ -176,4 +176,18 @@ class TaskGroup extends MappingIterator<Runnable, ComparableFutureTask> //implem
 			outstandingTasks.release();
 			}
 		}
+
+	boolean aborted = false;
+
+	@Override
+	public boolean hasNext()
+		{
+		return !aborted && super.hasNext();
+		}
+
+	public void shutdownNow()
+		{
+		aborted = true;
+		outstandingTasks.drainPermits();
+		}
 	}

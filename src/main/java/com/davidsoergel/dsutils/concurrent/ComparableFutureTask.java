@@ -84,7 +84,15 @@ class ComparableFutureTask<T> extends FutureTask<T> implements Comparable<Compar
 		int[] lastPriority = TaskGroup._currentTaskPriority.get();
 		TaskGroup._currentTaskPriority.set(priority);
 
-		super.run();
+		try
+			{
+			super.run();
+			}
+		catch (OutOfMemoryError e)
+			{
+			tg.shutdownNow();
+			throw e;
+			}
 
 		TaskGroup._currentTaskPriority.set(lastPriority);
 

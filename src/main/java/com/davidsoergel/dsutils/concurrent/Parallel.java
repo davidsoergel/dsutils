@@ -47,9 +47,16 @@ public class Parallel
 				{
 				public void performAction(final Integer o)
 					{
+
 					function.apply(o);
 					}
 				});
+		}
+
+	public static void emergencyAbort(OutOfMemoryError e)
+		{
+		DepthFirstThreadPoolExecutor.getInstance().shutdownNow();
+		throw e;
 		}
 
 	public static <T> void forEach(Iterable<T> tasks, final Function<T, Void> function)
@@ -133,11 +140,22 @@ public class Parallel
 					hasNext = false;
 					return;
 					}
+				catch (OutOfMemoryError e)
+					{
+					emergencyAbort(e);
+					throw e;
+					}
 
-				//		try
-				//			{
-				performAction(
-						o); // exceptions are thrown from DepthFirstThneadPoolIterator wrapped in RuntimeExecutionException and ExecutionException
+				try
+					{
+					performAction(
+							o); // exceptions are thrown from DepthFirstThneadPoolIterator wrapped in RuntimeExecutionException and ExecutionException
+					}
+				catch (OutOfMemoryError e)
+					{
+					emergencyAbort(e);
+					throw e;
+					}
 				/*			}
 			   catch (Throwable e)
 				   {

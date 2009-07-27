@@ -295,6 +295,15 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		return stats;
 		}
 
+	public void shutdownNow()
+		{
+		underlyingExecutor.shutdownNow();
+		if (this == _instance)
+			{
+			_instance = null;
+			}
+		}
+
 	/**
 	 * Submit a collection of tasks to the pool.  Do not block until they complete, but run the TaskGroup's completed() callback then.
 	 * @param tg
