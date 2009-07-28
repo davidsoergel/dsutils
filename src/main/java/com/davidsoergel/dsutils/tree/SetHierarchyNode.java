@@ -35,6 +35,8 @@ package com.davidsoergel.dsutils.tree;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,13 +50,13 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>>
+public class SetHierarchyNode<T extends Serializable> implements HierarchyNode<T, SetHierarchyNode<T>>, Serializable
 	{
 	// ------------------------------ FIELDS ------------------------------
 
 	protected Set<SetHierarchyNode<T>> children = new HashSet<SetHierarchyNode<T>>();
 
-	private SetHierarchyNode<T> parent;
+	private transient SetHierarchyNode<T> parent;
 	private T contents;
 
 
@@ -186,5 +188,22 @@ public class SetHierarchyNode<T> implements HierarchyNode<T, SetHierarchyNode<T>
 	public SetHierarchyNode<T> getSelfNode()
 		{
 		return this;
+		}
+
+	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException
+		{
+		contents = (T) stream.readObject();
+		children = (Set<SetHierarchyNode<T>>) stream.readObject();
+
+		for (SetHierarchyNode<T> child : children)
+			{
+			child.setParent(this);
+			}
+		}
+
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+		{
+		stream.writeObject(contents);
+		stream.writeObject(children);
 		}
 	}
