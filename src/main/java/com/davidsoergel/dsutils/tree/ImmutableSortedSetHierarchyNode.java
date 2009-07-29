@@ -49,27 +49,29 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SortedSetHierarchyNode<T extends Comparable<T>>
-		extends ImmutableHierarchyNode<T, SortedSetHierarchyNode<T>>
-		implements Comparable<SortedSetHierarchyNode<? extends T>>
+@Deprecated
+public class ImmutableSortedSetHierarchyNode<T extends Comparable<T>>
+		extends ImmutableHierarchyNode<T, ImmutableSortedSetHierarchyNode<T>>
+		implements Comparable<ImmutableSortedSetHierarchyNode<? extends T>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private final SortedSet<SortedSetHierarchyNode<T>> children = new TreeSet<SortedSetHierarchyNode<T>>();
+	private final SortedSet<ImmutableSortedSetHierarchyNode<T>> children =
+			new TreeSet<ImmutableSortedSetHierarchyNode<T>>();
 
 
-	private SortedSetHierarchyNode<T> parent;
+	private ImmutableSortedSetHierarchyNode<T> parent;
 	private final T contents;
 
 
-	public SortedSetHierarchyNode(final T contents)
+	public ImmutableSortedSetHierarchyNode(final T contents)
 		{
 		this.contents = contents;
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
-	public SortedSet<SortedSetHierarchyNode<T>> getChildren()
+	public SortedSet<ImmutableSortedSetHierarchyNode<T>> getChildren()
 		{
 		return children;
 		}
@@ -78,14 +80,14 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 	 * {@inheritDoc}
 	 */
 	@NotNull
-	public SortedSetHierarchyNode<T> getChild(T id) throws NoSuchNodeException
+	public ImmutableSortedSetHierarchyNode<T> getChildWithPayload(T id) throws NoSuchNodeException
 		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
 
 		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
 
-		for (SortedSetHierarchyNode<T> child : children)
+		for (ImmutableSortedSetHierarchyNode<T> child : children)
 			{
-			if (child.getValue() == id)
+			if (child.getPayload() == id)
 				{
 				return child;
 				}
@@ -94,18 +96,18 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 		}
 
 
-	public T getValue()
+	public T getPayload()
 		{
 		return contents;
 		}
 
 
-	public SortedSetHierarchyNode<T> getParent()
+	public ImmutableSortedSetHierarchyNode<T> getParent()
 		{
 		return parent;
 		}
 
-	public void setParent(SortedSetHierarchyNode<T> parent)
+	public void setParent(ImmutableSortedSetHierarchyNode<T> parent)
 		{
 		if (this.parent != null)
 			{
@@ -123,9 +125,9 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 
 	// --------------------- Interface Comparable ---------------------
 
-	public int compareTo(SortedSetHierarchyNode<? extends T> o)
+	public int compareTo(ImmutableSortedSetHierarchyNode<? extends T> o)
 		{
-		T oValue = o.getValue();
+		T oValue = o.getPayload();
 		if (oValue == null || contents == null)
 			{
 			throw new TreeRuntimeException("SortedSetHierarchyNode must contain a value");
@@ -144,7 +146,7 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 			return false;
 			}
 
-		SortedSetHierarchyNode<T> that = (SortedSetHierarchyNode<T>) o;
+		ImmutableSortedSetHierarchyNode<T> that = (ImmutableSortedSetHierarchyNode<T>) o;
 
 		if (!CollectionUtils.isEqualCollection(children, that.children))
 			{
@@ -174,9 +176,9 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 	// --------------------- Interface HierarchyNode ---------------------
 
 
-	public SortedSetHierarchyNode<T> newChild(final T value)
+	public ImmutableSortedSetHierarchyNode<T> newChild(final T value)
 		{
-		SortedSetHierarchyNode<T> child = new SortedSetHierarchyNode<T>(value);
+		ImmutableSortedSetHierarchyNode<T> child = new ImmutableSortedSetHierarchyNode<T>(value);
 		children.add(child);
 		child.parent = this;
 		//child.setParent(this);
@@ -189,10 +191,10 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 		return children == null || children.isEmpty();
 		}
 
-	public List<SortedSetHierarchyNode<T>> getAncestorPath()
+	public List<ImmutableSortedSetHierarchyNode<T>> getAncestorPath()
 		{
-		List<SortedSetHierarchyNode<T>> result = new LinkedList<SortedSetHierarchyNode<T>>();
-		SortedSetHierarchyNode<T> trav = this;
+		List<ImmutableSortedSetHierarchyNode<T>> result = new LinkedList<ImmutableSortedSetHierarchyNode<T>>();
+		ImmutableSortedSetHierarchyNode<T> trav = this;
 
 		while (trav != null)
 			{
@@ -208,18 +210,18 @@ public class SortedSetHierarchyNode<T extends Comparable<T>>
 	 *
 	 * @return an Iterator.
 	 */
-	public Iterator<SortedSetHierarchyNode<T>> iterator()
+	public Iterator<ImmutableSortedSetHierarchyNode<T>> iterator()
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
-	public DepthFirstTreeIterator<T, SortedSetHierarchyNode<T>> depthFirstIterator()
+	public DepthFirstTreeIterator<T, ImmutableSortedSetHierarchyNode<T>> depthFirstIterator()
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
 
-	public SortedSetHierarchyNode<T> getSelfNode()
+	public ImmutableSortedSetHierarchyNode<T> getSelfNode()
 		{
 		return this;
 		}

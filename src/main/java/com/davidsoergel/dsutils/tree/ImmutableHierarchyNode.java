@@ -17,7 +17,7 @@ public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setValue(T contents)
+	public void setPayload(T contents)
 		{
 		throw new TreeRuntimeException("Node is immutable");
 		}
@@ -40,15 +40,7 @@ public abstract class ImmutableHierarchyNode<T, I extends ImmutableHierarchyNode
 	 */
 	public abstract I newChild(final T value);
 
-	private String name;
-
-	public String getName()
+	public void setParent(final I parent)
 		{
-		return name;
-		}
-
-	public void setName(final String name)
-		{
-		throw new TreeRuntimeException("Node is immutable");
 		}
 	}

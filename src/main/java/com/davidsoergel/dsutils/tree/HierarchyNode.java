@@ -66,7 +66,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 * @throws NoSuchNodeException when no matching child is found
 	 */
 	@NotNull
-	I getChild(T id) throws NoSuchNodeException;//HierarchyNode<T, I>
+	I getChildWithPayload(T id) throws NoSuchNodeException;//HierarchyNode<T, I>
 
 	/**
 	 * Tells whether this node is a leaf of the tree or not
@@ -80,12 +80,12 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the value contained in this node
 	 */
-	T getValue();
+	T getPayload();
 
 	/**
 	 * Sets the value contained in this node
 	 */
-	void setValue(T contents);
+	void setPayload(T contents);
 
 	/**
 	 * Returns the immediate parent of this node in the tree
@@ -100,7 +100,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return a List of nodes describing a path down the tree, starting with the root and ending with this node
 	 */
-	List<? extends I> getAncestorPath();//? extends HierarchyNode<T, I>
+	List<? extends HierarchyNode<T, I>> getAncestorPath();//? extends HierarchyNode<T, I>
 
 	/**
 	 * Creates a new child node of the appropriate type
@@ -109,9 +109,15 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 */
 	I newChild();//HierarchyNode<? extends T, I>
 
-	void setName(String name);
+	/**
+	 * Creates a new child node of the appropriate type
+	 *
+	 * @return the new child node
+	 */
+	I newChild(T payload);
+	//void setName(String name);
 
-	String getName();
+	//String getName();
 
 	/**
 	 * Sets the parent node; also informs the parent node via addChild() so that it can maintain the reverse link, if
@@ -152,5 +158,5 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the most raw available HierarchyNode embedded within this facade (perhps just this object itself)
 	 */
-	I getSelfNode();//HierarchyNode<T, I>
+	HierarchyNode<T, I> getSelfNode();//HierarchyNode<T, I>
 	}

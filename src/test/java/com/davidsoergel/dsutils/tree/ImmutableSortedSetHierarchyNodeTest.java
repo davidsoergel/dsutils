@@ -44,28 +44,28 @@ import java.util.Queue;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHierarchyNode>
-		implements TestInstanceFactory<SortedSetHierarchyNode<? extends Comparable>>
+public class ImmutableSortedSetHierarchyNodeTest extends ContractTestAware<ImmutableSortedSetHierarchyNode>
+		implements TestInstanceFactory<ImmutableSortedSetHierarchyNode<? extends Comparable>>
 	{
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedSetHierarchyNode<? extends Comparable> createInstance() throws Exception
+	public ImmutableSortedSetHierarchyNode<? extends Comparable> createInstance() throws Exception
 		{
-		SortedSetHierarchyNode root = new SortedSetHierarchyNode("root");
-		SortedSetHierarchyNode a = root.newChild("a");
-		SortedSetHierarchyNode b = root.newChild("b");
-		SortedSetHierarchyNode c = root.newChild("c");
-		SortedSetHierarchyNode d = a.newChild("d");
-		SortedSetHierarchyNode e = a.newChild("e");
-		SortedSetHierarchyNode f = b.newChild("f");
-		SortedSetHierarchyNode g = b.newChild("g");
-		SortedSetHierarchyNode h = b.newChild("h");
-		SortedSetHierarchyNode i = c.newChild("i");
-		SortedSetHierarchyNode j = g.newChild("j");
-		SortedSetHierarchyNode k = g.newChild("k");
-		SortedSetHierarchyNode l = k.newChild("l");
-		SortedSetHierarchyNode m = l.newChild("m");
+		ImmutableSortedSetHierarchyNode root = new ImmutableSortedSetHierarchyNode("root");
+		ImmutableSortedSetHierarchyNode a = root.newChild("a");
+		ImmutableSortedSetHierarchyNode b = root.newChild("b");
+		ImmutableSortedSetHierarchyNode c = root.newChild("c");
+		ImmutableSortedSetHierarchyNode d = a.newChild("d");
+		ImmutableSortedSetHierarchyNode e = a.newChild("e");
+		ImmutableSortedSetHierarchyNode f = b.newChild("f");
+		ImmutableSortedSetHierarchyNode g = b.newChild("g");
+		ImmutableSortedSetHierarchyNode h = b.newChild("h");
+		ImmutableSortedSetHierarchyNode i = c.newChild("i");
+		ImmutableSortedSetHierarchyNode j = g.newChild("j");
+		ImmutableSortedSetHierarchyNode k = g.newChild("k");
+		ImmutableSortedSetHierarchyNode l = k.newChild("l");
+		ImmutableSortedSetHierarchyNode m = l.newChild("m");
 		return root;
 		}
 
@@ -75,7 +75,7 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 	@Override
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
-		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest<SortedSetHierarchyNode>(this)
+		theContractTests.add(new ImmutableHierarchyNodeInterfaceTest<ImmutableSortedSetHierarchyNode>(this)
 
 
 		);
@@ -84,24 +84,24 @@ public class SortedSetHierarchyNodeTest extends ContractTestAware<SortedSetHiera
 	@Factory
 	public Object[] instantiateAllContractTests()
 		{
-		return super.instantiateAllContractTestsWithName(SortedSetHierarchyNode.class.getCanonicalName());
+		return super.instantiateAllContractTestsWithName(ImmutableSortedSetHierarchyNode.class.getCanonicalName());
 		}
 
 
 	@Test
 	public void childrenAreInSortedOrderAfterNewChild() throws Exception
 		{
-		SortedSetHierarchyNode n = createInstance();
+		ImmutableSortedSetHierarchyNode n = createInstance();
 		n.newChild("p");
 		n.newChild("o");
 		n.newChild("n");
 
-		Iterator<HierarchyNode<String, SortedSetHierarchyNode<String>>> l = n.getChildren().iterator();
-		assert l.next().getValue().equals("a");
-		assert l.next().getValue().equals("b");
-		assert l.next().getValue().equals("c");
-		assert l.next().getValue().equals("n");
-		assert l.next().getValue().equals("o");
-		assert l.next().getValue().equals("p");
+		Iterator<HierarchyNode<String, ImmutableSortedSetHierarchyNode<String>>> l = n.getChildren().iterator();
+		assert l.next().getPayload().equals("a");
+		assert l.next().getPayload().equals("b");
+		assert l.next().getPayload().equals("c");
+		assert l.next().getPayload().equals("n");
+		assert l.next().getPayload().equals("o");
+		assert l.next().getPayload().equals("p");
 		}
 	}

@@ -33,7 +33,12 @@
 
 package com.davidsoergel.dsutils.tree;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 // TODO make ListHierarchyNode, etc. extend this
 
@@ -45,12 +50,21 @@ import java.util.Collection;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T, I>> implements HierarchyNode<T, I>
+public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	private I parent;//HierarchyNode<? extends T, I>
-	private T contents;
+	protected I parent;//HierarchyNode<? extends T, I>
+	protected T payload;
+
+	protected AbstractHierarchyNode(T payload)
+		{
+		this.payload = payload;
+		}
+
+	protected AbstractHierarchyNode()
+		{
+		}
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
@@ -58,17 +72,17 @@ public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T
 	/**
 	 * {@inheritDoc}
 	 */
-	public T getValue()
+	public T getPayload()
 		{
-		return contents;
+		return payload;
 		}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setValue(T contents)
+	public void setPayload(T payload)
 		{
-		this.contents = contents;
+		this.payload = payload;
 		}
 
 	/**
@@ -93,6 +107,7 @@ public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T
 		//	parent.getChildren().add((I) this);
 		}
 
+
 	// ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -103,7 +118,7 @@ public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract Collection<I> getChildren();
+	public abstract Collection<? extends I> getChildren();
 
 
 	// -------------------------- OTHER METHODS --------------------------
@@ -117,9 +132,78 @@ public abstract class AbstractHierarchyNode<T, I extends AbstractHierarchyNode<T
 	   // NO!
 	   // child.setParent(this);
 	   }*/
-	public abstract HierarchyNode<T, I> newChild(T contents);
+	//public abstract I newChild(T contents);
 
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public I getChildWithPayload(T payload) throws NoSuchNodeException
+		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
+
+		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
+
+		for (I child : getChildren())
+			{
+			final T cp = child.getPayload();
+			if ((cp == null && payload == null) || cp.equals(payload))
+				{
+				return child;
+				}
+			}
+		throw new NoSuchNodeException();
+		}
+
+
+	// ------------------------ INTERFACE METHODS ------------------------
+
+
+	// --------------------- Interface HierarchyNode ---------------------
+
+
+	public boolean isLeaf()
+		{
+		Collection<? extends I> children = getChildren();
+		return children == null || children.isEmpty();
+		}
+
+	public List<HierarchyNode<T, I>> getAncestorPath()
+		{
+		List<HierarchyNode<T, I>> result = new LinkedList<HierarchyNode<T, I>>();
+		HierarchyNode<T, I> trav = this;
+
+		while (trav != null)
+			{
+			result.add(0, trav);
+			trav = trav.getParent();
+			}
+
+		return result;
+		}
+
+	/**
+	 * Returns an iterator over a set of elements of type T.
+	 *
+	 * @return an Iterator.
+	 */
+	public Iterator<I> iterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
+		}
+
+	public DepthFirstTreeIterator<T, I> depthFirstIterator()
+		{
+		return new DepthFirstTreeIteratorImpl(this);
+		}
+
+	/*
 	public HierarchyNode<T, I> getSelf()
+		{
+		return this;
+		}*/
+
+	public HierarchyNode<T, I> getSelfNode()
 		{
 		return this;
 		}

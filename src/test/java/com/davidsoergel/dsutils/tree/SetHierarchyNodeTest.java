@@ -36,6 +36,7 @@ import com.davidsoergel.dsutils.ContractTestAware;
 import com.davidsoergel.dsutils.TestInstanceFactory;
 import org.testng.annotations.Factory;
 
+import java.io.Serializable;
 import java.util.Queue;
 
 /**
@@ -44,27 +45,27 @@ import java.util.Queue;
  */
 
 public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
-		implements TestInstanceFactory<SetHierarchyNode<Object>>
+		implements TestInstanceFactory<SetHierarchyNode<Serializable>>
 	{
 	/**
 	 * {@inheritDoc}
 	 */
-	public SetHierarchyNode<Object> createInstance() throws Exception
+	public SetHierarchyNode<Serializable> createInstance() throws Exception
 		{
-		SetHierarchyNode<Object> root = new SetHierarchyNode<Object>();
-		SetHierarchyNode<Object> a = root.newChild();
-		SetHierarchyNode<Object> b = root.newChild();
-		SetHierarchyNode<Object> c = root.newChild();
-		SetHierarchyNode<Object> d = a.newChild();
-		SetHierarchyNode<Object> e = a.newChild();
-		SetHierarchyNode<Object> f = b.newChild();
-		SetHierarchyNode<Object> g = b.newChild();
-		SetHierarchyNode<Object> h = b.newChild();
-		SetHierarchyNode<Object> i = c.newChild();
-		SetHierarchyNode<Object> j = g.newChild();
-		SetHierarchyNode<Object> k = g.newChild();
-		SetHierarchyNode<Object> l = k.newChild();
-		SetHierarchyNode<Object> m = l.newChild();
+		SetHierarchyNode<Serializable> root = new SetHierarchyNode<Serializable>();
+		SetHierarchyNode<Serializable> a = root.newChild();
+		SetHierarchyNode<Serializable> b = root.newChild();
+		SetHierarchyNode<Serializable> c = root.newChild();
+		SetHierarchyNode<Serializable> d = a.newChild();
+		SetHierarchyNode<Serializable> e = a.newChild();
+		SetHierarchyNode<Serializable> f = b.newChild();
+		SetHierarchyNode<Serializable> g = b.newChild();
+		SetHierarchyNode<Serializable> h = b.newChild();
+		SetHierarchyNode<Serializable> i = c.newChild();
+		SetHierarchyNode<Serializable> j = g.newChild();
+		SetHierarchyNode<Serializable> k = g.newChild();
+		SetHierarchyNode<Serializable> l = k.newChild();
+		SetHierarchyNode<Serializable> m = l.newChild();
 		return root;
 		}
 
@@ -75,7 +76,7 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 	@Override
 	public void addContractTestsToQueue(Queue theContractTests)
 		{
-		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Object>>(this)
+		theContractTests.add(new HierarchyNodeInterfaceTest<SetHierarchyNode<Serializable>>(this)
 
 		);
 		}

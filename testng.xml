@@ -33,27 +33,27 @@
 
 <suite name="dsutils" verbose="1" parallel="false" thread-count="1">
 
-	<test name="dsutils">
-		<!--	<groups>
-		  <run>
-			  <exclude name="contract"/>
-		  </run>
-	  </groups>
-  -->
-		<packages>
-			<package name="com.davidsoergel.dsutils"/>
-			<package name="com.davidsoergel.dsutils.collections"/>
-			<package name="com.davidsoergel.dsutils.math"/>
-			<package name="com.davidsoergel.dsutils.range"/>
-			<package name="com.davidsoergel.dsutils.subclassfindertest"/>
-		</packages>
+  <test name="dsutils">
+    <!--	<groups>
+          <run>
+            <exclude name="contract"/>
+          </run>
+        </groups>
+      -->
+    <packages>
+      <package name="com.davidsoergel.dsutils"/>
+      <package name="com.davidsoergel.dsutils.collections"/>
+      <package name="com.davidsoergel.dsutils.math"/>
+      <package name="com.davidsoergel.dsutils.range"/>
+      <package name="com.davidsoergel.dsutils.subclassfindertest"/>
+    </packages>
 
-		<classes>
-			<class name="com.davidsoergel.dsutils.tree.ListHierarchyNodeTest"/>
-			<class name="com.davidsoergel.dsutils.tree.SetHierarchyNodeTest"/>
-			<class name="com.davidsoergel.dsutils.tree.SortedSetHierarchyNodeTest"/>
-		</classes>
-	</test>
+    <classes>
+      <class name="com.davidsoergel.dsutils.tree.ListHierarchyNodeTest"/>
+      <class name="com.davidsoergel.dsutils.tree.SetHierarchyNodeTest"/>
+      <class name="com.davidsoergel.dsutils.tree.ImmutableSortedSetHierarchyNodeTest"/>
+    </classes>
+  </test>
 
 
 </suite>

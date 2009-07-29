@@ -33,13 +33,9 @@
 
 package com.davidsoergel.dsutils.tree;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
@@ -48,16 +44,16 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMap
+public class BasicHierarchicalStringObjectMap extends ListHierarchyNode<Map<String, Object>>
+		implements HierarchicalStringObjectMap<ListHierarchyNode<Map<String, Object>>>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	Map<String, Object> contents = new HashMap<String, Object>();
+	//Map<String, Object> contents = new HashMap<String, Object>();
 
-	private List<HierarchicalStringObjectMap> children = new ArrayList<HierarchicalStringObjectMap>();
+//	private List<HierarchicalStringObjectMap> children = new ArrayList<HierarchicalStringObjectMap>();
 //HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>
 
-	private HierarchicalStringObjectMap parent;
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -65,82 +61,12 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<HierarchicalStringObjectMap> getChildren()//HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>
+/*	public List<HierarchicalStringObjectMap> getChildren()//HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>
 		{
 		return children;
 		}
+*/
 
-
-	public void registerChild(HierarchicalStringObjectMap child)
-		{
-		children.add(child);
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void unregisterChild(HierarchicalStringObjectMap child)
-		{
-		children.remove(child);
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@NotNull
-	public HierarchicalStringObjectMap getChild(Map<String, Object> id) throws NoSuchNodeException
-		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
-
-		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
-
-		for (HierarchicalStringObjectMap child : children)
-			{
-			if (child.getValue() == id)
-				{
-				return child;
-				}
-			}
-		throw new NoSuchNodeException();
-		}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Map<String, Object> getValue()
-		{
-		return contents;
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setValue(Map<String, Object> contents)
-		{
-		this.contents = contents;
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public HierarchicalStringObjectMap getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(HierarchicalStringObjectMap parent)
-		{
-		if (this.parent != null)
-			{
-			this.parent.unregisterChild(this);
-			}
-		this.parent = parent;
-		if (this.parent != null)
-			{
-			this.parent.registerChild(this);
-			}
-		}
 
 	// ------------------------ INTERFACE METHODS ------------------------
 
@@ -150,13 +76,22 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public HierarchicalStringObjectMap newChild()
+	public ListHierarchyNode<Map<String, Object>> newChild()
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
 		BasicHierarchicalStringObjectMap child = new BasicHierarchicalStringObjectMap();
 		child.setParent(this);
 		//result.setContents(contents);
+		//children.add(result);
+		return child;
+		}
+
+	public ListHierarchyNode<Map<String, Object>> newChild(Map<String, Object> payload)
+		{
+		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
+		BasicHierarchicalStringObjectMap child = new BasicHierarchicalStringObjectMap();
+		child.setParent(this);
+		setPayload(payload);
 		//children.add(result);
 		return child;
 		}
@@ -168,7 +103,7 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	 */
 	public Object put(String s, Object o)
 		{
-		return getValue().put(s, o);
+		return getPayload().put(s, o);
 		}
 
 	/**
@@ -176,7 +111,7 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	 */
 	public Object remove(Object o)
 		{
-		return getValue().remove(o);
+		return getPayload().remove(o);
 		}
 
 	/**
@@ -184,7 +119,7 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	 */
 	public void putAll(Map<? extends String, ? extends Object> map)
 		{
-		getValue().putAll(map);
+		getPayload().putAll(map);
 		}
 
 	/**
@@ -192,7 +127,7 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	 */
 	public void clear()
 		{
-		getValue().clear();
+		getPayload().clear();
 		}
 
 	// -------------------------- OTHER METHODS --------------------------
@@ -200,28 +135,73 @@ public class BasicHierarchicalStringObjectMap extends HierarchicalStringObjectMa
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+/*	@Override
 	public void merge()
 		{
 		//To change body of implemented methods use File | Settings | File Templates.
-		}
-
+		}*/
 
 	/**
-	 * Returns an iterator over a set of elements of type T.
-	 *
-	 * @return an Iterator.
+	 * {@inheritDoc}
 	 */
-	public Iterator<HierarchicalStringObjectMap> iterator()
+	public int size()
 		{
-		return new DepthFirstTreeIteratorImpl(this);
+		return getPayload().size();
 		}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public DepthFirstTreeIterator<Map<String, Object>, HierarchicalStringObjectMap> depthFirstIterator()
+	public boolean isEmpty()
 		{
-		return new DepthFirstTreeIteratorImpl(this);
+		return getPayload().isEmpty();
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean containsKey(Object o)
+		{
+		return getPayload().containsKey(o);
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean containsValue(Object o)
+		{
+		return getPayload().containsValue(o);
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object get(Object o)
+		{
+		return getPayload().get(o);
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<String> keySet()
+		{
+		return getPayload().keySet();
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<Object> values()
+		{
+		return getPayload().values();
+		}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<Entry<String, Object>> entrySet()
+		{
+		return getPayload().entrySet();
 		}
 	}

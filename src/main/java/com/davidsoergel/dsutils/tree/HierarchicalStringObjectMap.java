@@ -33,11 +33,8 @@
 
 package com.davidsoergel.dsutils.tree;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A node in a simple hierarchy, where a Map from Strings to Objects is attached at each node.  Implements the Map
@@ -47,11 +44,11 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class HierarchicalStringObjectMap
-		implements HierarchyNode<Map<String, Object>, HierarchicalStringObjectMap>, Map<String, Object>
+public interface HierarchicalStringObjectMap<C extends HierarchyNode<Map<String, Object>, C>>
+		extends HierarchyNode<Map<String, Object>, C>, Map<String, Object>, Serializable
 	{
 
-	private String name;
+/*	private String name;
 
 	public String getName()
 		{
@@ -61,7 +58,7 @@ public abstract class HierarchicalStringObjectMap
 	public void setName(final String name)
 		{
 		this.name = name;
-		}
+		}*/
 	// ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -70,50 +67,11 @@ public abstract class HierarchicalStringObjectMap
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract HierarchicalStringObjectMap newChild();
+//	public abstract HierarchicalStringObjectMap newChild();
 
 
 	// --------------------- Interface Map ---------------------
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public int size()
-		{
-		return getValue().size();
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isEmpty()
-		{
-		return getValue().isEmpty();
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean containsKey(Object o)
-		{
-		return getValue().containsKey(o);
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean containsValue(Object o)
-		{
-		return getValue().containsValue(o);
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Object get(Object o)
-		{
-		return getValue().get(o);
-		}
 
 	// transactions required for these
 
@@ -139,54 +97,31 @@ public abstract class HierarchicalStringObjectMap
 		 }
  */
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<String> keySet()
-		{
-		return getValue().keySet();
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Collection<Object> values()
-		{
-		return getValue().values();
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<Entry<String, Object>> entrySet()
-		{
-		return getValue().entrySet();
-		}
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public abstract void merge();
+//	public abstract void merge();
 
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isLeaf()
+/*	public boolean isLeaf()
 		{
 		Collection<? extends HierarchyNode<? extends Map<String, Object>, HierarchicalStringObjectMap>> children =
 				getChildren();
 		return children == null || children.isEmpty();
-		}
+		}*/
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract HierarchicalStringObjectMap getParent();
+//	public abstract HierarchicalStringObjectMap getParent();
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<HierarchicalStringObjectMap> getAncestorPath()
+/*	public List<HierarchicalStringObjectMap> getAncestorPath()
 		{
 		List<HierarchicalStringObjectMap> result = new LinkedList<HierarchicalStringObjectMap>();
 		HierarchicalStringObjectMap trav = this;
@@ -203,5 +138,5 @@ public abstract class HierarchicalStringObjectMap
 	public HierarchicalStringObjectMap getSelfNode()//HierarchyNode<Map<String, Object>,
 		{
 		return this;
-		}
+		}*/
 	}

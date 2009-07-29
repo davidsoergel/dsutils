@@ -95,12 +95,12 @@ public class ListHierarchyNodeTest extends ContractTestAware<ListHierarchyNode>
 		n.newChild("o");
 		n.newChild("n");
 
-		Iterator<ListHierarchyNode<Object>> l = n.getChildren().iterator();
-		assert l.next().getValue().equals("a");
-		assert l.next().getValue().equals("b");
-		assert l.next().getValue().equals("c");
-		assert l.next().getValue().equals("p");
-		assert l.next().getValue().equals("o");
-		assert l.next().getValue().equals("n");
+		Iterator<? extends ListHierarchyNode<Object>> l = n.getChildren().iterator();
+		assert l.next().getPayload().equals("a");
+		assert l.next().getPayload().equals("b");
+		assert l.next().getPayload().equals("c");
+		assert l.next().getPayload().equals("p");
+		assert l.next().getPayload().equals("o");
+		assert l.next().getPayload().equals("n");
 		}
 	}

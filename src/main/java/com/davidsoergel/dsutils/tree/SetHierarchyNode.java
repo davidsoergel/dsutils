@@ -33,14 +33,9 @@
 
 package com.davidsoergel.dsutils.tree;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -50,21 +45,22 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SetHierarchyNode<T extends Serializable> implements HierarchyNode<T, SetHierarchyNode<T>>, Serializable
+public class SetHierarchyNode<T extends Serializable> extends AbstractHierarchyNode<T, SetHierarchyNode<T>>
+		implements Serializable
 	{
 	// ------------------------------ FIELDS ------------------------------
 
 	protected Set<SetHierarchyNode<T>> children = new HashSet<SetHierarchyNode<T>>();
 
-	private transient SetHierarchyNode<T> parent;
-	private T contents;
 
-
-	// --------------------- GETTER / SETTER METHODS ---------------------
-
-	public Set<SetHierarchyNode<T>> getChildren()
+	public SetHierarchyNode(T contents)
 		{
-		return children;
+		super(contents);
+		}
+
+	public SetHierarchyNode()
+		{
+		super();
 		}
 
 	public void registerChild(SetHierarchyNode<T> child)
@@ -77,122 +73,31 @@ public class SetHierarchyNode<T extends Serializable> implements HierarchyNode<T
 		children.remove(child);
 		}
 
-
-	private String name;
-
-	public String getName()
+	public Set<SetHierarchyNode<T>> getChildren()
 		{
-		return name;
+		return children;
 		}
-
-	public void setName(final String name)
-		{
-		this.name = name;
-		}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@NotNull
-	public SetHierarchyNode<T> getChild(T id) throws NoSuchNodeException
-		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
-
-		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
-
-		for (SetHierarchyNode<T> child : children)
-			{
-			if (child.getValue() == id)
-				{
-				return child;
-				}
-			}
-		throw new NoSuchNodeException();
-		}
-
-	public T getValue()
-		{
-		return contents;
-		}
-
-	public void setValue(T contents)
-		{
-		this.contents = contents;
-		}
-
-	public SetHierarchyNode<T> getParent()
-		{
-		return parent;
-		}
-
-	public void setParent(SetHierarchyNode<T> parent)
-		{
-		if (this.parent != null)
-			{
-			this.parent.unregisterChild(this);
-			}
-		this.parent = parent;
-		if (this.parent != null)
-			{
-			this.parent.registerChild(this);
-			}
-		}
-
-	// ------------------------ INTERFACE METHODS ------------------------
-
-
-	// --------------------- Interface HierarchyNode ---------------------
 
 	public SetHierarchyNode<T> newChild()
 		{
-		SetHierarchyNode<T> child = new SetHierarchyNode<T>();
-		//result.setContents(contents);
-		//children.add(result);
-		child.setParent(this);
-		return child;
-		}
-
-	public boolean isLeaf()
-		{
-		return children == null || children.isEmpty();
-		}
-
-	public List<SetHierarchyNode<T>> getAncestorPath()
-		{
-		List<SetHierarchyNode<T>> result = new LinkedList<SetHierarchyNode<T>>();
-		SetHierarchyNode<T> trav = this;
-
-		while (trav != null)
-			{
-			result.add(0, trav);
-			trav = trav.getParent();
-			}
-
+		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		//children.add(result);  // setParent calls registerChild
+		result.setParent(this);
 		return result;
 		}
 
-	/**
-	 * Returns an iterator over a set of elements of type T.
-	 *
-	 * @return an Iterator.
-	 */
-	public Iterator<SetHierarchyNode<T>> iterator()
+	public SetHierarchyNode<T> newChild(T payload)
 		{
-		return new DepthFirstTreeIteratorImpl(this);
-		}
-
-	public DepthFirstTreeIterator<T, SetHierarchyNode<T>> depthFirstIterator()
-		{
-		return new DepthFirstTreeIteratorImpl(this);
-		}
-
-	public SetHierarchyNode<T> getSelfNode()
-		{
-		return this;
+		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		//children.add(result);  // setParent calls registerChild
+		result.setParent(this);
+		result.setPayload(payload);
+		return result;
 		}
 
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException
 		{
-		contents = (T) stream.readObject();
+		payload = (T) stream.readObject();
 		children = (Set<SetHierarchyNode<T>>) stream.readObject();
 
 		for (SetHierarchyNode<T> child : children)
@@ -203,7 +108,7 @@ public class SetHierarchyNode<T extends Serializable> implements HierarchyNode<T
 
 	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
 		{
-		stream.writeObject(contents);
+		stream.writeObject(payload);
 		stream.writeObject(children);
 		}
 	}
