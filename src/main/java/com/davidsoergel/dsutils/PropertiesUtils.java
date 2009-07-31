@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -55,7 +56,7 @@ public class PropertiesUtils
 
 
 	public static File findPropertiesFile(String environmentVariableName, String homeDirSubdirName,
-	                                      String defaultFileName)
+	                                      String defaultFileName) throws FileNotFoundException
 		{
 		File result;
 
@@ -80,7 +81,7 @@ public class PropertiesUtils
 
 
 		propsFilename = System.getProperty("user.home") + System.getProperty("file.separator") + homeDirSubdirName
-				+ System.getProperty("file.separator") + defaultFileName;
+		                + System.getProperty("file.separator") + defaultFileName;
 		logger.debug("Looking for properties file: " + propsFilename);
 		result = new File(propsFilename);
 		if (result.exists() && result.canRead())
@@ -101,7 +102,7 @@ public class PropertiesUtils
 			}
 
 		logger.error("Could not find properties file: " + defaultFileName);
-		throw new RuntimeException("Could not find properties file: " + defaultFileName);
+		throw new FileNotFoundException("Could not find properties file: " + defaultFileName);
 		}
 
 	public static Map<String, Properties> splitPeriodDelimitedProperties(Properties p)
