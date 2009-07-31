@@ -182,6 +182,20 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 		return result;
 		}
 
+	public List<T> getAncestorPathPayloads()
+		{
+		List<T> result = new LinkedList<T>();
+		HierarchyNode<T, I> trav = this;
+
+		while (trav != null)
+			{
+			result.add(0, trav.getPayload());
+			trav = trav.getParent();
+			}
+
+		return result;
+		}
+
 	/**
 	 * Returns an iterator over a set of elements of type T.
 	 *

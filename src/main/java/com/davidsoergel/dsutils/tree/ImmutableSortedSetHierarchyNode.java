@@ -205,6 +205,20 @@ public class ImmutableSortedSetHierarchyNode<T extends Comparable<T>>
 		return result;
 		}
 
+	public List<T> getAncestorPathPayloads()
+		{
+		List<T> result = new LinkedList<T>();
+		ImmutableSortedSetHierarchyNode<T> trav = this;
+
+		while (trav != null)
+			{
+			result.add(0, trav.getPayload());
+			trav = trav.getParent();
+			}
+
+		return result;
+		}
+
 	/**
 	 * Returns an iterator over a set of elements of type T.
 	 *
