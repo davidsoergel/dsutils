@@ -321,6 +321,11 @@ public class SubclassFinder
 						{
 						logger.error("Error", cnfex);
 						}
+					catch (NoClassDefFoundError cnfex)
+						{
+						logger.error("Error", cnfex);
+						}
+
 
 					catch (ExceptionInInitializerError ex)
 						{
