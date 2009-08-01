@@ -5,8 +5,8 @@ package com.davidsoergel.dsutils.collections;
  */
 public class OrderedPair<A, B> implements Comparable
 	{
-	private final A key1;
-	private final B key2;
+	private A key1;  // final, but that screws with Serializable
+	private B key2;  // final, but that screws with Serializable
 
 	public OrderedPair(A key1, B key2)
 		{
