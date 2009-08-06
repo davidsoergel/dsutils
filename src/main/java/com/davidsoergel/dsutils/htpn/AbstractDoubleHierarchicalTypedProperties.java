@@ -9,11 +9,11 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends Comparable, V, C extends DoubleHierarchicalTypedProperties<I, J, K, V, C>>
+public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends Comparable, V, C extends DoubleHierarchicalTypedProperties<I, J, K, V, C, H>, H extends HierarchicalTypedPropertyNode<K, V, H>>
 
-		extends AbstractHierarchyNode<HierarchicalTypedPropertyNode<K, V>, C>
+		extends AbstractHierarchyNode<HierarchicalTypedPropertyNode<K, V, H>, C>
 
-		implements Serializable, DoubleHierarchicalTypedProperties<I, J, K, V, C>
+		implements Serializable, DoubleHierarchicalTypedProperties<I, J, K, V, C, H>
 	{
 	private I id1;
 	private J id2;
@@ -53,7 +53,7 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 	public abstract C newChild();
 
 
-	public C newChild(HierarchicalTypedPropertyNode<K, V> payload)
+	public C newChild(HierarchicalTypedPropertyNode<K, V, H> payload)
 		{
 		C result = newChild();
 		//children.add(result);  // setParent calls registerChild

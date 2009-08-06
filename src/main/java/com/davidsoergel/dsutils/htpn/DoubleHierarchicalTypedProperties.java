@@ -6,9 +6,9 @@ import com.davidsoergel.dsutils.tree.HierarchyNode;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface DoubleHierarchicalTypedProperties<I, J, K extends Comparable, V, C extends DoubleHierarchicalTypedProperties<I, J, K, V, C>>
+public interface DoubleHierarchicalTypedProperties<I, J, K extends Comparable, V, C extends DoubleHierarchicalTypedProperties<I, J, K, V, C, H>, H extends HierarchicalTypedPropertyNode<K, V, H>>
 
-		extends HierarchyNode<HierarchicalTypedPropertyNode<K, V>, C>
+		extends HierarchyNode<HierarchicalTypedPropertyNode<K, V, H>, C>
 	{
 	I getId1();
 

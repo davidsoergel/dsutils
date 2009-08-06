@@ -10,19 +10,19 @@ import java.io.Serializable;
  * @version $Id$
  */
 public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<S> & Serializable, T extends Serializable>
-		extends HierarchicalTypedPropertyNodeImpl<S, T> implements Serializable
+		extends BasicHierarchicalTypedPropertyNode<S, T> implements Serializable
 	{
-	public HierarchicalTypedPropertyNodeImpl<S, T> newChild()
+	public BasicHierarchicalTypedPropertyNode<S, T> newChild()
 		{
-		HierarchicalTypedPropertyNodeImpl<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
+		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
 		//children.add(result);  // setParent calls registerChild
 		result.setParent(this);
 		return result;
 		}
 
-	public HierarchicalTypedPropertyNode<S, T> newChild(final OrderedPair<S, T> payload)
+	public BasicHierarchicalTypedPropertyNode<S, T> newChild(final OrderedPair<S, T> payload)
 		{
-		HierarchicalTypedPropertyNodeImpl<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
+		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
 		//children.add(result);  // setParent calls registerChild
 		result.setParent(this);
 		result.setPayload(payload);
@@ -42,22 +42,19 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 	 */
 	public void setValue(T value) throws HierarchicalPropertyNodeException
 		{
-		if (!editable)
-			{
-			throw new HierarchicalPropertyNodeException("Node is locked: " + this);
-			}
+
 		setValueForce(value);
 		}
 
-	private void setValueForce(T value) throws HierarchicalPropertyNodeException
+	protected void setValueForce(T value) throws HierarchicalPropertyNodeException
 		{
-		boolean destructive = true;
-		T currentValue = getValue();
-		if (currentValue == null || currentValue == value)
-			{
-			destructive = false;
-			}
-
+		/*	boolean destructive = true;
+		  T currentValue = getValue();
+		  if (currentValue == null || currentValue == value)
+			  {
+			  destructive = false;
+			  }
+  */
 		// do any required string parsing, including class names
 		/*	if (value instanceof String)
 		   {
@@ -91,19 +88,17 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 		}
 
 
-	public void registerChild(final HierarchicalTypedPropertyNode<S, T> a)
+	@Override
+	public void registerChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
 		{
 		assert a instanceof SerializableHierarchicalTypedPropertyNodeImpl;
-		childrenByName.put(a.getKey(), a);
+		super.registerChild(a);
 		}
 
-	public void unregisterChild(final HierarchicalTypedPropertyNode<S, T> a)
+	@Override
+	public void unregisterChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
 		{
 		assert a instanceof SerializableHierarchicalTypedPropertyNodeImpl;
-		final S key = a.getKey();
-		if (childrenByName.get(key).equals(a))
-			{
-			childrenByName.remove(key);
-			}
+		super.unregisterChild(a);
 		}
 	}

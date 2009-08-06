@@ -50,14 +50,14 @@ import java.util.List;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> implements HierarchyNode<T, I>
+public abstract class AbstractHierarchyNode<KV, H extends HierarchyNode<KV, H>> implements HierarchyNode<KV, H>
 	{
 	// ------------------------------ FIELDS ------------------------------
 
-	protected I parent;//HierarchyNode<? extends T, I>
-	protected T payload;
+	protected H parent;//HierarchyNode<? extends T, I>
+	protected KV payload;
 
-	protected AbstractHierarchyNode(T payload)
+	protected AbstractHierarchyNode(KV payload)
 		{
 		this.payload = payload;
 		}
@@ -72,7 +72,7 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public T getPayload()
+	public KV getPayload()
 		{
 		return payload;
 		}
@@ -80,7 +80,7 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setPayload(T payload)
+	public void setPayload(KV payload)
 		{
 		this.payload = payload;
 		}
@@ -88,21 +88,21 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public I getParent()//HierarchyNode<? extends T, I>
+	public H getParent()//HierarchyNode<? extends T, I>
 		{
 		return parent;
 		}
 
-	public void setParent(I parent)
+	public void setParent(H parent)
 		{
 		if (this.parent != null)
 			{
-			this.parent.unregisterChild((I) this);
+			this.parent.unregisterChild((H) this);
 			}
 		this.parent = parent;
 		if (this.parent != null)
 			{
-			this.parent.registerChild((I) this);
+			this.parent.registerChild((H) this);
 			}
 		//	parent.getChildren().add((I) this);
 		}
@@ -118,7 +118,7 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract Collection<? extends I> getChildren();
+	public abstract Collection<? extends H> getChildren();
 
 
 	// -------------------------- OTHER METHODS --------------------------
@@ -139,14 +139,14 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	 * {@inheritDoc}
 	 */
 	@NotNull
-	public I getChildWithPayload(T payload) throws NoSuchNodeException
+	public H getChildWithPayload(KV payload) throws NoSuchNodeException
 		{// We could map the children collection as a Map; but that's some hassle, and since there are generally just 2 children anyway, this is simpler
 
 		// also, the child id is often not known when it is added to the children Set, so putting the child into a children Map wouldn't work
 
-		for (I child : getChildren())
+		for (H child : getChildren())
 			{
-			final T cp = child.getPayload();
+			final KV cp = child.getPayload();
 			if ((cp == null && payload == null) || cp.equals(payload))
 				{
 				return child;
@@ -164,14 +164,14 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 
 	public boolean isLeaf()
 		{
-		Collection<? extends I> children = getChildren();
+		Collection<? extends H> children = getChildren();
 		return children == null || children.isEmpty();
 		}
 
-	public List<HierarchyNode<T, I>> getAncestorPath()
+	public List<HierarchyNode<KV, H>> getAncestorPath()
 		{
-		List<HierarchyNode<T, I>> result = new LinkedList<HierarchyNode<T, I>>();
-		HierarchyNode<T, I> trav = this;
+		List<HierarchyNode<KV, H>> result = new LinkedList<HierarchyNode<KV, H>>();
+		HierarchyNode<KV, H> trav = this;
 
 		while (trav != null)
 			{
@@ -182,10 +182,10 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 		return result;
 		}
 
-	public List<T> getAncestorPathPayloads()
+	public List<KV> getAncestorPathPayloads()
 		{
-		List<T> result = new LinkedList<T>();
-		HierarchyNode<T, I> trav = this;
+		List<KV> result = new LinkedList<KV>();
+		HierarchyNode<KV, H> trav = this;
 
 		while (trav != null)
 			{
@@ -201,12 +201,12 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 	 *
 	 * @return an Iterator.
 	 */
-	public Iterator<I> iterator()
+	public Iterator<H> iterator()
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
 
-	public DepthFirstTreeIterator<T, I> depthFirstIterator()
+	public DepthFirstTreeIterator<KV, H> depthFirstIterator()
 		{
 		return new DepthFirstTreeIteratorImpl(this);
 		}
@@ -217,7 +217,7 @@ public abstract class AbstractHierarchyNode<T, I extends HierarchyNode<T, I>> im
 		return this;
 		}*/
 
-	public HierarchyNode<T, I> getSelfNode()
+	public HierarchyNode<KV, H> getSelfNode()
 		{
 		return this;
 		}

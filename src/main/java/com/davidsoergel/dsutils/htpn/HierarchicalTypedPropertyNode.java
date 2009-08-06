@@ -32,7 +32,6 @@
 
 package com.davidsoergel.dsutils.htpn;
 
-import com.davidsoergel.dsutils.Incrementable;
 import com.davidsoergel.dsutils.collections.OrderedPair;
 import com.davidsoergel.dsutils.tree.HierarchyNode;
 
@@ -40,7 +39,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 
 /**
  * Describes a node in a tree containing a key-value pair (at this node) and a set of children.  The types of both the
@@ -50,57 +48,56 @@ import java.util.SortedSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id: HierarchicalTypedPropertyNode.java 250 2009-07-29 01:05:06Z soergel $
  */
-public interface HierarchicalTypedPropertyNode<S extends Comparable, T> extends Comparable,
-                                                                                HierarchyNode<OrderedPair<S, T>, HierarchicalTypedPropertyNode<S, T>> //, Serializable//extends HierarchyNode<Map<String, Object>>, Map<String, Object>//extends TypedProperties
+public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extends HierarchicalTypedPropertyNode<K, V, H>>
+		extends Comparable,
+		        HierarchyNode<OrderedPair<K, V>, H> //, Serializable//extends HierarchyNode<Map<String, Object>>, Map<String, Object>//extends TypedProperties
 	{
+	H init(H parent, K childKey, V childValue, Type aClass); //throws HierarchicalPropertyNodeException;
+
+	void copyFrom(HierarchicalTypedPropertyNode<K, V, ?> extendedTree) throws HierarchicalPropertyNodeException;
+
+
 	public enum PropertyConsumerFlags
 		{
 			INHERITED
 		}
 	// -------------------------- OTHER METHODS --------------------------
 
-	void addChild(HierarchicalTypedPropertyNode<S, T> n);
+	//void addChild(HierarchicalTypedPropertyNode<S, T> n);
 
-	void addChild(S key, T value);
+	void addChild(K key, V value);
 
-	void addChild(List<S> keyPath, T value);
+	void addChild(List<K> keyPath, V value);
 
-	void addChild(List<S> keyPath, S leafKey, T value);
+	void addChild(List<K> keyPath, K leafKey, V value);
+
 
 	//void addChild(S[] keyPath, T value);
 
-	void collectDescendants(List<S> keyPath, Map<List<S>, HierarchicalTypedPropertyNode<S, T>> result);
+	void collectDescendants(List<K> keyPath, Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> result);
 
-	Map<List<S>, HierarchicalTypedPropertyNode<S, T>> getAllDescendants();
+	Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants();
 
-	HierarchicalTypedPropertyNode<S, T> getChild(S key);
+	HierarchicalTypedPropertyNode<K, V, H> getChild(K key);
 
-	Collection<? extends HierarchicalTypedPropertyNode<S, T>> getChildNodes();
+	Collection<H> getChildNodes();
 
-	Map<S, HierarchicalTypedPropertyNode<S, T>> getChildrenByName();
-
-	T getDefaultValue();
-
-	String getDefaultValueString();
+	//String getDefaultValueString();
 
 	Object[] getEnumOptions();
 
-	String getHelpmessage();
+	V getInheritedValue(K name);
 
-	T getInheritedValue(S name);
+	HierarchicalTypedPropertyNode<K, V, H> getInheritedNode(K name);
 
-	HierarchicalTypedPropertyNode<S, T> getInheritedNode(S name);
+	K getKey();
 
-	S getKey();
+	H getOrCreateDescendant(List<K> keys);
 
-	HierarchicalTypedPropertyNode<S, T> getOrCreateDescendant(List<S> keys);
+	H getOrCreateChild(K childKey, V childValue);
 
-	HierarchicalTypedPropertyNode<S, T> getOrCreateChild(S childKey, T childValue);
+	H getParent();
 
-	HierarchicalTypedPropertyNode<S, T> getParent();
-
-
-	SortedSet<Class> getPluginOptions(Incrementable incrementor);
 
 	/**
 	 * Returns the runtime type of the value contained in this node.  Naturally this must be assignable to the generic
@@ -110,11 +107,12 @@ public interface HierarchicalTypedPropertyNode<S extends Comparable, T> extends 
 	 */
 	Type getType();
 
-	T getValue();
+	V getValue();
 
 	void inheritValueIfNeeded();
 
-	void copyChildrenFrom(HierarchicalTypedPropertyNode<S, T> inheritedNode) throws HierarchicalPropertyNodeException;
+	void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, H> inheritedNode)
+			throws HierarchicalPropertyNodeException;
 
 	//boolean isNamesSubConsumer();
 
@@ -123,37 +121,14 @@ public interface HierarchicalTypedPropertyNode<S extends Comparable, T> extends 
 	//** All PluginMap functionality needs revisiting
 	//boolean isPluginMap();
 
-	boolean isEditable();
 
-	boolean isNullable();
+	List<K> keyPath();
 
-	boolean isObsolete();
+	void removeChild(K key);
 
-	boolean isChanged();
 
-//	boolean isInherited();
+	void setKey(K newKey);
 
-	void setChanged(boolean changed);
-
-	List<S> keyPath();
-
-	void removeChild(S key);
-
-	void removeObsoletes();
-
-	void setDefaultValueString(String defaultValueString) throws HierarchicalPropertyNodeException;
-
-	void setEditable(boolean editable);
-
-	void setHelpmessage(String helpmessage);
-
-	void setKey(S newKey);
-
-	void setNullable(boolean nullable) throws HierarchicalPropertyNodeException;
-
-	void setObsolete(boolean b);
-
-	void setParent(HierarchicalTypedPropertyNode<S, T> key);
 
 	void setType(Type type);
 
@@ -164,7 +139,7 @@ public interface HierarchicalTypedPropertyNode<S extends Comparable, T> extends 
 
 	//	void updateDynamicConsumerNodesFromDefaults() throws PropertyConsumerNodeException;
 
-	void setValue(T value) throws HierarchicalPropertyNodeException;
+	void setValue(V value) throws HierarchicalPropertyNodeException;
 
 	/**
 	 * Test whether this node has had any fields set yet.  Returns true only if the node is completely empty of interesting
