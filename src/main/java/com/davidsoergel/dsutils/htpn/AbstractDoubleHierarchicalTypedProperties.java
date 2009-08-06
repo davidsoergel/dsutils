@@ -57,7 +57,7 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 		{
 		C result = newChild();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent((C) this);
+		//result.setParent((C) this);
 		result.setPayload(payload);
 		return result;
 		}

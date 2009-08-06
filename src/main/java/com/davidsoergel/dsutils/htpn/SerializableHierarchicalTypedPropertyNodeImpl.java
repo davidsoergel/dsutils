@@ -24,8 +24,8 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 		{
 		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
 		result.setPayload(payload);
+		result.setParent(this);
 		return result;
 		}
 

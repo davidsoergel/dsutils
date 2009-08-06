@@ -90,8 +90,8 @@ public class BasicHierarchicalStringObjectMap extends ListHierarchyNode<Map<Stri
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
 		BasicHierarchicalStringObjectMap child = new BasicHierarchicalStringObjectMap();
-		child.setParent(this);
 		setPayload(payload);
+		child.setParent(this);
 		//children.add(result);
 		return child;
 		}

@@ -90,8 +90,8 @@ public class SetHierarchyNode<T extends Serializable> extends AbstractHierarchyN
 		{
 		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
 		result.setPayload(payload);
+		result.setParent(this);
 		return result;
 		}
 

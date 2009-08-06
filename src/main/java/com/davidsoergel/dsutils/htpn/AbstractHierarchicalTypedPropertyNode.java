@@ -150,6 +150,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	 */
 	public void addChild(@NotNull H n)
 		{
+		assert n.getKey() != null;
 		childrenByName.put(n.getKey(), n);
 		}
 
@@ -501,6 +502,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public void registerChild(final H a)
 		{
+		assert a.getKey() != null;
 		childrenByName.put(a.getKey(), a);
 		}
 

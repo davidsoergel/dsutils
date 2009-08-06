@@ -55,8 +55,8 @@ public class BasicHierarchicalTypedPropertyNode<K extends Comparable, V>
 		{
 		BasicHierarchicalTypedPropertyNode<K, V> result = new BasicHierarchicalTypedPropertyNode<K, V>();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
 		result.setPayload(payload);
+		result.setParent(this);
 		return result;
 		}
 	}

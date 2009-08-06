@@ -87,8 +87,8 @@ public class ListHierarchyNode<T> extends AbstractHierarchyNode<T, ListHierarchy
 		{
 		ListHierarchyNode<T> result = new ListHierarchyNode<T>();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
 		result.setPayload(payload);
+		result.setParent(this);
 		return result;
 		}
 
