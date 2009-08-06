@@ -456,7 +456,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	//private String programName;
 
 
-	public H init(H parent, K key, V value, Type type) //throws HierarchicalPropertyNodeException
+/*	public H init(H parent, K key, V value, Type type) //throws HierarchicalPropertyNodeException
 		{
 		payload = new OrderedPair<K, V>(key, value);
 		this.type = type;
@@ -465,12 +465,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		//	this.trackContextName = trackContextName;
 		//this.namesSubConsumer = namesSubConsumer;
 		//name = theField.getDeclaringClass().getCanonicalName() + "." + theField.getName();
-		/*	this.parent = parent;
-
-	   if (parent != null)
-		   {
-		   parent.addChild(this);
-		   }*/
+	//		this.parent = parent;
+//
+//	   if (parent != null)
+//		   {
+//		   parent.addChild(this);
+//		   }
 		setParent(parent);
 
 		// note that the parent uses the name of this node as a key in its child map.
@@ -479,6 +479,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 		return (H) this;
 		}
+*/
 
 /*
 	static
@@ -517,7 +518,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		H child = getChild(childKey);
 		if (child == null)
 			{
-			child = newChild().init((H) this, childKey, childValue, childValue.getClass());
+			// BAD hack payload should be final?
+			child = newChild(new OrderedPair<K, V>(childKey, childValue));
+			child.setType(childValue.getClass());
+			//child.init((H) this, childKey, childValue, childValue.getClass());
+
+
 			//		try
 			//			{
 

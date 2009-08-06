@@ -52,7 +52,7 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 		extends Comparable,
 		        HierarchyNode<OrderedPair<K, V>, H> //, Serializable//extends HierarchyNode<Map<String, Object>>, Map<String, Object>//extends TypedProperties
 	{
-	H init(H parent, K childKey, V childValue, Type aClass); //throws HierarchicalPropertyNodeException;
+	//H init(H parent, K childKey, V childValue, Type aClass); //throws HierarchicalPropertyNodeException;
 
 	void copyFrom(HierarchicalTypedPropertyNode<K, V, ?> extendedTree) throws HierarchicalPropertyNodeException;
 

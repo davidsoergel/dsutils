@@ -95,6 +95,11 @@ public abstract class AbstractHierarchyNode<KV, H extends HierarchyNode<KV, H>> 
 
 	public void setParent(H parent)
 		{
+		if (this.parent == parent)
+			{
+			return;
+			}
+
 		if (this.parent != null)
 			{
 			this.parent.unregisterChild((H) this);

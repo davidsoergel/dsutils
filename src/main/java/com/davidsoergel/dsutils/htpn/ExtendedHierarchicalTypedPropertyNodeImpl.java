@@ -9,7 +9,6 @@ import com.davidsoergel.dsutils.collections.OrderedPair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	private boolean obsolete = false;
 	private boolean changed = false;
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> init(ExtendedHierarchicalTypedPropertyNodeImpl<K, V> parent,
+/*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> init(ExtendedHierarchicalTypedPropertyNodeImpl<K, V> parent,
 	                                                            K key, V value, Type type, String helpmessage)
 			throws HierarchicalPropertyNodeException
 		{
@@ -52,18 +51,23 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		this.helpmessage = helpmessage;
 		return this;
 		}
+*/
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> init(ExtendedHierarchicalTypedPropertyNodeImpl<K, V> parent,
-	                                                            K key, V value, Type type, String helpmessage,
-	                                                            V defaultValue,
-	                                                            //Set<String> contextNames,
-	                                                            // boolean trackContextName,
-	                                                            //boolean namesSubConsumer,
-	                                                            boolean isNullable)
+	/*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> init(ExtendedHierarchicalTypedPropertyNodeImpl<K, V> parent,
+																K key, V value, Type type, String helpmessage,
+																V defaultValue,
+																//Set<String> contextNames,
+																// boolean trackContextName,
+																//boolean namesSubConsumer,
+																boolean isNullable)
 			throws HierarchicalPropertyNodeException
 		{
 		init(parent, key, value, type, helpmessage);
 		//	this.defaultValueString = defaultValueString;
+	*/
+
+	public void setDefaultAndNullable(V defaultValue, boolean isNullable) throws HierarchicalPropertyNodeException
+		{
 		if (type == null)
 			{
 			// this is a root node of unknown ROOTCONTEXT
@@ -72,12 +76,13 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 			}
 		else
 			{
-			setDefaultValue(defaultValue);
-			setNullable(isNullable);// also sets the value from the default, if needed
+			//setDefaultValue(defaultValue);
+			//setNullable(isNullable);// also sets the value from the default, if needed
+			this.defaultValue = defaultValue;
+			this.isNullable = isNullable;
 			useDefaultValueIfNeeded();
 			defaultValueSanityChecks();
 			}
-		return this;
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
@@ -231,11 +236,11 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		}
 
 
-	public void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException
-		{
-		this.defaultValue = defaultValue;
-		}
-
+	/*	public void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException
+		 {
+		 this.defaultValue = defaultValue;
+		 }
+ */
 	public void defaultValueSanityChecks() throws HierarchicalPropertyNodeException
 		{
 
@@ -295,11 +300,11 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setNullable(boolean nullable) throws HierarchicalPropertyNodeException
+	/*public void setNullable(boolean nullable) throws HierarchicalPropertyNodeException
 		{
 		isNullable = nullable;
 		}
-
+*/
 	public void useDefaultValueIfNeeded() throws HierarchicalPropertyNodeException
 		{
 		if (getValue() == null && !isNullable)
@@ -313,34 +318,25 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child = getChild(childKey);
 		if (child == null)
 			{
-			try
-				{
-				// BAD hack: payload should be final?
-				child = newChild(new OrderedPair<K, V>(childKey, childValue))
-						.init(this, childKey, childValue, null, null, null, true);
-				/*
-				if (keys.size() == 0)
-					{
-					// this is the leaf node, so we give it the requested type
-					child = new HierarchicalTypedPropertyNodeImpl<S, T>()
-							.init(this, childKey, type, null, null, true);
-					}
-				else
-					{
-					// this is an intermediate node, so we give it type Class
-					child = new HierarchicalTypedPropertyNodeImpl<S, T>()
-							.init(this, childKey, Class.class, null, null, true);
-					}*/
+			// BAD hack: payload should be final?
+			child = newChild(new OrderedPair<K, V>(childKey, childValue));
+			/*
+			  if (keys.size() == 0)
+				  {
+				  // this is the leaf node, so we give it the requested type
+				  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
+						  .init(this, childKey, type, null, null, true);
+				  }
+			  else
+				  {
+				  // this is an intermediate node, so we give it type Class
+				  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
+						  .init(this, childKey, Class.class, null, null, true);
+				  }*/
 
-				// if the node didn't already exist, then the referenced field is no longer in the class that was parsed
-				child.setObsolete(true);
-				}
-			catch (HierarchicalPropertyNodeException e)
-				{
-				// this should never happen since we're passing a default value of null
-				logger.error("Error", e);
-				throw new Error(e);
-				}
+			// if the node didn't already exist, then the referenced field is no longer in the class that was parsed
+			child.setObsolete(true);
+
 			//addChild(child); // implicit in child creation
 			}
 		return child;
