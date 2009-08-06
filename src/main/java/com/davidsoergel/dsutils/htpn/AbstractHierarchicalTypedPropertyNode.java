@@ -66,7 +66,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public K getKey()
 		{
-		return payload.getKey1();
+		return payload == null ? null : payload.getKey1();
 		}
 
 	public void setKey(K newKey)
@@ -96,7 +96,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public V getValue()
 		{
-		return payload.getKey2();
+		return payload == null ? null : payload.getKey2();
 		}
 
 
