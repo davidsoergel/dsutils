@@ -315,7 +315,9 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 			{
 			try
 				{
-				child = newChild().init(this, childKey, childValue, null, null, null, true);
+				// BAD hack: payload should be final?
+				child = newChild(new OrderedPair<K, V>(childKey, childValue))
+						.init(this, childKey, childValue, null, null, null, true);
 				/*
 				if (keys.size() == 0)
 					{
@@ -357,8 +359,8 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		{
 		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
 		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
 		result.setPayload(payload);
+		result.setParent(this);
 		return result;
 		}
 
