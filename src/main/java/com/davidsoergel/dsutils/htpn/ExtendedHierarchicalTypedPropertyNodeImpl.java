@@ -235,6 +235,15 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		setValueForce(value);
 		}
 
+	protected void setValueForce(V value) throws HierarchicalPropertyNodeException
+		{
+		payload = new OrderedPair<K, V>(getKey(), value);
+
+		// REVIEW possible hack re setting PluginMap values on an HTPN
+
+		clearChildren();
+		}
+
 
 	/*	public void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException
 		 {
@@ -343,14 +352,14 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		}
 
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild()
-		{
-		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
-		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
-		return result;
-		}
-
+	/*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild()
+		 {
+		 ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
+		 //children.add(result);  // setParent calls registerChild
+		 result.setParent(this);
+		 return result;
+		 }
+ */
 	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild(final OrderedPair<K, V> payload)
 		{
 		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();

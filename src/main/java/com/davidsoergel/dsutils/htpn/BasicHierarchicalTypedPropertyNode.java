@@ -43,14 +43,14 @@ public class BasicHierarchicalTypedPropertyNode<K extends Comparable, V>
 		extends AbstractHierarchicalTypedPropertyNode<K, V, BasicHierarchicalTypedPropertyNode<K, V>>
 	{
 
-	public BasicHierarchicalTypedPropertyNode<K, V> newChild()
-		{
-		BasicHierarchicalTypedPropertyNode<K, V> result = new BasicHierarchicalTypedPropertyNode<K, V>();
-		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
-		return result;
-		}
-
+	/*	public BasicHierarchicalTypedPropertyNode<K, V> newChild()
+		 {
+		 BasicHierarchicalTypedPropertyNode<K, V> result = new BasicHierarchicalTypedPropertyNode<K, V>();
+		 //children.add(result);  // setParent calls registerChild
+		 result.setParent(this);
+		 return result;
+		 }
+ */
 	public BasicHierarchicalTypedPropertyNode<K, V> newChild(final OrderedPair<K, V> payload)
 		{
 		BasicHierarchicalTypedPropertyNode<K, V> result = new BasicHierarchicalTypedPropertyNode<K, V>();

@@ -17,4 +17,6 @@ public interface DoubleHierarchicalTypedProperties<I, J, K extends Comparable, V
 	void setId1(I id1);
 
 	void setId2(J id2);
+
+	H newPayload();
 	}

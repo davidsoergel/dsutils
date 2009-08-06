@@ -53,19 +53,19 @@ public class SetHierarchyNodeTest extends ContractTestAware<SetHierarchyNode>
 	public SetHierarchyNode<Serializable> createInstance() throws Exception
 		{
 		SetHierarchyNode<Serializable> root = new SetHierarchyNode<Serializable>();
-		SetHierarchyNode<Serializable> a = root.newChild();
-		SetHierarchyNode<Serializable> b = root.newChild();
-		SetHierarchyNode<Serializable> c = root.newChild();
-		SetHierarchyNode<Serializable> d = a.newChild();
-		SetHierarchyNode<Serializable> e = a.newChild();
-		SetHierarchyNode<Serializable> f = b.newChild();
-		SetHierarchyNode<Serializable> g = b.newChild();
-		SetHierarchyNode<Serializable> h = b.newChild();
-		SetHierarchyNode<Serializable> i = c.newChild();
-		SetHierarchyNode<Serializable> j = g.newChild();
-		SetHierarchyNode<Serializable> k = g.newChild();
-		SetHierarchyNode<Serializable> l = k.newChild();
-		SetHierarchyNode<Serializable> m = l.newChild();
+		SetHierarchyNode<Serializable> a = root.newChild("a");
+		SetHierarchyNode<Serializable> b = root.newChild("b");
+		SetHierarchyNode<Serializable> c = root.newChild("c");
+		SetHierarchyNode<Serializable> d = a.newChild("d");
+		SetHierarchyNode<Serializable> e = a.newChild("e");
+		SetHierarchyNode<Serializable> f = b.newChild("f");
+		SetHierarchyNode<Serializable> g = b.newChild("g");
+		SetHierarchyNode<Serializable> h = b.newChild("h");
+		SetHierarchyNode<Serializable> i = c.newChild("i");
+		SetHierarchyNode<Serializable> j = g.newChild("j");
+		SetHierarchyNode<Serializable> k = g.newChild("k");
+		SetHierarchyNode<Serializable> l = k.newChild("l");
+		SetHierarchyNode<Serializable> m = l.newChild("m");
 		return root;
 		}
 

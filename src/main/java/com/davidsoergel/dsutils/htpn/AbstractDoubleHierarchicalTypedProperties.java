@@ -50,9 +50,10 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 
 	public abstract Set<C> getChildren();
 
-	public abstract C newChild();
+	//public abstract C newChild();
 
-
+	public abstract C newChild(HierarchicalTypedPropertyNode<K, V, H> payload);
+	/*
 	public C newChild(HierarchicalTypedPropertyNode<K, V, H> payload)
 		{
 		C result = newChild();
@@ -61,4 +62,5 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 		result.setPayload(payload);
 		return result;
 		}
+		*/
 	}

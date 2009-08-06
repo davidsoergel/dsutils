@@ -76,7 +76,7 @@ public class BasicHierarchicalStringObjectMap extends ListHierarchyNode<Map<Stri
 	/**
 	 * {@inheritDoc}
 	 */
-	public ListHierarchyNode<Map<String, Object>> newChild()
+	/*public ListHierarchyNode<Map<String, Object>> newChild()
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();
 		BasicHierarchicalStringObjectMap child = new BasicHierarchicalStringObjectMap();
@@ -85,7 +85,7 @@ public class BasicHierarchicalStringObjectMap extends ListHierarchyNode<Map<Stri
 		//children.add(result);
 		return child;
 		}
-
+*/
 	public ListHierarchyNode<Map<String, Object>> newChild(Map<String, Object> payload)
 		{
 		//ListHierarchyNode<Map<String, Object>> result = new ListHierarchyNode<Map<String, Object>>();

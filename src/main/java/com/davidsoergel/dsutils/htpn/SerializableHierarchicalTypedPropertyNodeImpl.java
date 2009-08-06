@@ -12,14 +12,14 @@ import java.io.Serializable;
 public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<S> & Serializable, T extends Serializable>
 		extends BasicHierarchicalTypedPropertyNode<S, T> implements Serializable
 	{
-	public BasicHierarchicalTypedPropertyNode<S, T> newChild()
-		{
-		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
-		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
-		return result;
-		}
-
+	/*	public BasicHierarchicalTypedPropertyNode<S, T> newChild()
+		 {
+		 BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
+		 //children.add(result);  // setParent calls registerChild
+		 result.setParent(this);
+		 return result;
+		 }
+ */
 	public BasicHierarchicalTypedPropertyNode<S, T> newChild(final OrderedPair<S, T> payload)
 		{
 		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();

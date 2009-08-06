@@ -559,13 +559,13 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public void copyFrom(final HierarchicalTypedPropertyNode<K, V, ?> node) throws HierarchicalPropertyNodeException
 		{
-		setKey(node.getKey());
-		setValue(node.getValue());
+		//setKey(node.getKey());
+		//setValue(node.getValue());
 		setType(node.getType());
 
-		for (H child : childrenByName.values())
+		for (HierarchicalTypedPropertyNode<K, V, ?> child : node.getChildNodes()) //getChildren())
 			{
-			newChild().copyFrom(child);
+			newChild(node.getPayload()).copyFrom(child);
 			}
 		}
 	}

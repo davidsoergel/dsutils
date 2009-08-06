@@ -83,7 +83,7 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicC
 	public void newChildIsIncludedInChildArray() throws Exception
 		{
 		T n = tif.createInstance();
-		HierarchyNode c = n.newChild();
+		HierarchyNode c = n.newChild("a");
 		assert n.getChildren().contains(c);
 		}
 
@@ -91,7 +91,7 @@ public class HierarchyNodeInterfaceTest<T extends HierarchyNode> extends AtomicC
 	public void newChildSetsChildParentLink() throws Exception
 		{
 		T n = tif.createInstance();
-		HierarchyNode c = n.newChild();
+		HierarchyNode c = n.newChild("a");
 		assert c.getParent() == n.getSelfNode();
 		}
 

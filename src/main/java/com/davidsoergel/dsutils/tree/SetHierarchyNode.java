@@ -78,14 +78,14 @@ public class SetHierarchyNode<T extends Serializable> extends AbstractHierarchyN
 		return children;
 		}
 
-	public SetHierarchyNode<T> newChild()
-		{
-		SetHierarchyNode<T> result = new SetHierarchyNode<T>();
-		//children.add(result);  // setParent calls registerChild
-		result.setParent(this);
-		return result;
-		}
-
+	/*	public SetHierarchyNode<T> newChild()
+		 {
+		 SetHierarchyNode<T> result = new SetHierarchyNode<T>();
+		 //children.add(result);  // setParent calls registerChild
+		 result.setParent(this);
+		 return result;
+		 }
+ */
 	public SetHierarchyNode<T> newChild(T payload)
 		{
 		SetHierarchyNode<T> result = new SetHierarchyNode<T>();

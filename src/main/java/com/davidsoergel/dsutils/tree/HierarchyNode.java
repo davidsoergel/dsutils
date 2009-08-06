@@ -109,7 +109,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the new child node
 	 */
-	I newChild();//HierarchyNode<? extends T, I>
+//	I newChild();//HierarchyNode<? extends T, I>
 
 	/**
 	 * Creates a new child node of the appropriate type
