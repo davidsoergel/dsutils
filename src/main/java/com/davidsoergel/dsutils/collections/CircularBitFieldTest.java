@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.collections;
 
 import org.testng.annotations.Test;
 

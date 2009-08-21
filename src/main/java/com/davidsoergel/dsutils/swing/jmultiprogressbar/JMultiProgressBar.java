@@ -1,9 +1,9 @@
 package com.davidsoergel.dsutils.swing.jmultiprogressbar;
 
+import com.davidsoergel.dsutils.increment.Incrementor;
+
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +11,8 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class JMultiProgressBar extends JPanel implements PropertyChangeListener
+public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 	{
-
 	public JMultiProgressBar()
 		{
 		//setAlignmentX(0);
@@ -23,9 +22,11 @@ public class JMultiProgressBar extends JPanel implements PropertyChangeListener
 		setPreferredSize(new Dimension(500, (int) oneBar.getHeight() * 6));
 		}
 
+	// Incrementables have a unique integer id; we use those to match incoming IncrementableEvents to their associated progress bars
+
 	//java.util.List<SwingWorker> theWorkers = new LinkedList<SwingWorker>();
-	Map<SwingWorker, JProgressBar> theBars = new HashMap<SwingWorker, JProgressBar>();
-	Map<SwingWorker, JLabel> theLabels = new HashMap<SwingWorker, JLabel>();
+	Map<Integer, JProgressBar> theBars = new HashMap<Integer, JProgressBar>();
+	Map<Integer, JLabel> theLabels = new HashMap<Integer, JLabel>();
 
 	/*	private void update(SwingWorker sw, int value, String note)
 		 {
@@ -46,12 +47,12 @@ public class JMultiProgressBar extends JPanel implements PropertyChangeListener
 		 label.setText(note);
 		 }
  */
-	private void remove(SwingWorker sw)
+	private void remove(Integer id)
 		{
 		//theWorkers.remove(sw);
 
-		JProgressBar bar = theBars.get(sw);
-		JLabel label = theLabels.get(sw);
+		JProgressBar bar = theBars.get(id);
+		JLabel label = theLabels.get(id);
 		if (bar != null)
 			{
 			remove(bar);
@@ -62,54 +63,57 @@ public class JMultiProgressBar extends JPanel implements PropertyChangeListener
 			}
 		}
 
+	public void incrementableDone(final Incrementor.IncrementorDoneEvent e)
+		{
+		Integer id = e.getId();
+		remove(id);
+		revalidate();
+		repaint();
+		}
 
-	public void propertyChange(final PropertyChangeEvent evt)
+	public void incrementableNoteUpdated(final Incrementor.IncrementorNoteEvent e)
 		{
-		SwingUtilities.invokeLater(new Runnable()
-		{
-		public void run()
+		Integer id = e.getId();
+		JLabel label = theLabels.get(id);
+		if (label == null)
 			{
-			SwingWorker sw = (SwingWorker) evt.getSource();
-			if (sw.isDone())
-				{
-				remove(sw);
-				revalidate();
-				repaint();
-				}
-			else
-				{
-				JProgressBar bar = theBars.get(sw);
-				JLabel label = theLabels.get(sw);
-				if (bar == null && !sw.isDone())
-					{
-					label = new JLabel("");
-					theLabels.put(sw, label);
-					add(label);
-
-					bar = new JProgressBar(0, 100);
-					//theWorkers.add(sw);
-					theBars.put(sw, bar);
-					add(bar);
-					revalidate();
-					repaint();
-					}
-
-				if ("progress" == evt.getPropertyName())
-					{
-					int value = (Integer) evt.getNewValue();
-					bar.setValue(value);
-					bar.setIndeterminate(value == 0);
-					//revalidate(); // unnecessary
-					}
-				if ("note" == evt.getPropertyName())
-					{
-					String note = (String) evt.getNewValue();
-					label.setText(note);
-					revalidate();
-					repaint();
-					}
-				}
+			createBar(id);
+			label = theLabels.get(id);
 			}
-		});
+
+		label.setText(e.getClientName() + " : " + e.getNote());
+		//revalidate();
+		//repaint();
+		}
+
+	public void incrementableProgressUpdated(final Incrementor.IncrementorProgressEvent e)
+		{
+		Integer id = e.getId();
+		JProgressBar bar = theBars.get(id);
+		if (bar == null)
+			{
+			createBar(id);
+			bar = theBars.get(id);
+			}
+
+		int percent = e.getPercent();
+
+		bar.setValue(percent);
+		bar.setIndeterminate(percent == 0);
+		}
+
+	private void createBar(final Integer id)
+		{
+		final JProgressBar bar;
+		JLabel label = new JLabel("");
+		theLabels.put(id, label);
+		add(label);
+
+		bar = new JProgressBar(0, 100);
+		//theWorkers.add(sw);
+		theBars.put(id, bar);
+		add(bar);
+		revalidate();
+		repaint();
 		}
 	}

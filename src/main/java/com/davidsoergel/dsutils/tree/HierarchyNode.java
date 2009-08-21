@@ -112,7 +112,8 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 //	I newChild();//HierarchyNode<? extends T, I>
 
 	/**
-	 * Creates a new child node of the appropriate type
+	 * Creates a new child node of the appropriate type.  Note that the payload must be provided up front; this helps the
+	 * child be more immutable than it otherwise would be (e.g. newChild() followed by setPayload()).
 	 *
 	 * @return the new child node
 	 */
@@ -161,4 +162,6 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 * @return the most raw available HierarchyNode embedded within this facade (perhps just this object itself)
 	 */
 	HierarchyNode<T, I> getSelfNode();//HierarchyNode<T, I>
+
+	int countDescendantsIncludingThis();
 	}

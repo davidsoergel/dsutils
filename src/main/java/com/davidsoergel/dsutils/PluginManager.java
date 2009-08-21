@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils;
 
+import com.davidsoergel.dsutils.increment.Incrementor;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -92,7 +93,7 @@ public class PluginManager<T>
 // -------------------------- STATIC METHODS --------------------------
 
 
-	public static <T> void registerPluginsFromDefaultPackages(Type T, Incrementable incrementor) throws IOException
+	public static <T> void registerPluginsFromDefaultPackages(Type T, Incrementor incrementor) throws IOException
 		{
 		if (defaultPackageNames == null || defaultPackageNames.isEmpty())
 			{
@@ -102,14 +103,14 @@ public class PluginManager<T>
 		m.registerPackages(defaultPackageNames, incrementor);
 		}
 
-	public static <T> void registerPluginsFromPackages(Type T, Collection<String> packagenames,
-	                                                   Incrementable incrementor) throws IOException
+	public static <T> void registerPluginsFromPackages(Type T, Collection<String> packagenames, Incrementor incrementor)
+			throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackages(packagenames, incrementor);
 		}
 
-	public static <T> void registerPluginsFromPackage(Type T, String packagename, Incrementable incrementor)
+	public static <T> void registerPluginsFromPackage(Type T, String packagename, Incrementor incrementor)
 			throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
@@ -251,7 +252,7 @@ public class PluginManager<T>
 		return result;
 		}
 
-	public void registerPackages(Collection<String> packagenames, Incrementable incrementor) throws IOException
+	public void registerPackages(Collection<String> packagenames, Incrementor incrementor) throws IOException
 		{
 		for (String packagename : packagenames)
 			{
@@ -259,7 +260,7 @@ public class PluginManager<T>
 			}
 		}
 
-	public void registerPackage(String packagename, Incrementable incrementor) throws IOException
+	public void registerPackage(String packagename, Incrementor incrementor) throws IOException
 		{
 		if (!registeredPackages.contains(packagename))
 			{

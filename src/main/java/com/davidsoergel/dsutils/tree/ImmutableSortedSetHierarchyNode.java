@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.tree;
 
 import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -238,5 +239,10 @@ public class ImmutableSortedSetHierarchyNode<T extends Comparable<T>>
 	public ImmutableSortedSetHierarchyNode<T> getSelfNode()
 		{
 		return this;
+		}
+
+	public int countDescendantsIncludingThis()
+		{
+		throw new NotImplementedException();
 		}
 	}

@@ -2,10 +2,13 @@ package com.davidsoergel.dsutils.htpn;
 
 import com.davidsoergel.dsutils.DSClassUtils;
 import com.davidsoergel.dsutils.GenericFactory;
-import com.davidsoergel.dsutils.Incrementable;
 import com.davidsoergel.dsutils.PluginManager;
 import com.davidsoergel.dsutils.TypeUtils;
 import com.davidsoergel.dsutils.collections.OrderedPair;
+import com.davidsoergel.dsutils.increment.Incrementor;
+import com.davidsoergel.dsutils.stringmapper.StringMapperException;
+import com.davidsoergel.dsutils.stringmapper.TypedValueStringMapper;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -37,7 +40,8 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	private boolean isNullable = false;
 
 	// allow for locking the value
-	protected boolean editable = true;
+	// protected boolean editable = true;
+
 	//private HierarchicalTypedPropertyNode<S, T> parent;
 
 	private boolean obsolete = false;
@@ -118,7 +122,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		}
 
 
-	public boolean isEditable()
+/*	public boolean isEditable()
 		{
 		return editable;
 		}
@@ -127,6 +131,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		{
 		this.editable = editable;
 		}
+*/
 
 	public void setObsolete(boolean obsolete)
 		{
@@ -146,7 +151,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		}
 
 
-	public SortedSet<Class> getPluginOptions(Incrementable incrementor)
+	public SortedSet<Class> getPluginOptions(Incrementor incrementor)
 		{
 		//try
 		V value = getValue();
@@ -226,22 +231,34 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setValue(V value) throws HierarchicalPropertyNodeException
+	public void setValue(V value) //throws HierarchicalPropertyNodeException
 		{
-		if (!editable)
-			{
-			throw new HierarchicalPropertyNodeException("Node is locked: " + this);
-			}
+		/*	if (!editable)
+		   {
+		   throw new HierarchicalPropertyNodeException("Node is locked: " + this);
+		   }
+		   */
 		setValueForce(value);
 		}
 
-	protected void setValueForce(V value) throws HierarchicalPropertyNodeException
+	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
 		{
 		payload = new OrderedPair<K, V>(getKey(), value);
 
 		// REVIEW possible hack re setting PluginMap values on an HTPN
 
-		clearChildren();
+		obsoleteChildren();
+
+		//	clearChildren();
+		}
+
+	private void obsoleteChildren()
+		{
+		for (ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child : childrenByName.values())
+			{
+			child.setObsolete(true);
+			child.obsoleteChildren();
+			}
 		}
 
 
@@ -250,6 +267,8 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		 this.defaultValue = defaultValue;
 		 }
  */
+
+
 	public void defaultValueSanityChecks() throws HierarchicalPropertyNodeException
 		{
 
@@ -304,8 +323,9 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	/**
 	 * Sets the nullable status of this node, and sets the value to the defaultValue if necessary.  If a node is nullable,
 	 * and is null, then leave it that way; don't force the default value
+	 * <p/>
+	 * //@param nullable
 	 *
-	 * @param nullable
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
@@ -322,7 +342,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 			}
 		}
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> getOrCreateChild(K childKey, V childValue)
+	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> updateOrCreateChild(K childKey, V childValue)
 		{
 		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child = getChild(childKey);
 		if (child == null)
@@ -384,5 +404,42 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 				n.removeObsoletes();
 				}
 			}
+		}
+
+	public void appendToStringBuffer(StringBuffer sb, int indentLevel)
+		{
+		for (int i = 0; i < indentLevel; i++)
+			{
+			sb.append("\t");
+			}
+		sb.append(getKey()).append(" = ").append(getValue()).append("\n");
+		indentLevel++;
+
+		for (ExtendedHierarchicalTypedPropertyNode child : childrenByName.values())
+			{
+			child.appendToStringBuffer(sb, indentLevel);
+			}
+		}
+
+	public int getTotalRuns()
+		{
+		throw new NotImplementedException();
+		}
+
+
+	public void setValueFromString(String string) throws HierarchicalPropertyNodeException
+		{
+
+		try
+			{
+			setValue((V) TypedValueStringMapper.get(getType()).parse(string));
+			//	setValue(SerializableValueOrRangeFactory.newTransientFromString(getType(), string));
+			}
+		catch (StringMapperException e)
+			{
+			logger.error("Error", e);
+			throw new HierarchicalPropertyNodeException(e);
+			}
+		//		}
 		}
 	}

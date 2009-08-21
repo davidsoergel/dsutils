@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<S> & Serializable, T extends Serializable>
+public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> & Serializable, T extends Serializable>
 		extends BasicHierarchicalTypedPropertyNode<S, T> implements Serializable
 	{
 	/*	public BasicHierarchicalTypedPropertyNode<S, T> newChild()
@@ -22,7 +22,7 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
  */
 	public BasicHierarchicalTypedPropertyNode<S, T> newChild(final OrderedPair<S, T> payload)
 		{
-		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNodeImpl<S, T>();
+		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNode<S, T>();
 		//children.add(result);  // setParent calls registerChild
 		result.setPayload(payload);
 		result.setParent(this);
@@ -40,13 +40,13 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setValue(T value) throws HierarchicalPropertyNodeException
+	public void setValue(T value) //throws HierarchicalPropertyNodeException
 		{
 
 		setValueForce(value);
 		}
 
-	protected void setValueForce(T value) throws HierarchicalPropertyNodeException
+	protected void setValueForce(T value) //throws HierarchicalPropertyNodeException
 		{
 		/*	boolean destructive = true;
 		  T currentValue = getValue();
@@ -76,8 +76,8 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 		else */
 		if (isClassBoundPlugin() && value != null)
 			{
-			throw new HierarchicalPropertyNodeException(
-					"Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
+			throw new Error( //HierarchicalPropertyNodeException(
+			                 "Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
 			}
 		else
 			{
@@ -91,14 +91,14 @@ public class SerializableHierarchicalTypedPropertyNodeImpl<S extends Comparable<
 	@Override
 	public void registerChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
 		{
-		assert a instanceof SerializableHierarchicalTypedPropertyNodeImpl;
+		assert a instanceof SerializableHierarchicalTypedPropertyNode;
 		super.registerChild(a);
 		}
 
 	@Override
 	public void unregisterChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
 		{
-		assert a instanceof SerializableHierarchicalTypedPropertyNodeImpl;
+		assert a instanceof SerializableHierarchicalTypedPropertyNode;
 		super.unregisterChild(a);
 		}
 	}

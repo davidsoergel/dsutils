@@ -1,5 +1,6 @@
-package com.davidsoergel.dsutils.htpn;
+package com.davidsoergel.dsutils.dhtpn;
 
+import com.davidsoergel.dsutils.htpn.HierarchicalTypedPropertyNode;
 import com.davidsoergel.dsutils.tree.AbstractHierarchyNode;
 
 import java.io.Serializable;
@@ -63,4 +64,19 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 		return result;
 		}
 		*/
+
+	public String toString()
+		{
+		return getId1() + " (" + getId2() + ")";
+		}
+
+	public int countInnerValues()
+		{
+		int result = 0;
+		for (C c : this)
+			{
+			result += c.getPayload().countDescendantsIncludingThis();
+			}
+		return result;
+		}
 	}

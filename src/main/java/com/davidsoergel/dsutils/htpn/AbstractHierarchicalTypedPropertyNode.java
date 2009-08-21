@@ -158,26 +158,26 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	public void addChild(K childKey, V childValue)
 		{
 
-		getOrCreateChild(childKey, childValue);
+		updateOrCreateChild(childKey, childValue);
 		}
 
 	public void addChild(List<K> childKeyPath, V childValue)
 		{
-		try
-			{
-			getOrCreateDescendant(childKeyPath).setValue(childValue);
-			}
-		catch (HierarchicalPropertyNodeException e)
-			{
-			logger.error("Error", e);
-			throw new Error(e);
-			}
+		//	try
+		//		{
+		getOrCreateDescendant(childKeyPath).setValue(childValue);
+		//		}
+		//	catch (HierarchicalPropertyNodeException e)
+		//		{
+		//		logger.error("Error", e);
+		//		throw new Error(e);
+		//		}
 		}
 
 	public void addChild(List<K> childKeyPath, K leafKey, V childValue)
 		{
 
-		getOrCreateDescendant(childKeyPath).getOrCreateChild(leafKey, childValue);
+		getOrCreateDescendant(childKeyPath).updateOrCreateChild(leafKey, childValue);
 		}
 
 	public void collectDescendants(List<K> path, Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> result)
@@ -268,7 +268,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			{
 			K childKey = keyPath.remove(0);
 			assert childKey != null;
-			HierarchicalTypedPropertyNode<K, V, H> child = getOrCreateChild(childKey, null);
+			HierarchicalTypedPropertyNode<K, V, H> child = updateOrCreateChild(childKey, null);
 
 			result = child.getOrCreateDescendant(keyPath);
 			}
@@ -320,7 +320,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		for (HierarchicalTypedPropertyNode<K, V, H> originalChild : inheritedNode.getChildren())
 			{
 			HierarchicalTypedPropertyNode<K, V, H> childCopy =
-					getOrCreateChild(originalChild.getKey(), originalChild.getValue());
+					updateOrCreateChild(originalChild.getKey(), originalChild.getValue());
 			childCopy.copyChildrenFrom(originalChild);
 			}
 
@@ -378,13 +378,13 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setValue(V value) throws HierarchicalPropertyNodeException
+	public void setValue(V value) //throws HierarchicalPropertyNodeException
 		{
 
 		setValueForce(value);
 		}
 
-	protected void setValueForce(V value) throws HierarchicalPropertyNodeException
+	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
 		{
 		//WTF
 		//boolean destructive = true;
@@ -417,8 +417,8 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		if (isClassBoundPlugin() && value != null)
 			{
 
-			throw new HierarchicalPropertyNodeException(
-					"Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
+			throw new Error( //HierarchicalPropertyNodeException(
+			                 "Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
 			}
 		else
 			{
@@ -515,14 +515,13 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 		}
 
-	public H getOrCreateChild(K childKey, V childValue)
+	public H updateOrCreateChild(K childKey, V childValue)
 		{
 		H child = getChild(childKey);
 		if (child == null)
 			{
 			// BAD hack payload should be final?
 			child = newChild(new OrderedPair<K, V>(childKey, childValue));
-			child.setType(childValue.getClass());
 			//child.init((H) this, childKey, childValue, childValue.getClass());
 
 
@@ -554,6 +553,9 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			//			}
 			//addChild(child); // implicit in child creation
 			}
+
+		child.setValue(childValue);
+		child.setType(childValue.getClass());
 		return child;
 		}
 

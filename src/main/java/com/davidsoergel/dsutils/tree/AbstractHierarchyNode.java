@@ -226,4 +226,14 @@ public abstract class AbstractHierarchyNode<KV, H extends HierarchyNode<KV, H>> 
 		{
 		return this;
 		}
+
+	public int countDescendantsIncludingThis()
+		{
+		int result = 1;
+		for (H c : getChildren())
+			{
+			result += c.countDescendantsIncludingThis();
+			}
+		return result;
+		}
 	}

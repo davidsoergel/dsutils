@@ -32,9 +32,9 @@
 
 package com.davidsoergel.dsutils.stringmapper;
 
-import com.davidsoergel.dsutils.BasicIncrementable;
 import com.davidsoergel.dsutils.SubclassFinder;
 import com.davidsoergel.dsutils.TypeUtils;
+import com.davidsoergel.dsutils.increment.BasicIncrementor;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -94,8 +94,8 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		try
 			{
 			// Don't use PluginManager here; no need to allow other packages or to cache the results
-			for (Class c : SubclassFinder
-					.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class, new BasicIncrementable()))
+			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class,
+			                                   new BasicIncrementor(null, null)))
 				{
 				if (!c.equals(StringMapper.class) && TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{

@@ -1,6 +1,6 @@
 package com.davidsoergel.dsutils.htpn;
 
-import com.davidsoergel.dsutils.Incrementable;
+import com.davidsoergel.dsutils.increment.Incrementor;
 
 import java.util.Map;
 import java.util.SortedSet;
@@ -18,7 +18,7 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	String getHelpmessage();
 
-	SortedSet<Class> getPluginOptions(Incrementable incrementor);
+	SortedSet<Class> getPluginOptions(Incrementor incrementor);
 
 	void setDefaultAndNullable(V defaultValue, boolean isNullable) throws HierarchicalPropertyNodeException;
 
@@ -26,7 +26,7 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	void defaultValueSanityChecks() throws HierarchicalPropertyNodeException;
 
-	boolean isEditable();
+//	boolean isEditable();
 
 	boolean isNullable();
 
@@ -40,7 +40,7 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	//void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException;
 
-	void setEditable(boolean editable);
+//	void setEditable(boolean editable);
 
 	void setHelpmessage(String helpmessage);
 
@@ -51,4 +51,6 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 	//void setParent(HierarchicalTypedPropertyNode<S, T> key);
 
 	void removeObsoletes();
+
+	void appendToStringBuffer(StringBuffer sb, int i);
 	}

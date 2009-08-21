@@ -94,7 +94,7 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	H getOrCreateDescendant(List<K> keys);
 
-	H getOrCreateChild(K childKey, V childValue);
+	H updateOrCreateChild(K childKey, V childValue);
 
 	H getParent();
 
@@ -139,7 +139,7 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	//	void updateDynamicConsumerNodesFromDefaults() throws PropertyConsumerNodeException;
 
-	void setValue(V value) throws HierarchicalPropertyNodeException;
+	void setValue(V value);// throws HierarchicalPropertyNodeException;
 
 	/**
 	 * Test whether this node has had any fields set yet.  Returns true only if the node is completely empty of interesting

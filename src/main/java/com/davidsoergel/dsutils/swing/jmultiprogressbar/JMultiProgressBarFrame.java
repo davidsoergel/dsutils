@@ -1,7 +1,10 @@
 package com.davidsoergel.dsutils.swing.jmultiprogressbar;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
@@ -9,7 +12,54 @@ import java.awt.*;
  */
 public class JMultiProgressBarFrame extends JFrame
 	{
-	JMultiProgressBar monitor;
+	private static final Logger logger = Logger.getLogger(JMultiProgressBarFrame.class);
+
+	private JMultiProgressBar monitor;
+
+	private static JMultiProgressBarFrame _instance;
+
+	public static JMultiProgressBarFrame getInstance()
+		{
+		if (_instance == null)
+			{
+			if (SwingUtilities.isEventDispatchThread())
+				{
+				_instance = new JMultiProgressBarFrame();
+				//monitor = _instance.getMonitor();
+				}
+			else
+				{
+				try
+					{
+					SwingUtilities.invokeAndWait(new Runnable()
+					{
+					public void run()
+						{
+						_instance = new JMultiProgressBarFrame();
+						//monitor = _instance.getMonitor();
+						}
+					});
+					}
+				catch (InterruptedException e)
+					{
+					logger.error("Error", e);
+					throw new Error(e);
+					}
+				catch (InvocationTargetException e)
+					{
+					logger.error("Error", e);
+					throw new Error(e);
+					}
+				}
+			}
+		return _instance;
+		}
+
+	public static JMultiProgressBar getInstanceMonitor()
+		{
+		return getInstance().getMonitor();
+		}
+
 
 	public JMultiProgressBarFrame() throws HeadlessException
 		{
