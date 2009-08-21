@@ -9,8 +9,9 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> & Serializable, T extends Serializable>
-		extends BasicHierarchicalTypedPropertyNode<S, T> implements Serializable
+public class SerializableHierarchicalTypedPropertyNode<K extends Comparable<K> & Serializable, V extends Serializable>
+
+		extends AbstractHierarchicalTypedPropertyNode<K, V, SerializableHierarchicalTypedPropertyNode<K, V>>
 	{
 	/*	public BasicHierarchicalTypedPropertyNode<S, T> newChild()
 		 {
@@ -20,14 +21,15 @@ public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> &
 		 return result;
 		 }
  */
-	public BasicHierarchicalTypedPropertyNode<S, T> newChild(final OrderedPair<S, T> payload)
+	public SerializableHierarchicalTypedPropertyNode<K, V> newChild(final OrderedPair<K, V> payload)
 		{
-		BasicHierarchicalTypedPropertyNode<S, T> result = new SerializableHierarchicalTypedPropertyNode<S, T>();
+		SerializableHierarchicalTypedPropertyNode<K, V> result = new SerializableHierarchicalTypedPropertyNode<K, V>();
 		//children.add(result);  // setParent calls registerChild
 		result.setPayload(payload);
 		result.setParent(this);
 		return result;
 		}
+
 
 	/**
 	 * Set the value of this node.  If this node expects a plugin and the value is a Class (or a String naming a Class),
@@ -40,13 +42,13 @@ public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> &
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setValue(T value) //throws HierarchicalPropertyNodeException
+	public void setValue(V value) //throws HierarchicalPropertyNodeException
 		{
 
 		setValueForce(value);
 		}
 
-	protected void setValueForce(T value) //throws HierarchicalPropertyNodeException
+	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
 		{
 		/*	boolean destructive = true;
 		  T currentValue = getValue();
@@ -61,7 +63,7 @@ public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> &
 		   value = parseValueString((String) value);
 		   }*/
 		//this.value = value;
-		payload = new SerializableOrderedPair<S, T>(getKey(), value);
+		payload = new SerializableOrderedPair<K, V>(getKey(), value);
 
 		// REVIEW possible hack re setting PluginMap values on an HTPN
 
@@ -89,16 +91,16 @@ public class SerializableHierarchicalTypedPropertyNode<S extends Comparable<S> &
 
 
 	@Override
-	public void registerChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
+	public void registerChild(final SerializableHierarchicalTypedPropertyNode<K, V> a)
 		{
-		assert a instanceof SerializableHierarchicalTypedPropertyNode;
+		//assert a instanceof SerializableHierarchicalTypedPropertyNode;
 		super.registerChild(a);
 		}
 
 	@Override
-	public void unregisterChild(final BasicHierarchicalTypedPropertyNode<S, T> a)
+	public void unregisterChild(final SerializableHierarchicalTypedPropertyNode<K, V> a)
 		{
-		assert a instanceof SerializableHierarchicalTypedPropertyNode;
+		//assert a instanceof SerializableHierarchicalTypedPropertyNode;
 		super.unregisterChild(a);
 		}
 	}
