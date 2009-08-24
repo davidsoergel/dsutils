@@ -1,7 +1,7 @@
-package com.davidsoergel.dsutils.dhtpn;
+package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.htpn.HierarchicalTypedPropertyNode;
 import com.davidsoergel.dsutils.tree.HierarchyNode;
+import com.davidsoergel.dsutils.tree.htpn.HierarchicalTypedPropertyNode;
 
 /**
  * A data structure consisting of an outer tree, each node of which contains an inner tree.

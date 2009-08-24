@@ -44,8 +44,8 @@ public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 
 	private static final Logger logger = Logger.getLogger(BasicInterval.class);
 
-	protected T left, right;
-	boolean closedLeft, closedRight;
+	protected final T left, right;
+	final boolean closedLeft, closedRight;
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 

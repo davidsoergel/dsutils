@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.file;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

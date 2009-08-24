@@ -1,6 +1,6 @@
-package com.davidsoergel.dsutils.dhtpn;
+package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.htpn.ExtendedHierarchicalTypedPropertyNodeImpl;
+import com.davidsoergel.dsutils.tree.htpn.ExtendedHierarchicalTypedPropertyNodeImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;

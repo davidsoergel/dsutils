@@ -31,7 +31,7 @@
  */
 
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.file;
 
 import org.apache.log4j.Logger;
 

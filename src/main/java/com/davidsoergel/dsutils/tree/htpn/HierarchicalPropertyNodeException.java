@@ -30,43 +30,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
 
-import org.apache.commons.lang.NotImplementedException;
+package com.davidsoergel.dsutils.tree.htpn;
 
-import java.util.Collection;
-import java.util.Iterator;
-
+import com.davidsoergel.dsutils.ChainedException;
+import org.apache.log4j.Logger;
 
 /**
- * A Factory for new Iterators based on a Collection.  Each provided Iterator is a new, independent object, iterating in
- * whatever order the underlying Collection provides (which may or may not be defined).
- *
- * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
- * @version $Id$
+ * @version $Id: HierarchicalPropertyNodeException.java 221 2008-09-24 22:07:44Z soergel $
  */
-
-public class CollectionIteratorFactory<T> implements Iterator<Iterator<T>>
+public class HierarchicalPropertyNodeException extends ChainedException
 	{
-	protected Collection<T> underlyingCollection;
+	// ------------------------------ FIELDS ------------------------------
 
-	public CollectionIteratorFactory(Collection<? extends T> underlyingCollection)
+	private static final Logger logger = Logger.getLogger(HierarchicalPropertyNodeException.class);
+
+
+	// --------------------------- CONSTRUCTORS ---------------------------
+
+	public HierarchicalPropertyNodeException(Throwable e)
 		{
-		this.underlyingCollection = (Collection<T>) underlyingCollection;
+		super(e);
 		}
 
-	public boolean hasNext()
+	public HierarchicalPropertyNodeException(String e)
 		{
-		return true;
-		}
-
-	public Iterator<T> next()
-		{
-		return underlyingCollection.iterator();
-		}
-
-	public void remove()
-		{
-		throw new NotImplementedException();
+		super(e);
 		}
 	}

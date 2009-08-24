@@ -35,7 +35,7 @@ package com.davidsoergel.dsutils.range;
 
 
 /**
- * An interval on a number line of type T.
+ * An interval on a number line of type T.  Might better be called ContinuousRange<T>?
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$

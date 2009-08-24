@@ -30,31 +30,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.davidsoergel.dsutils.collections;
 
-package com.davidsoergel.dsutils.htpn;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-import com.davidsoergel.dsutils.ChainedException;
-import org.apache.log4j.Logger;
 
 /**
- * @version $Id: HierarchicalPropertyNodeException.java 221 2008-09-24 22:07:44Z soergel $
+ * A Factory for new Iterators based on a List, where each new Iterator provides the contents in a random order.  The
+ * shuffling is done in place on the underlying collection.
+ *
+ * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
+ * @version $Id$
  */
-public class HierarchicalPropertyNodeException extends ChainedException
+
+public class PermutingCollectionIteratorFactory<T> extends CollectionIteratorFactory<T>
 	{
-	// ------------------------------ FIELDS ------------------------------
 
-	private static final Logger logger = Logger.getLogger(HierarchicalPropertyNodeException.class);
-
-
-	// --------------------------- CONSTRUCTORS ---------------------------
-
-	public HierarchicalPropertyNodeException(Throwable e)
+	public PermutingCollectionIteratorFactory(List<T> underlyingList)
 		{
-		super(e);
+		super(underlyingList);
 		}
 
-	public HierarchicalPropertyNodeException(String e)
+
+	public Iterator<T> next()
 		{
-		super(e);
+		Collections.shuffle((List<T>) underlyingCollection);
+		return super.next();
 		}
 	}

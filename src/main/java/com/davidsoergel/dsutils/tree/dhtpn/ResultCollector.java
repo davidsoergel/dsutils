@@ -1,6 +1,6 @@
-package com.davidsoergel.dsutils.dhtpn;
+package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.htpn.SerializableHierarchicalTypedPropertyNode;
+import com.davidsoergel.dsutils.tree.htpn.SerializableHierarchicalTypedPropertyNode;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils.htpn;
+package com.davidsoergel.dsutils.tree.htpn;
 
 import com.davidsoergel.dsutils.collections.OrderedPair;
 import com.davidsoergel.dsutils.tree.AbstractHierarchyNode;

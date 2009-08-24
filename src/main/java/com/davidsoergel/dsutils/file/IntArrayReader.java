@@ -1,4 +1,6 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.file;
+
+import com.davidsoergel.dsutils.DSArrayUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

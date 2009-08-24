@@ -30,33 +30,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.collections;
 
-import java.util.Collections;
+import org.apache.commons.lang.NotImplementedException;
+
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 
 /**
- * A Factory for new Iterators based on a List, where each new Iterator provides the contents in a random order.  The
- * shuffling is done in place on the underlying collection.
+ * A Factory for new Iterators based on a Collection.  Each provided Iterator is a new, independent object, iterating in
+ * whatever order the underlying Collection provides (which may or may not be defined).
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
-public class PermutingCollectionIteratorFactory<T> extends CollectionIteratorFactory<T>
+public class CollectionIteratorFactory<T> implements Iterator<Iterator<T>>
 	{
+	protected Collection<T> underlyingCollection;
 
-	public PermutingCollectionIteratorFactory(List<T> underlyingList)
+	public CollectionIteratorFactory(Collection<? extends T> underlyingCollection)
 		{
-		super(underlyingList);
+		this.underlyingCollection = (Collection<T>) underlyingCollection;
 		}
 
+	public boolean hasNext()
+		{
+		return true;
+		}
 
 	public Iterator<T> next()
 		{
-		Collections.shuffle((List<T>) underlyingCollection);
-		return super.next();
+		return underlyingCollection.iterator();
+		}
+
+	public void remove()
+		{
+		throw new NotImplementedException();
 		}
 	}

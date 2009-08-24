@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils.htpn;
+package com.davidsoergel.dsutils.tree.htpn;
 
 import com.davidsoergel.dsutils.DSClassUtils;
 import com.davidsoergel.dsutils.GenericFactory;
@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -441,5 +442,38 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 			throw new HierarchicalPropertyNodeException(e);
 			}
 		//		}
+		}
+
+	public V getValueForDescendant(final List<K> keyList)
+		{
+		return getDescendant(keyList).getValue();
+		}
+
+	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> getDescendant(final List<K> keyList)
+		{
+		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> trav = this;
+
+		for (K k : keyList)
+			{
+			trav = trav.getChild(k);
+			}
+		return trav;
+
+		// recursive method requires copying/modifying the kryList, yuck
+		/*
+		if (keyList.isEmpty())
+			{
+			return null;
+			}
+
+		K firstKey = keyList.remove(0);
+
+		if (keyList.isEmpty() && firstKey.equals(getKey()))
+			{
+			return getValue();
+			}
+		return getC
+		return getPayload().
+		*/
 		}
 	}

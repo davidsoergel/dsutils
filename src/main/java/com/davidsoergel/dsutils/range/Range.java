@@ -44,5 +44,5 @@ package com.davidsoergel.dsutils.range;
  */
 public interface Range<T>
 	{
-	//Set<T> getValues();
+	boolean encompassesValue(T value);
 	}

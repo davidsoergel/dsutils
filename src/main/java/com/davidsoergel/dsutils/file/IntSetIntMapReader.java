@@ -1,20 +1,22 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.file;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class IntDoubleMapReader
+public class IntSetIntMapReader
 	{
-	public static Map<Integer, Double> read(String filename) throws IOException
+	public static Map<Integer, Set<Integer>> read(String filename) throws IOException
 		{
-		Map<Integer, Double> result = new HashMap<Integer, Double>();
+		Map<Integer, Set<Integer>> result = new HashMap<Integer, Set<Integer>>();
 
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
@@ -32,8 +34,15 @@ public class IntDoubleMapReader
 				try
 					{
 					Integer key = new Integer(numbers[0]);
-					Double value = new Double(numbers[1]);
-					result.put(key, value);
+					Integer value = new Integer(numbers[1]);
+
+					Set<Integer> resultSet = result.get(key);
+					if (resultSet == null)
+						{
+						resultSet = new HashSet<Integer>();
+						result.put(key, resultSet);
+						}
+					resultSet.add(value);
 					i++;
 					}
 				catch (NumberFormatException e)

@@ -88,8 +88,8 @@ public interface UrlContentCache
 	File getFile(String url) throws UrlContentCacheException, MalformedURLException;
 
 	/**
-	 * Gets a file identified by the given URL.  I If the file is available in the cache, it is simply returned; otherwise
-	 * it is retrieved and cached first.  This may cause other files to be expired from the cache to make space.
+	 * Gets a file identified by the given URL.  If the file is available in the cache, it is simply returned; otherwise it
+	 * is retrieved and cached first.  This may cause other files to be expired from the cache to make space.
 	 *
 	 * @param url a URL.
 	 * @return the File

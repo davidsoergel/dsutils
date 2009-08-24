@@ -33,6 +33,7 @@
 
 package com.davidsoergel.dsutils;
 
+import com.davidsoergel.dsutils.file.FileUtils;
 import org.apache.log4j.Logger;
 import sun.net.www.protocol.ftp.FtpURLConnection;
 

@@ -1,4 +1,4 @@
-package com.davidsoergel.dsutils;
+package com.davidsoergel.dsutils.file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,18 +7,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class StringListDoubleMapReader
+public class StringSetIntMapReader
 	{
-	public static Map<String, List<Double>> read(String filename) throws IOException
+	public static Map<String, Set<Integer>> read(String filename) throws IOException
 		{
 		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
 		//ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
@@ -39,7 +39,7 @@ public class StringListDoubleMapReader
 			}
 		InputStream is = res.openStream();
 
-		Map<String, List<Double>> result = new HashMap<String, List<Double>>();
+		Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
@@ -57,17 +57,15 @@ public class StringListDoubleMapReader
 				try
 					{
 					String key = numbers[0];
+					Integer value = new Integer(numbers[1]);
 
-					List<Double> resultList = new ArrayList<Double>();
-
-					// skip first element
-					for (int j = 1; j < numbers.length; j++)
+					Set<Integer> resultSet = result.get(key);
+					if (resultSet == null)
 						{
-						resultList.add(new Double(numbers[j]));
+						resultSet = new HashSet<Integer>();
+						result.put(key, resultSet);
 						}
-
-					result.put(key, resultList);
-
+					resultSet.add(value);
 					i++;
 					}
 				catch (NumberFormatException e)
