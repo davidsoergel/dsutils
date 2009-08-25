@@ -33,21 +33,52 @@
 
 package com.davidsoergel.dsutils.range;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
-public class MutableBasicInterval<T extends Number & Comparable> extends BasicInterval<T>
+public class MutableBasicInterval<T extends Number & Comparable> implements Interval<T>
+
 	{
+	// ------------------------------ FIELDS ------------------------------
+
+	private static final Logger logger = Logger.getLogger(MutableBasicInterval.class);
+
+	protected T left, right;
+	boolean closedLeft, closedRight;
 	// --------------------------- CONSTRUCTORS ---------------------------
 
 	public MutableBasicInterval()
 		{
-		super(null, null, false, false);
+		//	super(null, null, false, false);
 		}
 
+	public BasicInterval<T> build()
+		{
+		return new BasicInterval<T>(left, right, closedLeft, closedRight);
+		}
+
+	public int compareTo(Interval<T> o)
+		{
+		// assume we're using Comparable Numbers; ClassCastException if not
+		int result = ((Comparable) getMin()).compareTo(o.getMin());
+		if (result == 0)
+			{
+			if (closedLeft && !o.isClosedLeft())
+				{
+				result = -1;
+				}
+			else if (!closedLeft && o.isClosedLeft())
+				{
+				result = 1;
+				}
+			}
+		return result;
+		}
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
 	public void setLeft(T left)
@@ -68,5 +99,43 @@ public class MutableBasicInterval<T extends Number & Comparable> extends BasicIn
 	public void setClosedLeft(boolean closedLeft)
 		{
 		this.closedLeft = closedLeft;
+		}
+
+	public boolean isClosedLeft()
+		{
+		return closedLeft;
+		}
+
+	public boolean isClosedRight()
+		{
+		return closedRight;
+		}
+
+	public T getMax()
+		{
+		return right;
+		}
+
+	public T getMin()
+		{
+		return left;
+		}
+
+	public boolean encompassesValue(T value)
+		{
+		// too bad we can't easily generify this; we just assume the Numbers are Comparable.
+		int leftCompare = ((Comparable) left).compareTo(value);
+		int rightCompare = ((Comparable) right).compareTo(value);
+
+		if (closedLeft && leftCompare == 0)
+			{
+			return true;
+			}
+		if (closedRight && rightCompare == 0)
+			{
+			return true;
+			}
+
+		return leftCompare < 0 && rightCompare > 0;
 		}
 	}
