@@ -346,20 +346,27 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		return TypeUtils.isAssignableFrom(PluginMap.class, type);
 		}*/
 
-	public List<K> keyPath()
+	//** assume that the keypath is immutable
+	private K[] keyPath;
+
+	public K[] getKeyPath()
 		{
-		List<K> result;
-		if (parent == null)
+		if (keyPath == null)
 			{
-			result = new LinkedList<K>();
+			List<K> result = new LinkedList<K>();
+			HierarchicalTypedPropertyNode<K, V, H> trav = this;
+
+			while (trav != null)
+				{
+				result.add(0, trav.getPayload().getKey1());
+				trav = trav.getParent();
+				}
+
+			keyPath = (K[]) result.toArray();
 			}
-		else
-			{
-			result = parent.keyPath();
-			}
-		result.add(getKey());
-		return result;
+		return keyPath;
 		}
+
 
 	public void removeChild(K childKey)
 		{

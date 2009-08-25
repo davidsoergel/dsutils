@@ -122,7 +122,7 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 	//boolean isPluginMap();
 
 
-	List<K> keyPath();
+	K[] getKeyPath();
 
 	void removeChild(K key);
 
