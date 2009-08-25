@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -444,12 +443,12 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		//		}
 		}
 
-	public V getValueForDescendant(final List<K> keyList)
+	public V getValueForDescendant(final K[] keyList)
 		{
 		return getDescendant(keyList).getValue();
 		}
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> getDescendant(final List<K> keyList)
+	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> getDescendant(final K[] keyList)
 		{
 		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> trav = this;
 

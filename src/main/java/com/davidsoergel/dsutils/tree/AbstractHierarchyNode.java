@@ -201,6 +201,7 @@ public abstract class AbstractHierarchyNode<KV, H extends HierarchyNode<KV, H>> 
 		return result;
 		}
 
+
 	/**
 	 * Returns an iterator over a set of elements of type T.
 	 *
