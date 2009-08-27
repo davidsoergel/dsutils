@@ -37,7 +37,6 @@ import com.davidsoergel.dsutils.tree.HierarchyNode;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,16 +66,16 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	void addChild(K key, V value);
 
-	void addChild(List<K> keyPath, V value);
+	void addChild(K[] keyPath, V value);
 
-	void addChild(List<K> keyPath, K leafKey, V value);
+	void addChild(K[] keyPath, K leafKey, V value);
 
 
 	//void addChild(S[] keyPath, T value);
 
-	void collectDescendants(List<K> keyPath, Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> result);
+	void collectDescendants(Map<K[], HierarchicalTypedPropertyNode<K, V, H>> result);
 
-	Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants();
+	Map<K[], HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants();
 
 	HierarchicalTypedPropertyNode<K, V, H> getChild(K key);
 
@@ -92,7 +91,9 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	K getKey();
 
-	H getOrCreateDescendant(List<K> keys);
+	H getOrCreateDescendant(K[] keys);
+
+	H getOrCreateChild(K childKey);
 
 	H updateOrCreateChild(K childKey, V childValue);
 

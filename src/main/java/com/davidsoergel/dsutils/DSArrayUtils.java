@@ -652,6 +652,21 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	/**
+	 * returns a new String[] containing all characters of s starting from startPos
+	 *
+	 * @param s
+	 * @param startpos
+	 * @return
+	 * @see #suffixOfLength
+	 */
+	public static String[] suffix(String[] s, int startpos)
+		{
+		String[] result = new String[s.length - startpos];
+		System.arraycopy(s, startpos, result, 0, s.length - startpos);
+		return result;
+		}
+
 	public static byte[] suffixOfLength(byte[] s, int length)
 		{
 		if (length > s.length)
@@ -923,5 +938,17 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	public static byte[] toByteArray(final String s)
 		{
 		return castToByte(s.toCharArray());
+		}
+
+	public static boolean isNumberArray(Object o)
+		{
+		final Class<?> arrayType = o.getClass().getComponentType();
+		return o.getClass().isArray() && DSClassUtils.isAssignable(arrayType, Number.class);
+		}
+
+	public static boolean isPrimitiveArray(Object o)
+		{
+		final Class<?> arrayType = o.getClass().getComponentType();
+		return o.getClass().isArray() && arrayType.isPrimitive();
 		}
 	}

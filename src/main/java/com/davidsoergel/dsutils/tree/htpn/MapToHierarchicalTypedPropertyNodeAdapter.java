@@ -34,9 +34,7 @@ package com.davidsoergel.dsutils.tree.htpn;
 
 import com.davidsoergel.dsutils.DSStringUtils;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,10 +70,10 @@ public class MapToHierarchicalTypedPropertyNodeAdapter
 		for (String key : theMap.keySet())
 			{
 			String[] splitKeyArray = key.split(PATHSEPARATORREGEX);
-			List<String> splitKey = new LinkedList<String>();
-			splitKey.addAll(Arrays.asList(splitKeyArray));
+			//List<String> splitKey = new LinkedList<String>();
+			//splitKey.addAll(Arrays.asList(splitKeyArray));
 			Object value = theMap.get(key);
-			rootProperties.getOrCreateDescendant(splitKey).setValue(value);
+			rootProperties.getOrCreateDescendant(splitKeyArray).setValue(value);
 			}
 		}
 

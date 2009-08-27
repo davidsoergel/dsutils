@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.tree.htpn;
 
+import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.DSClassUtils;
 import com.davidsoergel.dsutils.GenericFactory;
 import com.davidsoergel.dsutils.PluginManager;
@@ -474,5 +475,11 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		return getC
 		return getPayload().
 		*/
+		}
+
+	public boolean isPlottable()
+		{
+		final V o = getValue();
+		return o instanceof Number || DSArrayUtils.isNumberArray(o) || DSArrayUtils.isPrimitiveArray(o);
 		}
 	}

@@ -110,7 +110,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public String toString()
 		{
-		return "HierarchicalTypedPropertyNode -> keyPath = " + keyPath() + ", type = " + type + ", value = "
+		return "HierarchicalTypedPropertyNode -> keyPath = " + getKeyPath() + ", type = " + type + ", value = "
 		       + getValue();
 		//return name;
 		}
@@ -161,7 +161,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		updateOrCreateChild(childKey, childValue);
 		}
 
-	public void addChild(List<K> childKeyPath, V childValue)
+	public void addChild(K[] childKeyPath, V childValue)
 		{
 		//	try
 		//		{
@@ -174,20 +174,18 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		//		}
 		}
 
-	public void addChild(List<K> childKeyPath, K leafKey, V childValue)
+	public void addChild(K[] childKeyPath, K leafKey, V childValue)
 		{
 
 		getOrCreateDescendant(childKeyPath).updateOrCreateChild(leafKey, childValue);
 		}
 
-	public void collectDescendants(List<K> path, Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> result)
+	public void collectDescendants(Map<K[], HierarchicalTypedPropertyNode<K, V, H>> result)
 		{
-		List<K> keyPath = new LinkedList<K>(path);
-		keyPath.add(getKey());
-		result.put(keyPath, this);
+		result.put(getKeyPath(), this);
 		for (HierarchicalTypedPropertyNode<K, V, H> child : childrenByName.values())
 			{
-			child.collectDescendants(keyPath, result);
+			child.collectDescendants(result);
 			}
 		}
 
@@ -197,12 +195,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	 *
 	 * @return
 	 */
-	public Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants()
+	public Map<K[], HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants()
 		{
-		Map<List<K>, HierarchicalTypedPropertyNode<K, V, H>> result =
-				new HashMap<List<K>, HierarchicalTypedPropertyNode<K, V, H>>();
+		Map<K[], HierarchicalTypedPropertyNode<K, V, H>> result =
+				new HashMap<K[], HierarchicalTypedPropertyNode<K, V, H>>();
 
-		collectDescendants(new LinkedList<K>(), result);
+		collectDescendants(result);
 
 		return result;
 		}
@@ -251,16 +249,25 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		}
 
 	/**
-	 * Finds the descendant of this node named by the child keys in the given list in order, creating nodes if necessary.
+	 * Finds the descendant of this node named by the child keys in the given array in order, creating nodes if necessary.
 	 *
-	 * @param keyPath A List of child keys.  Presently this method will destroy the list; maybe we should copy it first.
+	 * @param keyPath As array of child keys.
 	 * @return
 	 */
-	public H getOrCreateDescendant(List<K> keyPath)
+	public H getOrCreateDescendant(K[] keyPath)
 		{
 		H result;
 
-		if (keyPath.size() == 0)
+		H trav = (H) this;
+
+		for (K childKey : keyPath)
+			{
+			trav = trav.getOrCreateChild(childKey);
+			}
+
+		return trav;
+/*
+		if (keyPath.length == 0)
 			{
 			result = (H) this;
 			}
@@ -272,7 +279,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 			result = child.getOrCreateDescendant(keyPath);
 			}
-		return result;
+		return result;*/
 		}
 
 
@@ -522,6 +529,17 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 		}
 
+	public H getOrCreateChild(K childKey)
+		{
+		H child = getChild(childKey);
+		if (child == null)
+			{
+			// BAD hack payload should be final?
+			child = newChild(new OrderedPair<K, V>(childKey, null));
+			}
+		return child;
+		}
+
 	public H updateOrCreateChild(K childKey, V childValue)
 		{
 		H child = getChild(childKey);
@@ -562,7 +580,15 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 
 		child.setValue(childValue);
-		child.setType(childValue.getClass());
+		if (childValue == null)
+			{
+			// if the node already has a type, leave it alone
+			//child.setType(null);
+			}
+		else
+			{
+			child.setType(childValue.getClass());
+			}
 		return child;
 		}
 
