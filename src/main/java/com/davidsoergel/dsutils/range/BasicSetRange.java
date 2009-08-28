@@ -33,6 +33,7 @@ package com.davidsoergel.dsutils.range;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ import java.util.TreeSet;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public abstract class BasicSetRange<T> implements DiscreteRange<T>
+public abstract class BasicSetRange<T> implements DiscreteRange<T>, Serializable
 	{
 	protected final SortedSet<T> values = new TreeSet<T>();
 

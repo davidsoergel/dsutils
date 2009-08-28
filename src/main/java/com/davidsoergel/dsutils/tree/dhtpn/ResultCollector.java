@@ -1,9 +1,5 @@
 package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.tree.htpn.SerializableHierarchicalTypedPropertyNode;
-
-import java.io.Serializable;
-
 /**
  * A container for all of the results produced by a JobThread.  The outer hierarchy layer corresponds to the
  * ParameterSet hierarchy. The idea is that a single JobThread may produce a number of ParameterSet nodes, each
@@ -15,8 +11,8 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface ResultCollector extends
-                                 DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, ResultCollector, SerializableHierarchicalTypedPropertyNode<String, Serializable>>
+public interface ResultCollector extends SerializableDoubleHierarchicalTypedProperties<ResultCollector>
+		//                        DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, ResultCollector, SerializableHierarchicalTypedPropertyNode<String, Serializable>>
 		//BasicDoubleHierarchicalTypedProperties<ResultCollector>
 	{
 	void commit();

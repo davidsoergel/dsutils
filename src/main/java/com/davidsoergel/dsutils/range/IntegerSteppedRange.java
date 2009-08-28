@@ -40,9 +40,9 @@ import java.util.TreeSet;
  */
 public class IntegerSteppedRange extends BasicSteppedRange<Integer>
 	{
-	public IntegerSteppedRange(final Integer max, final Integer min, final Integer step)
+	public IntegerSteppedRange(final Integer min, final Integer max, final Integer step)
 		{
-		super(max, min, step);
+		super(min, max, step);
 		}
 
 	protected IntegerSetRange asSetRange()

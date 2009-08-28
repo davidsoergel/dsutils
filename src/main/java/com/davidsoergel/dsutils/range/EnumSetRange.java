@@ -2,10 +2,7 @@ package com.davidsoergel.dsutils.range;
 
 
 import com.davidsoergel.dsutils.EnumValue;
-import org.apache.log4j.Logger;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,30 +11,25 @@ import java.util.Set;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class URLSetRange extends BasicSetRange<URL>
+public class EnumSetRange extends BasicSetRange<EnumValue>
 	{
-	private static final Logger logger = Logger.getLogger(URLSetRange.class);
-
-	public URLSetRange(final Collection urlValues)
+/*	public EnumSetRange(final Collection<EnumValue> values)
 		{
-		super(new HashSet<URL>());
-		for (Object s : urlValues)
+		super(values);
+		}*/
+
+	public EnumSetRange(final Collection enumValues)
+		{
+		super(new HashSet<EnumValue>());
+		for (Object s : enumValues)
 			{
 			if (s instanceof String)
 				{
-				try
-					{
-					values.add(new URL((String) s));
-					}
-				catch (MalformedURLException e)
-					{
-					logger.error("Error", e);
-					throw new RangeRuntimeException(e);
-					}
+				values.add(new EnumValue((String) s));
 				}
 			else if (s instanceof EnumValue)
 				{
-				values.add((URL) s);
+				values.add((EnumValue) s);
 				}
 			else
 				{
@@ -47,15 +39,15 @@ public class URLSetRange extends BasicSetRange<URL>
 			}
 		}
 
-	protected URLSetRange create(final Collection<URL> values)
+	protected EnumSetRange create(final Collection<EnumValue> values)
 		{
-		return new URLSetRange(values);
+		return new EnumSetRange(values);
 		}
 
 	public Set<String> getStringValues()
 		{
 		Set<String> result = new HashSet<String>();
-		for (URL value : values)
+		for (EnumValue value : values)
 			{
 			result.add(value.toString());
 			}

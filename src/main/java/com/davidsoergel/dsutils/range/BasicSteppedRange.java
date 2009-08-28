@@ -1,11 +1,13 @@
 package com.davidsoergel.dsutils.range;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class BasicSteppedRange<T extends Number & Comparable>
-		implements DiscreteRange<T> //, Comparable<Range<T>>
+public abstract class BasicSteppedRange<T extends Number & Comparable & Serializable>
+		implements DiscreteRange<T>, Serializable //, Comparable<Range<T>>
 	{
 
 	// ------------------------------ FIELDS ------------------------------
@@ -17,7 +19,7 @@ public abstract class BasicSteppedRange<T extends Number & Comparable>
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public BasicSteppedRange(final T max, final T min, final T step)
+	public BasicSteppedRange(final T min, final T max, final T step)
 		{
 		this.max = max;
 		this.min = min;

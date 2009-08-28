@@ -40,9 +40,9 @@ import java.util.TreeSet;
  */
 public class DoubleSteppedRange extends BasicSteppedRange<Double>
 	{
-	public DoubleSteppedRange(final Double max, final Double min, final Double step)
+	public DoubleSteppedRange(final Double min, final Double max, final Double step)
 		{
-		super(max, min, step);
+		super(min, max, step);
 		}
 
 	protected DoubleSetRange asSetRange()

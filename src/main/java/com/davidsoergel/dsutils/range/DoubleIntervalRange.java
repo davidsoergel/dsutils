@@ -32,10 +32,12 @@ package com.davidsoergel.dsutils.range;
 
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
+
 /**
  * @version $Id: DoubleIntervalRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class DoubleIntervalRange implements Interval<Double>
+public class DoubleIntervalRange implements Interval<Double>, Serializable
 	{
 	// ------------------------------ FIELDS ------------------------------
 
@@ -49,7 +51,7 @@ public class DoubleIntervalRange implements Interval<Double>
 	final boolean closedLeft, closedRight;
 
 
-	public DoubleIntervalRange(final Double max, final Double min, final boolean closedLeft, final boolean closedRight)
+	public DoubleIntervalRange(final Double min, final Double max, final boolean closedLeft, final boolean closedRight)
 		{
 		this.closedLeft = closedLeft;
 		this.closedRight = closedRight;
@@ -111,6 +113,7 @@ public class DoubleIntervalRange implements Interval<Double>
 		 return new DoubleIntervalRange(this);
 		 }
  */
+
 	public String toString()
 		{
 		return String.format((closedLeft ? "[" : "(") + "%g,%g" + (closedRight ? "]" : ")"), min, max);
@@ -259,9 +262,15 @@ public class DoubleIntervalRange implements Interval<Double>
 		 distribution = null;
 		 }
  */
+
 	public int size()// throws JandyException
 		{
 		return 1;
 		//throw new JandyException("Can't count real numbers");
 		}
+
+	/*public Double sample()
+		{
+		throw new NotImplementedException();
+		}*/
 	}
