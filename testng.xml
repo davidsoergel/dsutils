@@ -33,7 +33,7 @@
 
 <suite name="dsutils" verbose="1" parallel="false" thread-count="1">
 
-  <test name="dsutils"> <!--junit="false">-->
+  <test name="dsutils" junit="false">
     <!--	<groups>
           <run>
             <exclude name="contract"/>
