@@ -106,6 +106,13 @@
       <version>2.1</version>
       <scope>compile</scope>
     </dependency>
+    <!-- try to work around transitive multiple inclusion of old versions -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>net.sourceforge.collections</groupId>
       <artifactId>collections-generic</artifactId>
