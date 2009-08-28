@@ -63,8 +63,10 @@ public abstract class Incrementor
 		{
 		if (changedI >= changedMax)
 			{
-			notifyAll();
-
+			synchronized (this)
+				{
+				notifyAll();
+				}
 			IncrementorDoneEvent ev = new IncrementorDoneEvent(id);
 
 			for (Listener listener : listeners)
@@ -247,7 +249,7 @@ public abstract class Incrementor
 			}
 		}
 
-	public interface Listener
+	public interface Listener extends Comparable
 		{
 		void incrementableProgressUpdated(IncrementorProgressEvent e);
 

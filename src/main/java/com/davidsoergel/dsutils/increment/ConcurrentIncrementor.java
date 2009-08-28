@@ -16,6 +16,8 @@ public class ConcurrentIncrementor extends Incrementor
 	AtomicInteger max = new AtomicInteger(0);
 	String note;
 
+	final Boolean sync = false;
+
 	public ConcurrentIncrementor(final String clientName, final String initialNote)
 		{
 		super(clientName);
@@ -41,7 +43,7 @@ public class ConcurrentIncrementor extends Incrementor
 
 	public void setNote(String n)
 		{
-		synchronized (note)
+		synchronized (sync)
 			{
 			note = n;
 			}
@@ -63,7 +65,7 @@ public class ConcurrentIncrementor extends Incrementor
 	public void resetWithNote(String s)
 		{
 		i.set(0);
-		synchronized (note)
+		synchronized (sync)
 			{
 			note = s;
 			}

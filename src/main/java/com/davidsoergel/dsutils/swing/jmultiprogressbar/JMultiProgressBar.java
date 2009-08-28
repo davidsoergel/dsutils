@@ -116,4 +116,9 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 		revalidate();
 		repaint();
 		}
+
+	public int compareTo(final Object o)
+		{
+		return new Integer(hashCode()).compareTo(o.hashCode());
+		}
 	}
