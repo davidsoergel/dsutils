@@ -1,6 +1,6 @@
 package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.tree.htpn.BasicHierarchicalTypedPropertyNode;
+import com.davidsoergel.dsutils.tree.htpn.SerializableHierarchicalTypedPropertyNode;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class AbstractSerializableDoubleHierarchicalTypedProperties<S extends SerializableDoubleHierarchicalTypedProperties<S>>
 		extends
-		AbstractDoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, BasicHierarchicalTypedPropertyNode<String, Serializable>>
+		AbstractDoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, SerializableHierarchicalTypedPropertyNode<String, Serializable>>
 		implements SerializableDoubleHierarchicalTypedProperties<S>
 	{
 	}

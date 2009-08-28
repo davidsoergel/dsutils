@@ -1,10 +1,8 @@
 package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.tree.htpn.BasicHierarchicalTypedPropertyNode;
-import org.jetbrains.annotations.NotNull;
+import com.davidsoergel.dsutils.tree.htpn.SerializableHierarchicalTypedPropertyNode;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 
 /**
@@ -17,7 +15,7 @@ import java.util.Collection;
  */
 public interface SerializableDoubleHierarchicalTypedProperties<S extends SerializableDoubleHierarchicalTypedProperties<S>>
 		extends
-		DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, BasicHierarchicalTypedPropertyNode<String, Serializable>>,
+		DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, SerializableHierarchicalTypedPropertyNode<String, Serializable>>,
 		Serializable
 
 
@@ -25,6 +23,7 @@ public interface SerializableDoubleHierarchicalTypedProperties<S extends Seriali
 		//                                                      DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, BasicDoubleHierarchicalTypedProperties, BasicHierarchicalTypedPropertyNode<String, Serializable>>,
 		//                                                    Serializable
 	{
-	@NotNull
-	Collection<? extends S> getChildren();
+//	@NotNull
+//	Collection<? extends S> getChildren();
+//	Collection<? extends DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, SerializableHierarchicalTypedPropertyNode<String, Serializable>>> getChildren();
 	}
