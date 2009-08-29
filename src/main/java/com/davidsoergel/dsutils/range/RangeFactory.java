@@ -10,9 +10,9 @@ import java.net.URL;
  */
 public class RangeFactory
 	{
-	public static Range createBasicSetRange(final Object val)
+	public static SerializableRange<?> createBasicSetRange(final Object val)
 		{
-		Range result;
+		SerializableRange<?> result;
 		if (val instanceof Boolean)
 			{
 			result = new BooleanSetRange(DSCollectionUtils.setOf((Boolean) val));

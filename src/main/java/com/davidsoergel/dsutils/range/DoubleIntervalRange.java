@@ -32,12 +32,10 @@ package com.davidsoergel.dsutils.range;
 
 import org.apache.log4j.Logger;
 
-import java.io.Serializable;
-
 /**
  * @version $Id: DoubleIntervalRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class DoubleIntervalRange implements Interval<Double>, Serializable
+public class DoubleIntervalRange implements Interval<Double>, SerializableRange<Double>
 	{
 	// ------------------------------ FIELDS ------------------------------
 

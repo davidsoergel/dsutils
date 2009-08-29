@@ -44,7 +44,7 @@ import java.util.TreeSet;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public abstract class BasicSetRange<T> implements DiscreteRange<T>, Serializable
+public abstract class BasicSetRange<T extends Serializable> implements DiscreteRange<T>, SerializableRange<T>
 	{
 	protected final SortedSet<T> values = new TreeSet<T>();
 
