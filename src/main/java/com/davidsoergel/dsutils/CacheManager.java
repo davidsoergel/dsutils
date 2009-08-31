@@ -337,7 +337,7 @@ public class CacheManager
 		{
 		private static final long serialVersionUID = 20090326L;
 
-		protected void finalize() throws Throwable
+/*		protected void finalize() throws Throwable
 			{
 			// we'll only reach this point when this object is being removed from the weak map anyway
 			// accumulatingMaps.remove(filename);
@@ -359,7 +359,7 @@ public class CacheManager
 				super.finalize();
 				}
 			}
-
+*/
 
 		transient Set<K> alteredKeys = new HashSet<K>();
 		transient private String filename;
