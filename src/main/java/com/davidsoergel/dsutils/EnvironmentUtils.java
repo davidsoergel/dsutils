@@ -21,7 +21,7 @@ public class EnvironmentUtils
 		//	init(propFile);
 		}
 
-	static String cacheRoot = null; //"/tmp/";
+	static String cacheRoot = "/tmp/"; // null; //
 	//static String inputRoot;
 	//static String outputRoot;
 
