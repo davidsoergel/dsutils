@@ -9,6 +9,11 @@ import java.util.Collection;
  */
 public class IntegerSetRange extends BasicSetRange<Integer>
 	{
+	// for Hessian
+	public IntegerSetRange()
+		{
+		}
+
 	public IntegerSetRange(final Collection<Integer> values)
 		{
 		super(values);

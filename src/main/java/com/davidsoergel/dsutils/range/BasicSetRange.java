@@ -46,13 +46,20 @@ import java.util.TreeSet;
  */
 public abstract class BasicSetRange<T extends Serializable> implements DiscreteRange<T>, SerializableRange<T>
 	{
-	protected final SortedSet<T> values = new TreeSet<T>();
+	protected SortedSet<T> values = null; //new TreeSet<T>();  // wanted final, but then Hessian can't deserialize it
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
+	// for Hessian
+
+	protected BasicSetRange()
+		{
+		}
+
 	protected BasicSetRange(Collection<T> values)
 		{
+		values = new TreeSet<T>();
 		values.addAll(values);
 		}
 
