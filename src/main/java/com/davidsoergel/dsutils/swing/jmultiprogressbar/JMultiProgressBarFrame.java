@@ -18,41 +18,56 @@ public class JMultiProgressBarFrame extends JFrame
 
 	private static JMultiProgressBarFrame _instance;
 
+	/**
+	 * Allow a subclass to register itself as the primary instance
+	 *
+	 * @param instance
+	 */
+	public static void setInstance(final JMultiProgressBarFrame instance)
+		{
+		JMultiProgressBarFrame._instance = instance;
+		}
+
 	public static JMultiProgressBarFrame getInstance()
 		{
 		if (_instance == null)
 			{
-			if (SwingUtilities.isEventDispatchThread())
-				{
-				_instance = new JMultiProgressBarFrame();
-				//monitor = _instance.getMonitor();
-				}
-			else
-				{
-				try
-					{
-					SwingUtilities.invokeAndWait(new Runnable()
-					{
-					public void run()
-						{
-						_instance = new JMultiProgressBarFrame();
-						//monitor = _instance.getMonitor();
-						}
-					});
-					}
-				catch (InterruptedException e)
-					{
-					logger.error("Error", e);
-					throw new Error(e);
-					}
-				catch (InvocationTargetException e)
-					{
-					logger.error("Error", e);
-					throw new Error(e);
-					}
-				}
+			initInstanceOnEDT();
 			}
 		return _instance;
+		}
+
+	private static void initInstanceOnEDT()
+		{
+		if (SwingUtilities.isEventDispatchThread())
+			{
+			_instance = new JMultiProgressBarFrame();
+			//monitor = _instance.getMonitor();
+			}
+		else
+			{
+			try
+				{
+				SwingUtilities.invokeAndWait(new Runnable()
+				{
+				public void run()
+					{
+					_instance = new JMultiProgressBarFrame();
+					//monitor = _instance.getMonitor();
+					}
+				});
+				}
+			catch (InterruptedException e)
+				{
+				logger.error("Error", e);
+				throw new Error(e);
+				}
+			catch (InvocationTargetException e)
+				{
+				logger.error("Error", e);
+				throw new Error(e);
+				}
+			}
 		}
 
 	public static JMultiProgressBar getInstanceMonitor()
