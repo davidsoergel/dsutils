@@ -26,7 +26,7 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	void defaultValueSanityChecks() throws HierarchicalPropertyNodeException;
 
-//	boolean isEditable();
+	boolean isEditable();
 
 	boolean isNullable();
 
@@ -40,7 +40,7 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	//void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException;
 
-//	void setEditable(boolean editable);
+	void setEditable(boolean editable);
 
 	void setHelpmessage(String helpmessage);
 

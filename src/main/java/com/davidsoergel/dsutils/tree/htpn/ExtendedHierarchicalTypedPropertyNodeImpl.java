@@ -41,7 +41,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	private boolean isNullable = false;
 
 	// allow for locking the value
-	// protected boolean editable = true;
+	protected boolean editable = true;
 
 	//private HierarchicalTypedPropertyNode<S, T> parent;
 
@@ -122,8 +122,8 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		this.helpmessage = helpmessage;
 		}
 
-
-/*	public boolean isEditable()
+	// BAD editable is in place only for the sake of jandyApp2Tier
+	public boolean isEditable()
 		{
 		return editable;
 		}
@@ -132,7 +132,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		{
 		this.editable = editable;
 		}
-*/
+
 
 	public void setObsolete(boolean obsolete)
 		{
