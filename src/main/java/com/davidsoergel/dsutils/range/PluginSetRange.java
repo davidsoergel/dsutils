@@ -5,7 +5,8 @@ import com.davidsoergel.dsutils.PluginValue;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 /**
@@ -41,9 +42,9 @@ public class PluginSetRange extends BasicSetRange<PluginValue>
 		return new PluginSetRange(values);
 		}
 
-	public Set<String> getStringValues()
+	public SortedSet<String> getStringValues()
 		{
-		Set<String> result = new HashSet<String>();
+		SortedSet<String> result = new TreeSet<String>();
 		for (PluginValue value : values)
 			{
 			result.add(value.toString());
