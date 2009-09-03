@@ -14,9 +14,7 @@ public class DoubleArrayMapper extends StringMapper<Double[]>
 	{
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Double[].class
-		};
+		return new Type[]{Double[].class};
 		}
 
 	public Double[] parse(String s)
@@ -24,7 +22,10 @@ public class DoubleArrayMapper extends StringMapper<Double[]>
 		List<Double> result = new ArrayList<Double>();
 		for (String d : s.split(","))
 			{
-			result.add(Double.parseDouble(d));
+			if (!d.isEmpty())
+				{
+				result.add(Double.parseDouble(d));
+				}
 			}
 		return result.toArray(new Double[]{});
 		}

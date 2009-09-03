@@ -137,9 +137,17 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	public void setObsolete(boolean obsolete)
 		{
 		this.obsolete = obsolete;
-		// ** obsoleteChildren();  ?
+		//** obsoleteChildren();
 		}
 
+	public void obsoleteChildren()
+		{
+		for (ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child : childrenByName.values())
+			{
+			child.setObsolete(true);
+			//	child.obsoleteChildren();
+			}
+		}
 
 	public void setChanged(boolean changed)
 		{
@@ -253,21 +261,12 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		//	clearChildren();
 		}
 
-	private void obsoleteChildren()
-		{
-		for (ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child : childrenByName.values())
-			{
-			child.setObsolete(true);
-			child.obsoleteChildren();
-			}
-		}
-
 
 	/*	public void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException
-		 {
-		 this.defaultValue = defaultValue;
-		 }
- */
+			 {
+			 this.defaultValue = defaultValue;
+			 }
+	 */
 
 
 	public void defaultValueSanityChecks() throws HierarchicalPropertyNodeException
@@ -373,6 +372,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 
 			// if the node didn't already exist, then the referenced field is no longer in the class that was parsed
 			child.setObsolete(true);
+			child.obsoleteChildren();
 
 			//addChild(child); // implicit in child creation
 			}

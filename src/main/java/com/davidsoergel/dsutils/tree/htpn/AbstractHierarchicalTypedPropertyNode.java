@@ -446,7 +446,8 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 		else
 			{
-			clearChildren();
+			// Keep obsolete values around
+			//clearChildren();
 			}
 
 		// if the value is a String giving a class name that is not currently loadable, we may yet add children later

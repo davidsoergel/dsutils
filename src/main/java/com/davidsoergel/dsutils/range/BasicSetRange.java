@@ -57,10 +57,10 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 		{
 		}
 
-	protected BasicSetRange(Collection<T> values)
+	protected BasicSetRange(Collection<T> newValues)
 		{
 		values = new TreeSet<T>();
-		values.addAll(values);
+		values.addAll(newValues);
 		}
 
 	public SortedSet<T> getValues()
