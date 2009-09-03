@@ -274,34 +274,40 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		{
 
 		// some sanity checks
-		if (defaultValue == null && !isNullable)
+		if (defaultValue == null)
 			{
-			logger.error("Node is not nullable and has no default value: " + this);
-			throw new HierarchicalPropertyNodeException("Node is not nullable and has no default value: " + this);
+			if (!isNullable)
+				{
+				logger.error("Node is not nullable and has no default value: " + this);
+				throw new HierarchicalPropertyNodeException("Node is not nullable and has no default value: " + this);
 
-			//throw new HierarchicalPropertyNodeException("Node is not nullable and has no default value.");
+				//throw new HierarchicalPropertyNodeException("Node is not nullable and has no default value.");
 
+				}
 			}
-		/*	else if (TypeUtils.isAssignableFrom(PluginDoubleMap.class, type))
-		   {
-		   if (!defaultValue.getClass().equals(PluginDoubleMap.class))
-			   {
-			   throw new HierarchicalPropertyNodeException(
-					   "Node is a PluginMap, but the default value is not a PluginMap");
-			   }
-		   }*/
+		else
+			{
+
+			/*	else if (TypeUtils.isAssignableFrom(PluginDoubleMap.class, type))
+							   {
+							   if (!defaultValue.getClass().equals(PluginDoubleMap.class))
+								   {
+								   throw new HierarchicalPropertyNodeException(
+										   "Node is a PluginMap, but the default value is not a PluginMap");
+								   }
+							   }*/
 
 //** All PluginMap functionality needs revisiting
-		/*
-	   else if (defaultValue.getClass().equals(PluginMap.class))
-		   {
-		   // if the default value is a PluginMap, then we can leave it alone
-		   }*/
-		else if (defaultValue.getClass().equals(Class.class))
-			{
-			// if the default value is a Class, then this node represents a plugin, so we can leave the value alone
-			}
-		else if (!(type instanceof Class))// && ! this.defaultValue.getClass().equals(Class.class) implicit
+			/*
+				   else if (defaultValue.getClass().equals(PluginMap.class))
+					   {
+					   // if the default value is a PluginMap, then we can leave it alone
+					   }*/
+			if (defaultValue.getClass().equals(Class.class))
+				{
+				// if the default value is a Class, then this node represents a plugin, so we can leave the value alone
+				}
+			else if (!(type instanceof Class))// && ! this.defaultValue.getClass().equals(Class.class) implicit
 				{
 				// type must be ParameterizedType
 				throw new HierarchicalPropertyNodeException(
@@ -319,6 +325,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 								"Can't assign a default value of type " + defaultValue.getClass()
 								+ " to a node requiring " + type);
 						}
+			}
 		}
 
 	/**

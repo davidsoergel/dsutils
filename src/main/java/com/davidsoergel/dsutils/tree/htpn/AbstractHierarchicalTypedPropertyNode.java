@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.tree.htpn;
 
+import com.davidsoergel.dsutils.DSStringUtils;
 import com.davidsoergel.dsutils.collections.OrderedPair;
 import com.davidsoergel.dsutils.tree.AbstractHierarchyNode;
 import org.apache.log4j.Logger;
@@ -110,15 +111,24 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 	public String toString()
 		{
-		return "HierarchicalTypedPropertyNode -> keyPath = " + getKeyPath() + ", type = " + type + ", value = "
-		       + getValue();
+		try
+			{
+			return "HierarchicalTypedPropertyNode -> keyPath = " + DSStringUtils.join(getKeyPath(), ".") + ", type = "
+			       + type + ", value = " + getValue();
+			}
+		catch (Throwable e)
+			{
+			e.printStackTrace();
+			}
+		return "broken";
+
 		//return name;
 		}
 
-	// ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-	// --------------------- Interface Comparable ---------------------
+// --------------------- Interface Comparable ---------------------
 
 	public int compareTo(Object o)
 		{
@@ -141,7 +151,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 				}
 		}
 
-	// --------------------- Interface HierarchicalTypedPropertyNode ---------------------
+// --------------------- Interface HierarchicalTypedPropertyNode ---------------------
 
 	/**
 	 * Generally not necessary to call expicitly since the child's constructor calls it already
@@ -315,10 +325,10 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		}
 
 
-	/*public Map<S, HierarchicalTypedPropertyNode<S, T>> getChildrenByName()
-		{
-		return childrenByName;
-		}*/
+/*public Map<S, HierarchicalTypedPropertyNode<S, T>> getChildrenByName()
+	  {
+	  return childrenByName;
+	  }*/
 
 	public void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, H> inheritedNode)
 			throws HierarchicalPropertyNodeException
@@ -332,13 +342,13 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 
 		/*	Map<S, HierarchicalTypedPropertyNode<S, T>> originalChildren = inheritedNode.getChildrenByName();
-	   for (S key : originalChildren.keySet())
-		   {
-		   HierarchicalTypedPropertyNode<S, T> childCopy = getOrCreateChild(key);
-		   HierarchicalTypedPropertyNode<S, T> originalChild = originalChildren.get(key);
-		   childCopy.setValue(originalChild.getValue());
-		   childCopy.copyChildrenFrom(originalChild);
-		   }*/
+				   for (S key : originalChildren.keySet())
+					   {
+					   HierarchicalTypedPropertyNode<S, T> childCopy = getOrCreateChild(key);
+					   HierarchicalTypedPropertyNode<S, T> originalChild = originalChildren.get(key);
+					   childCopy.setValue(originalChild.getValue());
+					   childCopy.copyChildrenFrom(originalChild);
+					   }*/
 		}
 
 	public boolean isClassBoundPlugin()
@@ -369,7 +379,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 				trav = trav.getParent();
 				}
 
-			keyPath = (K[]) result.toArray();
+			keyPath = (K[]) result.toArray(new Comparable[0]);
 			}
 		return keyPath;
 		}
@@ -410,9 +420,9 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 		// do any required string parsing, including class names
 		/*	if (value instanceof String)
-		   {
-		   value = parseValueString((String) value);
-		   }*/
+					   {
+					   value = parseValueString((String) value);
+					   }*/
 		//this.value = value;
 
 		payload = new OrderedPair<K, V>(getKey(), value);
@@ -422,12 +432,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 //** All PluginMap functionality needs revisiting
 		/*
-		if (isPluginMap() && value != null)// value instanceof PluginMap
-			{
-			throw new HierarchicalPropertyNodeException(
-					"Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
-			}
-		else */
+					if (isPluginMap() && value != null)// value instanceof PluginMap
+						{
+						throw new HierarchicalPropertyNodeException(
+								"Can't set a plugin value on a regular HTPN; need to use the StringNamed version");
+						}
+					else */
 		if (isClassBoundPlugin() && value != null)
 			{
 
@@ -442,7 +452,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		// if the value is a String giving a class name that is not currently loadable, we may yet add children later
 		}
 
-	// -------------------------- OTHER METHODS --------------------------
+// -------------------------- OTHER METHODS --------------------------
 
 	public void clearChildren()
 		{
@@ -468,7 +478,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		}
 
 
-	//private String programName;
+//private String programName;
 
 
 /*	public H init(H parent, K key, V value, Type type) //throws HierarchicalPropertyNodeException
@@ -503,9 +513,9 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		}
 */
 
-	/*public void sanityCheck()
-		{
-		}*/
+/*public void sanityCheck()
+	  {
+	  }*/
 
 	@NotNull
 	public Collection<H> getChildren()
@@ -554,18 +564,18 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			//			{
 
 			/*
-			  if (keys.size() == 0)
-				  {
-				  // this is the leaf node, so we give it the requested type
-				  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
-						  .init(this, childKey, type, null, null, true);
-				  }
-			  else
-				  {
-				  // this is an intermediate node, so we give it type Class
-				  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
-						  .init(this, childKey, Class.class, null, null, true);
-				  }*/
+								  if (keys.size() == 0)
+									  {
+									  // this is the leaf node, so we give it the requested type
+									  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
+											  .init(this, childKey, type, null, null, true);
+									  }
+								  else
+									  {
+									  // this is an intermediate node, so we give it type Class
+									  child = new HierarchicalTypedPropertyNodeImpl<S, T>()
+											  .init(this, childKey, Class.class, null, null, true);
+									  }*/
 
 			// if the node didn't already exist, then the referenced field is no longer in the class that was parsed
 			//child.setObsolete(true);
