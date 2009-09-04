@@ -53,4 +53,8 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 	void removeObsoletes();
 
 	void appendToStringBuffer(StringBuffer sb, int i);
+
+	void obsoleteChildren();
+
+	H getChild(K key);
 	}
