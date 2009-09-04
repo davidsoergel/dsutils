@@ -45,11 +45,11 @@ public class SerializableHierarchicalTypedPropertyNode<K extends Comparable<K> &
 	public void setValue(V value) //throws HierarchicalPropertyNodeException
 		{
 
-		setValueForce(value);
+		/*setValueForce(value);
 		}
 
 	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
-		{
+		{*/
 		/*	boolean destructive = true;
 		  T currentValue = getValue();
 		  if (currentValue == null || currentValue == value)

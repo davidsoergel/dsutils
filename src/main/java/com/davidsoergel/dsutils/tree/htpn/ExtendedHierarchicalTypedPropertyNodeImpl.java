@@ -23,9 +23,8 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
-		extends AbstractHierarchicalTypedPropertyNode<K, V, ExtendedHierarchicalTypedPropertyNodeImpl<K, V>>
-		implements ExtendedHierarchicalTypedPropertyNode<K, V, ExtendedHierarchicalTypedPropertyNodeImpl<K, V>>
+public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V, H extends ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H>>
+		extends AbstractHierarchicalTypedPropertyNode<K, V, H> implements ExtendedHierarchicalTypedPropertyNode<K, V, H>
 	{
 	private static final Logger logger = Logger.getLogger(ExtendedHierarchicalTypedPropertyNodeImpl.class);
 
@@ -91,7 +90,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
-	public Map<K, ExtendedHierarchicalTypedPropertyNodeImpl<K, V>> getChildrenByName()
+	public Map<K, H> getChildrenByName()
 		{
 		return childrenByName;
 		}
@@ -229,6 +228,20 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		return changed;
 		}
 
+
+	protected boolean valueEquals(V newValue)
+		{
+		final V value = getValue();
+		if (value == null && newValue == null)
+			{
+			return true;
+			}
+		else
+			{
+			return value != null && value.equals(newValue);
+			}
+		}
+
 	/**
 	 * Set the value of this node.  If this node expects a plugin and the value is a Class (or a String naming a Class),
 	 * then create the children array if necessary and populate it with defaults.  Act similarly for a PluginMap.
@@ -240,16 +253,43 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 	 * @throws HierarchicalPropertyNodeException
 	 *
 	 */
-	public void setValue(V value) //throws HierarchicalPropertyNodeException
+	public void setValue(V newValue) //throws HierarchicalPropertyNodeException
 		{
 		/*	if (!editable)
 		   {
 		   throw new HierarchicalPropertyNodeException("Node is locked: " + this);
 		   }
 		   */
-		setValueForce(value);
-		}
 
+		// if the value hasn't changed, do nothing
+
+		if (!valueEquals(newValue))
+			{
+			// setChanged must happen at the end for the sake of new plugin children
+
+			obsoleteChildren();  // save current values in obsolete state
+
+			payload = new OrderedPair<K, V>(getKey(), newValue);
+			//	super.setValue(newValue);
+
+			final V value = getValue();
+			updateTypeIfNeeded(value);
+			//	type = value.getClass();
+
+			/*	try
+			   {
+			   updatePluginChildNodes();
+			   }
+		   catch (HierarchicalPropertyNodeException e)
+			   {
+			   logger.error(e);
+			   throw new Error(e);
+			   }*/
+
+			setChanged(true);
+			}
+		}
+/*
 	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
 		{
 		payload = new OrderedPair<K, V>(getKey(), value);
@@ -260,7 +300,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 
 		//	clearChildren();
 		}
-
+*/
 
 	/*	public void setDefaultValue(V defaultValue) throws HierarchicalPropertyNodeException
 			 {
@@ -349,9 +389,9 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 			}
 		}
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> updateOrCreateChild(K childKey, V childValue)
+	public H updateOrCreateChild(K childKey, V childValue)
 		{
-		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> child = getChild(childKey);
+		ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H> child = getChild(childKey);
 		if (child == null)
 			{
 			// BAD hack: payload should be final?
@@ -370,6 +410,7 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 						  .init(this, childKey, Class.class, null, null, true);
 				  }*/
 
+			child.updateTypeIfNeeded(childValue);
 			// if the node didn't already exist, then the referenced field is no longer in the class that was parsed
 			child.setObsolete(true);
 			child.obsoleteChildren();
@@ -381,16 +422,17 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 
 
 	/*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild()
-		 {
-		 ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
-		 //children.add(result);  // setParent calls registerChild
-		 result.setParent(this);
-		 return result;
-		 }
- */
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild(final OrderedPair<K, V> payload)
+			 {
+			 ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
+			 //children.add(result);  // setParent calls registerChild
+			 result.setParent(this);
+			 return result;
+			 }
+	 */
+	public H newChild(final OrderedPair<K, V> payload)
 		{
-		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
+		ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H> result =
+				new ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H>();
 		//children.add(result);  // setParent calls registerChild
 		result.setPayload(payload);
 		result.setParent(this);
@@ -399,9 +441,9 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 
 	public void removeObsoletes()
 		{
-		HashSet<? extends ExtendedHierarchicalTypedPropertyNodeImpl<K, V>> set =
-				new HashSet<ExtendedHierarchicalTypedPropertyNodeImpl<K, V>>(getChildNodes());
-		for (ExtendedHierarchicalTypedPropertyNodeImpl<K, V> n : set)
+		HashSet<? extends ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H>> set =
+				new HashSet<ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H>>(getChildNodes());
+		for (ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H> n : set)
 			{
 			if (n.isObsolete())
 				{
@@ -456,9 +498,9 @@ public class ExtendedHierarchicalTypedPropertyNodeImpl<K extends Comparable, V>
 		return getDescendant(keyList).getValue();
 		}
 
-	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> getDescendant(final K[] keyList)
+	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H> getDescendant(final K[] keyList)
 		{
-		ExtendedHierarchicalTypedPropertyNodeImpl<K, V> trav = this;
+		ExtendedHierarchicalTypedPropertyNodeImpl<K, V, H> trav = this;
 
 		for (K k : keyList)
 			{

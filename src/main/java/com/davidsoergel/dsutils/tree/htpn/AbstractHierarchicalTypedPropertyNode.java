@@ -303,7 +303,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			V value = getValue();
 			if (value == PropertyConsumerFlags.INHERITED)
 				{
-				setValueForce(getParent().getInheritedValue(getKey()));
+				setValue(getParent().getInheritedValue(getKey()));  //Force??
 
 				// copy the plugin _definition_, not the plugin instance itself
 				// if the plugin is a singleton, it will be used that way
@@ -405,11 +405,11 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	public void setValue(V value) //throws HierarchicalPropertyNodeException
 		{
 
-		setValueForce(value);
+		/*	setValueForce(value);
 		}
 
 	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
-		{
+		{*/
 		//WTF
 		//boolean destructive = true;
 		//V currentValue = getValue();
@@ -591,16 +591,22 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 
 		child.setValue(childValue);
-		if (childValue == null)
+
+		child.updateTypeIfNeeded(childValue);
+		return child;
+		}
+
+	public void updateTypeIfNeeded(final V v)
+		{
+		if (getType() != null || v == null)
 			{
 			// if the node already has a type, leave it alone
 			//child.setType(null);
 			}
 		else
 			{
-			child.setType(childValue.getClass());
+			setType(v.getClass());
 			}
-		return child;
 		}
 
 	public void copyFrom(final HierarchicalTypedPropertyNode<K, V, ?> node) throws HierarchicalPropertyNodeException

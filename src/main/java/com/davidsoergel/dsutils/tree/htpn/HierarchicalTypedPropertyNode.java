@@ -55,6 +55,8 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	void copyFrom(HierarchicalTypedPropertyNode<K, V, ?> extendedTree) throws HierarchicalPropertyNodeException;
 
+	void updateTypeIfNeeded(V v);
+
 
 	public enum PropertyConsumerFlags
 		{
