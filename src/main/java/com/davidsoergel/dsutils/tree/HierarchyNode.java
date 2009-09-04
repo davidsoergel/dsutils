@@ -120,6 +120,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	I newChild(T payload);
 	//void setName(String name);
 
+
 	//String getName();
 
 	/**

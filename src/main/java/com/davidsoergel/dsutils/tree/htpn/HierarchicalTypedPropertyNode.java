@@ -53,7 +53,10 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 	{
 	//H init(H parent, K childKey, V childValue, Type aClass); //throws HierarchicalPropertyNodeException;
 
-	void copyFrom(HierarchicalTypedPropertyNode<K, V, ?> extendedTree) throws HierarchicalPropertyNodeException;
+	void copyFrom(HierarchicalTypedPropertyNode<K, V, ?> extendedTree);//throws HierarchicalPropertyNodeException;
+
+//	void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, ?> inheritedNode)
+//			throws HierarchicalPropertyNodeException;
 
 	void updateTypeIfNeeded(V v);
 
@@ -114,8 +117,6 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 
 	void inheritValueIfNeeded();
 
-	void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, H> inheritedNode)
-			throws HierarchicalPropertyNodeException;
 
 	//boolean isNamesSubConsumer();
 
@@ -157,4 +158,13 @@ public interface HierarchicalTypedPropertyNode<K extends Comparable, V, H extend
 //	void putClassBoundPluginSingleton(Object instance);
 
 //	Object getClassBoundPluginSingleton() throws HierarchicalPropertyNodeException;
+
+
+	/**
+	 * Creates a new child node of the appropriate type.  Note that the payload must be provided up front; this helps the
+	 * child be more immutable than it otherwise would be (e.g. newChild() followed by setPayload()).
+	 *
+	 * @return the new child node
+	 */
+//	H newChildCopyingSubtree(HierarchicalTypedPropertyNode<K,V,H> copyFrom);
 	}

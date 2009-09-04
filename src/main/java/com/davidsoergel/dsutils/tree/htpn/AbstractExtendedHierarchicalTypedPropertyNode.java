@@ -84,6 +84,8 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			//setNullable(isNullable);// also sets the value from the default, if needed
 			this.defaultValue = defaultValue;
 			this.isNullable = isNullable;
+
+			inheritValueIfNeeded();
 			useDefaultValueIfNeeded();
 			defaultValueSanityChecks();
 			}
@@ -419,24 +421,6 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		return child;
 		}
 
-
-	/*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> newChild()
-			 {
-			 ExtendedHierarchicalTypedPropertyNodeImpl<K, V> result = new ExtendedHierarchicalTypedPropertyNodeImpl<K, V>();
-			 //children.add(result);  // setParent calls registerChild
-			 result.setParent(this);
-			 return result;
-			 }
-	 */
-	public H newChild(final OrderedPair<K, V> payload)
-		{
-		AbstractExtendedHierarchicalTypedPropertyNode<K, V, H> result =
-				new AbstractExtendedHierarchicalTypedPropertyNode<K, V, H>();
-		//children.add(result);  // setParent calls registerChild
-		result.setPayload(payload);
-		result.setParent((H) this);
-		return (H) result;
-		}
 
 	public void removeObsoletes()
 		{

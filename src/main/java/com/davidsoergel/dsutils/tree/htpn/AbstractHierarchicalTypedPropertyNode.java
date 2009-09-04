@@ -153,17 +153,6 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 // --------------------- Interface HierarchicalTypedPropertyNode ---------------------
 
-	/**
-	 * Generally not necessary to call expicitly since the child's constructor calls it already
-	 *
-	 * @param n
-	 */
-	public void addChild(@NotNull H n)
-		{
-		assert n.getKey() != null;
-		childrenByName.put(n.getKey(), n);
-		}
-
 
 	public void addChild(K childKey, V childValue)
 		{
@@ -298,29 +287,21 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	 */
 	public void inheritValueIfNeeded()
 		{
-		try
+		V value = getValue();
+		if (value == PropertyConsumerFlags.INHERITED)
 			{
-			V value = getValue();
-			if (value == PropertyConsumerFlags.INHERITED)
+			setValue(getParent().getInheritedValue(getKey()));  //Force??
+
+			// copy the plugin _definition_, not the plugin instance itself
+			// if the plugin is a singleton, it will be used that way
+
+			if (isClassBoundPlugin())
 				{
-				setValue(getParent().getInheritedValue(getKey()));  //Force??
+				logger.warn("Plugin definition inherited: " + getKey() + "=" + getValue()
+				            + " (singleton only if get/setInjectedInstance exists, else newly instantiated)");
 
-				// copy the plugin _definition_, not the plugin instance itself
-				// if the plugin is a singleton, it will be used that way
-
-				if (isClassBoundPlugin())
-					{
-					logger.warn("Plugin definition inherited: " + getKey() + "=" + getValue()
-					            + " (singleton only if get/setInjectedInstance exists, else newly instantiated)");
-
-					copyChildrenFrom(getParent().getInheritedNode(getKey()));
-					}
+				copyFrom(getParent().getInheritedNode(getKey()));
 				}
-			}
-		catch (HierarchicalPropertyNodeException e)
-			{
-			logger.error("Error", e);
-			throw new Error(e);
 			}
 		}
 
@@ -330,26 +311,6 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	  return childrenByName;
 	  }*/
 
-	public void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, H> inheritedNode)
-			throws HierarchicalPropertyNodeException
-		{
-		clearChildren();
-		for (HierarchicalTypedPropertyNode<K, V, H> originalChild : inheritedNode.getChildren())
-			{
-			HierarchicalTypedPropertyNode<K, V, H> childCopy =
-					updateOrCreateChild(originalChild.getKey(), originalChild.getValue());
-			childCopy.copyChildrenFrom(originalChild);
-			}
-
-		/*	Map<S, HierarchicalTypedPropertyNode<S, T>> originalChildren = inheritedNode.getChildrenByName();
-				   for (S key : originalChildren.keySet())
-					   {
-					   HierarchicalTypedPropertyNode<S, T> childCopy = getOrCreateChild(key);
-					   HierarchicalTypedPropertyNode<S, T> originalChild = originalChildren.get(key);
-					   childCopy.setValue(originalChild.getValue());
-					   childCopy.copyChildrenFrom(originalChild);
-					   }*/
-		}
 
 	public boolean isClassBoundPlugin()
 		{
@@ -524,6 +485,16 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		return childrenByName.values();
 		}
 
+	/**
+	 * Generally not necessary to call expicitly since the child's constructor calls it already
+	 *
+	 * @param n
+	 */
+	public void addChild(@NotNull H n)
+		{
+		assert n.getKey() != null;
+		childrenByName.put(n.getKey(), n);
+		}
 
 	public void registerChild(final H a)
 		{
@@ -609,16 +580,40 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			}
 		}
 
-	public void copyFrom(final HierarchicalTypedPropertyNode<K, V, ?> node) throws HierarchicalPropertyNodeException
+	public void copyFrom(final HierarchicalTypedPropertyNode<K, V, ?> node) //throws HierarchicalPropertyNodeException
 		{
 		//setKey(node.getKey());
 		//setValue(node.getValue());
 		setType(node.getType());
+
+		clearChildren();
 
 		for (HierarchicalTypedPropertyNode<K, V, ?> child : node.getChildNodes()) //getChildren())
 			{
 			newChild(node.getPayload()).copyFrom(child);
 			}
 		}
+
+/*
+	public void copyChildrenFrom(HierarchicalTypedPropertyNode<K, V, ?> inheritedNode)
+			throws HierarchicalPropertyNodeException
+		{
+		clearChildren();
+		for (HierarchicalTypedPropertyNode<K, V, H> originalChild : inheritedNode.getChildren())
+			{
+			HierarchicalTypedPropertyNode<K, V, H> childCopy =
+					updateOrCreateChild(originalChild.getKey(), originalChild.getValue());
+			childCopy.copyChildrenFrom(originalChild);
+			}
+*/
+	/*	Map<S, HierarchicalTypedPropertyNode<S, T>> originalChildren = inheritedNode.getChildrenByName();
+					   for (S key : originalChildren.keySet())
+						   {
+						   HierarchicalTypedPropertyNode<S, T> childCopy = getOrCreateChild(key);
+						   HierarchicalTypedPropertyNode<S, T> originalChild = originalChildren.get(key);
+						   childCopy.setValue(originalChild.getValue());
+						   childCopy.copyChildrenFrom(originalChild);
+						   }*/
+	//	}
 	}
 

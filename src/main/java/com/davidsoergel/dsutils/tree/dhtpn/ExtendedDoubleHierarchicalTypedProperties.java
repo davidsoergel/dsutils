@@ -1,6 +1,6 @@
 package com.davidsoergel.dsutils.tree.dhtpn;
 
-import com.davidsoergel.dsutils.tree.htpn.AbstractExtendedHierarchicalTypedPropertyNode;
+import com.davidsoergel.dsutils.tree.htpn.ExtendedHierarchicalTypedPropertyNode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -15,10 +15,8 @@ import java.util.Collection;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public interface ExtendedDoubleHierarchicalTypedProperties<S extends ExtendedDoubleHierarchicalTypedProperties<S>>
-		extends
-		DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, AbstractExtendedHierarchicalTypedPropertyNode<String, Serializable>>,
-		Serializable
+public interface ExtendedDoubleHierarchicalTypedProperties<S extends ExtendedDoubleHierarchicalTypedProperties<S, H>, H extends ExtendedHierarchicalTypedPropertyNode<String, Serializable, H>>
+		extends DoubleHierarchicalTypedProperties<Integer, String, String, Serializable, S, H>, Serializable
 
 
 //public interface BasicDoubleHierarchicalTypedProperties extends
