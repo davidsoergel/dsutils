@@ -590,7 +590,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 		for (HierarchicalTypedPropertyNode<K, V, ?> child : node.getChildNodes()) //getChildren())
 			{
-			newChild(node.getPayload()).copyFrom(child);
+			newChild(child.getPayload()).copyFrom(child);
 			}
 		}
 
