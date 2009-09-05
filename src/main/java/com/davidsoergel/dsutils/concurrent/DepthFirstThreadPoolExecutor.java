@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -400,7 +401,33 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 
 			// it should be impossible for the taskGroup to become exhausted since no one else should be draining it
 			assert ftask != null;
-			underlyingExecutor.execute(ftask);
+
+			boolean done = false;
+			int rejectionCount = 0;
+			while (!done)
+				{
+				try
+					{
+					underlyingExecutor.execute(ftask);
+					done = true;
+					}
+				catch (RejectedExecutionException e)
+					{
+					if (rejectionCount >= 10)
+						{
+						throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
+						}
+					rejectionCount++;
+					try
+						{
+						Thread.sleep(10);
+						}
+					catch (InterruptedException e1)
+						{
+						logger.error("Error", e1);
+						}
+					}
+				}
 			}
 
 
@@ -438,9 +465,35 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			{
 			// block until a permit is available
 			ComparableFutureTask ftask = taskGroup.next();
+
 			if (ftask != null) // possible concurrency issue
 				{
-				underlyingExecutor.execute(ftask);
+				boolean done = false;
+				int rejectionCount = 0;
+				while (!done)
+					{
+					try
+						{
+						underlyingExecutor.execute(ftask);
+						done = true;
+						}
+					catch (RejectedExecutionException e)
+						{
+						if (rejectionCount >= 10)
+							{
+							throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
+							}
+						rejectionCount++;
+						try
+							{
+							Thread.sleep(10);
+							}
+						catch (InterruptedException e1)
+							{
+							logger.error("Error", e1);
+							}
+						}
+					}
 				}
 			}
 
