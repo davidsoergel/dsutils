@@ -196,7 +196,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	 */
 	public Map<K[], HierarchicalTypedPropertyNode<K, V, H>> getAllDescendants()
 		{
-		Map<K[], HierarchicalTypedPropertyNode<K, V, H>> result =
+		final Map<K[], HierarchicalTypedPropertyNode<K, V, H>> result =
 				new HashMap<K[], HierarchicalTypedPropertyNode<K, V, H>>();
 
 		collectDescendants(result);
