@@ -80,6 +80,7 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 *
 	 * @return the value contained in this node
 	 */
+	@NotNull
 	T getPayload();
 
 	/**
