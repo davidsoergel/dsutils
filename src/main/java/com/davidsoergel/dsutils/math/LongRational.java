@@ -33,19 +33,26 @@
 
 package com.davidsoergel.dsutils.math;
 
+import java.io.Serializable;
+
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
 
-public class LongRational extends Number implements Comparable
+public class LongRational extends Number implements Comparable, Serializable
 	{
 	// ------------------------------ FIELDS ------------------------------
 
+	// this should be final, but we want to allow Hessian serialization
 	long numerator;
 	long denominator;
 
+	// for Hessian only
+	public LongRational()
+		{
+		}
 
 	// -------------------------- STATIC METHODS --------------------------
 
@@ -104,31 +111,31 @@ public class LongRational extends Number implements Comparable
 				return -1;
 				}
 			else if (x < 0 && y < 0)// switch things around to make everything positive again
-				{
-				b = d;
-				a = c;
-				d = -y;
-				c = -x;
-				}
-			else if (x > 0 && y > 0)// everything still positive
-				{
-				a = d;
-				d = x;
-				b = c;
-				c = y;
-				}
-			else if (x == 0)
-				{
-				return Long.valueOf(-y).compareTo((long) 0);
-				}
-			else if (y == 0)
-				{
-				return Long.valueOf(x).compareTo((long) 0);
-				}
-			else
-				{
-				assert false;// the above conditions should cover all cases, yes?
-				}
+					{
+					b = d;
+					a = c;
+					d = -y;
+					c = -x;
+					}
+				else if (x > 0 && y > 0)// everything still positive
+						{
+						a = d;
+						d = x;
+						b = c;
+						c = y;
+						}
+					else if (x == 0)
+							{
+							return Long.valueOf(-y).compareTo((long) 0);
+							}
+						else if (y == 0)
+								{
+								return Long.valueOf(x).compareTo((long) 0);
+								}
+							else
+								{
+								assert false;// the above conditions should cover all cases, yes?
+								}
 			}
 		}
 
@@ -192,33 +199,38 @@ public class LongRational extends Number implements Comparable
 		this(numerator.longValue(), denominator.longValue());
 		}
 
-	public LongRational(long numerator, long denominator)
+	public LongRational(final long numerator, final long denominator)
 		{
-		this.numerator = numerator;
-		this.denominator = denominator;
+		long num = numerator;
+		long den = denominator;
 
 		// don't bother with all that NaN nonsense
-		if (denominator == 0)
+		if (den == 0)
 			{
-			if (numerator == 1)
+			// BAD why is there a special case for 1 / 0 ??
+			if (num == 1)
 				{
-				this.denominator = 1;
+				den = 1;
 				}
 			else
 				{
 				throw new ArithmeticException("Division by zero when constructing new LongRational");
 				}
 			}
-		reduce();
+		//reduce();
+
+		long gcd = MathUtils.GCD(num, den);
+		this.numerator = num / gcd;
+		this.denominator = den / gcd;
 		}
 
-	private void reduce()
+/*	private void reduce()
 		{
 		long gcd = MathUtils.GCD(numerator, denominator);
 		numerator /= gcd;
 		denominator /= gcd;
 		}
-
+*/
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
 	public long getDenominator()
@@ -317,7 +329,7 @@ public class LongRational extends Number implements Comparable
 	public double doubleValue()
 		{
 		return (double) numerator
-				/ (double) denominator;//To change body of implemented methods use File | Settings | File Templates.
+		       / (double) denominator;//To change body of implemented methods use File | Settings | File Templates.
 		}
 
 	public int intValue()
