@@ -37,8 +37,10 @@ import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -950,5 +952,15 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		{
 		final Class<?> arrayType = o.getClass().getComponentType();
 		return o.getClass().isArray() && arrayType.isPrimitive();
+		}
+
+	public static String[] mapToString(final Object[] os)
+		{
+		List<String> result = new ArrayList<String>(os.length);
+		for (Object o : os)
+			{
+			result.add(o.toString());
+			}
+		return result.toArray(EMPTY_STRING_ARRAY);
 		}
 	}

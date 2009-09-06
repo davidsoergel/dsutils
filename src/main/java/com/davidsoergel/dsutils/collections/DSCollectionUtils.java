@@ -410,4 +410,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		{
 		return new HashSet<T>(intersection(a, b));
 		}
+
+	public static String[] mapToString(final Collection os)
+		{
+		List<String> result = new ArrayList<String>(os.size());
+		for (Object o : os)
+			{
+			result.add(o.toString());
+			}
+		return result.toArray(DSArrayUtils.EMPTY_STRING_ARRAY);
+		}
 	}
