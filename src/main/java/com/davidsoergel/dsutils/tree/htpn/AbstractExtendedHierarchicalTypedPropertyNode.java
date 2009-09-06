@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -92,10 +91,11 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		}
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
+	/*
 	public Map<K, H> getChildrenByName()
 		{
 		return childrenByName;
-		}
+		}*/
 
 	public V getDefaultValue()
 		{

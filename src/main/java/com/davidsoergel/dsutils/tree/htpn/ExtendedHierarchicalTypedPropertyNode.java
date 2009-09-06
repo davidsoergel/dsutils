@@ -2,7 +2,6 @@ package com.davidsoergel.dsutils.tree.htpn;
 
 import com.davidsoergel.dsutils.increment.Incrementor;
 
-import java.util.Map;
 import java.util.SortedSet;
 
 /**
@@ -12,7 +11,7 @@ import java.util.SortedSet;
 public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, H extends ExtendedHierarchicalTypedPropertyNode<K, V, H>>
 		extends HierarchicalTypedPropertyNode<K, V, H>
 	{
-	Map<K, H> getChildrenByName();
+	//Map<K, H> getChildrenByName();
 
 	V getDefaultValue();
 
