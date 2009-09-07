@@ -73,6 +73,7 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 	public void setKey(K newKey)
 		{
 		payload = new OrderedPair<K, V>(newKey, getValue());
+		keyPath = null;  // the key changed!
 		}
 
 /*	public HierarchicalTypedPropertyNode<S, T> getParent()
@@ -336,7 +337,8 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 
 			while (trav != null)
 				{
-				result.add(0, trav.getPayload().getKey1());
+				final OrderedPair<K, V> payload = trav.getPayload();
+				result.add(0, payload == null ? null : payload.getKey1());
 				trav = trav.getParent();
 				}
 
@@ -345,6 +347,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 		return keyPath;
 		}
 
+	@Override
+	public void setPayload(final OrderedPair<K, V> payload)
+		{
+		super.setPayload(payload);
+		keyPath = null;  // the key changed!
+		}
 
 	public void removeChild(K childKey)
 		{
