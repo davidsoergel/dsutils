@@ -87,8 +87,10 @@ public class Parallel
 		return map(tasks.iterator(), function);
 		}
 
+
 	public static void shutdown()
 		{
+		logger.warn("Shutting down Parallel thread pool");
 		DepthFirstThreadPoolExecutor.getInstance().shutdown();
 		}
 

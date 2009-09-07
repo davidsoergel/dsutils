@@ -466,7 +466,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			// block until a permit is available
 			ComparableFutureTask ftask = taskGroup.next();
 
-			if (ftask != null) // possible concurrency issue
+			if (ftask != null) // workaround possible concurrency issue
 				{
 				boolean done = false;
 				int rejectionCount = 0;
@@ -479,6 +479,10 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 						}
 					catch (RejectedExecutionException e)
 						{
+						if (underlyingExecutor.isShutdown())
+							{
+							throw new RuntimeExecutionException("Executor has been shut down!?");
+							}
 						if (rejectionCount >= 10)
 							{
 							throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
