@@ -46,8 +46,39 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 	private boolean obsolete = false;
 	private boolean changed = false;
 
+	public void copyFrom(
+			final ExtendedHierarchicalTypedPropertyNode<K, V, ?> node) //throws HierarchicalPropertyNodeException
+		{
+		//setKey(node.getKey());
+		//setValue(node.getValue());
+		setType(node.getType());
+
+		try
+			{
+			setDefaultAndNullable(node.getDefaultValue(),
+			                      node.isNullable());  // applies inheritance and default if needed
+			}
+		catch (HierarchicalPropertyNodeException e)
+			{
+			logger.error("Error", e);
+			throw new Error(e);
+			}
+
+		helpmessage = node.getHelpmessage();
+		editable = node.isEditable();
+		obsolete = node.isObsolete();
+		changed = node.isChanged();
+
+		clearChildren();
+
+		for (HierarchicalTypedPropertyNode<K, V, ?> child : node.getChildNodes()) //getChildren())
+			{
+			newChild(child.getPayload()).copyFrom(child);
+			}
+		}
+
 /*	public ExtendedHierarchicalTypedPropertyNodeImpl<K, V> init(ExtendedHierarchicalTypedPropertyNodeImpl<K, V> parent,
-	                                                            K key, V value, Type type, String helpmessage)
+																K key, V value, Type type, String helpmessage)
 			throws HierarchicalPropertyNodeException
 		{
 		super.init(parent, key, value, type);

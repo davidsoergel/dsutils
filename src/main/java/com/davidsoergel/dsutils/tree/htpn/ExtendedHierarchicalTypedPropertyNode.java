@@ -25,6 +25,8 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	void defaultValueSanityChecks() throws HierarchicalPropertyNodeException;
 
+	void copyFrom(ExtendedHierarchicalTypedPropertyNode<K, V, ?> extendedTree);
+
 	boolean isEditable();
 
 	boolean isNullable();

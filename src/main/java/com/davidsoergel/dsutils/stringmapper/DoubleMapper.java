@@ -10,10 +10,7 @@ public class DoubleMapper extends StringMapper<Double>
 	{
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Double.class,
-				double.class
-		};
+		return new Type[]{Double.class, double.class};
 		}
 
 	public Double parse(String s)
@@ -27,6 +24,10 @@ public class DoubleMapper extends StringMapper<Double>
 
 	public String render(Double value)
 		{
+		if (value == null)
+			{
+			return "";
+			}
 		return value.toString();
 		}
 
