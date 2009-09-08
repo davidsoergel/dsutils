@@ -53,10 +53,10 @@ public class Parallel
 				});
 		}
 
-	public static void emergencyAbort(OutOfMemoryError e)
+	public static void emergencyAbort() //OutOfMemoryError e)
 		{
 		DepthFirstThreadPoolExecutor.getInstance().shutdownNow();
-		throw e;
+		//throw e;
 		}
 
 	public static <T> void forEach(Iterable<T> tasks, final Function<T, Void> function)
@@ -144,7 +144,7 @@ public class Parallel
 					}
 				catch (OutOfMemoryError e)
 					{
-					emergencyAbort(e);
+					emergencyAbort(); //e);
 					throw e;
 					}
 
@@ -155,7 +155,7 @@ public class Parallel
 					}
 				catch (OutOfMemoryError e)
 					{
-					emergencyAbort(e);
+					emergencyAbort(); //e);
 					throw e;
 					}
 				/*			}

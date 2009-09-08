@@ -292,6 +292,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 	public ThreadPoolPerformanceStats shutdown()
 		{
 		ThreadPoolPerformanceStats stats = threadFactory.getStats();
+		logger.warn("Shutting down depth-first executor: " + stats);
 		underlyingExecutor.shutdown();
 		return stats;
 		}
@@ -481,21 +482,31 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 						{
 						if (underlyingExecutor.isShutdown())
 							{
-							throw new RuntimeExecutionException("Executor has been shut down!?");
+							// there must have been an emergencyAbort, likely due to OutOfMemoryError.
+
+							// we'll just return silently and trust that the OutOfMemoryError will be re-thrown from taskGroup.getAllExceptions();
+							return;
+
+							//	throw new RuntimeExecutionException("Executor has been shut down!?");
 							}
-						if (rejectionCount >= 10)
+						else
 							{
-							throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
+							throw new RuntimeExecutionException(
+									"Impossible: Executor rejects jobs even though it has not been shut down!?");
 							}
-						rejectionCount++;
-						try
-							{
-							Thread.sleep(10);
-							}
-						catch (InterruptedException e1)
-							{
-							logger.error("Error", e1);
-							}
+						/*		if (rejectionCount >= 10)
+						   {
+						   throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
+						   }
+					   rejectionCount++;
+					   try
+						   {
+						   Thread.sleep(10);
+						   }
+					   catch (InterruptedException e1)
+						   {
+						   logger.error("Error", e1);
+						   }*/
 						}
 					}
 				}

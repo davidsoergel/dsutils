@@ -68,4 +68,11 @@ public class ThreadPoolPerformanceStats
 		{
 		return waitedTime / (double) 1000;
 		}
+
+	@Override
+	public String toString()
+		{
+		return "ThreadPoolPerformanceStats{" + "blockedTime=" + blockedTime + ", cpuTime=" + cpuTime + ", userTime="
+		       + userTime + ", waitedTime=" + waitedTime + '}';
+		}
 	}
