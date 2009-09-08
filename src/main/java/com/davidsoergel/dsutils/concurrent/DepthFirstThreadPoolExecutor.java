@@ -21,13 +21,26 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 
 	private static DepthFirstThreadPoolExecutor _instance = null;
 
+	private static int _instance_cpus = 0;
+
 	public static DepthFirstThreadPoolExecutor getInstance()
 		{
 		if (_instance == null)
 			{
-			_instance = new DepthFirstThreadPoolExecutor();
+			_instance = new DepthFirstThreadPoolExecutor(_instance_cpus);
 			}
 		return _instance;
+		}
+
+	public static void set_instance_cpus(final int _instance_cpus)
+		{
+		DepthFirstThreadPoolExecutor._instance_cpus = _instance_cpus;
+		if (_instance != null)
+			{
+			// could try to adjust the existing instance, but it's easier to just make a new one
+			_instance.shutdown();
+			_instance = null;
+			}
 		}
 
 	// we can't bound this one because a newly added task may turn out to have the highest priority
@@ -48,9 +61,13 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 		{
 		//int cpus = Runtime.getRuntime().availableProcessors();
 		//int queueSize = cpus * 2;
-		this(Runtime.getRuntime().availableProcessors(),// - 1,  // account for callerRunsPolicy
-		     Runtime.getRuntime().availableProcessors()
-		     * 2);  // *2 ?? should be enough to keep the threads busy, but not so much that we prematurely commit to execute low-priority tasks
+		this(0);
+		}
+
+	public DepthFirstThreadPoolExecutor(int threads)
+		{
+
+		this(threads, 0);
 		}
 
 	private final TrackedThreadFactory threadFactory;
@@ -63,6 +80,7 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			}
 		if (queueSizePerTaskGroup == 0)
 			{
+			// *2 ?? should be enough to keep the threads busy, but not so much that we prematurely commit to execute low-priority tasks
 			queueSizePerTaskGroup = threads * 2;
 			}
 
