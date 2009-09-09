@@ -68,6 +68,7 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		editable = node.isEditable();
 		obsolete = node.isObsolete();
 		changed = node.isChanged();
+//		isDefault = node.isDefault();
 
 		clearChildren();
 
@@ -287,7 +288,13 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 	 */
 	public void setValue(V newValue) //throws HierarchicalPropertyNodeException
 		{
-		/*	if (!editable)
+		// if this node was set to the default (and all of its descendants were too) then ditch the descendants
+/*		if (isDefault)
+			{
+			childrenByName.clear();
+			}
+		setNonDefault();// even if we're explicitly setting what the default value was
+*/		/*	if (!editable)
 		   {
 		   throw new HierarchicalPropertyNodeException("Node is locked: " + this);
 		   }
@@ -321,6 +328,17 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			setChanged(true);
 			}
 		}
+
+/*	public void setNonDefault()
+		{
+		isDefault = false;
+		H p = getParent();
+		if (p != null)
+			{
+			p.setNonDefault();
+			}
+		}
+		*/
 /*
 	protected void setValueForce(V value) //throws HierarchicalPropertyNodeException
 		{
@@ -413,11 +431,19 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		isNullable = nullable;
 		}
 */
+/*	protected boolean isDefault;
+
+	public boolean isDefault()
+		{
+		return isDefault;
+		}
+*/
 	public void useDefaultValueIfNeeded() throws HierarchicalPropertyNodeException
 		{
 		if (getValue() == null && !isNullable)
 			{
 			setValue(defaultValue);
+//			isDefault = true;
 			}
 		}
 

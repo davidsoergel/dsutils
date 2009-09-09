@@ -35,6 +35,8 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 
 	boolean isChanged();
 
+//	boolean isDefault();
+
 //	boolean isInherited();
 
 	void setChanged(boolean changed);
@@ -58,4 +60,6 @@ public interface ExtendedHierarchicalTypedPropertyNode<K extends Comparable, V, 
 	void obsoleteChildren();
 
 	H getChild(K key);
+
+//	void setNonDefault();
 	}
