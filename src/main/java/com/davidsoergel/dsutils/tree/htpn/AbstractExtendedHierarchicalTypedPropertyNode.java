@@ -116,7 +116,7 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			this.defaultValue = defaultValue;
 			this.isNullable = isNullable;
 
-			inheritValueIfNeeded();
+			// inheritValueIfNeeded();
 			useDefaultValueIfNeeded();
 			defaultValueSanityChecks();
 			}
