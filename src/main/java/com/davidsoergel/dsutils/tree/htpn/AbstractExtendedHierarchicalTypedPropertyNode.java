@@ -534,7 +534,8 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 
 	public V getValueForDescendant(final K[] keyList)
 		{
-		return getDescendant(keyList).getValue();
+		final ExtendedHierarchicalTypedPropertyNode<K, V, H> desc = getDescendant(keyList);
+		return desc == null ? null : desc.getValue();
 		}
 
 	public ExtendedHierarchicalTypedPropertyNode<K, V, H> getDescendant(final K[] keyList)
@@ -544,6 +545,10 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		for (K k : keyList)
 			{
 			trav = trav.getChild(k);
+			if (trav == null)
+				{
+				return null;
+				}
 			}
 		return trav;
 
