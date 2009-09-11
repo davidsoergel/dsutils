@@ -65,41 +65,59 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 
 	public void incrementableDone(final Incrementor.IncrementorDoneEvent e)
 		{
-		Integer id = e.getId();
-		remove(id);
-		revalidate();
-		repaint();
+		SwingUtilities.invokeLater(new Runnable()
+		{
+		public void run()
+			{
+			Integer id = e.getId();
+			remove(id);
+			revalidate();
+			repaint();
+			}
+		});
 		}
 
 	public void incrementableNoteUpdated(final Incrementor.IncrementorNoteEvent e)
 		{
-		Integer id = e.getId();
-		JLabel label = theLabels.get(id);
-		if (label == null)
+		SwingUtilities.invokeLater(new Runnable()
+		{
+		public void run()
 			{
-			createBar(id);
-			label = theLabels.get(id);
-			}
+			Integer id = e.getId();
+			JLabel label = theLabels.get(id);
+			if (label == null)
+				{
+				createBar(id);
+				label = theLabels.get(id);
+				}
 
-		label.setText(e.getClientName() + " : " + e.getNote());
-		//revalidate();
-		//repaint();
+			label.setText(e.getClientName() + " : " + e.getNote());
+			//revalidate();
+			//repaint();}
+			}
+		});
 		}
 
 	public void incrementableProgressUpdated(final Incrementor.IncrementorProgressEvent e)
 		{
-		Integer id = e.getId();
-		JProgressBar bar = theBars.get(id);
-		if (bar == null)
+		SwingUtilities.invokeLater(new Runnable()
+		{
+		public void run()
 			{
-			createBar(id);
-			bar = theBars.get(id);
+			Integer id = e.getId();
+			JProgressBar bar = theBars.get(id);
+			if (bar == null)
+				{
+				createBar(id);
+				bar = theBars.get(id);
+				}
+
+			int percent = e.getPercent();
+
+			bar.setValue(percent);
+			bar.setIndeterminate(percent == 0);
 			}
-
-		int percent = e.getPercent();
-
-		bar.setValue(percent);
-		bar.setIndeterminate(percent == 0);
+		});
 		}
 
 	private void createBar(final Integer id)
