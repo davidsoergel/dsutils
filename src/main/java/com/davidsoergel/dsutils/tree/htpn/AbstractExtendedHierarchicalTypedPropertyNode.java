@@ -13,6 +13,8 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.SortedSet;
@@ -204,6 +206,24 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 		//Class c = theField.getType();
 		//Type genericType = theField.getGenericType();
 
+
+// if this is a GenericFactory, then we need the parameter type
+
+		Type thePluginType = type;
+		if (TypeUtils.isAssignableFrom(GenericFactory.class, type))
+			{
+			if (type instanceof Class)
+				{
+				// it's a type that extends GenericFactory; just leave it alone then
+				thePluginType = type;
+				}
+			else
+				{
+				thePluginType = ((ParameterizedType) type).getActualTypeArguments()[0];
+				}
+			}
+
+
 		java.util.SortedSet<Class> result = new TreeSet<Class>(new Comparator<Class>()
 		{
 		public int compare(Class o1, Class o2)
@@ -228,7 +248,7 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			}
 		try
 			{
-			PluginManager.registerPluginsFromDefaultPackages(type, incrementor);
+			PluginManager.registerPluginsFromDefaultPackages(thePluginType, incrementor);
 			}
 		catch (IOException e)
 			{
@@ -236,7 +256,7 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			throw new Error(e);
 			}
 
-		result.addAll(PluginManager.getPlugins(type));
+		result.addAll(PluginManager.getPlugins(thePluginType));
 		return result;
 		//			}
 		//		catch (PluginException e)
