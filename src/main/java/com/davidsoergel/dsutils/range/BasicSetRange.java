@@ -31,6 +31,7 @@
 package com.davidsoergel.dsutils.range;
 
 
+import com.davidsoergel.dsutils.collections.DSCollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
@@ -103,5 +104,34 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 	public boolean encompassesValue(final T value)
 		{
 		return values.contains(value);
+		}
+
+	@Override
+	public boolean equals(final Object o)
+		{
+		if (this == o)
+			{
+			return true;
+			}
+		if (o == null || getClass() != o.getClass())
+			{
+			return false;
+			}
+
+		final BasicSetRange that = (BasicSetRange) o;
+
+		return DSCollectionUtils.isEqualCollection(values, that.values);
+/*		if (values != null ? !values.equals(that.values) : that.values != null)
+			{
+			return false;
+			}
+
+		return true;*/
+		}
+
+	@Override
+	public int hashCode()
+		{
+		return values != null ? values.hashCode() : 0;
 		}
 	}
