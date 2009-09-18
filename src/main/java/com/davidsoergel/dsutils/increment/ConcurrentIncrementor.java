@@ -27,7 +27,15 @@ public class ConcurrentIncrementor extends Incrementor
 	public void increment()
 		{
 		int x = i.incrementAndGet();
-		fireIncrementableUpdatedEvent(i.get(), max.get());
+		fireIncrementableUpdatedEvent(x, max.get());
+		}
+
+	public void done()
+		{
+		if (i.get() < max.get())
+			{
+			fireIncrementableUpdatedEvent(max.get(), max.get());
+			}
 		}
 
 	public void setMaximum(int m)
@@ -53,7 +61,7 @@ public class ConcurrentIncrementor extends Incrementor
 	public void incrementMaximum(int length)
 		{
 		int x = max.addAndGet(length);
-		fireIncrementableUpdatedEvent(i.get(), max.get());
+		fireIncrementableUpdatedEvent(i.get(), x);
 		}
 
 	public int getCount()

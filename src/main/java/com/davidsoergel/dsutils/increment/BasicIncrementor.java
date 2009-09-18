@@ -26,6 +26,11 @@ public class BasicIncrementor extends Incrementor
 		fireIncrementableUpdatedEvent(i, max);
 		}
 
+	public void done()
+		{
+		fireIncrementableUpdatedEvent(max, max);
+		}
+
 	public void setMaximum(int i)
 		{
 		max = i;

@@ -35,4 +35,11 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 		incrementor.setNote(initialNote);
 		execute();
 		}
+
+	@Override
+	protected void done()
+		{
+		super.done();
+		incrementor.done();
+		}
 	}

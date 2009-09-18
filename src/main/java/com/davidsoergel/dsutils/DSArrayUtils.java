@@ -926,6 +926,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static int[] castToInt(final boolean[] p)
+		{
+		int[] result = new int[p.length];
+		for (int i = 0; i < p.length; i++)
+			{
+			result[i] = p[i] ? 1 : 0;
+			}
+		return result;
+		}
+
 	public static byte[] castToByte(final char[] p)
 		{
 		byte[] result = new byte[p.length];

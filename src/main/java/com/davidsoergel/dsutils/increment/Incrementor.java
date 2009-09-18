@@ -19,6 +19,8 @@ public abstract class Incrementor
 
 	public abstract void increment();
 
+	public abstract void done();
+
 	public abstract void setMaximum(int i);
 
 	public abstract void setNote(String n);
