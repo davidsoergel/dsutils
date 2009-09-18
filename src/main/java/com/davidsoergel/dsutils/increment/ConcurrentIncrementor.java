@@ -32,10 +32,10 @@ public class ConcurrentIncrementor extends Incrementor
 
 	public void done()
 		{
-		if (i.get() < max.get())
-			{
-			fireIncrementableUpdatedEvent(max.get(), max.get());
-			}
+		//if (i.get() < max.get())
+		//	{
+		fireIncrementableUpdatedEvent(max.get(), max.get());
+		//	}
 		}
 
 	public void setMaximum(int m)
