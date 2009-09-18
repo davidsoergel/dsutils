@@ -952,6 +952,18 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return castToByte(s.toCharArray());
 		}
 
+	public static double[] toDoubleArray(final List<String> l) throws NumberFormatException
+		{
+		double[] result = new double[l.size()];
+		int i = 0;
+		for (String s : l)
+			{
+			result[i] = Double.parseDouble(s);
+			i++;
+			}
+		return result;
+		}
+
 	public static boolean isNumberArray(Object o)
 		{
 		final Class<?> arrayType = o.getClass().getComponentType();

@@ -147,9 +147,9 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		}
 
-	public static <K, V> Set<V> mapAll(Map<K, V> m, Iterable<K> keys)
+	public static <K, V> List<V> mapAll(Map<K, V> m, Iterable<K> keys)
 		{
-		Set<V> result = new HashSet<V>();
+		List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		for (K key : keys)
 			{
 			result.add(m.get(key));
@@ -157,9 +157,9 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <K, V> Set<V> mapAll(Function<K, V> f, Iterable<K> keys)
+	public static <K, V> List<V> mapAll(Function<K, V> f, Iterable<K> keys)
 		{
-		Set<V> result = new HashSet<V>();
+		List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		for (K key : keys)
 			{
 			result.add(f.apply(key));
@@ -167,9 +167,9 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <K, V> Collection<V> mapAllIgnoringNulls(Map<K, V> m, Iterator<? extends K> keys)
+	public static <K, V> List<V> mapAllIgnoringNulls(Map<K, V> m, Iterator<? extends K> keys)
 		{
-		Set result = new HashSet<V>();
+		List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		while (keys.hasNext())
 			{
 			V value = m.get(keys.next());
