@@ -88,12 +88,22 @@ class ComparableFutureTask<T> extends FutureTask<T> implements Comparable<Compar
 			{
 			super.run();
 			}
-		catch (OutOfMemoryError e)
+		catch (Throwable e)
 			{
-			tg.shutdownNow();
-			throw e;
-			}
+			// who cares about the chaining; we want the ultimate cause
+			Throwable c = e.getCause();
+			while (c != null && c != e) // avoid infinite loop just in case
+				{
+				e = c;
+				c = e.getCause();
+				}
 
+			if (e instanceof OutOfMemoryError)
+				{
+				tg.shutdownNow();
+				throw (OutOfMemoryError) e;
+				}
+			}
 		TaskGroup._currentTaskPriority.set(lastPriority);
 
 		tg.reportDone(this);
