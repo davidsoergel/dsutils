@@ -57,64 +57,6 @@ import java.util.SortedSet;
  */
 public interface WeightedSet<T> //extends Map<T, Double>
 	{
-	/**
-	 * Increment the indicated value in this WeightedSet by the values in the argument.  Does not alter the number of
-	 * items; use incrementItems() for that (since there may be multiple add() calls for a single item).
-	 *
-	 * @param increment
-	 */
-
-/*	void add(T key, double increment);
-
-	void incrementItems();
-
-	void decrementItems();
-*/
-
-	void add(Map<T, Double> weights);
-
-	void put(Map<T, Double> weights);
-
-	void add(Map<T, Double> weights, int items);
-
-	void put(Map<T, Double> weights, int items);
-
-	void add(T key, double increment, int items);
-
-	void put(T key, double val, int items);
-
-
-	/**
-	 * Decrement the indicated value in this WeightedSet by the values in the argument.  Does not alter the number of
-	 * items; use incrementItems() for that (since there may be multiple add() calls for a single item).
-	 *
-	 * @param decrement
-	 */
-	void remove(T key, double decrement);
-
-	/**
-	 * Increment all the values in this WeightedSet by the values in the argument, and increase the number of items
-	 * accordingly.
-	 *
-	 * @param increment
-	 */
-	void addAll(WeightedSet<T> increment);
-
-	/**
-	 * Increment all the values in this WeightedSet by the values in the argument, and increase the number of items
-	 * accordingly.
-	 *
-	 * @param increment
-	 */
-	void addAll(WeightedSet<T> increment, double weight);
-
-	/**
-	 * Decrement all the values in this WeightedSet by the values in the argument, and decrease the number of items
-	 * accordingly.
-	 *
-	 * @param increment
-	 */
-	void removeAll(WeightedSet<T> increment);
 
 	/**
 	 * Given a key, returns the mean of the values provided for that key so far, normalized by the total number of items.
@@ -168,8 +110,6 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	//Map<String, Double> getBackingMap();
 
-	void clear();
-
 	boolean isEmpty();
 
 	T getDominantKey();
@@ -180,4 +120,6 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 
 	WeightedSet<T> extractWithKeys(Collection<T> okKeys);
+
+	Map<T, Double> getMap();
 	}

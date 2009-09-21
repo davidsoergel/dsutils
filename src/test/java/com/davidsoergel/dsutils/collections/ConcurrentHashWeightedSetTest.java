@@ -43,7 +43,7 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class HashWeightedSetTest
+public class ConcurrentHashWeightedSetTest
 	{
 	Map<String, Double> mapA;
 	Map<String, Double> mapB;
@@ -68,7 +68,7 @@ public class HashWeightedSetTest
 	@Test
 	public void atomicConstructorWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
+		WeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
 
 		assert a.getItemCount() == 1;
 		assert a.get("a") == .1;
@@ -84,8 +84,8 @@ public class HashWeightedSetTest
 	@Test
 	public void addAllWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
-		WeightedSet<String> b = new HashWeightedSet(mapB, 1);
+		MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
+		MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 
@@ -103,8 +103,8 @@ public class HashWeightedSetTest
 	@Test
 	public void addAndGetNormalizedWorks()
 		{
-		WeightedSet<String> a = new HashWeightedSet(mapA, 1);
-		WeightedSet<String> b = new HashWeightedSet(mapB, 1);
+		MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
+		MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 

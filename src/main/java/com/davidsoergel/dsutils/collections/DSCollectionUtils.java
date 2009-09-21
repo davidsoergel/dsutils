@@ -184,7 +184,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 
 	public static <T> T getDominantFirstElement(Set<List<T>> theLists, int numberThatMustAgree)
 		{
-		WeightedSet<T> counts = new HashWeightedSet<T>();
+		MutableWeightedSet<T> counts = new ConcurrentHashWeightedSet<T>();
 		for (List<T> l : theLists)
 			{
 			/*if (l.isEmpty())
