@@ -77,7 +77,10 @@ class ComparableFutureTask<T> extends FutureTask<T> implements Comparable<Compar
 	@Override
 	public void run()
 		{
-		logger.debug("Running " + DSArrayUtils.asString(priority, ","));
+		if (logger.isDebugEnabled())
+			{
+			logger.debug("Running " + DSArrayUtils.asString(priority, ","));
+			}
 
 		// if this task spawns more by creating a child TaskGroup, it will need to know the priority
 
