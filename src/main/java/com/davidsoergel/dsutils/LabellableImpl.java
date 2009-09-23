@@ -24,6 +24,7 @@ public class LabellableImpl<T> implements Labellable<T>
 		if (mutableWeightedLabels == null)
 			{
 			logger.debug("doneLabelling was already called");
+			return;
 			}
 		immutableWeightedLabels = new ImmutableHashWeightedSet<T>(mutableWeightedLabels);
 		mutableWeightedLabels = null;
