@@ -4,6 +4,7 @@ import com.davidsoergel.dsutils.collections.ConcurrentHashWeightedSet;
 import com.davidsoergel.dsutils.collections.ImmutableHashWeightedSet;
 import com.davidsoergel.dsutils.collections.MutableWeightedSet;
 import com.davidsoergel.dsutils.collections.WeightedSet;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,12 +13,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public class LabellableImpl<T> implements Labellable<T>
 	{
+	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
+
 	//** we're serializing for the sake of the FastaParser index, where labels shouldn't matter
 	protected transient MutableWeightedSet<T> mutableWeightedLabels = new ConcurrentHashWeightedSet<T>();
 	private transient WeightedSet<T> immutableWeightedLabels;
 
 	public void doneLabelling()
 		{
+		if (mutableWeightedLabels == null)
+			{
+			logger.debug("doneLabelling was already called");
+			}
 		immutableWeightedLabels = new ImmutableHashWeightedSet<T>(mutableWeightedLabels);
 		mutableWeightedLabels = null;
 		}
