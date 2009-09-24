@@ -9,6 +9,13 @@ import java.util.Collection;
  */
 public class StringSetRange extends BasicSetRange<String>
 	{
+
+	// for Hessian
+
+	protected StringSetRange()
+		{
+		}
+
 	public StringSetRange(final Collection<String> values)
 		{
 		super(values);

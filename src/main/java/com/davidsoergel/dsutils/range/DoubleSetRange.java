@@ -9,6 +9,12 @@ import java.util.Collection;
  */
 public class DoubleSetRange extends BasicSetRange<Double>
 	{
+	// for Hessian
+
+	protected DoubleSetRange()
+		{
+		}
+
 	public DoubleSetRange(final Collection<Double> values)
 		{
 		super(values);

@@ -14,7 +14,11 @@ import java.util.TreeSet;
  */
 public class PluginSetRange extends BasicSetRange<PluginValue>
 	{
+// for Hessian
 
+	protected PluginSetRange()
+		{
+		}
 
 	public PluginSetRange(final Collection enumValues)
 		{

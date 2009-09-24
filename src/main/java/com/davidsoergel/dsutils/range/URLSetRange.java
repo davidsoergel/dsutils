@@ -18,6 +18,12 @@ public class URLSetRange extends BasicSetRange<URL>
 	{
 	private static final Logger logger = Logger.getLogger(URLSetRange.class);
 
+	// for Hessian
+
+	protected URLSetRange()
+		{
+		}
+
 	public URLSetRange(final Collection urlValues)
 		{
 		super(new HashSet<URL>());

@@ -19,6 +19,12 @@ public class EnumSetRange extends BasicSetRange<EnumValue>
 		super(values);
 		}*/
 
+	// for Hessian
+
+	protected EnumSetRange()
+		{
+		}
+
 	public EnumSetRange(final Collection enumValues)
 		{
 		super(new HashSet<EnumValue>());

@@ -9,6 +9,12 @@ import java.util.Collection;
  */
 public class BooleanSetRange extends BasicSetRange<Boolean>
 	{
+	// for Hessian
+
+	protected BooleanSetRange()
+		{
+		}
+
 	public BooleanSetRange(final Collection<Boolean> values)
 		{
 		super(values);
