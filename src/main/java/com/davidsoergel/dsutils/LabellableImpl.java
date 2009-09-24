@@ -31,7 +31,7 @@ public class LabellableImpl<T> implements Labellable<T>
 		}
 
 	/**
-	 * once the weighted labels have been queried, thay can't be changed
+	 * once the weighted labels have been queried, they can't be changed
 	 *
 	 * @return
 	 */
