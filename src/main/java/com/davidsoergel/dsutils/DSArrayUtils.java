@@ -510,6 +510,28 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static boolean[] mapEquals(double[] x, double value)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = x[col] == value;
+			}
+		return result;
+		}
+
+	public static boolean[] mapEquals(double[] x, double value, boolean[] mask)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = mask[col] && x[col] == value;
+			}
+		return result;
+		}
+
 	/**
 	 * @param x
 	 * @param value
@@ -1035,5 +1057,22 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			result.add(o.toString());
 			}
 		return result.toArray(EMPTY_STRING_ARRAY);
+		}
+
+	public static double[] select(final double[] d, final boolean[] mask)
+		{
+		int s = count(mask, true);
+		double[] result = new double[s];
+		int di = 0;
+		for (int i = 0; i < s; i++)
+			{
+			while (!mask[di])
+				{
+				di++;
+				}
+			result[i] = d[di];
+			di++;
+			}
+		return result;
 		}
 	}
