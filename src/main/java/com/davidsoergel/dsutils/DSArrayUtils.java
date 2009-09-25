@@ -510,6 +510,40 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	/**
+	 * @param x
+	 * @param value
+	 */
+	public static int count(double[] x, double value)
+		{
+		int count = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (x[col] == value)
+				{
+				count++;
+				}
+			}
+		return count;
+		}
+
+	/**
+	 * @param x
+	 * @param value
+	 */
+	public static int countNot(double[] x, double value)
+		{
+		int count = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (x[col] != value)
+				{
+				count++;
+				}
+			}
+		return count;
+		}
+
 	public static double[] grow(double[] a, int x)
 		{
 		double[] result = new double[a.length + x];
