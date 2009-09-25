@@ -531,6 +531,23 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param x
 	 * @param value
 	 */
+	public static int count(boolean[] x, boolean value)
+		{
+		int count = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (x[col] == value)
+				{
+				count++;
+				}
+			}
+		return count;
+		}
+
+	/**
+	 * @param x
+	 * @param value
+	 */
 	public static int countNot(double[] x, double value)
 		{
 		int count = 0;
