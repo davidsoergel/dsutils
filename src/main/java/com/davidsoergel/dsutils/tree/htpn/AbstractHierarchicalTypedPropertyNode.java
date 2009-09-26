@@ -564,12 +564,12 @@ public abstract class AbstractHierarchicalTypedPropertyNode<K extends Comparable
 			//			{
 			// this should never happen since we're passing a default value of null
 			//			logger.error("Error", e);
+			child.setValue(childValue);
 			//			throw new Error(e);
 			//			}
 			//addChild(child); // implicit in child creation
 			}
 
-		child.setValue(childValue);
 
 		child.updateTypeIfNeeded(childValue);
 		return child;
