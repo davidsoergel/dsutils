@@ -510,6 +510,13 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	/**
+	 * Note this doesn't work with NaN
+	 *
+	 * @param x
+	 * @param value
+	 * @return
+	 */
 	public static boolean[] mapEquals(double[] x, double value)
 		{
 		boolean result[] = new boolean[x.length];
@@ -550,6 +557,28 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		for (int col = 0; col < x.length; col++)
 			{
 			result[col] = mask[col] && x[col] != value;
+			}
+		return result;
+		}
+
+	public static boolean[] mapNotNaN(double[] x)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = !Double.isNaN(x[col]);
+			}
+		return result;
+		}
+
+	public static boolean[] mapNotNaN(double[] x, boolean[] mask)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = mask[col] && !Double.isNaN(x[col]);
 			}
 		return result;
 		}
@@ -598,6 +627,23 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		for (int col = 0; col < x.length; col++)
 			{
 			if (x[col] != value)
+				{
+				count++;
+				}
+			}
+		return count;
+		}
+
+	/**
+	 * @param x
+	 * @param value
+	 */
+	public static int countNotNaN(double[] x)
+		{
+		int count = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (!Double.isNaN(x[col]))
 				{
 				count++;
 				}

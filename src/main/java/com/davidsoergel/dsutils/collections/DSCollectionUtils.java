@@ -386,6 +386,23 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
+	public static boolean allElementsNaN(final Collection<Double> list)
+		{
+		if (list == null)
+			{
+			return true;
+			}
+		for (Double p : list)
+			{
+			if (!p.isNaN())
+				{
+				return false;
+				}
+			}
+		return true;
+		}
+
+
 	public static double sum(Iterable<Double> a)
 		{
 		double result = 0.0;
