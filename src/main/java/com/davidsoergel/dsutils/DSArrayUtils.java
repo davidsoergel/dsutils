@@ -637,7 +637,6 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	/**
 	 * @param x
-	 * @param value
 	 */
 	public static int countNotNaN(double[] x)
 		{
@@ -696,7 +695,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		{
 		for (int i = 0; i < a.length; i++)
 			{
-			if (a[i] == o)
+			if (a[i].equals(o))
 				{
 				return true;
 				}
