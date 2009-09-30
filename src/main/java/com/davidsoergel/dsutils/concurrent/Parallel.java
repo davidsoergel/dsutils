@@ -47,7 +47,6 @@ public class Parallel
 				{
 				public void performAction(final Integer o)
 					{
-
 					function.apply(o);
 					}
 				});
