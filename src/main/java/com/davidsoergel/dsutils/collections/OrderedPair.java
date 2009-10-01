@@ -3,7 +3,7 @@ package com.davidsoergel.dsutils.collections;
 /**
  * Represent a pair of objects
  */
-public class OrderedPair<A, B> implements Comparable
+public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
 	{
 	private A key1;  // final, but that screws with Serializable
 	private B key2;  // final, but that screws with Serializable
@@ -58,9 +58,14 @@ public class OrderedPair<A, B> implements Comparable
 		return result;
 		}
 
-	public int compareTo(Object o)
+	public int compareTo(final OrderedPair<A, B> o)
 		{
-		return key1.toString().compareTo(o.toString());
+		int c = key1.toString().compareTo(o.key1.toString());
+		if (c == 0)
+			{
+			c = key2.toString().compareTo(o.key2.toString());
+			}
+		return c;
 		}
 
 	public String toString()
