@@ -247,7 +247,7 @@ public class MathUtils
 			result = Double.NEGATIVE_INFINITY;
 			//xklogger.info("Log sum produced NaN: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")", new Exception());
 			//logger.debug("Log sum produced NaN!");
-			//logger.error(new Throwable());
+			//logger.error("Error", new Throwable());
 			}
 
 		//	logger.debug("Log sum: " + x + " + " + y + " + " + z + " = " + result + "   (Scale factor: " + B + ")");
@@ -331,15 +331,7 @@ public class MathUtils
 					  }
 					  */
 
-		long[] u = {
-				1,
-				0,
-				x
-		}, v = {
-				0,
-				1,
-				y
-		}, t = new long[3];
+		long[] u = {1, 0, x}, v = {0, 1, y}, t = new long[3];
 		while (v[2] != 0)
 			{
 			long q = u[2] / v[2];

@@ -95,7 +95,7 @@ public class StreamUtils
 			/*	catch (FileNotFoundException fnfe)
 			   {
 
-		   logger.error(fnfe);
+		   logger.error("Error", fnfe);
 
 			   throw fnfe;
 			   }*/
@@ -123,7 +123,7 @@ public class StreamUtils
 			//	}
 			/*catch (java.io.IOException ioe)
 				{
-			logger.error(ioe);
+			logger.error("Error", ioe);
 
 				throw ioe;
 				}*/

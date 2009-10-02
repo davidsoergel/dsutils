@@ -341,7 +341,7 @@ public abstract class AbstractExtendedHierarchicalTypedPropertyNode<K extends Co
 			   }
 		   catch (HierarchicalPropertyNodeException e)
 			   {
-			   logger.error(e);
+			   logger.error("Error", e);
 			   throw new Error(e);
 			   }*/
 
