@@ -100,7 +100,7 @@ class ComparableFutureTask<T> extends FutureTask<T> implements Comparable<Compar
 				e = c;
 				c = e.getCause();
 				}
-
+			logger.error("Error", e);
 			if (e instanceof OutOfMemoryError)
 				{
 				tg.shutdownNow();
