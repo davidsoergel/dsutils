@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import java.util.Comparator;
+
 /**
  * Represent a pair of objects
  */
@@ -58,6 +60,12 @@ public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
 		return result;
 		}
 
+	/**
+	 * Column-major by default
+	 *
+	 * @param o
+	 * @return
+	 */
 	public int compareTo(final OrderedPair<A, B> o)
 		{
 		int c = key1.toString().compareTo(o.key1.toString());
@@ -66,6 +74,42 @@ public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
 			c = key2.toString().compareTo(o.key2.toString());
 			}
 		return c;
+		}
+
+/*	public static <A, B> Comparator<? super OrderedPair<A,B>> getRowMajorComparator()
+		{
+		return new RowMajorComparator<A, B>();
+		}
+
+	public  static  class RowMajorComparator<A, B> implements Comparator<OrderedPair<A, B>>
+		{
+		public int compare(final OrderedPair<A, B> o1, final OrderedPair<A, B> o2)
+			{
+			int c = o1.key2.toString().compareTo(o2.key2.toString());
+			if (c == 0)
+				{
+				c = o1.key1.toString().compareTo(o2.key1.toString());
+				}
+			return c;
+			}
+		}*/
+
+	public static Comparator getRowMajorComparator()
+		{
+		return new RowMajorComparator();
+		}
+
+	public static class RowMajorComparator implements Comparator<OrderedPair>
+		{
+		public int compare(final OrderedPair o1, final OrderedPair o2)
+			{
+			int c = o1.key2.toString().compareTo(o2.key2.toString());
+			if (c == 0)
+				{
+				c = o1.key1.toString().compareTo(o2.key1.toString());
+				}
+			return c;
+			}
 		}
 
 	public String toString()

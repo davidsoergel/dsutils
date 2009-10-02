@@ -4,7 +4,7 @@ import com.davidsoergel.dsutils.tree.AbstractHierarchyNode;
 import com.davidsoergel.dsutils.tree.htpn.HierarchicalTypedPropertyNode;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
@@ -49,7 +49,7 @@ public abstract class AbstractDoubleHierarchicalTypedProperties<I, J, K extends 
 		getChildren().remove(child);
 		}
 
-	public abstract Set<C> getChildren();
+	public abstract Collection<C> getChildren();
 
 	//public abstract C newChild();
 

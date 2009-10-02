@@ -583,6 +583,28 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static boolean[] mapNotNaNOrInfinite(double[] x)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = !(Double.isNaN(x[col]) || Double.isInfinite(x[col]));
+			}
+		return result;
+		}
+
+	public static boolean[] mapNotNaNOrInfinite(double[] x, boolean[] mask)
+		{
+		boolean result[] = new boolean[x.length];
+
+		for (int col = 0; col < x.length; col++)
+			{
+			result[col] = mask[col] && !(Double.isNaN(x[col]) || Double.isInfinite(x[col]));
+			}
+		return result;
+		}
+
 
 	/**
 	 * @param x
@@ -644,6 +666,22 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		for (int col = 0; col < x.length; col++)
 			{
 			if (!Double.isNaN(x[col]))
+				{
+				count++;
+				}
+			}
+		return count;
+		}
+
+	/**
+	 * @param x
+	 */
+	public static int countNotNaNOrInfinite(double[] x)
+		{
+		int count = 0;
+		for (int col = 0; col < x.length; col++)
+			{
+			if (!(Double.isNaN(x[col]) || Double.isInfinite(x[col])))
 				{
 				count++;
 				}
