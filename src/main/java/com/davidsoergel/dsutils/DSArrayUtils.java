@@ -135,7 +135,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		{
 		if (a.length != b.length)
 			{
-			throw new Error("Can't add arrays of different sizes");
+			throw new ArrayIndexOutOfBoundsException("Can't add arrays of different sizes");
 			}
 		double[][] result = new double[a.length][];
 		for (int i = 0; i < a.length; i++)
@@ -143,7 +143,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			result[i] = new double[a[i].length];
 			if (a[i].length != b[i].length)
 				{
-				throw new Error("Can't add arrays of different sizes");
+				throw new ArrayIndexOutOfBoundsException("Can't add arrays of different sizes");
 				}
 			for (int j = 0; j < a[i].length; j++)
 				{
