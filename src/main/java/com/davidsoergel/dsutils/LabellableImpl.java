@@ -61,4 +61,13 @@ public class LabellableImpl<T> implements Labellable<T>
 
 		return mutableWeightedLabels;
 		}
+
+	public int getItemCount()
+		{
+		if (immutableWeightedLabels != null)
+			{
+			return immutableWeightedLabels.getItemCount();
+			}
+		return mutableWeightedLabels.getItemCount();
+		}
 	}

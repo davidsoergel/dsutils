@@ -17,4 +17,6 @@ public interface Labellable<T>
 
 	@NotNull
 	MutableWeightedSet<T> getMutableWeightedLabels();
+
+	public int getItemCount();
 	}
