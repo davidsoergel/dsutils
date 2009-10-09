@@ -62,8 +62,14 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	//private V smallestValue;
 	//private KeyPair<K> keyPairWithSmallestValue;
 
+//	private Map<K, Set<UnorderedPair<K>>> keyToKeyPairs;
+
 	private Multimap<K, UnorderedPair<K>> keyToKeyPairs = HashMultimap.create();
 	// Multimaps.synchronizedSetMultimap(HashMultimap.create());
+
+	// we want a map sorted by value
+	// simulate that using a reglar map and a separate sorted set for the keys
+	// note that the key/value pair must be inserted into the regular map first, before the key is added to the sorted set
 
 	private Map<UnorderedPair<K>, V> keyPairToValue = new HashMap<UnorderedPair<K>, V>();
 
@@ -157,33 +163,33 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		//valueToKeyPair.put(d, keyPair);
 		}
 
-	private UnorderedPair<K> getKeyPairWithSmallestValue()
+	private synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
 		return keyPairsInValueOrder.first();//valueToKeyPair.get(getSmallestValue()).first();
 		}
 
-	public V getSmallestValue()
+	public synchronized V getSmallestValue()
 		{
 		return keyPairToValue
 				.get(getKeyPairWithSmallestValue());//valueToKeyPair.keySet().first();// distanceToPair is sorted
 		}
 
-	public K getKey1WithSmallestValue()
+	public synchronized K getKey1WithSmallestValue()
 		{
 		return getKeyPairWithSmallestValue().getKey1();
 		}
 
-	public K getKey2WithSmallestValue()
+	public synchronized K getKey2WithSmallestValue()
 		{
 		return getKeyPairWithSmallestValue().getKey2();
 		}
 
-	public V get(K key1, K key2)
+	public synchronized V get(K key1, K key2)
 		{
 		return get(new UnorderedPair<K>(key1, key2)); //getKeyPair(key1, key2));
 		}
 
-	private V get(UnorderedPair<K> keyPair)
+	private synchronized V get(UnorderedPair<K> keyPair)
 		{
 		return keyPairToValue.get(keyPair);
 		}
@@ -193,12 +199,24 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	 *
 	 * @param b
 	 */
-	public synchronized void remove(K b)
+	public synchronized int remove(K b)
 		{
-		for (UnorderedPair<K> pair : keyToKeyPairs.get(b))
+		int removed = 0;
+		final Collection<UnorderedPair<K>> obsoletePairs = keyToKeyPairs.get(b);
+		for (UnorderedPair<K> pair : obsoletePairs)
 			{
+			removed++;
 			keyPairsInValueOrder.remove(pair);
 			keyPairToValue.remove(pair);
+			K a = pair.getKey1();
+			if (a == b)
+				{
+				a = pair.getKey2();
+				}
+			keyToKeyPairs.get(a).remove(pair);
+
+			// avoid ConcurrentModificationException by doung these all at once at the end
+			//keyToKeyPairs.get(b).remove(pair);
 
 			/*			try
 			   {
@@ -212,24 +230,26 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			   }*/
 			}
 		keyToKeyPairs.removeAll(b);
+
+		return removed;
 		}
 
-	public Set<K> getActiveKeys()
+	public synchronized Set<K> getActiveKeys()
 		{
 		return keyToKeyPairs.keySet();
 		}
 
-	public int numKeys()
+	public synchronized int numKeys()
 		{
 		return keyToKeyPairs.keySet().size();
 		}
 
-	public int numPairs()
+	public synchronized int numPairs()
 		{
 		return keyPairsInValueOrder.size();
 		}
 
-	public Collection<V> values()
+	public synchronized Collection<V> values()
 		{
 		return keyPairToValue.values();
 		}
