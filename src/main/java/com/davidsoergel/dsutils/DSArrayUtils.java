@@ -1083,6 +1083,18 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static int[] createIncrementingIntArray(final int size, final int start, final int increment)
+		{
+		int[] result = new int[size];
+		int trav = start;
+		for (int i = 0; i < size; i++)
+			{
+			result[i] = trav;
+			trav += increment;
+			}
+		return result;
+		}
+
 	public static int floorElement(final int[] nastWidths, final int nastWidth)
 		{
 		int i = Arrays.binarySearch(nastWidths, nastWidth);
