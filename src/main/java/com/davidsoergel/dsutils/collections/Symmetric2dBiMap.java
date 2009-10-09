@@ -46,7 +46,8 @@ import java.util.TreeSet;
 
 /**
  * A data structure that maps pairs of keys to values, and is queryable in both directions (i.e., also in the
- * value->keys direction).  The order of the keys is unimportant.
+ * value->keys direction).  The order of the keys is unimportant.  The key pairs are stored sorted by the associated
+ * values, so eg. the pair with the lowest value can be queried.
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
@@ -163,7 +164,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		//valueToKeyPair.put(d, keyPair);
 		}
 
-	private synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
+	public synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
 		return keyPairsInValueOrder.first();//valueToKeyPair.get(getSmallestValue()).first();
 		}

@@ -328,6 +328,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 
 	public static <T> T chooseRandom(Collection<T> coll)
 		{
+		//PERF ?
 		T[] ar = (T[]) coll.toArray();
 		return ar[MersenneTwisterFast.randomInt(ar.length)];
 		}
