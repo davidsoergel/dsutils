@@ -32,17 +32,13 @@
 
 package com.davidsoergel.dsutils.collections;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * A data structure that maps pairs of keys to values, and is queryable in both directions (i.e., also in the
@@ -52,7 +48,7 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class Symmetric2dBiMap<K, V extends Comparable>
+public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 	{
 	private static final Logger logger = Logger.getLogger(Symmetric2dBiMap.class);
 
@@ -63,52 +59,31 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	//private V smallestValue;
 	//private KeyPair<K> keyPairWithSmallestValue;
 
-//	private Map<K, Set<UnorderedPair<K>>> keyToKeyPairs;
+	private SimpleMultiMap<K, UnorderedPair<K>> keyToKeyPairs = new SimpleMultiMap<K, UnorderedPair<K>>();
 
-	private Multimap<K, UnorderedPair<K>> keyToKeyPairs = HashMultimap.create();
+	// for some reason the HashMultimap didn't seem to work right... occasionally gave the wrong size(), and such.  Maybe concurrency problems.
+//	private Multimap<K, UnorderedPair<K>> keyToKeyPairs = HashMultimap.create();
 	// Multimaps.synchronizedSetMultimap(HashMultimap.create());
 
 	// we want a map sorted by value
-	// simulate that using a reglar map and a separate sorted set for the keys
+	// simulate that using a regular map and a separate sorted set for the keysu
 	// note that the key/value pair must be inserted into the regular map first, before the key is added to the sorted set
 
-	private Map<UnorderedPair<K>, V> keyPairToValue = new HashMap<UnorderedPair<K>, V>();
-
-	private SortedSet<UnorderedPair<K>> keyPairsInValueOrder =
-			new TreeSet<UnorderedPair<K>>(new Comparator<UnorderedPair<K>>()
-			{
-			public int compare(UnorderedPair<K> o1, UnorderedPair<K> o2)
-				{
-				V v1 = keyPairToValue.get(o1);
-				V v2 = keyPairToValue.get(o2);
-				if (v1 == null)
-					{
-					if (v2 == null)
-						{
-						return 0;
-						}
-					return 1;
-					}
-				if (v2 == null)
-					{
-					return -1;
-					}
-				int result = v1.compareTo(v2);
-				return result == 0 ? o1.compareTo(o2) : result;
-				}
-			});
+	private ValueSortedMap<UnorderedPair<K>, V> keyPairToValueSorted = new ValueSortedMap<UnorderedPair<K>, V>();
 
 
 	/*SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double> theDistanceMatrix =
-						new SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double>();*/
+							new SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double>();*/
 
 
 	public synchronized void put(K key1, K key2, V d)
 		{
+		sanityCheck();
 		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
-		put(pair, d);
+		putPairAndReSort(pair, d);
 		keyToKeyPairs.put(key1, pair);
 		keyToKeyPairs.put(key2, pair);
+		sanityCheck();
 		}
 
 /*	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
@@ -143,7 +118,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	 * @param keyPair
 	 * @param d
 	 */
-	private synchronized void put(UnorderedPair<K> keyPair, V d)
+	private synchronized void putPairAndReSort(UnorderedPair<K> keyPair, V d)
 		{
 		//V oldValue = keyPairToValue.remove(keyPair);
 		//if (oldValue != null)
@@ -154,25 +129,48 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 		//valueToKeyPair.remove(oldValue, keyPair);
 		//	}
 
-
-		keyPairToValue.put(keyPair, d);
+		keyPairToValueSorted.put(keyPair, d);
 
 		// update the sort order
-		keyPairsInValueOrder.remove(keyPair);
-		keyPairsInValueOrder.add(keyPair);
+		//	keyPairsInValueOrder.remove(keyPair);
+		//	keyPairsInValueOrder.add(keyPair);
 
 		//valueToKeyPair.put(d, keyPair);
 		}
 
+	private synchronized void sanityCheck()
+		{
+		final int numKeys = numKeys();
+		//if (numKeys > 2)
+		//	{
+		final int numKeyPairs = keyPairToValueSorted.size();
+		//	assert numKeyPairs == keyPairToValueSorted.size();
+		assert numKeyPairs <= numKeys * (numKeys - 1) / 2;
+		//	}
+		}
+
+	public synchronized void matrixCompleteSanityCheck()
+		{
+		final int numKeys = numKeys();
+		//if (numKeys > 2)
+		//	{
+		final int numKeyPairs = keyPairToValueSorted.size();
+
+		//	assert numKeyPairs == keyPairToValueSorted.size();
+		assert numKeyPairs == numKeys * (numKeys - 1) / 2;
+		//	}
+		}
+
+
 	public synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
-		return keyPairsInValueOrder.first();//valueToKeyPair.get(getSmallestValue()).first();
+		return keyPairToValueSorted.firstKey();//valueToKeyPair.get(getSmallestValue()).first();
 		}
 
 	public synchronized V getSmallestValue()
 		{
-		return keyPairToValue
-				.get(getKeyPairWithSmallestValue());//valueToKeyPair.keySet().first();// distanceToPair is sorted
+		return keyPairToValueSorted.firstValue();
+		//	..get(getKeyPairWithSmallestValue());//valueToKeyPair.keySet().first();// distanceToPair is sorted
 		}
 
 	public synchronized K getKey1WithSmallestValue()
@@ -192,7 +190,7 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	private synchronized V get(UnorderedPair<K> keyPair)
 		{
-		return keyPairToValue.get(keyPair);
+		return keyPairToValueSorted.get(keyPair);
 		}
 
 	/**
@@ -202,13 +200,14 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 	 */
 	public synchronized int remove(K b)
 		{
+		sanityCheck();
 		int removed = 0;
 		final Collection<UnorderedPair<K>> obsoletePairs = keyToKeyPairs.get(b);
 		for (UnorderedPair<K> pair : obsoletePairs)
 			{
 			removed++;
-			keyPairsInValueOrder.remove(pair);
-			keyPairToValue.remove(pair);
+			//keyPairsInValueOrder.remove(pair);
+			keyPairToValueSorted.remove(pair);
 			K a = pair.getKey1();
 			if (a == b)
 				{
@@ -229,9 +228,10 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 			   {
 			   logger.error("Error", e);
 			   }*/
+			sanityCheck();
 			}
 		keyToKeyPairs.removeAll(b);
-
+		sanityCheck();
 		return removed;
 		}
 
@@ -242,27 +242,65 @@ public class Symmetric2dBiMap<K, V extends Comparable>
 
 	public synchronized int numKeys()
 		{
-		return keyToKeyPairs.keySet().size();
+		return keyToKeyPairs.numKeys();
 		}
 
 	public synchronized int numPairs()
 		{
-		return keyPairsInValueOrder.size();
+		return keyPairToValueSorted.size();
 		}
 
-	public synchronized Collection<V> values()
+/*	public synchronized Collection<V> values()
 		{
-		return keyPairToValue.values();
-		}
+		return keyPairToValueSorted.values();
+		}*/
 
 	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
 		{
+		sanityCheck();
 		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			UnorderedPair<K> pair = entry.getKey();
 			keyToKeyPairs.put(pair.getKey1(), pair);
 			keyToKeyPairs.put(pair.getKey2(), pair);
-			put(pair, entry.getValue());
+			putPairAndReSort(pair, entry.getValue());
+			}
+		sanityCheck();
+		}
+
+	private class SimpleMultiMap<X, Y>
+		{
+		Map<X, Set<Y>> contents = new HashMap<X, Set<Y>>();
+
+		public synchronized void put(final X key1, final Y val)
+			{
+			Set<Y> ys = contents.get(key1);
+			if (ys == null)
+				{
+				ys = new HashSet<Y>();
+				contents.put(key1, ys);
+				}
+			ys.add(val);
+			}
+
+		public synchronized void removeAll(final X b)
+			{
+			contents.remove(b);
+			}
+
+		public synchronized Set<X> keySet()
+			{
+			return contents.keySet();
+			}
+
+		public synchronized int numKeys()
+			{
+			return contents.size();
+			}
+
+		public synchronized Collection<Y> get(final X a)
+			{
+			return contents.get(a);
 			}
 		}
 	}

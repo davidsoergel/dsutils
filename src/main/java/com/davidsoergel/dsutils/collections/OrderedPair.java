@@ -96,10 +96,10 @@ public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
 
 	public static Comparator getRowMajorComparator()
 		{
-		return new RowMajorComparator();
+		return new ValuesPrimaryStringComparator();
 		}
 
-	public static class RowMajorComparator implements Comparator<OrderedPair>
+	public static class ValuesPrimaryStringComparator implements Comparator<OrderedPair>
 		{
 		public int compare(final OrderedPair o1, final OrderedPair o2)
 			{
@@ -107,6 +107,19 @@ public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
 			if (c == 0)
 				{
 				c = o1.key1.toString().compareTo(o2.key1.toString());
+				}
+			return c;
+			}
+		}
+
+	public static class ValuesPrimaryComparator implements Comparator<OrderedPair>
+		{
+		public int compare(final OrderedPair o1, final OrderedPair o2)
+			{
+			int c = ((Comparable) o1.key2).compareTo(o2.key2);
+			if (c == 0)
+				{
+				c = ((Comparable) o1.key1).compareTo(o2.key1);
 				}
 			return c;
 			}

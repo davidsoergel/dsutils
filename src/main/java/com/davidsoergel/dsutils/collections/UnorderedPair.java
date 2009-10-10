@@ -3,23 +3,38 @@ package com.davidsoergel.dsutils.collections;
 /**
  * Represent a pair of keys, guaranteeing that node1 <= node2 for the sake of symmetry
  */
-public class UnorderedPair<K> implements Comparable<UnorderedPair<K>>
+public class UnorderedPair<K extends Comparable<K>> implements Comparable<UnorderedPair<K>>
 	{
 	final private K key1;
 	final private K key2;
 
 	public UnorderedPair(K key1, K key2)
 		{
-		if (key1.hashCode() <= key2.hashCode())
+		final boolean swap = key1.compareTo(key2) > 0;
+		/*boolean swap = false;
+		final int k1h = key1.hashCode();
+		final int k2h = key2.hashCode();
+
+		if (k1h > k2h)
 			//if (node1.getValue().compareTo(node2.getValue()) <= 0)
 			{
-			this.key1 = key1;
-			this.key2 = key2;
+			swap = true;
 			}
-		else
+		else if (k1h == k2h && !key1.equals(key2))
+			{
+			swap = (key1.compareTo(key2) > 0);
+			}
+*/
+
+		if (swap)
 			{
 			this.key1 = key2;
 			this.key2 = key1;
+			}
+		else
+			{
+			this.key1 = key1;
+			this.key2 = key2;
 			}
 		}
 
