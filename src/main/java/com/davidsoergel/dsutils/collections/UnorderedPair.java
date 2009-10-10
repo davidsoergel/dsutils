@@ -1,7 +1,8 @@
 package com.davidsoergel.dsutils.collections;
 
 /**
- * Represent a pair of keys, guaranteeing that node1 <= node2 for the sake of symmetry
+ * Represent a pair of keys, guaranteeing that node1 <= node2 for the sake of symmetry.  Note the contained objects must
+ * be immutable for this to work right.
  */
 public class UnorderedPair<K extends Comparable<K>> implements Comparable<UnorderedPair<K>>
 	{
@@ -81,6 +82,16 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 		return key2;
 		}
 
+	public int compareTo(final UnorderedPair<K> o)
+		{
+		int c = key1.compareTo(o.key1);
+		if (c == 0)
+			{
+			c = key2.compareTo(o.key2);
+			}
+		return c;
+		}
+/*
 	public int compareTo(UnorderedPair<K> o)
 		{
 		int h1 = hashCode();
@@ -96,7 +107,7 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 			}
 		return 1;
 //		return key1.toString().compareTo(o.toString());
-		}
+		}*/
 
 	public String toString()
 		{

@@ -193,6 +193,14 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 		return keyPairToValueSorted.get(keyPair);
 		}
 
+	public synchronized void removeAll(final Collection<K> keys)
+		{
+		for (K key : keys)
+			{
+			remove(key);
+			}
+		}
+
 	/**
 	 * Remove all key pairs and values associated with the given key
 	 *
@@ -268,19 +276,14 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 		sanityCheck();
 		}
 
+
 	private class SimpleMultiMap<X, Y>
 		{
 		Map<X, Set<Y>> contents = new HashMap<X, Set<Y>>();
 
 		public synchronized void put(final X key1, final Y val)
 			{
-			Set<Y> ys = contents.get(key1);
-			if (ys == null)
-				{
-				ys = new HashSet<Y>();
-				contents.put(key1, ys);
-				}
-			ys.add(val);
+			get(key1).add(val);
 			}
 
 		public synchronized void removeAll(final X b)
@@ -300,7 +303,13 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 
 		public synchronized Collection<Y> get(final X a)
 			{
-			return contents.get(a);
+			Set<Y> ys = contents.get(a);
+			if (ys == null)
+				{
+				ys = new HashSet<Y>();
+				contents.put(a, ys);
+				}
+			return ys;
 			}
 		}
 	}

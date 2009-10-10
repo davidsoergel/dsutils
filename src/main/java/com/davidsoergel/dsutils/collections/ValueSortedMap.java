@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
@@ -39,9 +41,9 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 				}
 			});*/
 
-	Map<K, V> map = new HashMap<K, V>();
+	private final Map<K, V> map = new HashMap<K, V>();
 
-	private SortedSet<OrderedPair<K, V>> sortedPairs =
+	private final SortedSet<OrderedPair<K, V>> sortedPairs =
 			new TreeSet<OrderedPair<K, V>>(new OrderedPair.ValuesPrimaryComparator());
 	/*new Comparator<OrderedPair<K, V>>()
 			{
@@ -105,12 +107,21 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 		sanityCheck();
 		}
 
+	private static final Logger logger = Logger.getLogger(ValueSortedMap.class);
+
 	public synchronized void put(final K key, final V val)
 		{
 		remove(key);
 
+		//PERF debugging cruft
+		//V oldValue =
 		map.put(key, val);
+		//boolean addedPair =
 		sortedPairs.add(new OrderedPair<K, V>(key, val));
+		//if (!addedPair)
+		//	{
+		//	logger.warn(sortedPairs.contains(new OrderedPair<K, V>(key, val)));
+		//	}
 
 		sanityCheck();
 		}

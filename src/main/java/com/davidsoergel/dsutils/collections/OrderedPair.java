@@ -3,9 +3,10 @@ package com.davidsoergel.dsutils.collections;
 import java.util.Comparator;
 
 /**
- * Represent a pair of objects
+ * Represent a pair of objects.  Note the contained objects must be immutable for this to work right.
  */
-public class OrderedPair<A, B> implements Comparable<OrderedPair<A, B>>
+public class OrderedPair<A, B>
+		//	implements Comparable<OrderedPair<A, B>> //<A extends Comparable<A>, B extends Comparable<B>>
 	{
 	private A key1;  // final, but that screws with Serializable
 	private B key2;  // final, but that screws with Serializable

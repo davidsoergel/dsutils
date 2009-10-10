@@ -103,6 +103,8 @@ public interface HierarchyNode<T, I extends HierarchyNode<T, I>> extends Iterabl
 	 */
 	List<? extends HierarchyNode<T, I>> getAncestorPath();//? extends HierarchyNode<T, I>
 
+	List<? extends HierarchyNode<T, I>> getAncestorPath(boolean includeSelf);
+
 	List<T> getAncestorPathPayloads();
 
 	/**

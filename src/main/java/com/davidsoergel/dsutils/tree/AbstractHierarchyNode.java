@@ -175,8 +175,13 @@ public abstract class AbstractHierarchyNode<KV, H extends HierarchyNode<KV, H>> 
 
 	public List<HierarchyNode<KV, H>> getAncestorPath()
 		{
+		return getAncestorPath(true);
+		}
+
+	public List<HierarchyNode<KV, H>> getAncestorPath(boolean includeSelf)
+		{
 		List<HierarchyNode<KV, H>> result = new LinkedList<HierarchyNode<KV, H>>();
-		HierarchyNode<KV, H> trav = this;
+		HierarchyNode<KV, H> trav = includeSelf ? this : getParent();
 
 		while (trav != null)
 			{

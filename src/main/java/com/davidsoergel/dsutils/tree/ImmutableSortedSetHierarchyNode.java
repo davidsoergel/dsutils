@@ -194,8 +194,13 @@ public class ImmutableSortedSetHierarchyNode<T extends Comparable<T>>
 
 	public List<ImmutableSortedSetHierarchyNode<T>> getAncestorPath()
 		{
+		return getAncestorPath(true);
+		}
+
+	public List<ImmutableSortedSetHierarchyNode<T>> getAncestorPath(boolean includeSelf)
+		{
 		List<ImmutableSortedSetHierarchyNode<T>> result = new LinkedList<ImmutableSortedSetHierarchyNode<T>>();
-		ImmutableSortedSetHierarchyNode<T> trav = this;
+		ImmutableSortedSetHierarchyNode<T> trav = includeSelf ? this : getParent();
 
 		while (trav != null)
 			{
