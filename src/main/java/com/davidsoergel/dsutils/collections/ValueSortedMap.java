@@ -72,6 +72,11 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 		return sortedPairs.size();
 		}
 
+	public synchronized OrderedPair<K, V> firstPair()
+		{
+		return sortedPairs.first();
+		}
+
 	public synchronized K firstKey()
 		{
 		return sortedPairs.first().getKey1();
