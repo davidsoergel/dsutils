@@ -885,6 +885,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return sum / (double) counts.length;
 		}
 
+	public static double mean(int[] counts)
+		{
+		double sum = 0;
+		for (int i = 0; i < counts.length; i++)
+			{
+			sum += counts[i];
+			}
+		return sum / (double) counts.length;
+		}
+
 	/**
 	 * Since we will often have computed the mean already when calling this, we just pass it in instead of recomputing it
 	 *
@@ -903,6 +913,23 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return Math.sqrt(sumsq / (double) x.length);
 		}
 
+	/**
+	 * Since we will often have computed the mean already when calling this, we just pass it in instead of recomputing it
+	 *
+	 * @param x
+	 * @param mean
+	 * @return
+	 */
+	public static double stddev(int[] x, double mean)
+		{
+		double sumsq = 0;
+		for (int i = 0; i < x.length; i++)
+			{
+			double dev = x[i] - mean;
+			sumsq += dev * dev;
+			}
+		return Math.sqrt(sumsq / (double) x.length);
+		}
 
 	public static double mean(Collection<Double> counts)
 		{
