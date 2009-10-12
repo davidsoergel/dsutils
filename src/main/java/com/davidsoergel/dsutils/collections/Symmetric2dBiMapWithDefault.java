@@ -77,4 +77,16 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable,
 		{
 		return defaultValue;
 		}
+
+	int maxId = 0;
+
+	public void setMaxId(final int maxId)
+		{
+		this.maxId = maxId;
+		}
+
+	public int getMaxId()
+		{
+		return maxId;
+		}
 	}
