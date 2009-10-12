@@ -438,4 +438,27 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		return result.toArray(DSArrayUtils.EMPTY_STRING_ARRAY);
 		}
+
+	public static <T> Set<Set<T>> subsetsOfSize(final Set<T> entries, final int i)
+		{
+		Set<Set<T>> result = new HashSet<Set<T>>();
+		Iterator<T> it = entries.iterator();
+		while (it.hasNext())
+			{
+			Set<T> block = new HashSet<T>();
+			try
+				{
+				for (int j = 0; j < i; j++)
+					{
+					block.add(it.next());
+					}
+				}
+			catch (NoSuchElementException e)
+				{
+				// OK we're done
+				}
+			result.add(block);
+			}
+		return result;
+		}
 	}
