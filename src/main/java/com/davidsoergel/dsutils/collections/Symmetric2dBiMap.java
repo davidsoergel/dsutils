@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,7 +49,8 @@ import java.util.Set;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
+public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
+		implements Serializable
 	{
 // ------------------------------ FIELDS ------------------------------
 
@@ -141,6 +143,7 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 
 	public synchronized void put(K key1, K key2, V d)
 		{
+		assert !key1.equals(key2);
 		sanityCheck();
 		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
 		putPairAndReSort(pair, d);
@@ -222,14 +225,25 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 		return keyPairToValueSorted.values();
 		}*/
 
+	public synchronized void addKey(K key1)
+		{
+		keyToKeyPairs.get(key1);
+		}
+
 	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
 		{
 		sanityCheck();
 		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			UnorderedPair<K> pair = entry.getKey();
-			keyToKeyPairs.put(pair.getKey1(), pair);
-			keyToKeyPairs.put(pair.getKey2(), pair);
+
+			final K key1 = pair.getKey1();
+			final K key2 = pair.getKey2();
+
+			assert !key1.equals(key2);
+
+			keyToKeyPairs.put(key1, pair);
+			keyToKeyPairs.put(key2, pair);
 			putPairAndReSort(pair, entry.getValue());
 			}
 		sanityCheck();
@@ -252,7 +266,7 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 		{
 		sanityCheck();
 		int removed = 0;
-		final Collection<UnorderedPair<K>> obsoletePairs = keyToKeyPairs.get(b);
+		final Collection<UnorderedPair<K>> obsoletePairs = new HashSet<UnorderedPair<K>>(keyToKeyPairs.get(b));
 		for (UnorderedPair<K> pair : obsoletePairs)
 			{
 			removed++;
@@ -262,10 +276,12 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 			if (a == b)
 				{
 				a = pair.getKey2();
+				assert a != b;
 				}
 			keyToKeyPairs.get(a).remove(pair);
+			//	keyToKeyPairs.get(b).remove(pair);
 
-			// avoid ConcurrentModificationException by doung these all at once at the end
+			// avoid ConcurrentModificationException by doing these all at once at the end
 			//keyToKeyPairs.get(b).remove(pair);
 
 			/*			try
@@ -285,13 +301,18 @@ public class Symmetric2dBiMap<K extends Comparable<K>, V extends Comparable<V>>
 		return removed;
 		}
 
+	public Set<Map.Entry<UnorderedPair<K>, V>> entrySet()
+		{
+		return keyPairToValueSorted.entrySet();
+		}
+
 // -------------------------- INNER CLASSES --------------------------
 
-	protected class SimpleMultiMap<X, Y>
+	protected class SimpleMultiMap<X extends Serializable, Y extends Serializable> implements Serializable
 		{
 // ------------------------------ FIELDS ------------------------------
 
-		Map<X, Set<Y>> contents = new HashMap<X, Set<Y>>();
+		private Map<X, Set<Y>> contents = new HashMap<X, Set<Y>>();
 
 
 // -------------------------- OTHER METHODS --------------------------

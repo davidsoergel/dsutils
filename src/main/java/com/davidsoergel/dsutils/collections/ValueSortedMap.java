@@ -2,8 +2,10 @@ package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -12,8 +14,11 @@ import java.util.TreeSet;
  * @version $Id$
  */
 
-public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
+public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>> implements Serializable
 	{
+// ------------------------------ FIELDS ------------------------------
+
+	private static final Logger logger = Logger.getLogger(ValueSortedMap.class);
 	/*
 	private Map<UnorderedPair<K>, V> keyPairToValue = new HashMap<UnorderedPair<K>, V>();
 
@@ -45,6 +50,10 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 
 	private final SortedSet<OrderedPair<K, V>> sortedPairs =
 			new TreeSet<OrderedPair<K, V>>(new OrderedPair.ValuesPrimaryComparator());
+
+
+// -------------------------- OTHER METHODS --------------------------
+
 	/*new Comparator<OrderedPair<K, V>>()
 			{
 			public int compare(final OrderedPair<K, V> o1, final OrderedPair<K, V> o2)
@@ -67,19 +76,19 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 			});
 */
 
-	public synchronized int size()
+	public Set<Map.Entry<K, V>> entrySet()
 		{
-		return sortedPairs.size();
-		}
-
-	public synchronized OrderedPair<K, V> firstPair()
-		{
-		return sortedPairs.first();
+		return map.entrySet();
 		}
 
 	public synchronized K firstKey()
 		{
 		return sortedPairs.first().getKey1();
+		}
+
+	public synchronized OrderedPair<K, V> firstPair()
+		{
+		return sortedPairs.first();
 		}
 
 	public synchronized V firstValue()
@@ -90,6 +99,23 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 	public synchronized V get(final K key)
 		{
 		return map.get(key);
+		}
+
+	public synchronized void put(final K key, final V val)
+		{
+		remove(key);
+
+		//PERF debugging cruft
+		//V oldValue =
+		map.put(key, val);
+		//boolean addedPair =
+		sortedPairs.add(new OrderedPair<K, V>(key, val));
+		//if (!addedPair)
+		//	{
+		//	logger.warn(sortedPairs.contains(new OrderedPair<K, V>(key, val)));
+		//	}
+
+		sanityCheck();
 		}
 
 	public synchronized void remove(final K key)
@@ -112,27 +138,13 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>>
 		sanityCheck();
 		}
 
-	private static final Logger logger = Logger.getLogger(ValueSortedMap.class);
-
-	public synchronized void put(final K key, final V val)
-		{
-		remove(key);
-
-		//PERF debugging cruft
-		//V oldValue =
-		map.put(key, val);
-		//boolean addedPair =
-		sortedPairs.add(new OrderedPair<K, V>(key, val));
-		//if (!addedPair)
-		//	{
-		//	logger.warn(sortedPairs.contains(new OrderedPair<K, V>(key, val)));
-		//	}
-
-		sanityCheck();
-		}
-
 	private synchronized void sanityCheck()
 		{
 		assert map.size() == sortedPairs.size();
+		}
+
+	public synchronized int size()
+		{
+		return sortedPairs.size();
 		}
 	}

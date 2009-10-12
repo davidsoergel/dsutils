@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class LabellableImpl<T> implements Labellable<T>
+public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	{
 	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
 

@@ -1,12 +1,13 @@
 package com.davidsoergel.dsutils.collections;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class Symmetric2dBiMapWithDefault<K extends Comparable<K>, V extends Comparable<V>>
+public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
 		extends Symmetric2dBiMap<K, V>
 	{
 	private final V defaultValue;
@@ -33,8 +34,8 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K>, V extends Comp
 		if (d.equals(defaultValue))
 			{
 			//ensure that the mapping exists even if it's empty
-			keyToKeyPairs.get(key1);
-			keyToKeyPairs.get(key2);
+			addKey(key1);
+			addKey(key2);
 			}
 		else
 			{
@@ -42,9 +43,8 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K>, V extends Comp
 			}
 		}
 
+
 	@Override
-
-
 	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
 		{
 		sanityCheck();
@@ -55,11 +55,13 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K>, V extends Comp
 			final K key1 = pair.getKey1();
 			final K key2 = pair.getKey2();
 
+			assert !key1.equals(key2);
+
 			if (value.equals(defaultValue))
 				{
 				//ensure that the mapping exists even if it's empty
-				keyToKeyPairs.get(key1);
-				keyToKeyPairs.get(key2);
+				addKey(key1);
+				addKey(key2);
 				}
 			else
 				{
@@ -69,5 +71,10 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K>, V extends Comp
 				}
 			}
 		sanityCheck();
+		}
+
+	public V getDefaultValue()
+		{
+		return defaultValue;
 		}
 	}

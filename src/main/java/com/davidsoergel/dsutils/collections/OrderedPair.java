@@ -1,11 +1,12 @@
 package com.davidsoergel.dsutils.collections;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Represent a pair of objects.  Note the contained objects must be immutable for this to work right.
  */
-public class OrderedPair<A, B>
+public class OrderedPair<A, B> implements Serializable
 		//	implements Comparable<OrderedPair<A, B>> //<A extends Comparable<A>, B extends Comparable<B>>
 	{
 	private A key1;  // final, but that screws with Serializable
@@ -113,7 +114,7 @@ public class OrderedPair<A, B>
 			}
 		}
 
-	public static class ValuesPrimaryComparator implements Comparator<OrderedPair>
+	public static class ValuesPrimaryComparator implements Comparator<OrderedPair>, Serializable
 		{
 		public int compare(final OrderedPair o1, final OrderedPair o2)
 			{
