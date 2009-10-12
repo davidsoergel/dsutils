@@ -188,6 +188,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 			}
 		}
 
+
 	/**
 	 * Returns a random double in the half-open range from [0.0,1.0).  Thus 0.0 is a valid result but 1.0 is not.
 	 */
@@ -521,9 +522,9 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	// --------------------------- CONSTRUCTORS ---------------------------
 
 	/**
-	 * Constructor using the default seed.
+	 * Constructor using the default seed.  Users should use static methods for thread safety.
 	 */
-	public MersenneTwisterFast()
+	private MersenneTwisterFast()
 		{
 		this(System.currentTimeMillis());
 		}
@@ -763,12 +764,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 		// CORRECTNESS TEST
 		// COMPARE WITH http://www.math.keio.ac.jp/matumoto/CODES/MT2002/mt19937ar.out
 
-		r = new MersenneTwisterFast(new int[]{
-				0x123,
-				0x234,
-				0x345,
-				0x456
-		});
+		r = new MersenneTwisterFast(new int[]{0x123, 0x234, 0x345, 0x456});
 		System.out.println("Output of MersenneTwisterFast with new (2002/1/26) seeding mechanism");
 		for (j = 0; j < 1000; j++)
 			{
