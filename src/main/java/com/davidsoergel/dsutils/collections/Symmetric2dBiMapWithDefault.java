@@ -29,7 +29,7 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable,
 		}
 
 	@Override
-	public void put(final K key1, final K key2, final V d)
+	public synchronized void put(final K key1, final K key2, final V d)
 		{
 		if (d.equals(defaultValue))
 			{
