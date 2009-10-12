@@ -416,34 +416,38 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 				ftask = taskGroup.nextIfPermitAvailable();
 				}
 
-			// got one
-
-			// it should be impossible for the taskGroup to become exhausted since no one else should be draining it
-			assert ftask != null;
-
-			boolean done = false;
-			int rejectionCount = 0;
-			while (!done)
+			if (ftask != null)
 				{
-				try
+				// got one
+
+				// it should be impossible for the taskGroup to become exhausted since no one else should be draining it
+				// not true, maybe the local execution loop above finished the queue
+				//assert ftask != null;
+
+				boolean done = false;
+				int rejectionCount = 0;
+				while (!done)
 					{
-					underlyingExecutor.execute(ftask);
-					done = true;
-					}
-				catch (RejectedExecutionException e)
-					{
-					if (rejectionCount >= 10)
-						{
-						throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
-						}
-					rejectionCount++;
 					try
 						{
-						Thread.sleep(10);
+						underlyingExecutor.execute(ftask);
+						done = true;
 						}
-					catch (InterruptedException e1)
+					catch (RejectedExecutionException e)
 						{
-						logger.error("Error", e1);
+						if (rejectionCount >= 10)
+							{
+							throw new RuntimeExecutionException(e, "Task vas rejected 10 times in a row!");
+							}
+						rejectionCount++;
+						try
+							{
+							Thread.sleep(10);
+							}
+						catch (InterruptedException e1)
+							{
+							logger.error("Error", e1);
+							}
 						}
 					}
 				}
