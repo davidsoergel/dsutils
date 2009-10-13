@@ -50,7 +50,7 @@ import java.util.Set;
  * @version $Id$
  */
 public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
-		implements Serializable
+		//	implements Serializable
 	{
 // ------------------------------ FIELDS ------------------------------
 
@@ -73,7 +73,7 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 	// simulate that using a regular map and a separate sorted set for the keysu
 	// note that the key/value pair must be inserted into the regular map first, before the key is added to the sorted set
 
-	private ValueSortedMap<UnorderedPair<K>, V> keyPairToValueSorted = new ValueSortedMap<UnorderedPair<K>, V>();
+	protected ValueSortedMap<UnorderedPair<K>, V> keyPairToValueSorted = new ValueSortedMap<UnorderedPair<K>, V>();
 
 
 // -------------------------- OTHER METHODS --------------------------

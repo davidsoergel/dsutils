@@ -51,7 +51,10 @@ public class ValueSortedMap<K extends Comparable<K>, V extends Comparable<V>> im
 	private final SortedSet<OrderedPair<K, V>> sortedPairs =
 			new TreeSet<OrderedPair<K, V>>(new OrderedPair.ValuesPrimaryComparator());
 
-
+	public SortedSet<OrderedPair<K, V>> getSortedPairs()
+		{
+		return sortedPairs;
+		}
 // -------------------------- OTHER METHODS --------------------------
 
 	/*new Comparator<OrderedPair<K, V>>()

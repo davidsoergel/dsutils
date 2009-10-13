@@ -10,12 +10,14 @@ import java.util.Map;
 public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
 		extends Symmetric2dBiMap<K, V>
 	{
-	private final V defaultValue;
+
+	protected V defaultValue;  // should be final but custom deserialization doesn't allow it
 
 	public Symmetric2dBiMapWithDefault(final V defaultValue)
 		{
 		this.defaultValue = defaultValue;
 		}
+
 
 	@Override
 	public V get(final K key1, final K key2)
