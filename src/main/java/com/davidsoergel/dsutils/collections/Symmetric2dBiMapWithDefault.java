@@ -13,6 +13,10 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable,
 
 	protected V defaultValue;  // should be final but custom deserialization doesn't allow it
 
+	public Symmetric2dBiMapWithDefault()
+		{
+		}
+
 	public Symmetric2dBiMapWithDefault(final V defaultValue)
 		{
 		this.defaultValue = defaultValue;

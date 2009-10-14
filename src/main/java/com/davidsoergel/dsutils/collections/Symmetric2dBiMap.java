@@ -273,10 +273,10 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 			//keyPairsInValueOrder.remove(pair);
 			keyPairToValueSorted.remove(pair);
 			K a = pair.getKey1();
-			if (a == b)
+			if (a.equals(b))
 				{
 				a = pair.getKey2();
-				assert a != b;
+				assert !a.equals(b);
 				}
 			keyToKeyPairs.get(a).remove(pair);
 			//	keyToKeyPairs.get(b).remove(pair);
@@ -297,6 +297,15 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 			sanityCheck();
 			}
 		keyToKeyPairs.removeAll(b);
+
+		assert !getActiveKeys().contains(b);
+		for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
+			{
+			assert getActiveKeys().contains(entry.getKey().getKey1());
+			assert getActiveKeys().contains(entry.getKey().getKey2());
+			}
+
+
 		sanityCheck();
 		return removed;
 		}
