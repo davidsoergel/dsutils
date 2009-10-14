@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class PluginValue implements Serializable
+public class PluginValue implements Serializable, Comparable
 	{
 	final String value;
 
@@ -54,5 +54,10 @@ public class PluginValue implements Serializable
 	public int hashCode()
 		{
 		return value != null ? value.hashCode() : 0;
+		}
+
+	public int compareTo(final Object o)
+		{
+		return toString().compareTo(o.toString());
 		}
 	}
