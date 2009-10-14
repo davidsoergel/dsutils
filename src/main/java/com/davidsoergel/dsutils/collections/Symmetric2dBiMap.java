@@ -299,11 +299,11 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 		keyToKeyPairs.removeAll(b);
 
 		assert !getActiveKeys().contains(b);
-		for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
+		/*for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
 			{
 			assert getActiveKeys().contains(entry.getKey().getKey1());
 			assert getActiveKeys().contains(entry.getKey().getKey2());
-			}
+			}*/
 
 
 		sanityCheck();
