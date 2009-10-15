@@ -438,6 +438,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	public static Double max(Double[] x)
+		{
+		double result = Double.NEGATIVE_INFINITY;
+		for (int col = 0; col < x.length; col++)
+			{
+			result = Math.max(result, x[col]);
+			}
+		return result;
+		}
+
 	public static int argmax(double[] x)
 		{
 		int posmax = 0;
