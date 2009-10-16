@@ -78,7 +78,7 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 
 // -------------------------- OTHER METHODS --------------------------
 
-	private synchronized V get(UnorderedPair<K> keyPair)
+	protected synchronized V get(UnorderedPair<K> keyPair)
 		{
 		return keyPairToValueSorted.get(keyPair);
 		}
@@ -146,10 +146,23 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 		assert !key1.equals(key2);
 		sanityCheck();
 		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
-		putPairAndReSort(pair, d);
+		keyPairToValueSorted.put(pair, d);
 		keyToKeyPairs.put(key1, pair);
 		keyToKeyPairs.put(key2, pair);
 		sanityCheck();
+		}
+
+	/**
+	 * Does not populate keyToKeyPairs!!
+	 *
+	 * @param keyPair
+	 * @param d
+	 */
+	protected synchronized void put(UnorderedPair<K> keyPair, V d)
+		{
+		keyPairToValueSorted.put(keyPair, d);
+		keyToKeyPairs.put(keyPair.getKey1(), keyPair);
+		keyToKeyPairs.put(keyPair.getKey1(), keyPair);
 		}
 
 /*	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
@@ -178,31 +191,6 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 		}
 */
 
-	/**
-	 * Does not populate keyToKeyPairs!!
-	 *
-	 * @param keyPair
-	 * @param d
-	 */
-	protected synchronized void putPairAndReSort(UnorderedPair<K> keyPair, V d)
-		{
-		//V oldValue = keyPairToValue.remove(keyPair);
-		//if (oldValue != null)
-		//	{
-
-
-		//	keyPairToValue.remove(keyPair);
-		//valueToKeyPair.remove(oldValue, keyPair);
-		//	}
-
-		keyPairToValueSorted.put(keyPair, d);
-
-		// update the sort order
-		//	keyPairsInValueOrder.remove(keyPair);
-		//	keyPairsInValueOrder.add(keyPair);
-
-		//valueToKeyPair.put(d, keyPair);
-		}
 
 	protected synchronized void sanityCheck()
 		{
@@ -244,7 +232,7 @@ public class Symmetric2dBiMap<K extends Comparable<K> & Serializable, V extends 
 
 			keyToKeyPairs.put(key1, pair);
 			keyToKeyPairs.put(key2, pair);
-			putPairAndReSort(pair, entry.getValue());
+			keyPairToValueSorted.put(pair, entry.getValue());
 			}
 		sanityCheck();
 		}

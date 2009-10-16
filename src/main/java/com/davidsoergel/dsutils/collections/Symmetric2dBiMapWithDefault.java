@@ -73,7 +73,7 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable,
 				{
 				keyToKeyPairs.put(key1, pair);
 				keyToKeyPairs.put(key2, pair);
-				putPairAndReSort(pair, value);
+				keyPairToValueSorted.put(pair, value);
 				}
 			}
 		sanityCheck();
