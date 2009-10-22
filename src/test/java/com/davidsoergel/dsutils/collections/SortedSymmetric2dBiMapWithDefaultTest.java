@@ -7,14 +7,14 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class Symmetric2dBiMapWithDefaultTest
+public class SortedSymmetric2dBiMapWithDefaultTest
 	{
-	Symmetric2dBiMapWithDefault<String, Double> map;
+	SortedSymmetric2dBiMapWithDefault<String, Double> map;
 
 	@BeforeMethod
 	public void setUp() throws Exception
 		{
-		map = new Symmetric2dBiMapWithDefault<String, Double>(Double.MAX_VALUE);
+		map = new SortedSymmetric2dBiMapWithDefault<String, Double>(Double.MAX_VALUE);
 		map.put("a", "b", 1.);
 		map.put("a", "c", 2.);
 		map.put("a", "d", 3.);

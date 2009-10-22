@@ -46,7 +46,7 @@ public class Symmetric2dBiMapTest
 	@BeforeMethod
 	public void setUp() throws Exception
 		{
-		map = new Symmetric2dBiMap<String, Double>();
+		map = new SortedSymmetric2dBiMapImpl<String, Double>();
 		map.put("a", "b", 1.);
 		map.put("a", "c", 2.);
 		map.put("a", "d", 3.);

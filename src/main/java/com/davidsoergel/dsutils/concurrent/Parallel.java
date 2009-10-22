@@ -52,6 +52,12 @@ public class Parallel
 				});
 		}
 
+	public static <T> void forEachThread(final Function<Integer, Void> function)
+		{
+		int threads = DepthFirstThreadPoolExecutor.getInstance().getPoolSize();
+		forEach(threads, function);
+		}
+
 	public static void emergencyAbort() //OutOfMemoryError e)
 		{
 		DepthFirstThreadPoolExecutor.getInstance().shutdownNow();

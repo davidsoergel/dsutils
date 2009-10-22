@@ -7,19 +7,25 @@ import java.util.Map;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
-		extends Symmetric2dBiMap<K, V>
+public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable, V extends Comparable<V> & Serializable>
+		extends SortedSymmetric2dBiMapImpl<K, V>
 	{
 
 	protected V defaultValue;  // should be final but custom deserialization doesn't allow it
 
-	public Symmetric2dBiMapWithDefault()
+	public SortedSymmetric2dBiMapWithDefault()
 		{
 		}
 
-	public Symmetric2dBiMapWithDefault(final V defaultValue)
+	public SortedSymmetric2dBiMapWithDefault(final V defaultValue)
 		{
 		this.defaultValue = defaultValue;
+		}
+
+	public SortedSymmetric2dBiMapWithDefault(SortedSymmetric2dBiMapWithDefault<K, V> cloneFrom)
+		{
+		super(cloneFrom);
+		this.defaultValue = cloneFrom.defaultValue;
 		}
 
 
@@ -94,5 +100,10 @@ public class Symmetric2dBiMapWithDefault<K extends Comparable<K> & Serializable,
 	public int getMaxId()
 		{
 		return maxId;
+		}
+
+	public void setDefaultValue(final V defaultValue)
+		{
+		this.defaultValue = defaultValue;
 		}
 	}

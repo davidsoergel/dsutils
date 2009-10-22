@@ -43,6 +43,11 @@ public class DepthFirstThreadPoolExecutor implements TreeExecutorService
 			}
 		}
 
+	public int getPoolSize()
+		{
+		return underlyingExecutor.getPoolSize();
+		}
+
 	// we can't bound this one because a newly added task may turn out to have the highest priority
 //	private PriorityQueue<ComparableFutureTask> priorityQueue = new PriorityQueue<ComparableFutureTask>();
 
