@@ -178,7 +178,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		{
 		keyPairToValueSorted.put(keyPair, d);
 		keyToKeyPairs.put(keyPair.getKey1(), keyPair);
-		keyToKeyPairs.put(keyPair.getKey1(), keyPair);
+		keyToKeyPairs.put(keyPair.getKey2(), keyPair);
 		}
 
 /*	private UnorderedPair getOrCreateKeyPair(K key1, K key2)
@@ -276,12 +276,16 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			removed++;
 			//keyPairsInValueOrder.remove(pair);
 			keyPairToValueSorted.remove(pair);
+
+			// the pair may be in either order; we'll be removing b wholesale later, so
+			// now make sure that a is the element of the pair that is not b
 			K a = pair.getKey1();
 			if (a.equals(b))
 				{
 				a = pair.getKey2();
 				assert !a.equals(b);
 				}
+
 			keyToKeyPairs.get(a).remove(pair);
 			//	keyToKeyPairs.get(b).remove(pair);
 
@@ -316,8 +320,14 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		assert !getKeys().contains(b);
 		for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
 			{
-			assert keys.contains(entry.getKey().getKey1());
-			assert keys.contains(entry.getKey().getKey2());
+			final K k1 = entry.getKey().getKey1();
+			final K k2 = entry.getKey().getKey2();
+
+			assert !k1.equals(b);
+			assert !k2.equals(b);
+
+			assert keys.contains(k1);
+			assert keys.contains(k2);
 			}
 		}
 

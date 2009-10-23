@@ -98,10 +98,14 @@ public class SortedSymmetric2dBiMapWithDefaultTest
 		assert map.numKeys() == 3;
 		assert map.numPairs() == 3;
 
+		map.removalSanityCheck("b", map.getKeys());
+
 		map.remove("a");
 		assert map.get("a", "c").equals(Double.MAX_VALUE);
 		assert map.numKeys() == 2;
 		assert map.numPairs() == 1;
+
+		map.removalSanityCheck("a", map.getKeys());
 
 		assert map.get("c", "d").equals(6.);
 		}

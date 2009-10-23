@@ -224,8 +224,13 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		if (i != null)
 			{
 			int removed = underlyingIntMap.remove(i);
-			keys.remove(b);
-			underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
+
+			// underlyingIntMap.removalSanityCheck(i, underlyingIntMap.getKeys());
+
+			boolean keyRemoved = keys.remove(b);
+			assert keyRemoved;
+
+			// underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
 			return removed;
 			}
 		assert keys.indexOf(b) == null;
