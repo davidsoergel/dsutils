@@ -155,8 +155,11 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		//V val = map.get(key);
 		//if (val != null)
 		//	{
-		map.remove(key);
-		sortedPairs.remove(new OrderedPair<K, V>(key, val));
+		V removed = map.remove(key);
+		assert removed != null;
+
+		boolean sortedRemoved = sortedPairs.remove(new OrderedPair<K, V>(key, val));
+		assert sortedRemoved;
 		//	}
 		//	sanityCheck();
 		}
