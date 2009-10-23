@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -170,9 +171,14 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		return sortedPairs.size();
 		}
 
-	public ConcurrentSkipListSet<Map.Entry<K, V>> entriesCopy()
+	public ConcurrentLinkedQueue<Map.Entry<K, V>> entriesQueue()
 		{
-		return new ConcurrentSkipListSet<Map.Entry<K, V>>(entrySet());
+		//ConcurrentHashMap<K,V> result = new ConcurrentHashMap<K, V>();
+		//result.putAll(map);
+		ConcurrentLinkedQueue<Map.Entry<K, V>> result = new ConcurrentLinkedQueue<Map.Entry<K, V>>();
+		result.addAll(map.entrySet());
+		return result;
+//		ConcurrentSkipListSet<Map.Entry<K, V>>(entrySet());
 		}
 
 /*	public Set<Iterator<Map.Entry<K, V>>> entryBlockIterators(final int i)

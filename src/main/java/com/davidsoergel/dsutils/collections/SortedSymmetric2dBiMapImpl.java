@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -118,7 +119,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return getKeyPairWithSmallestValue().getKey2();
 		}
 
-	public OrderedPair<UnorderedPair<K>, V> getKeyPairAndSmallestValue()
+	public synchronized OrderedPair<UnorderedPair<K>, V> getKeyPairAndSmallestValue()
 		{
 		return keyPairToValueSorted.firstPair();//valueToKeyPair.get(getSmallestValue()).first();
 		}
@@ -267,7 +268,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 	 */
 	public synchronized int remove(K b)
 		{
-		sanityCheck();
+		//sanityCheck();
 		int removed = 0;
 		final Collection<UnorderedPair<K>> obsoletePairs = new HashSet<UnorderedPair<K>>(keyToKeyPairs.get(b));
 		for (UnorderedPair<K> pair : obsoletePairs)
@@ -297,17 +298,9 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			   {
 			   logger.error("Error", e);
 			   }*/
-			sanityCheck();
+			// sanityCheck();
 			}
 		keyToKeyPairs.removeAll(b);
-
-		assert !getKeys().contains(b);
-		/*for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
-			{
-			assert getActiveKeys().contains(entry.getKey().getKey1());
-			assert getActiveKeys().contains(entry.getKey().getKey2());
-			}*/
-
 
 		sanityCheck();
 		return removed;
@@ -318,10 +311,20 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyPairToValueSorted.entrySet();
 		}
 
-
-	public ConcurrentSkipListSet<Map.Entry<UnorderedPair<K>, V>> entriesCopy()
+	public void removalSanityCheck(final K b, final Collection<K> keys)
 		{
-		return keyPairToValueSorted.entriesCopy();
+		assert !getKeys().contains(b);
+		for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
+			{
+			assert keys.contains(entry.getKey().getKey1());
+			assert keys.contains(entry.getKey().getKey2());
+			}
+		}
+
+
+	public ConcurrentLinkedQueue<Map.Entry<UnorderedPair<K>, V>> entriesQueue()
+		{
+		return keyPairToValueSorted.entriesQueue();
 		}
 
 // -------------------------- INNER CLASSES --------------------------
@@ -354,7 +357,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			Set<Y> ys = contents.get(a);
 			if (ys == null)
 				{
-				ys = new HashSet<Y>();
+				ys = new ConcurrentSkipListSet<Y>();
 				contents.put(a, ys);
 				}
 			return ys;

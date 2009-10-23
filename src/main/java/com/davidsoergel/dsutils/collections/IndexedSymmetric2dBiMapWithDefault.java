@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A data structure that maps pairs of keys to values, and is queryable in both directions (i.e., also in the
@@ -88,7 +88,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 
 	public IndexedSymmetric2dBiMapWithDefault(final V defaultValue, final Collection<K> keys)
 		{
-		setDefaultValue(defaultValue);
+		underlyingIntMap = new SortedSymmetric2dBiMapWithDefault<Integer, V>(defaultValue);
 		this.keys = new InsertionTrackingSet<K>(keys);
 		}
 
@@ -113,15 +113,16 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return keys.get(underlyingIntMap.getKey2WithSmallestValue());
 		}
 
-	public OrderedPair<UnorderedPair<K>, V> getKeyPairAndSmallestValue()
+	public synchronized OrderedPair<UnorderedPair<K>, V> getKeyPairAndSmallestValue()
 		{
 		final OrderedPair<UnorderedPair<Integer>, V> op = underlyingIntMap.getKeyPairAndSmallestValue();
 		final UnorderedPair<Integer> p = op.getKey1();
-		return new OrderedPair<UnorderedPair<K>, V>(new UnorderedPair<K>(keys.get(p.getKey1()), keys.get(p.getKey2())),
-		                                            op.getKey2());
+		final K id1 = keys.get(p.getKey1());
+		final K id2 = keys.get(p.getKey2());
+		return new OrderedPair<UnorderedPair<K>, V>(new UnorderedPair<K>(id1, id2), op.getKey2());
 		}
 
-	public UnorderedPair<K> getKeyPairWithSmallestValue()
+	public synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
 		final UnorderedPair<Integer> p = underlyingIntMap.getKeyPairWithSmallestValue();
 		return new UnorderedPair<K>(keys.get(p.getKey1()), keys.get(p.getKey2()));
@@ -217,15 +218,17 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 			}
 		}
 
-	public int remove(final K b)
+	public synchronized int remove(final K b)
 		{
 		Integer i = keys.indexOf(b);
 		if (i != null)
 			{
 			int removed = underlyingIntMap.remove(i);
 			keys.remove(b);
+			underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
 			return removed;
 			}
+		assert keys.indexOf(b) == null;
 		return 0;
 		}
 
@@ -245,9 +248,9 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		}
 
 
-	public ConcurrentSkipListSet<Map.Entry<UnorderedPair<Integer>, V>> integerEntriesCopy()
+	public ConcurrentLinkedQueue<Map.Entry<UnorderedPair<Integer>, V>> integerEntriesQueue()
 		{
-		return underlyingIntMap.entriesCopy();
+		return underlyingIntMap.entriesQueue();
 		}
 
 	public void sanityCheck()

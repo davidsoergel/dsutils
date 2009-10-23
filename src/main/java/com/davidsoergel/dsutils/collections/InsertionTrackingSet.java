@@ -18,7 +18,7 @@ import java.util.Iterator;
 public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializable
 		//ArrayList<T>
 	{
-	BiMap<T, Integer> contents = HashBiMap.create();
+	private BiMap<T, Integer> contents = HashBiMap.create();
 	private int nextIndex = 0;
 
 
@@ -31,7 +31,7 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		addAll(c);
 		}
 
-	public T get(final Integer index)
+	public synchronized T get(final Integer index)
 		{
 		return contents.inverse().get(index);
 		}
@@ -41,18 +41,18 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 	 *
 	 * @return
 	 */
-	public Iterator<T> iterator()
+	public synchronized Iterator<T> iterator()
 		{
 		return contents.keySet().iterator();
 		}
 
-	public int size()
+	public synchronized int size()
 		{
 		return contents.size();
 		}
 
 	@Override
-	public boolean add(final T t)
+	public synchronized boolean add(final T t)
 		{
 		try
 			{
@@ -68,7 +68,7 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		}
 
 
-	public void put(final T t, final Integer index)
+	public synchronized void put(final T t, final Integer index)
 		{
 		if (contents.containsKey(t) || contents.containsValue(index))
 			{
@@ -79,17 +79,17 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		}
 
 	@Override
-	public boolean remove(final Object o)
+	public synchronized boolean remove(final Object o)
 		{
 		return contents.remove(o) != null;
 		}
 
-	public Integer indexOf(final T key1)
+	public synchronized Integer indexOf(final T key1)
 		{
 		return contents.get(key1);
 		}
 
-	public Integer indexOfWithAdd(final T key1)
+	public synchronized Integer indexOfWithAdd(final T key1)
 		{
 		Integer result = indexOf(key1);
 		if (result == null)
@@ -100,8 +100,13 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		return result;
 		}
 
-	public int getNextId()
+	public synchronized int getNextId()
 		{
 		return nextIndex;
+		}
+
+	public Collection<Integer> getIndexes()
+		{
+		return contents.values();
 		}
 	}
