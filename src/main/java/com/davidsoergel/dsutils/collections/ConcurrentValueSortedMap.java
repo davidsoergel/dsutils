@@ -174,6 +174,11 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		return sortedPairs.size();
 		}
 
+	public boolean isEmpty()
+		{
+		return sortedPairs.isEmpty();
+		}
+
 	public ConcurrentLinkedQueue<Map.Entry<K, V>> entriesQueue()
 		{
 		//ConcurrentHashMap<K,V> result = new ConcurrentHashMap<K, V>();

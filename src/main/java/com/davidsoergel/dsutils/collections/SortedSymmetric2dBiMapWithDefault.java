@@ -59,7 +59,7 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 	@Override
 	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
 		{
-		sanityCheck();
+		// sanityCheck();
 		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			final V value = entry.getValue();
@@ -82,7 +82,7 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 				keyPairToValueSorted.put(pair, value);
 				}
 			}
-		sanityCheck();
+		// 	sanityCheck();
 		}
 
 	public V getDefaultValue()

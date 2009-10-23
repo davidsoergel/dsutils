@@ -148,6 +148,11 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return underlyingIntMap.numPairs();
 		}
 
+	public boolean isEmpty()
+		{
+		return underlyingIntMap.isEmpty();
+		}
+
 	public V get(final UnorderedPair<K> keypair)
 		{
 		return underlyingIntMap.get(keys.indexOf(keypair.getKey1()), keys.indexOf(keypair.getKey2()));

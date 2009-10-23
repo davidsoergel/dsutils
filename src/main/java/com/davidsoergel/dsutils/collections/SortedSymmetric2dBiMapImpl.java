@@ -153,6 +153,11 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyPairToValueSorted.size();
 		}
 
+	public boolean isEmpty()
+		{
+		return keyPairToValueSorted.isEmpty();
+		}
+
 	/*SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double> theDistanceMatrix =
 							new SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double>();*/
 
@@ -236,7 +241,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 
 	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
 		{
-		sanityCheck();
+		// sanityCheck();
 		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			UnorderedPair<K> pair = entry.getKey();
@@ -250,7 +255,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			keyToKeyPairs.put(key2, pair);
 			keyPairToValueSorted.put(pair, entry.getValue());
 			}
-		sanityCheck();
+		// sanityCheck();
 		}
 
 	public synchronized void removeAll(final Collection<K> keys)
@@ -306,7 +311,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			}
 		keyToKeyPairs.removeAll(b);
 
-		sanityCheck();
+		// sanityCheck();
 		return removed;
 		}
 
