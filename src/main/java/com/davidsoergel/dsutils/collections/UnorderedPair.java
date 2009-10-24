@@ -39,6 +39,8 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 			this.key1 = key1;
 			this.key2 = key2;
 			}
+
+		hashCode = makeHashCode();
 		}
 
 	public boolean equals(Object o)
@@ -66,7 +68,14 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 		return true;
 		}
 
+	final int hashCode;
+
 	public int hashCode()
+		{
+		return hashCode;
+		}
+
+	private int makeHashCode()
 		{
 		int result;
 		result = (key1 != null ? key1.hashCode() : 0);
