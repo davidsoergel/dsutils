@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -47,10 +46,9 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 				}
 			});*/
 
-	private final Map<K, V> map = new ConcurrentHashMap<K, V>();
+	private final ConcurrentHashMap<K, V> map;
 
-	private final SortedSet<OrderedPair<K, V>> sortedPairs =
-			new ConcurrentSkipListSet<OrderedPair<K, V>>(new OrderedPair.ValuesPrimaryComparator());
+	private final ConcurrentSkipListSet<OrderedPair<K, V>> sortedPairs;
 
 	/**
 	 * The keys and values themselves are not cloned
@@ -59,19 +57,28 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 	 */
 	public ConcurrentValueSortedMap(final ConcurrentValueSortedMap<K, V> cloneFrom)
 		{
-		map.putAll(cloneFrom.map);
+		//map.putAll(cloneFrom.map);
+		map = new ConcurrentHashMap<K, V>(cloneFrom.getMap());
 
 		// PERF does this spend a lot of time re-sorting an already sorted set?
-		sortedPairs.addAll(cloneFrom.sortedPairs);
+		//	sortedPairs.addAll(cloneFrom.sortedPairs);
+		sortedPairs = cloneFrom.getSortedPairs().clone();
 		}
 
 	public ConcurrentValueSortedMap()
 		{
+		sortedPairs = new ConcurrentSkipListSet<OrderedPair<K, V>>(new OrderedPair.ValuesPrimaryComparator());
+		map = new ConcurrentHashMap<K, V>();
 		}
 
-	public SortedSet<OrderedPair<K, V>> getSortedPairs()
+	public ConcurrentSkipListSet<OrderedPair<K, V>> getSortedPairs()
 		{
 		return sortedPairs;
+		}
+
+	public ConcurrentHashMap<K, V> getMap()
+		{
+		return map;
 		}
 // -------------------------- OTHER METHODS --------------------------
 
