@@ -124,6 +124,22 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		return sortedPairs.first().getKey2();
 		}
 
+	public K lastKey()
+		{
+		return sortedPairs.last().getKey1();
+		}
+
+	public OrderedPair<K, V> lastPair()
+		{
+		return sortedPairs.last();
+		}
+
+	public V lastValue()
+		{
+		return sortedPairs.last().getKey2();
+		}
+
+
 	public V get(final K key)
 		{
 		return map.get(key);
