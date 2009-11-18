@@ -49,9 +49,9 @@
     </packages>
 
     <classes>
-      <class name="com.davidsoergel.dsutils.tree.ListHierarchyNodeTest"/>
-      <class name="com.davidsoergel.dsutils.tree.SetHierarchyNodeTest"/>
-      <class name="com.davidsoergel.dsutils.tree.ImmutableSortedSetHierarchyNodeTest"/>
+      <class name="com.davidsoergel.trees.tree.ListHierarchyNodeTest"/>
+      <class name="com.davidsoergel.trees.tree.SetHierarchyNodeTest"/>
+      <class name="com.davidsoergel.trees.tree.ImmutableSortedSetHierarchyNodeTest"/>
     </classes>
   </test>
 
