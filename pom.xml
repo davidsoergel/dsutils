@@ -31,13 +31,14 @@
   ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.davidsoergel</groupId>
   <artifactId>dsutils</artifactId>
 
   <name>dsutils</name>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <url>http://dev.davidsoergel.com/dsutils</url>
   <description>Some generic utility classes.</description>
 
@@ -58,7 +59,8 @@
 
   <scm>
     <connection>scm:svn:http://svn.davidsoergel.com/repos/dsutils/tags/dsutils-1.0</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils/tags/dsutils-1.0</developerConnection>
+    <developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils/tags/dsutils-1.0
+    </developerConnection>
   </scm>
 
   <distributionManagement>
