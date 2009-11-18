@@ -48,11 +48,6 @@
       <package name="com.davidsoergel.dsutils.subclassfindertest"/>
     </packages>
 
-    <classes>
-      <class name="com.davidsoergel.trees.tree.ListHierarchyNodeTest"/>
-      <class name="com.davidsoergel.trees.tree.SetHierarchyNodeTest"/>
-      <class name="com.davidsoergel.trees.tree.ImmutableSortedSetHierarchyNodeTest"/>
-    </classes>
   </test>
 
 
