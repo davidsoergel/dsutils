@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class OrderedPairIterator<A, B> implements Iterator<OrderedPair<A, B>> //,NextOnlyIterator<OrderedPair<A, B>>
+public class OrderedPairIterator<A, B> implements Iterator<OrderedPair<A, B>>
 	{
 	private final Iterator<A> iterA;
 	//final Iterator<B> iterB;
