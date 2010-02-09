@@ -278,6 +278,20 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 			}
 		}
 
+
+	public static final long randomLong()
+		{
+		try
+			{
+			return tl.get().nextLong();
+			}
+		catch (NullPointerException e)
+			{
+			init();
+			return randomLong();
+			}
+		}
+
 	/**
 	 * Returns an integer drawn uniformly from 0 to n-1.  Suffice it to say, n must be > 0, or an IllegalArgumentException
 	 * is raised.
