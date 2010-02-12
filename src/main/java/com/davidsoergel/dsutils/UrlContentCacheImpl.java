@@ -35,7 +35,6 @@ package com.davidsoergel.dsutils;
 
 import com.davidsoergel.dsutils.file.FileUtils;
 import org.apache.log4j.Logger;
-import sun.net.www.protocol.ftp.FtpURLConnection;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,7 +54,7 @@ import java.util.zip.CRC32;
 
 /**
  * Cache URL contents in the filesystem.  Maintains checksum files for verification, and stores the last access time for
- * the file as the modified date on the checksum file (since that's the onl yone available to us in Java)
+ * the file as the modified date on the checksum file (since that's the only one available to us in Java)
  *
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
@@ -93,6 +92,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 		}
 
 	// we're going to need all this anyway, so don't bother with lazy initializers
+
 	private void init() throws UrlContentCacheException
 		{
 		if (!cacheRootDir.exists() && !cacheRootDir.mkdirs())
@@ -293,7 +293,7 @@ public class UrlContentCacheImpl implements UrlContentCache
 			{
 			HttpURLConnection conn = (HttpURLConnection) url
 					.openConnection();// Http only supported for now; ClassCastException otherwise
-			FtpURLConnection f;
+			//	FtpURLConnection f;
 			File localFile = new File(urlToLocalFilename(url));
 			if (localFile.exists() && !force)
 				{
