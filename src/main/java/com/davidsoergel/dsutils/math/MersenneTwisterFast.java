@@ -535,6 +535,8 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
+	private static Boolean initLock = false;
+
 	/**
 	 * Constructor using the default seed.  Users should use static methods for thread safety.
 	 */
@@ -549,7 +551,19 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	 */
 	public MersenneTwisterFast(final long seed)
 		{
-		setSeed(seed);
+		synchronized (initLock)
+			{
+			setSeed(seed);
+			try
+				{
+				Thread.sleep(
+						1);  // make sure at least one millisecond elapses between time-based initializations on different threads
+				}
+			catch (InterruptedException e)
+				{
+				// ignore
+				}
+			}
 		}
 
 	/**
