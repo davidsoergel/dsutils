@@ -542,18 +542,9 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	 */
 	private MersenneTwisterFast()
 		{
-		this(System.currentTimeMillis());
-		}
-
-	/**
-	 * Constructor using a given seed.  Though you pass this seed in as a long, it's best to make sure it's actually an
-	 * integer.
-	 */
-	public MersenneTwisterFast(final long seed)
-		{
 		synchronized (initLock)
 			{
-			setSeed(seed);
+			setSeed(System.currentTimeMillis());
 			try
 				{
 				Thread.sleep(
@@ -564,6 +555,15 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 				// ignore
 				}
 			}
+		}
+
+	/**
+	 * Constructor using a given seed.  Though you pass this seed in as a long, it's best to make sure it's actually an
+	 * integer.
+	 */
+	public MersenneTwisterFast(final long seed)
+		{
+		setSeed(seed);
 		}
 
 	/**
