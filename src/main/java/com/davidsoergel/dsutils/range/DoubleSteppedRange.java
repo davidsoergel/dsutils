@@ -38,7 +38,7 @@ import java.util.TreeSet;
 /**
  * @version $Id: DoubleSteppedRange.java 601 2009-04-24 01:45:53Z soergel $
  */
-public class DoubleSteppedRange extends BasicSteppedRange<Double>
+public class DoubleSteppedRange extends AbstractSteppedRange<Double>
 	{
 	public DoubleSteppedRange(final Double min, final Double max, final Double step)
 		{

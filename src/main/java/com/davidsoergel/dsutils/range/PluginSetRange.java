@@ -12,7 +12,7 @@ import java.util.TreeSet;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class PluginSetRange extends BasicSetRange<PluginValue>
+public class PluginSetRange extends AbstractSetRange<PluginValue>
 	{
 // for Hessian
 

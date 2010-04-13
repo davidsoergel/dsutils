@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class StringSetRange extends BasicSetRange<String>
+public class StringSetRange extends AbstractSetRange<String>
 	{
 
 	// for Hessian

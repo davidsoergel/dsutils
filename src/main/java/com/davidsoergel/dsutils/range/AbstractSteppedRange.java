@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class BasicSteppedRange<T extends Number & Comparable<T> & Serializable>
+public abstract class AbstractSteppedRange<T extends Number & Comparable<T> & Serializable>
 		implements DiscreteRange<T>, SerializableRange<T> //, Comparable<Range<T>>
 	{
 
@@ -19,7 +19,7 @@ public abstract class BasicSteppedRange<T extends Number & Comparable<T> & Seria
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public BasicSteppedRange(final T min, final T max, final T step)
+	public AbstractSteppedRange(final T min, final T max, final T step)
 		{
 		this.max = max;
 		this.min = min;
@@ -59,11 +59,11 @@ public abstract class BasicSteppedRange<T extends Number & Comparable<T> & Seria
 */
 
 
-	public BasicSetRange<T> expandToInclude(BasicSteppedRange<T> v)
+	public AbstractSetRange<T> expandToInclude(AbstractSteppedRange<T> v)
 		{
 		return asSetRange().expandToInclude(v);
 		}
 
-	protected abstract BasicSetRange<T> asSetRange();
+	protected abstract AbstractSetRange<T> asSetRange();
 	}
 

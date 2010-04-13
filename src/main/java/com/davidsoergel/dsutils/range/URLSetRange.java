@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public class URLSetRange extends BasicSetRange<URL>
+public class URLSetRange extends AbstractSetRange<URL>
 	{
 	private static final Logger logger = Logger.getLogger(URLSetRange.class);
 

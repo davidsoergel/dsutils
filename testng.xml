@@ -46,6 +46,7 @@
       <package name="com.davidsoergel.dsutils.math"/>
       <package name="com.davidsoergel.dsutils.range"/>
       <package name="com.davidsoergel.dsutils.subclassfindertest"/>
+      <package name="com.davidsoergel.dsutils.tuples"/>
     </packages>
 
   </test>

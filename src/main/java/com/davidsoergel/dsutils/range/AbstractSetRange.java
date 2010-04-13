@@ -45,7 +45,7 @@ import java.util.TreeSet;
 /**
  * @version $Id: BooleanSetRange.java 690 2009-07-31 21:17:50Z soergel $
  */
-public abstract class BasicSetRange<T extends Serializable> implements DiscreteRange<T>, SerializableRange<T>
+public abstract class AbstractSetRange<T extends Serializable> implements DiscreteRange<T>, SerializableRange<T>
 	{
 	protected SortedSet<T> values = null; //new TreeSet<T>();  // wanted final, but then Hessian can't deserialize it
 
@@ -54,11 +54,11 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 
 	// for Hessian
 
-	protected BasicSetRange()
+	protected AbstractSetRange()
 		{
 		}
 
-	protected BasicSetRange(Collection<T> newValues)
+	protected AbstractSetRange(Collection<T> newValues)
 		{
 		values = new TreeSet<T>();
 		values.addAll(newValues);
@@ -77,7 +77,7 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public BasicSetRange<T> expandToInclude(T v)
+	public AbstractSetRange<T> expandToInclude(T v)
 		{
 		Set<T> newValues = new HashSet<T>(values.size() + 1);
 		newValues.addAll(values);
@@ -85,7 +85,7 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 		return create(values);
 		}
 
-	public BasicSetRange<T> expandToInclude(DiscreteRange<T> v)
+	public AbstractSetRange<T> expandToInclude(DiscreteRange<T> v)
 		{
 		Set<T> newValues = new HashSet<T>(values.size() + v.size());
 		newValues.addAll(values);
@@ -93,7 +93,7 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 		return create(values);
 		}
 
-	protected abstract BasicSetRange<T> create(final Collection<T> values);
+	protected abstract AbstractSetRange<T> create(final Collection<T> values);
 
 
 	public int size()
@@ -118,7 +118,7 @@ public abstract class BasicSetRange<T extends Serializable> implements DiscreteR
 			return false;
 			}
 
-		final BasicSetRange that = (BasicSetRange) o;
+		final AbstractSetRange that = (AbstractSetRange) o;
 
 		return DSCollectionUtils.isEqualCollection(values, that.values);
 /*		if (values != null ? !values.equals(that.values) : that.values != null)

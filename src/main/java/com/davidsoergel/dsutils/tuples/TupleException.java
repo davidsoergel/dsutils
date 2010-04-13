@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2007 Regents of the University of California
+ * Copyright (c) 2001-2008 David Soergel
+ * 418 Richmond St., El Cerrito, CA  94530
+ * dev@davidsoergel.com
  *
  * All rights reserved.
  *
@@ -11,9 +13,9 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ *     * Neither the name of the author nor the names of any contributors may
+ *       be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,54 +30,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.davidsoergel.dsutils.range;
 
-import com.davidsoergel.dsutils.math.MathUtils;
+package com.davidsoergel.dsutils.tuples;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import com.davidsoergel.dsutils.ChainedException;
+import org.apache.log4j.Logger;
 
 /**
- * @version $Id: IntegerSteppedRange.java 690 2009-07-31 21:17:50Z soergel $
+ * @version $Id$
  */
-public class IntegerSteppedRange extends AbstractSteppedRange<Integer>
+public class TupleException extends ChainedException
 	{
-	public IntegerSteppedRange(final Integer min, final Integer max, final Integer step)
+	// ------------------------------ FIELDS ------------------------------
+
+	private static final Logger logger = Logger.getLogger(TupleException.class);
+
+
+	// --------------------------- CONSTRUCTORS ---------------------------
+
+	public TupleException(String s)
 		{
-		super(min, max, step);
+		super(s);
 		}
 
-	protected IntegerSetRange asSetRange()
+	public TupleException(Throwable t)
 		{
-		return new IntegerSetRange(getValues());
-		}
-
-	public boolean encompassesValue(Integer value)
-		{
-		assert step != null;
-		assert step != 0;
-		Integer multiplier = (value - min) / step;
-		return MathUtils.equalWithinFPError(multiplier, Math.floor(multiplier));
-		}
-
-
-	public SortedSet<Integer> getValues()
-		{
-		assert step != null;
-		assert step != 0;
-		SortedSet<Integer> result = new TreeSet<Integer>();
-		for (int d = min; d <= max; d += step)
-			{
-			result.add(d);
-			}
-
-		return result;
-		}
-
-	public int size()
-		{
-		assert step != null;
-		assert step != 0;
-		return (int) ((max - min) / step);
+		super(t);
 		}
 	}
