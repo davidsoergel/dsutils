@@ -1,10 +1,15 @@
 package com.davidsoergel.dsutils.tuples;
 
 import com.davidsoergel.dsutils.collections.DSCollectionUtils;
+import com.davidsoergel.dsutils.range.BasicEqualsRange;
 import com.davidsoergel.dsutils.range.Range;
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -101,5 +106,102 @@ public class NaiveTupleStoreImpl implements TupleStore
 			}
 
 		return result;
+		}
+
+	public Map<Comparable, TupleStream> partition(String dimension, final int maxSetSize) throws TupleException
+		{
+		Collection keys = getUniqueValuesPerDimension(maxSetSize).get(dimension);
+		if (keys == null)
+			{
+			throw new TupleException(
+					"Dimension " + dimension + " either does not exist or has more than " + maxSetSize + " values.");
+			}
+
+		Map<Comparable, TupleStream> result = new HashMap<Comparable, TupleStream>();
+		for (Object key : keys)
+			{
+			Map<String, Range> simpleConstraint = new HashMap<String, Range>();
+			simpleConstraint.put(dimension,
+			                     new BasicEqualsRange(key)); //BasicImmutableSetRange(DSCollectionUtils.listOf(key)));
+			result.put((Comparable) key, select(simpleConstraint));
+			}
+		return result;
+		}
+
+	/**
+	 * Partition the data on one dimension; join it on another; then select a column from the original data and place it in
+	 * multiple columns, named according to the partition value.
+	 * <p/>
+	 * This assumes that the join produces 0 or 1 matches; a to-many relationship produces an error.
+	 *
+	 * @param partitionDimension
+	 * @param joinDimension
+	 * @param selectDimension
+	 * @return
+	 */
+	public TupleStream partitionJoinSelect(String partitionDimension, final int maxSetSize, String joinDimension,
+	                                       String selectDimension) throws TupleException
+		{
+		//int partitionIndex = dimensions.indexOf(partitionDimension);
+		int joinIndex = dimensions.indexOf(joinDimension);
+		int selectIndex = dimensions.indexOf(selectDimension);
+
+
+		final Map<Comparable, TupleStream> partitions = partition(partitionDimension, maxSetSize);
+		List<Comparable> allPartitionValues = new ArrayList<Comparable>();
+		allPartitionValues.addAll(partitions.keySet());
+		Collections.sort(allPartitionValues);
+
+
+		Map<Object, Object[]> joinValuesToRows = new MapMaker().makeComputingMap(new Function<Object, Object[]>()
+		{
+		public Object[] apply(final Object from)
+			{
+			return new Object[partitions.size() + 1];
+			}
+		});
+
+		for (Object partitionValue : allPartitionValues)
+			{
+			int partitionIndex = allPartitionValues.indexOf(partitionValue);
+
+			TupleStream ps = partitions.get(partitionValue);
+
+			//localDimensions = ps.getDimensions();
+			//we can safely assume that each partition has the same dimensions as this store as a whole
+
+			Iterator<Object[]> it = ps.iterator();
+			while (it.hasNext())
+				{
+				Object[] objects = it.next();
+				Object joinValue = objects[joinIndex];
+				Object selectValue = objects[selectIndex];
+
+				if (joinValuesToRows.get(joinValue)[partitionIndex] != null)
+					{
+					throw new TupleException(
+							"Join resulted in a to-many relationship for " + joinDimension + " = " + joinValue);
+					}
+				joinValuesToRows.get(joinValue)[partitionIndex] = selectValue;
+				}
+			}
+
+		// finally add the join value itself as the final column
+		int joinColumn = partitions.size();
+		for (Object joinValue : joinValuesToRows.keySet())
+			{
+			joinValuesToRows.get(joinValue)[joinColumn] = joinValue;
+			}
+
+		// set up the column names
+		List<String> columns = new ArrayList<String>();
+		for (Object value : allPartitionValues)
+			{
+			columns.add(value.toString());
+			}
+		columns.add(joinDimension);
+
+		// ideally we'd sort this by the join column; oh well
+		return new SimpleTupleStream(columns, joinValuesToRows.values().iterator());
 		}
 	}

@@ -38,4 +38,20 @@ public interface TupleStore
 	List<String> getDimensions();
 
 	Map<String, Collection> getUniqueValuesPerDimension(int maxSetSize);
+
+	Map<Comparable, TupleStream> partition(String dimension, final int maxSetSize) throws TupleException;
+
+	/**
+	 * Partition the data on one dimension; join it on another; then select a column from the original data and place it in
+	 * multiple columns, named according to the partition value.
+	 * <p/>
+	 * This assumes that the join produces 0 or 1 matches; a to-many relationship produces an error.
+	 *
+	 * @param partitionDimension
+	 * @param joinDimension
+	 * @param selectDimension
+	 * @return
+	 */
+	TupleStream partitionJoinSelect(String partitionDimension, final int maxSetSize, String joinDimension,
+	                                String selectDimension) throws TupleException;
 	}
