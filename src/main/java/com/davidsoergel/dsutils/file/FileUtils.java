@@ -174,12 +174,18 @@ public class FileUtils
 				{
 				for (String f : filenames)
 					{
+					if (!f.startsWith(File.separator))
+						{
+						f = root + File.separator + f;
+						}
+
 					if (f.endsWith("*"))
 						{
 						//logger.info("Separator: " + File.separator);
 						String dirname = f.substring(0, f.lastIndexOf(File.separator));
 						//logger.info("Wildcard directory: " + dirname);
-						File dir = new File(root + File.separator + dirname);
+
+						File dir = new File(dirname);
 
 						//logger.info("is directory: " + dir.isDirectory());
 						//logger.info("Canonical path = " + dir.getCanonicalPath());
@@ -210,7 +216,7 @@ public class FileUtils
 						}
 					else
 						{
-						files.add(new File(root + File.separator + f));
+						files.add(new File(f));
 						//	inputFilesList.add(new File(f));
 						}
 					}
