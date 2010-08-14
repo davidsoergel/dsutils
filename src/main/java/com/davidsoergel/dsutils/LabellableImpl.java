@@ -16,12 +16,12 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
 
 	//** we're serializing for the sake of the FastaParser index, where labels shouldn't matter
-	protected transient MutableWeightedSet<T> mutableWeightedLabels = new ConcurrentHashWeightedSet<T>();
-	private transient WeightedSet<T> immutableWeightedLabels;
+	protected transient MutableWeightedSet<T> mutableWeightedLabels; // = new ConcurrentHashWeightedSet<T>();
+	private transient WeightedSet<T> immutableWeightedLabels = null;
 
 	public void doneLabelling()
 		{
-		if (mutableWeightedLabels == null)
+		if (immutableWeightedLabels != null)
 			{
 			logger.debug("doneLabelling was already called");
 			return;
@@ -54,9 +54,13 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	@NotNull
 	public MutableWeightedSet<T> getMutableWeightedLabels()
 		{
-		if (mutableWeightedLabels == null)
+		if (immutableWeightedLabels != null)
 			{
 			throw new Error("Can't call getMutableWeightedLabels after doneLabelling");
+			}
+		if (mutableWeightedLabels == null)
+			{
+			mutableWeightedLabels = new ConcurrentHashWeightedSet<T>();
 			}
 
 		return mutableWeightedLabels;
@@ -68,6 +72,6 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 			{
 			return immutableWeightedLabels.getItemCount();
 			}
-		return mutableWeightedLabels.getItemCount();
+		return getMutableWeightedLabels().getItemCount();
 		}
 	}
