@@ -36,8 +36,10 @@ package com.davidsoergel.dsutils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -463,5 +465,48 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 			{
 			result[i] = result[i].trim();
 			}
+		}
+
+	public static List<String> honorDoubleQuotesAndTabs(final String[] argv)
+		{
+		//List<String> args = new ArrayList<String>(Arrays.asList(argv));
+		List<String> fileNames = new ArrayList<String>();
+
+		// oh hell
+		boolean openQuote = false;
+		StringBuffer sb = new StringBuffer();
+
+
+		// internal quotes will mess things up
+
+		for (String s : argv)
+			{
+			if (openQuote)
+				{
+				sb.append(" ").append(s);
+				if (s.endsWith("\""))
+					{
+					openQuote = false;
+					sb.deleteCharAt(0); // open quote
+					sb.deleteCharAt(sb.length() - 1); // close quote
+					String t = sb.toString().replace("\\t", "\t");
+					fileNames.add(t);
+					sb = new StringBuffer();
+					}
+				}
+			else
+				{
+				if (s.startsWith("\""))
+					{
+					openQuote = true;
+					sb.append(s);
+					}
+				else
+					{
+					fileNames.add(s);
+					}
+				}
+			}
+		return fileNames;
 		}
 	}
