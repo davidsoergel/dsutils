@@ -16,18 +16,26 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
 
 	//** we're serializing for the sake of the FastaParser index, where labels shouldn't matter
-	protected transient MutableWeightedSet<T> mutableWeightedLabels; // = new ConcurrentHashWeightedSet<T>();
+	protected transient MutableWeightedSet<T> mutableWeightedLabels = null; // = new ConcurrentHashWeightedSet<T>();
 	private transient WeightedSet<T> immutableWeightedLabels = null;
+
+	// jump through some hoops here to avoid allocating the label sets if they're never used
+
+	boolean isDone = false;
 
 	public void doneLabelling()
 		{
-		if (immutableWeightedLabels != null)
+		if (isDone)
 			{
 			logger.debug("doneLabelling was already called");
 			return;
 			}
-		immutableWeightedLabels = new ImmutableHashWeightedSet<T>(mutableWeightedLabels);
+		if (mutableWeightedLabels != null)
+			{
+			immutableWeightedLabels = new ImmutableHashWeightedSet<T>(mutableWeightedLabels);
+			}
 		mutableWeightedLabels = null;
+		isDone = true;
 		}
 
 	/**
@@ -38,11 +46,14 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	@NotNull
 	public WeightedSet<T> getImmutableWeightedLabels()
 		{
-		if (immutableWeightedLabels == null)
+		if (!isDone)
 			{
 			throw new Error("need to call doneLabelling before getImmutableWeightedLabels");
 			}
-
+		if (immutableWeightedLabels == null)
+			{
+			immutableWeightedLabels = new ImmutableHashWeightedSet<T>(new ConcurrentHashWeightedSet<T>());
+			}
 		return immutableWeightedLabels;
 		}
 
@@ -54,10 +65,11 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	@NotNull
 	public MutableWeightedSet<T> getMutableWeightedLabels()
 		{
-		if (immutableWeightedLabels != null)
+		if (isDone)
 			{
 			throw new Error("Can't call getMutableWeightedLabels after doneLabelling");
 			}
+
 		if (mutableWeightedLabels == null)
 			{
 			mutableWeightedLabels = new ConcurrentHashWeightedSet<T>();
@@ -72,6 +84,10 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 			{
 			return immutableWeightedLabels.getItemCount();
 			}
-		return getMutableWeightedLabels().getItemCount();
+		if (mutableWeightedLabels != null)
+			{
+			return mutableWeightedLabels.getItemCount();
+			}
+		return 0;
 		}
 	}
