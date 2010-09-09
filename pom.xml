@@ -37,7 +37,7 @@
   <artifactId>dsutils</artifactId>
 
   <name>dsutils</name>
-  <version>1.02</version>
+  <version>1.03-SNAPSHOT</version>
   <url>http://dev.davidsoergel.com/dsutils</url>
   <description>Some generic utility classes.</description>
 
@@ -57,8 +57,8 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.davidsoergel.com/repos/dsutils/tags/dsutils-1.02</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils/tags/dsutils-1.02
+    <connection>scm:svn:http://svn.davidsoergel.com/repos/dsutils/tags/dsutils-1.0</connection>
+    <developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils/tags/dsutils-1.0
     </developerConnection>
   </scm>
 
