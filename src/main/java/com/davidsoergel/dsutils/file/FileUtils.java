@@ -80,33 +80,52 @@ public class FileUtils
 		return true;
 		}
 
+	// ** should replace boolean return values with exceptions as needed
+
 	public static boolean bufferedCopy(java.io.File origFile, java.io.File copyFile, int buffSize)
 		{
-		byte[] buff = new byte[buffSize];
-
-		try
+		if (origFile.isDirectory())
 			{
-			FileInputStream fis = new FileInputStream(origFile);
-			//file.createNewFile();
-			FileOutputStream fos = new FileOutputStream(copyFile);
+			copyFile.mkdirs();
+
+			String[] children = origFile.list();
+			for (int i = 0; i < children.length; i++)
+				{
+				if (!bufferedCopy(new File(origFile, children[i]), new File(copyFile, children[i]), buffSize))
+					{
+					return false;
+					}
+				}
+			}
+		else
+			{
+
+			byte[] buff = new byte[buffSize];
 
 			try
 				{
-				for (int bytes = 0; (bytes = fis.read(buff)) > -1;)
+				FileInputStream fis = new FileInputStream(origFile);
+				//file.createNewFile();
+				FileOutputStream fos = new FileOutputStream(copyFile);
+
+				try
 					{
-					fos.write(buff, 0, bytes);
+					for (int bytes = 0; (bytes = fis.read(buff)) > -1;)
+						{
+						fos.write(buff, 0, bytes);
+						}
+					}
+				finally
+					{
+					fis.close();
+					fos.close();
 					}
 				}
-			finally
+			catch (IOException e)
 				{
-				fis.close();
-				fos.close();
+				logger.error("Error", e);
+				return false;
 				}
-			}
-		catch (IOException e)
-			{
-			logger.error("Error", e);
-			return false;
 			}
 
 		return true;
