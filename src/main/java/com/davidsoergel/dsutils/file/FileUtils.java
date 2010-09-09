@@ -70,14 +70,35 @@ public class FileUtils
 				}
 			else
 				{
+				deleteRecursive(oldFile);
 				// the copy succeeded, try removing old file
-				if (!oldFile.delete())
-					{
-					logger.error("Can't delete " + oldFile + " after copy");
-					}
+
 				}
 			}
 		return true;
+		}
+
+	private static void deleteRecursive(final File oldFile)
+		{
+		if (oldFile.isDirectory())
+			{
+			for (File file : oldFile.listFiles())
+				{
+				deleteRecursive(file);
+				}
+
+			if (!oldFile.delete())
+				{
+				logger.error("Can't delete " + oldFile + " after copy");
+				}
+			}
+		else
+			{
+			if (!oldFile.delete())
+				{
+				logger.error("Can't delete " + oldFile + " after copy");
+				}
+			}
 		}
 
 	// ** should replace boolean return values with exceptions as needed
