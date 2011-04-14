@@ -212,4 +212,10 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 		// leave the item count the same
 		return new ConcurrentHashWeightedSet<T>(limitBackingMap(okKeys), itemCount);
 		}
+
+	@Override
+	public String toString()
+		{
+		return backingMap.toString();
+		}
 	}
