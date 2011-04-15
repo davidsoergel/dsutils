@@ -182,6 +182,15 @@ public class FileUtils
 
 	   }*/
 
+	public static String makeAbsolute(String root, String f)
+		{
+		if (!f.startsWith(File.separator))
+			{
+			f = root + File.separator + f;
+			}
+		return f;
+		}
+
 	public static List<File> getFilesWithNames(String root, String[] filenames)
 		{
 		/*
