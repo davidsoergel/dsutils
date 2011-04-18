@@ -635,9 +635,16 @@ public class CacheManager
 		 */
 		public synchronized void put(Serializable o)
 			{
-			thing = o;
-			CacheManager.putToFile(filename, o);
-			fileExists = true;
+			if (o == null)
+				{
+				logger.warn("Trying to put null object into cache stub " + filename);
+				}
+			else
+				{
+				thing = o;
+				CacheManager.putToFile(filename, o);
+				fileExists = true;
+				}
 			}
 		}
 	}
