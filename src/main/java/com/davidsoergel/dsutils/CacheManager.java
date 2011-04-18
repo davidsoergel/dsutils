@@ -117,6 +117,7 @@ public class CacheManager
 
 	private static Serializable getFromFile(String filename)
 		{
+		logger.info("Loading cache: " + filename);
 		FileInputStream fin = null;
 		ObjectInputStream ois = null;
 		try
@@ -579,6 +580,7 @@ public class CacheManager
 	 * @param key
 	 * @return
 	 */
+	@NotNull
 	public static LazyStub getLazy(Object source, String key)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
@@ -588,31 +590,39 @@ public class CacheManager
 
 		String filename = buildFilename(source, key);
 
-		if (new File(filename).exists())
-			{
-			return new LazyStub(filename);
-			}
-		else
-			{
-			return null;
-			}
+		//if (new File(filename).exists())
+		//	{
+		return new LazyStub(filename);
+		//	}
+		//else
+		//	{
+		//	return null;
+		//	}
 		}
 
-	// this can't usefully be generic because getLazy above das no way of knowing the type (it's not in the arguments, and can't sensibly be)
+	// this can't usefully be generic because getLazy above has no way of knowing the type (it's not in the arguments, and can't sensibly be)
 	public static class LazyStub
 		{
 		private String filename;
 		private Serializable thing;
+		private boolean fileExists;
 
 		public LazyStub(final String filename)
 			{
 			this.filename = filename;
+			this.fileExists = new File(filename).exists();
 			}
 
-		public Serializable get()
+		public synchronized boolean notCached()
+			{
+			return !fileExists;
+			}
+
+		public synchronized Serializable get()
 			{
 			if (thing == null)
 				{
+				logger.info("Lazy loading triggered for " + filename);
 				thing = getFromFile(filename);
 				}
 			return thing;
@@ -623,10 +633,11 @@ public class CacheManager
 		 *
 		 * @param o
 		 */
-		public void put(Serializable o)
+		public synchronized void put(Serializable o)
 			{
 			thing = o;
 			CacheManager.putToFile(filename, o);
+			fileExists = true;
 			}
 		}
 	}
