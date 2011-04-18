@@ -92,7 +92,7 @@ public class CacheManager
 	 * @param key
 	 * @return
 	 */
-	public static Object get(Object source, String key)
+	public static Serializable get(Object source, String key)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
@@ -109,13 +109,13 @@ public class CacheManager
 	 * @param classNamePlusKey
 	 * @return
 	 */
-	public static Object get(String classNamePlusKey)
+	public static Serializable get(String classNamePlusKey)
 		{
 		String filename = buildFilename(classNamePlusKey);
 		return getFromFile(filename);
 		}
 
-	private static Object getFromFile(String filename)
+	private static Serializable getFromFile(String filename)
 		{
 		FileInputStream fin = null;
 		ObjectInputStream ois = null;
@@ -123,7 +123,7 @@ public class CacheManager
 			{
 			fin = new FileInputStream(filename);
 			ois = new CustomClassloaderObjectInputStream(fin, classLoader);
-			return ois.readObject();
+			return (Serializable) ois.readObject();
 			}
 		catch (FileNotFoundException e)
 			{
@@ -291,29 +291,29 @@ public class CacheManager
 	static ConcurrentMap<String, AccumulatingMap> accumulatingMaps = new MapMaker().weakValues().makeMap();
 
 	public static Map getAccumulatingMapAssumeSerializable(Object source, String key) //, Map<K, V> prototype)
-		{
-		return getAccumulatingMap(source, key);
-		}
+	{
+	return getAccumulatingMap(source, key);
+	}
 
 	public static <K extends Serializable, V extends Serializable> Map<K, V> getAccumulatingMap(Object source,
 	                                                                                            String key) //, Map<K, V> prototype)
+	{
+	if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 		{
-		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
-			{
-			key = hashAndVerify(source, key);
-			}
-
-		String filename = buildFilename(source, key);
-
-		AccumulatingMap<K, V> result = accumulatingMaps.get(filename);
-		if (result == null)
-			{
-			result = new AccumulatingMap<K, V>(filename);
-			accumulatingMaps.put(filename, result);
-			}
-
-		return result;
+		key = hashAndVerify(source, key);
 		}
+
+	String filename = buildFilename(source, key);
+
+	AccumulatingMap<K, V> result = accumulatingMaps.get(filename);
+	if (result == null)
+		{
+		result = new AccumulatingMap<K, V>(filename);
+		accumulatingMaps.put(filename, result);
+		}
+
+	return result;
+	}
 
 	private static String buildFilename(Object source, String key)
 		{
@@ -569,6 +569,64 @@ public class CacheManager
 			// now theMap is canonical; may as well refresh the local cache with any new items from the disk version
 			clear();
 			putAll(theMap);
+			}
+		}
+
+	/**
+	 * Load a serialized object from disk
+	 *
+	 * @param source
+	 * @param key
+	 * @return
+	 */
+	public static LazyStub getLazy(Object source, String key)
+		{
+		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
+			{
+			key = hashAndVerify(source, key);
+			}
+
+		String filename = buildFilename(source, key);
+
+		if (new File(filename).exists())
+			{
+			return new LazyStub(filename);
+			}
+		else
+			{
+			return null;
+			}
+		}
+
+	// this can't usefully be generic because getLazy above das no way of knowing the type (it's not in the arguments, and can't sensibly be)
+	public static class LazyStub
+		{
+		private String filename;
+		private Serializable thing;
+
+		public LazyStub(final String filename)
+			{
+			this.filename = filename;
+			}
+
+		public Serializable get()
+			{
+			if (thing == null)
+				{
+				thing = getFromFile(filename);
+				}
+			return thing;
+			}
+
+		/**
+		 * Note this gets committed immediately, so should only be called once the object is fully populated
+		 *
+		 * @param o
+		 */
+		public void put(Serializable o)
+			{
+			thing = o;
+			CacheManager.putToFile(filename, o);
 			}
 		}
 	}
