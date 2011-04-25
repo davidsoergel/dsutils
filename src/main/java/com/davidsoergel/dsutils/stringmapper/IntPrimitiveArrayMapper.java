@@ -2,6 +2,8 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.DSStringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -13,16 +15,15 @@ import java.util.List;
  */
 public class IntPrimitiveArrayMapper extends StringMapper<int[]>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				int[].class
-		};
+		return new Type[]{int[].class};
 		}
 
-	public int[] parse(String s)
+	public int[] parse(@NotNull String s)
 		{
-		List<Integer> result = new ArrayList<Integer>();
+		@NotNull List<Integer> result = new ArrayList<Integer>();
 		for (String d : s.split(","))
 			{
 			result.add(Integer.parseInt(d));
@@ -35,14 +36,14 @@ public class IntPrimitiveArrayMapper extends StringMapper<int[]>
 		return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
 		}
 
-	public String renderHtml(int[] ss)
+	public String renderHtml(@Nullable int[] ss)
 		{
 		if (ss == null || ss.length == 0)
 			{
 			return "";
 			}
 
-		StringBuffer sb = new StringBuffer("<html>");
+		@NotNull StringBuffer sb = new StringBuffer("<html>");
 		sb.append("Array of ").append(ss.length).append(" Integers:<P>");
 		if (ss.length <= 20)
 			{

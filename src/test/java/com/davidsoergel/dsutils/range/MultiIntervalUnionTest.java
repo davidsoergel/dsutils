@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.range;
 
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -14,12 +15,12 @@ public class MultiIntervalUnionTest
 	@Test
 	public void multiIntervalUnionOfDoublesDealsWithOverlappingInputsCorrectly()
 		{
-		Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
+		@NotNull Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
 		as.add(new BasicInterval<Double>(0.123, 0.456, true, true));
 		as.add(new BasicInterval<Double>(.4, 5., true, true));
 		as.add(new BasicInterval<Double>(4.4, 5.5, true, true));
 
-		MultiIntervalUnion<Double> result = new MultiIntervalUnion<Double>(as);
+		@NotNull MultiIntervalUnion<Double> result = new MultiIntervalUnion<Double>(as);
 		assert result.size() == 1;
 		assert result.contains(new BasicInterval<Double>(0.123, 5.5, true, true));
 

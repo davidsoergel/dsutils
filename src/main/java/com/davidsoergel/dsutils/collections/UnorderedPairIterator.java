@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils.collections;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,14 +14,18 @@ import java.util.NoSuchElementException;
 public class UnorderedPairIterator<A extends Comparable<A>> implements Iterator<UnorderedPair<A>>
 	{
 
+	@NotNull
 	private final Iterator<A> iterA;
 	//final Iterator<B> iterB;
+	@NotNull
 	private final Iterable<A> iterableB;
 
 	private Iterator<A> iterB;
 
 	// State: aTrav is the _current_ item; bTrav is the _previous_ item and must be advanced anew in next() before returning
+	@Nullable
 	private A aTrav = null;
+	@Nullable
 	private A bTrav = null;
 
 /*
@@ -36,13 +41,13 @@ public class UnorderedPairIterator<A extends Comparable<A>> implements Iterator<
 		}
 */
 
-	public UnorderedPairIterator(@NotNull final Iterator<A> iterA, final Iterable<A> iterableB)
+	public UnorderedPairIterator(@NotNull final Iterator<A> iterA, @NotNull final Iterable<A> iterableB)
 		{
 		this.iterA = iterA;
 		this.iterableB = iterableB;
 		}
 
-	public UnorderedPairIterator(@NotNull final Iterable<A> iterableA, final Iterable<A> iterableB)
+	public UnorderedPairIterator(@NotNull final Iterable<A> iterableA, @NotNull final Iterable<A> iterableB)
 		{
 		this(iterableA.iterator(), iterableB);
 		}

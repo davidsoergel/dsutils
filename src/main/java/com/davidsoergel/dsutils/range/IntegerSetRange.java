@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.range;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 
 
@@ -20,6 +22,7 @@ public class IntegerSetRange extends AbstractSetRange<Integer>
 		super(values);
 		}
 
+	@NotNull
 	protected IntegerSetRange create(final Collection<Integer> values)
 		{
 		return new IntegerSetRange(values);

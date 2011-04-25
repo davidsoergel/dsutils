@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,11 +14,12 @@ import java.util.List;
  */
 public class StringListReader
 	{
+	@NotNull
 	public static List<String> read(String filename) throws IOException
 		{
-		List<String> theList = new ArrayList<String>();
+		@NotNull List<String> theList = new ArrayList<String>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
 			{
 			String line;

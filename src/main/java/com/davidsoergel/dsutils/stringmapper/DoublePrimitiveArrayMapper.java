@@ -2,6 +2,8 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.DSStringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -13,16 +15,15 @@ import java.util.List;
  */
 public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				double[].class
-		};
+		return new Type[]{double[].class};
 		}
 
-	public double[] parse(String s)
+	public double[] parse(@NotNull String s)
 		{
-		List<Double> result = new ArrayList<Double>();
+		@NotNull List<Double> result = new ArrayList<Double>();
 		for (String d : s.split(","))
 			{
 			result.add(Double.parseDouble(d));
@@ -35,7 +36,7 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 		return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
 		}
 
-	public String renderHtml(double[] ss)
+	public String renderHtml(@Nullable double[] ss)
 		{
 		if (ss == null || ss.length == 0)
 			{
@@ -43,7 +44,7 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 			}
 
 
-		StringBuffer sb = new StringBuffer("<html>");
+		@NotNull StringBuffer sb = new StringBuffer("<html>");
 		sb.append("Array of ").append(ss.length).append(" Doubles:<P>");
 		if (ss.length <= 20)
 			{

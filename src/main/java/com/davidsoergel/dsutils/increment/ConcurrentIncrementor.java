@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.increment;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,16 +13,22 @@ public class ConcurrentIncrementor extends Incrementor
 	{
 	private static final Logger logger = Logger.getLogger(ConcurrentIncrementor.class);
 
+	@NotNull
 	AtomicInteger i = new AtomicInteger(0);
+	@NotNull
 	AtomicInteger max = new AtomicInteger(0);
 	String note;
 
+	@NotNull
 	final Boolean sync = false;
 
 	public ConcurrentIncrementor(final String clientName, final String initialNote)
 		{
 		super(clientName);
-		note = initialNote;
+		synchronized (sync)
+			{
+			note = initialNote;
+			}
 		}
 
 	public void increment()
@@ -84,6 +91,9 @@ public class ConcurrentIncrementor extends Incrementor
 
 	public String getNote()
 		{
-		return note;
+		synchronized (sync)
+			{
+			return note;
+			}
 		}
 	}

@@ -31,6 +31,8 @@
  */
 package org.jboss.aop.advice.annotation.assignability;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -49,10 +51,11 @@ class VariableNode
 	{
 	// ------------------------------ FIELDS ------------------------------
 
+	@NotNull
 	private static ParamTypeAssignabilityAlgorithm.EqualityChecker<VariableNode, ?> CHECKER =
 			new ParamTypeAssignabilityAlgorithm.EqualityChecker<VariableNode, Object>()
 			{
-			public boolean isSame(Type argument, Type fromArgument, VariableNode node, Object token)
+			public boolean isSame(@NotNull Type argument, @NotNull Type fromArgument, VariableNode node, Object token)
 				{
 				return VariableNode.isSame(argument, fromArgument, false);
 				}
@@ -68,7 +71,7 @@ class VariableNode
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public VariableNode(TypeVariable content, VariableHierarchy hierarchy)
+	public VariableNode(@NotNull TypeVariable content, @NotNull VariableHierarchy hierarchy)
 		{
 		this.hierarchy = hierarchy;
 		this.variable = content;
@@ -77,7 +80,7 @@ class VariableNode
 		Type[] bounds = content.getBounds();
 		if (bounds.length == 1 && bounds[0] instanceof TypeVariable)
 			{
-			TypeVariable typeVariable = (TypeVariable) bounds[0];
+			@NotNull TypeVariable typeVariable = (TypeVariable) bounds[0];
 			next = hierarchy.getVariableNode(typeVariable);
 			next.previous = this;
 			}
@@ -85,7 +88,7 @@ class VariableNode
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public final boolean addLowerBound(Type lowerBound)
+	public final boolean addLowerBound(@NotNull Type lowerBound)
 		{
 		if (!isInsideUpperBounds(lowerBound, false) || (this.previous != null && !this.previous
 				.areLowerBoundsInside(lowerBound, true)))
@@ -104,20 +107,20 @@ class VariableNode
 		return true;
 		}
 
-	public final boolean addMaximumUpperBound(Type upperBound)
+	public final boolean addMaximumUpperBound(@NotNull Type upperBound)
 		{
 		if (!isAssignabilityPermited(upperBound))
 			{
 			return false;
 			}
-		for (Type oldUpperBound : upperBounds)
+		for (@NotNull Type oldUpperBound : upperBounds)
 			{
 			if (!isAssignable(upperBound, oldUpperBound))
 				{
 				return false;
 				}
 			}
-		for (Type oldLowerBound : lowerBounds)
+		for (@NotNull Type oldLowerBound : lowerBounds)
 			{
 			if (!isAssignable(upperBound, oldLowerBound))
 				{
@@ -139,7 +142,7 @@ class VariableNode
 			}
 		else
 			{
-			for (Type bound : bounds)
+			for (@NotNull Type bound : bounds)
 				{
 				if (!isAssignable(upperBound, bound))
 					{
@@ -151,11 +154,11 @@ class VariableNode
 		}
 
 	// both type and bound belong to the same context
-	private static boolean isAssignable(Type type, Type fromType)
+	private static boolean isAssignable(@NotNull Type type, @NotNull Type fromType)
 		{
 		if (fromType instanceof TypeVariable)
 			{
-			TypeVariable fromVariable = (TypeVariable) fromType;
+			@NotNull TypeVariable fromVariable = (TypeVariable) fromType;
 			if (type instanceof TypeVariable)
 				{
 				if (type == fromType)
@@ -175,7 +178,7 @@ class VariableNode
 				return false;
 				}
 			Type[] fromBounds = AssignabilityAlgorithm.getConcreteBounds(fromVariable);
-			for (Type fromBound : fromBounds)
+			for (@NotNull Type fromBound : fromBounds)
 				{
 				if (isAssignable(type, fromBound))
 					{
@@ -186,7 +189,7 @@ class VariableNode
 			}
 		if (fromType instanceof ChoiceBound)
 			{
-			ChoiceBound fromChoiceBound = (ChoiceBound) fromType;
+			@NotNull ChoiceBound fromChoiceBound = (ChoiceBound) fromType;
 			if (type instanceof TypeVariable && !isAssignable((TypeVariable) type, fromChoiceBound.variable))
 				{
 				return false;
@@ -207,7 +210,7 @@ class VariableNode
 				{
 				return true;
 				}
-			Class<?> clazz = (Class<?>) type;
+			@NotNull Class<?> clazz = (Class<?>) type;
 			if (fromType instanceof Class)
 				{
 				return clazz.isAssignableFrom((Class<?>) fromType);
@@ -218,9 +221,9 @@ class VariableNode
 				}
 			if (fromType instanceof WildcardType)
 				{
-				WildcardType fromWildcard = (WildcardType) fromType;
+				@NotNull WildcardType fromWildcard = (WildcardType) fromType;
 				boolean boundOk = false;
-				for (Type upperBound : fromWildcard.getUpperBounds())
+				for (@NotNull Type upperBound : fromWildcard.getUpperBounds())
 					{
 					if (isAssignable(type, upperBound))
 						{
@@ -232,7 +235,7 @@ class VariableNode
 					{
 					return false;
 					}
-				for (Type lowerBound : fromWildcard.getLowerBounds())
+				for (@NotNull Type lowerBound : fromWildcard.getLowerBounds())
 					{
 					if (isAssignable(type, lowerBound))
 						{
@@ -243,7 +246,7 @@ class VariableNode
 				}
 			if (fromType instanceof TypeVariable)
 				{
-				for (Type upperBound : ((TypeVariable) fromType).getBounds())
+				for (@NotNull Type upperBound : ((TypeVariable) fromType).getBounds())
 					{
 					if (isAssignable(type, upperBound))
 						{
@@ -262,7 +265,7 @@ class VariableNode
 			}
 		if (type instanceof TypeVariable)
 			{
-			for (Type bound : ((TypeVariable) type).getBounds())
+			for (@NotNull Type bound : ((TypeVariable) type).getBounds())
 				{
 				if (!isAssignable(bound, fromType))
 					{
@@ -273,15 +276,15 @@ class VariableNode
 			}
 		if (type instanceof WildcardType)
 			{
-			WildcardType wildcard = (WildcardType) type;
-			for (Type bound : wildcard.getUpperBounds())
+			@NotNull WildcardType wildcard = (WildcardType) type;
+			for (@NotNull Type bound : wildcard.getUpperBounds())
 				{
 				if (!isAssignable(bound, fromType))
 					{
 					return false;
 					}
 				}
-			for (Type bound : wildcard.getLowerBounds())
+			for (@NotNull Type bound : wildcard.getLowerBounds())
 				{
 				if (!isAssignable(bound, fromType))
 					{
@@ -290,7 +293,7 @@ class VariableNode
 				}
 			return true;
 			}
-		ChoiceBound choiceBound = (ChoiceBound) type;
+		@NotNull ChoiceBound choiceBound = (ChoiceBound) type;
 		if (fromType instanceof TypeVariable && !isAssignable(choiceBound.variable, (TypeVariable) fromType))
 			{
 			return false;
@@ -306,7 +309,7 @@ class VariableNode
 		return !choiceBound.bounds.isEmpty();
 		}
 
-	public final boolean addUpperBound(Type upperBound)
+	public final boolean addUpperBound(@NotNull Type upperBound)
 		{
 		if ((this.next != null && !this.next.isInsideUpperBounds(upperBound, true)) || !areLowerBoundsInside(upperBound,
 		                                                                                                     false))
@@ -320,7 +323,7 @@ class VariableNode
 	/**
 	 * @param upperBound
 	 */
-	private void addToUpperBounds(Type upperBound)
+	private void addToUpperBounds(@NotNull Type upperBound)
 		{
 		if (upperBound instanceof TypeVariable)
 			{
@@ -333,7 +336,7 @@ class VariableNode
 			}
 		}
 
-	public final boolean assignValue(Type value)
+	public final boolean assignValue(@NotNull Type value)
 		{
 		if (!isAssignabilityPermited(value))
 			{
@@ -357,21 +360,21 @@ class VariableNode
 		{
 		// assigned bounds can only be assigned to concrete types
 		return !(((this.hierarchy.isBoundComparation() && !(value instanceof Class)
-				&& !(value instanceof ParameterizedType))) || (
+		           && !(value instanceof ParameterizedType))) || (
 				// real bounds can have values assigned to variables
 				(this.hierarchy.isRealBoundComparation() && (value instanceof WildcardType))));
 		}
 
-	private static boolean isSame(Type argument, Type fromArgument, boolean argumentAssigned)
+	private static boolean isSame(@NotNull Type argument, @NotNull Type fromArgument, boolean argumentAssigned)
 		{
 		if (argument instanceof WildcardType)
 			{
-			WildcardType wildcard = (WildcardType) argument;
+			@NotNull WildcardType wildcard = (WildcardType) argument;
 			Type[] upperBounds = wildcard.getUpperBounds();
 			Type[] lowerBounds = wildcard.getLowerBounds();
 			if (fromArgument instanceof WildcardType)
 				{
-				WildcardType fromWildcard = (WildcardType) fromArgument;
+				@NotNull WildcardType fromWildcard = (WildcardType) fromArgument;
 				Type[] fromUpperBounds = fromWildcard.getUpperBounds();
 				if (!isAssignable(upperBounds, fromUpperBounds))
 					{
@@ -431,7 +434,7 @@ class VariableNode
 		return argument.equals(fromArgument);// (ignore)  TODO check this works correctly
 		}
 
-	private static boolean isAssignable(Type[] upperBounds, Type[] fromUpperBounds)
+	private static boolean isAssignable(@NotNull Type[] upperBounds, @NotNull Type[] fromUpperBounds)
 		{
 		outer:
 		for (int i = 0; i < upperBounds.length; i++)
@@ -448,7 +451,7 @@ class VariableNode
 		return true;
 		}
 
-	private boolean isInsideUpperBounds(Type lowerBound, boolean checkLowerBounds)
+	private boolean isInsideUpperBounds(@NotNull Type lowerBound, boolean checkLowerBounds)
 		{
 		if (this.assignedValue != null && !isAssignable(lowerBound, assignedValue))
 			{
@@ -456,7 +459,7 @@ class VariableNode
 			}
 		if (checkLowerBounds)
 			{
-			for (Type bound : this.lowerBounds)
+			for (@NotNull Type bound : this.lowerBounds)
 				{
 				if (!isAssignable(bound, lowerBound))
 					{
@@ -464,7 +467,7 @@ class VariableNode
 					}
 				}
 			}
-		for (Type upperBound : upperBounds)
+		for (@NotNull Type upperBound : upperBounds)
 			{
 			if (!isAssignable(upperBound, lowerBound))
 				{
@@ -494,7 +497,7 @@ class VariableNode
 		return next.isInsideUpperBounds(lowerBound, true);
 		}
 
-	private boolean areLowerBoundsInside(Type bound, boolean checkUpperBounds)
+	private boolean areLowerBoundsInside(@NotNull Type bound, boolean checkUpperBounds)
 		{
 		if (this.assignedValue != null && !isAssignable(bound, assignedValue))
 			{
@@ -502,7 +505,7 @@ class VariableNode
 			}
 		if (checkUpperBounds)
 			{
-			for (Type upperBound : this.upperBounds)
+			for (@NotNull Type upperBound : this.upperBounds)
 				{
 				if (!isAssignable(bound, upperBound))
 					{
@@ -510,7 +513,7 @@ class VariableNode
 					}
 				}
 			}
-		for (Type lowerBound : this.lowerBounds)
+		for (@NotNull Type lowerBound : this.lowerBounds)
 			{
 			if (!isAssignable(bound, lowerBound))
 				{

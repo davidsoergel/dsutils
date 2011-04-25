@@ -38,6 +38,7 @@ import com.davidsoergel.dsutils.PluginException;
 import com.davidsoergel.dsutils.SubclassFinder;
 import com.davidsoergel.dsutils.increment.BasicIncrementor;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class SubclassFinderTest//extends TestCase
 	@Test
 	public void subclassFinderRecursesFilesystemPackages() throws IOException
 		{
-		List classes = SubclassFinder
+		@NotNull List classes = SubclassFinder
 				.findRecursive("com.davidsoergel.dsutils", ChainedException.class, new BasicIncrementor(null, null));
 		assert classes.contains(PluginException.class);
 		assert classes.contains(SubclassFinderTestException.class);
@@ -73,8 +74,10 @@ public class SubclassFinderTest//extends TestCase
 	@Test
 	public void subclassFinderWorksWithGenericInheritance() throws NoSuchFieldException, IOException
 		{
-		ParameterizedType t = (ParameterizedType) (this.getClass().getField("testGenericFieldNumber").getGenericType());
-		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t, new BasicIncrementor(null, null));
+		@NotNull ParameterizedType t =
+				(ParameterizedType) (this.getClass().getField("testGenericFieldNumber").getGenericType());
+		@NotNull List classes =
+				SubclassFinder.findRecursive("com.davidsoergel.dsutils", t, new BasicIncrementor(null, null));
 		assert classes.size() == 2;
 		assert classes.contains(TestGenericClassOne.class);
 		assert classes.contains(TestGenericClassTwo.class);
@@ -83,9 +86,10 @@ public class SubclassFinderTest//extends TestCase
 	@Test
 	public void subclassFinderWorksWithSpecificGenerics() throws NoSuchFieldException, IOException
 		{
-		ParameterizedType t =
+		@NotNull ParameterizedType t =
 				(ParameterizedType) (this.getClass().getField("testGenericFieldInteger").getGenericType());
-		List classes = SubclassFinder.findRecursive("com.davidsoergel.dsutils", t, new BasicIncrementor(null, null));
+		@NotNull List classes =
+				SubclassFinder.findRecursive("com.davidsoergel.dsutils", t, new BasicIncrementor(null, null));
 		assert classes.size() == 1;
 		assert classes.contains(TestGenericClassOne.class);
 

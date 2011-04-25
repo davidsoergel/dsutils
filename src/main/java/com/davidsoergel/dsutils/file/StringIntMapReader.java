@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,11 +17,12 @@ public class StringIntMapReader
 	{
 	private static final Logger logger = Logger.getLogger(StringIntMapReader.class);
 
+	@NotNull
 	public static Map<String, Integer> read(String filename) throws IOException
 		{
-		Map<String, Integer> result = new HashMap<String, Integer>();
+		@NotNull Map<String, Integer> result = new HashMap<String, Integer>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
 			{
 			String line;
@@ -36,7 +38,7 @@ public class StringIntMapReader
 				try
 					{
 					String key = numbers[0];
-					Integer value = new Integer(numbers[1]);
+					@NotNull Integer value = new Integer(numbers[1]);
 					result.put(key, value);
 					i++;
 					}

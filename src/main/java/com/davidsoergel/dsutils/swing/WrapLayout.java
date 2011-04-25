@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.swing;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 /**
@@ -52,7 +54,8 @@ public class WrapLayout extends FlowLayout
 	 * @param target the component which needs to be laid out
 	 * @return the preferred dimensions to lay out the subcomponents of the specified container
 	 */
-	public Dimension preferredLayoutSize(Container target)
+	@NotNull
+	public Dimension preferredLayoutSize(@NotNull Container target)
 		{
 		return layoutSize(target, true);
 		}
@@ -64,7 +67,8 @@ public class WrapLayout extends FlowLayout
 	 * @param target the component which needs to be laid out
 	 * @return the minimum dimensions to lay out the subcomponents of the specified container
 	 */
-	public Dimension minimumLayoutSize(Container target)
+	@NotNull
+	public Dimension minimumLayoutSize(@NotNull Container target)
 		{
 		return layoutSize(target, false);
 		}
@@ -76,7 +80,8 @@ public class WrapLayout extends FlowLayout
 	 * @param preferred should preferred size be calculated
 	 * @return the dimension to layout the target container
 	 */
-	private Dimension layoutSize(Container target, boolean preferred)
+	@NotNull
+	private Dimension layoutSize(@NotNull Container target, boolean preferred)
 		{
 		synchronized (target.getTreeLock())
 			{
@@ -99,7 +104,7 @@ public class WrapLayout extends FlowLayout
 
 			//  Fit components into the allowed width
 
-			Dimension dim = new Dimension(0, 0);
+			@NotNull Dimension dim = new Dimension(0, 0);
 			int rowWidth = 0;
 			int rowHeight = 0;
 
@@ -158,7 +163,7 @@ public class WrapLayout extends FlowLayout
 	 *  @param rowWidth the width of the row to add
 	 *  @param rowHeight the height of the row to add
 	 */
-	private void addRow(Dimension dim, int rowWidth, int rowHeight)
+	private void addRow(@NotNull Dimension dim, int rowWidth, int rowHeight)
 		{
 		dim.width = Math.max(dim.width, rowWidth);
 

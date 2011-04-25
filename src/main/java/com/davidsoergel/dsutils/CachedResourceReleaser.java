@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ public class CachedResourceReleaser
 		return _instance;
 		}*/
 
+	@NotNull
 	private static Set<HasReleaseableResources> resourceHogs = new HashSet<HasReleaseableResources>();
 
 	public static synchronized void register(HasReleaseableResources obj)
@@ -28,7 +31,7 @@ public class CachedResourceReleaser
 	 */
 	public static synchronized void release()
 		{
-		for (HasReleaseableResources resourceHog : resourceHogs)
+		for (@NotNull HasReleaseableResources resourceHog : resourceHogs)
 			{
 			resourceHog.releaseCachedResources();
 			}

@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -59,9 +61,9 @@ public class StreamUtils
 	/**
 	 * Pipe an InputStream to an OutputStream.
 	 */
-	public static void pipe(InputStream in, OutputStream out) throws IOException
+	public static void pipe(@NotNull InputStream in, @NotNull OutputStream out) throws IOException
 		{
-		byte[] b = new byte[512];
+		@NotNull byte[] b = new byte[512];
 		int x = in.read(b, 0, b.length);
 
 		while (x > 0)
@@ -77,11 +79,12 @@ public class StreamUtils
 	/**
 	 * @return the contents of the File in a StringBuffer.
 	 */
-	public static StringBuffer getFileContents(File pFile) throws FileNotFoundException, IOException
+	@NotNull
+	public static StringBuffer getFileContents(@NotNull File pFile) throws FileNotFoundException, IOException
 		{
-		StringBuffer returnBuffer = new StringBuffer();
-		DataInputStream inStream = null;
-		String data = null;
+		@NotNull StringBuffer returnBuffer = new StringBuffer();
+		@Nullable DataInputStream inStream = null;
+		@Nullable String data = null;
 
 		try
 			{

@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.collections.DSCollectionUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ public class BasicEqualsRange<T> implements DiscreteRange<T>
 		this.theObject = theObject;
 		}
 
+	@NotNull
 	public Set<T> getValues()
 		{
 		return DSCollectionUtils.setOf(theObject);

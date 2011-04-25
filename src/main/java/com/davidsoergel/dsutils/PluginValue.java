@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -29,7 +32,7 @@ public class PluginValue implements Serializable, Comparable
 		}
 
 	@Override
-	public boolean equals(final Object o)
+	public boolean equals(@Nullable final Object o)
 		{
 		if (this == o)
 			{
@@ -40,7 +43,7 @@ public class PluginValue implements Serializable, Comparable
 			return false;
 			}
 
-		final PluginValue that = (PluginValue) o;
+		@NotNull final PluginValue that = (PluginValue) o;
 
 		if (value != null ? !value.equals(that.value) : that.value != null)
 			{
@@ -56,7 +59,7 @@ public class PluginValue implements Serializable, Comparable
 		return value != null ? value.hashCode() : 0;
 		}
 
-	public int compareTo(final Object o)
+	public int compareTo(@NotNull final Object o)
 		{
 		return toString().compareTo(o.toString());
 		}

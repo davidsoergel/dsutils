@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,15 +15,17 @@ import java.util.Map;
  */
 public class Dereplicator<T>
 	{
+	@NotNull
 	private Map<T, T> objects = new HashMap<T, T>();
 
-	public T derep(T o)
+	@Nullable
+	public T derep(@Nullable T o)
 		{
 		if (o == null)
 			{
 			return null;
 			}
-		T result = objects.get(o);
+		@Nullable T result = objects.get(o);
 		if (result == null)
 			{
 			objects.put(o, o);

@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Encodes and decodes to and from Base64 notation.
@@ -103,6 +105,7 @@ public class Base64
 	/**
 	 * The 64 valid Base64 values.
 	 */
+	@NotNull
 	private final static byte[] ALPHABET =
 			{(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F', (byte) 'G', (byte) 'H', (byte) 'I',
 			 (byte) 'J', (byte) 'K', (byte) 'L', (byte) 'M', (byte) 'N', (byte) 'O', (byte) 'P', (byte) 'Q', (byte) 'R',
@@ -117,6 +120,7 @@ public class Base64
 	 * Translates a Base64 value to either its 6-bit reconstruction value or a negative number indicating some other
 	 * meaning.
 	 */
+	@NotNull
 	private final static byte[] DECODABET = {-9, -9, -9, -9, -9, -9, -9, -9, -9,
 	                                         // Decimal  0 -  8
 	                                         -5, -5,
@@ -187,6 +191,7 @@ public class Base64
 	 * @return The Base64-encoded object
 	 * @since 1.4
 	 */
+	@Nullable
 	public static String encodeObject(java.io.Serializable serializableObject)
 		{
 		return encodeObject(serializableObject, true);
@@ -201,11 +206,12 @@ public class Base64
 	 * @return The Base64-encoded object
 	 * @since 1.4
 	 */
+	@Nullable
 	public static String encodeObject(java.io.Serializable serializableObject, boolean breakLines)
 		{
-		java.io.ByteArrayOutputStream baos = null;
-		java.io.OutputStream b64os = null;
-		java.io.ObjectOutputStream oos = null;
+		@Nullable java.io.ByteArrayOutputStream baos = null;
+		@Nullable java.io.OutputStream b64os = null;
+		@Nullable java.io.ObjectOutputStream oos = null;
 		try
 			{
 			baos = new java.io.ByteArrayOutputStream();
@@ -253,7 +259,8 @@ public class Base64
 	 * @return the encoded string
 	 * @since 1.3
 	 */
-	public static String encodeString(String s)
+	@NotNull
+	public static String encodeString(@NotNull String s)
 		{
 		return encodeString(s, true);
 		}// end encodeString
@@ -267,7 +274,8 @@ public class Base64
 	 * @return the encoded string
 	 * @since 1.3
 	 */
-	public static String encodeString(String s, boolean breakLines)
+	@NotNull
+	public static String encodeString(@NotNull String s, boolean breakLines)
 		{
 		return encodeBytes(s.getBytes(), breakLines);
 		}// end encodeString
@@ -280,7 +288,8 @@ public class Base64
 	 * @param breakLines Break lines at 80 characters or less.
 	 * @since 1.4
 	 */
-	public static String encodeBytes(byte[] source, boolean breakLines)
+	@NotNull
+	public static String encodeBytes(@NotNull byte[] source, boolean breakLines)
 		{
 		return encodeBytes(source, 0, source.length, breakLines);
 		}// end encodeBytes
@@ -294,12 +303,13 @@ public class Base64
 	 * @param breakLines Break lines at 80 characters or less.
 	 * @since 1.4
 	 */
+	@NotNull
 	public static String encodeBytes(byte[] source, int off, int len, boolean breakLines)
 		{
 		int len43 = len * 4 / 3;
-		byte[] outBuff = new byte[(len43)// Main 4:3
-		                          + ((len % 3) > 0 ? 4 : 0)// Account for padding
-		                          + (breakLines ? (len43 / MAX_LINE_LENGTH) : 0)];// New lines
+		@NotNull byte[] outBuff = new byte[(len43)// Main 4:3
+		                                   + ((len % 3) > 0 ? 4 : 0)// Account for padding
+		                                   + (breakLines ? (len43 / MAX_LINE_LENGTH) : 0)];// New lines
 		int d = 0;
 		int e = 0;
 		int len2 = len - 2;
@@ -389,6 +399,7 @@ public class Base64
 	 * @return four byte array in Base64 notation.
 	 * @since 1.3
 	 */
+	@NotNull
 	private static byte[] encode3to4(byte[] threeBytes)
 		{
 		return encode3to4(threeBytes, 3);
@@ -404,9 +415,10 @@ public class Base64
 	 * @return four byte array in Base64 notation.
 	 * @since 1.3
 	 */
+	@NotNull
 	private static byte[] encode3to4(byte[] threeBytes, int numSigBytes)
 		{
-		byte[] dest = new byte[4];
+		@NotNull byte[] dest = new byte[4];
 		encode3to4(threeBytes, 0, numSigBytes, dest, 0);
 		return dest;
 		}
@@ -419,9 +431,10 @@ public class Base64
 	 * @return The encoded file or <tt>null</tt> if there was an error.
 	 * @since 1.4
 	 */
+	@Nullable
 	public static String encodeFromFile(String rawfile)
 		{
-		byte[] ebytes = readFile(rawfile, ENCODE);
+		@Nullable byte[] ebytes = readFile(rawfile, ENCODE);
 		return ebytes == null ? null : new String(ebytes);
 		}// end encodeFromFile
 
@@ -433,6 +446,7 @@ public class Base64
 	 * @return The encoded/decoded file or <tt>null</tt> if there was an error.
 	 * @since 1.4
 	 */
+	@Nullable
 	public static byte[] readFile(String file, boolean encode)
 		{
 		return readFile(new java.io.File(file), encode);
@@ -446,13 +460,14 @@ public class Base64
 	 * @return The encoded/decoded file or <tt>null</tt> if there was an error.
 	 * @since 1.4
 	 */
+	@Nullable
 	public static byte[] readFile(java.io.File file, boolean encode)
 		{
-		byte[] data = new byte[100];
-		byte[] returnValue = null;
+		@NotNull byte[] data = new byte[100];
+		@Nullable byte[] returnValue = null;
 		int nextIndex = 0;
 		int b = -1;
-		Base64.InputStream bis = null;
+		@Nullable Base64.InputStream bis = null;
 		try
 			{
 			bis = new Base64.InputStream(new java.io.BufferedInputStream(new java.io.FileInputStream(file)), encode);
@@ -461,7 +476,7 @@ public class Base64
 				// Resize array?
 				if (nextIndex >= data.length)
 					{
-					byte[] temp = new byte[data.length << 1];
+					@NotNull byte[] temp = new byte[data.length << 1];
 					System.arraycopy(data, 0, temp, 0, data.length);
 					data = temp;
 					}// end if: resize array
@@ -495,6 +510,7 @@ public class Base64
 	 * @return The decoded file or <tt>null</tt> if there was an error.
 	 * @since 1.4
 	 */
+	@Nullable
 	public static byte[] decodeFromFile(String encfile)
 		{
 		return readFile(encfile, DECODE);
@@ -508,7 +524,7 @@ public class Base64
 	 * @return Whether or not the write was a success.
 	 * @since 1.4
 	 */
-	public static boolean encodeToFile(byte[] rawdata, String file)
+	public static boolean encodeToFile(@NotNull byte[] rawdata, String file)
 		{
 		return writeFile(rawdata, file, ENCODE);
 		}// end encodeFromFile
@@ -522,7 +538,7 @@ public class Base64
 	 * @return Whether or not the write was a success.
 	 * @since 1.4
 	 */
-	public static boolean writeFile(byte[] data, String file, boolean encode)
+	public static boolean writeFile(@NotNull byte[] data, String file, boolean encode)
 		{
 		return writeFile(data, 0, data.length, new java.io.File(file), encode);
 		}// end writeFile
@@ -536,7 +552,7 @@ public class Base64
 	 * @return Whether or not the write was a success.
 	 * @since 1.4
 	 */
-	public static boolean writeFile(byte[] data, java.io.File file, boolean encode)
+	public static boolean writeFile(@NotNull byte[] data, java.io.File file, boolean encode)
 		{
 		return writeFile(data, 0, data.length, file, encode);
 		}// end writeFile
@@ -554,7 +570,7 @@ public class Base64
 	 */
 	public static boolean writeFile(byte[] data, int offset, int length, java.io.File file, boolean encode)
 		{
-		Base64.OutputStream bos = null;
+		@Nullable Base64.OutputStream bos = null;
 		boolean success = false;
 		try
 			{
@@ -587,7 +603,7 @@ public class Base64
 	 * @return Whether or not the write was a success.
 	 * @since 1.4
 	 */
-	public static boolean decodeToFile(byte[] encdata, String file)
+	public static boolean decodeToFile(@NotNull byte[] encdata, String file)
 		{
 		return writeFile(encdata, file, DECODE);
 		}// end encodeFromFile
@@ -600,7 +616,8 @@ public class Base64
 	 * @return The data as a string
 	 * @since 1.4
 	 */
-	public static String decodeToString(String s)
+	@NotNull
+	public static String decodeToString(@NotNull String s)
 		{
 		return new String(decode(s));
 		}// end decodeToString
@@ -612,7 +629,8 @@ public class Base64
 	 * @return the decoded data
 	 * @since 1.4
 	 */
-	public static byte[] decode(String s)
+	@Nullable
+	public static byte[] decode(@NotNull String s)
 		{
 		byte[] bytes = s.getBytes();
 		return decode(bytes, 0, bytes.length);
@@ -627,12 +645,13 @@ public class Base64
 	 * @return decoded data
 	 * @since 1.3
 	 */
+	@Nullable
 	public static byte[] decode(byte[] source, int off, int len)
 		{
 		int len34 = len * 3 / 4;
-		byte[] outBuff = new byte[len34];// Upper limit on size of output
+		@NotNull byte[] outBuff = new byte[len34];// Upper limit on size of output
 		int outBuffPosn = 0;
-		byte[] b4 = new byte[4];
+		@NotNull byte[] b4 = new byte[4];
 		int b4Posn = 0;
 		int i = 0;
 		byte sbiCrop = 0;
@@ -665,7 +684,7 @@ public class Base64
 				return null;
 				}// end else:
 			}// each input character
-		byte[] out = new byte[outBuffPosn];
+		@NotNull byte[] out = new byte[outBuffPosn];
 		System.arraycopy(outBuff, 0, out, 0, outBuffPosn);
 		return out;
 		}// end decode
@@ -751,11 +770,12 @@ public class Base64
 	 * @return The decoded and deserialized object
 	 * @since 1.4
 	 */
-	public static Object decodeToObject(String encodedObject)
+	@Nullable
+	public static Object decodeToObject(@NotNull String encodedObject)
 		{
-		byte[] objBytes = decode(encodedObject);
-		java.io.ByteArrayInputStream bais = null;
-		java.io.ObjectInputStream ois = null;
+		@Nullable byte[] objBytes = decode(encodedObject);
+		@Nullable java.io.ByteArrayInputStream bais = null;
+		@Nullable java.io.ObjectInputStream ois = null;
 		try
 			{
 			bais = new java.io.ByteArrayInputStream(objBytes);
@@ -801,11 +821,12 @@ public class Base64
 	 * @return array with decoded values
 	 * @since 1.3
 	 */
+	@NotNull
 	private static byte[] decode4to3(byte[] fourBytes)
 		{
-		byte[] outBuff1 = new byte[3];
+		@NotNull byte[] outBuff1 = new byte[3];
 		int count = decode4to3(fourBytes, 0, outBuff1, 0);
-		byte[] outBuff2 = new byte[count];
+		@NotNull byte[] outBuff2 = new byte[count];
 		for (int i = 0; i < count; i++)
 			{
 			outBuff2[i] = outBuff1[i];
@@ -903,7 +924,7 @@ public class Base64
 				{
 				if (encode)
 					{
-					byte[] b3 = new byte[3];
+					@NotNull byte[] b3 = new byte[3];
 					int numBinaryBytes = 0;
 					for (int i = 0; i < 3; i++)
 						{
@@ -942,7 +963,7 @@ public class Base64
 				// Else decoding
 				else
 					{
-					byte[] b4 = new byte[4];
+					@NotNull byte[] b4 = new byte[4];
 					int i = 0;
 					for (i = 0; i < 4; i++)
 						{
@@ -1065,6 +1086,7 @@ public class Base64
 		{
 		private boolean encode;
 		private int position;
+		@Nullable
 		private byte[] buffer;
 		private int bufferLength;
 		private int lineLength;
@@ -1408,6 +1430,7 @@ public class Base64
 			 }
 		 }// end main
  */
+
 	/**
 	 * Encodes a byte array into Base64 notation.
 	 *
@@ -1416,6 +1439,7 @@ public class Base64
 	 * @param len    Length of data to convert
 	 * @since 1.4
 	 */
+	@NotNull
 	public static String encodeBytes(byte[] source, int off, int len)
 		{
 		return encodeBytes(source, off, len, true);
@@ -1428,7 +1452,8 @@ public class Base64
 	 * @param source The data to convert
 	 * @since 1.4
 	 */
-	public static String encodeBytes(byte[] source)
+	@NotNull
+	public static String encodeBytes(@NotNull byte[] source)
 		{
 		return encodeBytes(source, true);
 		}// end encodeBytes

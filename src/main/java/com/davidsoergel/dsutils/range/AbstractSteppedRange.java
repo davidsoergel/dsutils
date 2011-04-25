@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.range;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -59,11 +61,13 @@ public abstract class AbstractSteppedRange<T extends Number & Comparable<T> & Se
 */
 
 
-	public AbstractSetRange<T> expandToInclude(AbstractSteppedRange<T> v)
+	@NotNull
+	public AbstractSetRange<T> expandToInclude(@NotNull AbstractSteppedRange<T> v)
 		{
 		return asSetRange().expandToInclude(v);
 		}
 
+	@NotNull
 	protected abstract AbstractSetRange<T> asSetRange();
 	}
 

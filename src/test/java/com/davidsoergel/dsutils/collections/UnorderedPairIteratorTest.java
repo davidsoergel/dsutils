@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -14,12 +15,12 @@ public class UnorderedPairIteratorTest
 	@Test
 	public void iteratorBehavesAsExpected()
 		{
-		Set<String> s1 = DSCollectionUtils.setOf("a", "b", "c");
-		Set<String> s2 = DSCollectionUtils.setOf("d", "e", "f", "g");
+		@NotNull Set<String> s1 = DSCollectionUtils.setOf("a", "b", "c");
+		@NotNull Set<String> s2 = DSCollectionUtils.setOf("d", "e", "f", "g");
 
 
 		// note some orders reversed
-		Set<UnorderedPair<String>> expected = DSCollectionUtils
+		@NotNull Set<UnorderedPair<String>> expected = DSCollectionUtils
 				.setOf(new UnorderedPair<String>("a", "d"), new UnorderedPair<String>("a", "e"),
 				       new UnorderedPair<String>("a", "f"), new UnorderedPair<String>("a", "g"),
 				       new UnorderedPair<String>("b", "d"), new UnorderedPair<String>("b", "e"),
@@ -27,13 +28,13 @@ public class UnorderedPairIteratorTest
 				       new UnorderedPair<String>("d", "c"), new UnorderedPair<String>("c", "e"),
 				       new UnorderedPair<String>("c", "f"), new UnorderedPair<String>("c", "g"));
 
-		UnorderedPairIterator<String> iter = new UnorderedPairIterator<String>(s1, s2);
+		@NotNull UnorderedPairIterator<String> iter = new UnorderedPairIterator<String>(s1, s2);
 
-		Set<UnorderedPair<String>> expectedCountdown = new HashSet<UnorderedPair<String>>(expected);
-		Set<UnorderedPair<String>> observed = new HashSet<UnorderedPair<String>>();
+		@NotNull Set<UnorderedPair<String>> expectedCountdown = new HashSet<UnorderedPair<String>>(expected);
+		@NotNull Set<UnorderedPair<String>> observed = new HashSet<UnorderedPair<String>>();
 		while (iter.hasNext())
 			{
-			final UnorderedPair<String> pair = iter.next();
+			@NotNull final UnorderedPair<String> pair = iter.next();
 			assert expectedCountdown.remove(pair);
 			observed.add(pair);
 			}

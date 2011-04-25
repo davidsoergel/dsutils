@@ -33,6 +33,9 @@
 
 package com.davidsoergel.dsutils.math;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -160,6 +163,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	private static final int TEMPERING_MASK_C = 0xefc60000;
 
 
+	@NotNull
 	private static final ThreadLocal<MersenneTwisterFast> tl = new ThreadLocal<MersenneTwisterFast>();
 
 	private int mt[];// the array for the state vector
@@ -535,7 +539,8 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	private static Boolean initLock = false;
+	@NotNull
+	private static final Boolean initLock = false;
 
 	/**
 	 * Constructor using the default seed.  Users should use static methods for thread safety.
@@ -601,7 +606,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	 * in the array are used; if the array is shorter than this then integers are repeatedly used in a wrap-around
 	 * fashion.
 	 */
-	public MersenneTwisterFast(final int[] array)
+	public MersenneTwisterFast(@NotNull final int[] array)
 		{
 		setSeed(array);
 		}
@@ -612,7 +617,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	 * wrap-around fashion.
 	 */
 
-	synchronized public void setSeed(final int[] array)
+	synchronized public void setSeed(@NotNull final int[] array)
 		{
 		if (array.length == 0)
 			{
@@ -657,9 +662,10 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 
 	/* We're overriding all internal data, to my knowledge, so this should be okay */
 
+	@NotNull
 	public Object clone() throws CloneNotSupportedException
 		{
-		MersenneTwisterFast f = (MersenneTwisterFast) (super.clone());
+		@NotNull MersenneTwisterFast f = (MersenneTwisterFast) (super.clone());
 		f.mt = (int[]) (mt.clone());
 		f.mag01 = (int[]) (mag01.clone());
 		return f;
@@ -705,7 +711,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	/**
 	 * Reads the entire state of the MersenneTwister RNG from the stream
 	 */
-	public void readState(DataInputStream stream) throws IOException
+	public void readState(@NotNull DataInputStream stream) throws IOException
 		{
 		int len = mt.length;
 		for (int x = 0; x < len; x++)
@@ -724,7 +730,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 		__haveNextNextGaussian = stream.readBoolean();
 		}
 
-	public boolean stateEquals(Object o)
+	public boolean stateEquals(@Nullable Object o)
 		{
 		if (o == this)
 			{
@@ -734,7 +740,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 			{
 			return false;
 			}
-		MersenneTwisterFast other = (MersenneTwisterFast) o;
+		@NotNull MersenneTwisterFast other = (MersenneTwisterFast) o;
 		if (mti != other.mti)
 			{
 			return false;
@@ -759,7 +765,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 	/**
 	 * Writes the entire state of the MersenneTwister RNG to the stream
 	 */
-	public void writeState(DataOutputStream stream) throws IOException
+	public void writeState(@NotNull DataOutputStream stream) throws IOException
 		{
 		int len = mt.length;
 		for (int x = 0; x < len; x++)
@@ -821,7 +827,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 		System.out.println("\nTime to test grabbing 100000000 ints");
 
 		long SEED = 4357;
-		Random rr = new Random(SEED);
+		@NotNull Random rr = new Random(SEED);
 		xx = 0;
 		ms = System.currentTimeMillis();
 		for (j = 0; j < 100000000; j++)
@@ -888,7 +894,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 			System.out.println();
 			}
 
-		byte[] bytes = new byte[1000];
+		@NotNull byte[] bytes = new byte[1000];
 		System.out.println("\nGrab the first 1000 bytes using nextBytes");
 		r = new MersenneTwisterFast(SEED);
 		r.nextBytes(bytes);
@@ -1228,7 +1234,7 @@ public class MersenneTwisterFast implements Serializable, Cloneable
 		return (y >>> 8) / ((float) (1 << 24)) < probability;
 		}
 
-	public final void nextBytes(byte[] bytes)
+	public final void nextBytes(@NotNull byte[] bytes)
 		{
 		int y;
 

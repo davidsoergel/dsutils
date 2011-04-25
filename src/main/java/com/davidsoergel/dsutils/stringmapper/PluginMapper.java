@@ -2,6 +2,8 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.PluginValue;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -20,6 +22,7 @@ public class PluginMapper extends StringMapper<PluginValue>
 		PluginMapper.classLoader = classLoader;
 		}
 
+	@NotNull
 	public Type[] basicTypes()
 		{
 		return new Type[]{PluginValue.class};
@@ -30,7 +33,8 @@ public class PluginMapper extends StringMapper<PluginValue>
 		//super();
 		}
 
-	public PluginValue parse(String s) throws StringMapperException
+	@NotNull
+	public PluginValue parse(@Nullable String s) throws StringMapperException
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
@@ -47,12 +51,13 @@ public class PluginMapper extends StringMapper<PluginValue>
 		//	}
 		}
 
-	public String render(PluginValue value)
+	@NotNull
+	public String render(@Nullable PluginValue value)
 		{
 		return value == null ? "null" : value.getValue(); //getCanonicalName();
 		}
 
-	public String renderAbbreviated(PluginValue value)
+	public String renderAbbreviated(@Nullable PluginValue value)
 		{
 		if (value == null)
 			{

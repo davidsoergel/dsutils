@@ -36,6 +36,8 @@ import com.davidsoergel.dsutils.SubclassFinder;
 import com.davidsoergel.dsutils.TypeUtils;
 import com.davidsoergel.dsutils.increment.BasicIncrementor;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -52,8 +54,10 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 	{
 	private static final Logger logger = Logger.getLogger(TypedValueStringMapper.class);
 
+	@NotNull
 	static TypedValueStringMapper _instance = new TypedValueStringMapper().init();
 
+	@NotNull
 	public static StringMapper get(Type c) throws StringMapperException
 		{
 		StringMapper stringMapper = ((HashMap<Type, StringMapper>) _instance).get(c);
@@ -89,19 +93,20 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		return _instance.put(k, v);
 		}
 
+	@NotNull
 	public TypedValueStringMapper init()
 		{
 		try
 			{
 			// Don't use PluginManager here; no need to allow other packages or to cache the results
-			for (Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class,
-			                                   new BasicIncrementor(null, null)))
+			for (@NotNull Class c : SubclassFinder.find("com.davidsoergel.dsutils.stringmapper", StringMapper.class,
+			                                            new BasicIncrementor(null, null)))
 				{
 				if (!c.equals(StringMapper.class) && TypeUtils.isAssignableFrom(StringMapper.class, c))
 					{
 					//try
 					//	{
-					StringMapper sm = (StringMapper) (c.newInstance());
+					@NotNull StringMapper sm = (StringMapper) (c.newInstance());
 					for (Type t : sm.basicTypes())
 						{
 						put(t, sm);
@@ -134,7 +139,8 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static Object parse(Type type, String s) throws StringMapperException
+	@Nullable
+	public static Object parse(@NotNull Type type, String s) throws StringMapperException
 		{
 		if (type instanceof Class && ((Class) type).isEnum())
 			{
@@ -159,7 +165,7 @@ public class TypedValueStringMapper extends HashMap<Type, StringMapper>
 		else
 			{
 			// see if the string names a class that is assignable to the given type
-			Class c = (Class) (get(Class.class).parse(s));
+			@NotNull Class c = (Class) (get(Class.class).parse(s));
 			if (TypeUtils.isAssignableFrom(type, c))//s(Class) type).isAssignableFrom(c))
 				{
 				return c;

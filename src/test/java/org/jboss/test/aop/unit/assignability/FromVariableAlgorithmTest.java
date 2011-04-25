@@ -34,6 +34,8 @@ package org.jboss.test.aop.unit.assignability;
 import junit.framework.TestCase;
 import org.jboss.aop.advice.annotation.assignability.AssignabilityAlgorithm;
 import org.jboss.aop.advice.annotation.assignability.VariableHierarchy;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -47,6 +49,7 @@ public class FromVariableAlgorithmTest extends TestCase
 	{
 	// ------------------------------ FIELDS ------------------------------
 
+	@NotNull
 	private static Class[] NO_ARGS = new Class[0];
 	AssignabilityAlgorithm algorithm;
 	VariableHierarchy hierarchy;
@@ -54,6 +57,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// -------------------------- OTHER METHODS --------------------------
 
+	@Nullable
 	<A extends String> Collection<A> called4()
 		{
 		return null;
@@ -61,11 +65,13 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 1
 
+	@Nullable
 	Collection<String> caller1()
 		{
 		return called1();
 		}
 
+	@Nullable
 	<A> Collection<A> called1()
 		{
 		return null;
@@ -73,6 +79,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 10
 
+	@Nullable
 	Collection<Runnable> caller10(Collection<Runnable> arg)
 		{
 		return called8(arg);
@@ -80,6 +87,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 11
 
+	@Nullable
 	Collection<? extends List> caller11(Collection<Runnable> arg)
 		{
 		//return called8(arg);
@@ -88,11 +96,13 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 2
 
+	@Nullable
 	Collection<String> caller2()
 		{
 		return called2();
 		}
 
+	@Nullable
 	<A extends String> Collection<A> called2()
 		{
 		return null;
@@ -100,6 +110,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 3
 
+	@Nullable
 	Collection<Runnable> caller3()
 		{
 		//return called2();
@@ -108,6 +119,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 4
 
+	@Nullable
 	Collection<?> caller4()
 		{
 		// (ignore) TODO fix algorithm here
@@ -117,6 +129,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 5
 
+	@Nullable
 	Collection<? extends Runnable> caller5()
 		{
 		//return called4();
@@ -125,11 +138,13 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 6
 
+	@Nullable
 	Collection<?> caller6()
 		{
 		return called6();
 		}
 
+	@Nullable
 	<A> Collection<A> called6()
 		{
 		return null;
@@ -137,6 +152,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 7
 
+	@Nullable
 	Collection<? extends Runnable> caller7()
 		{
 		return called6();
@@ -144,11 +160,13 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 8
 
+	@Nullable
 	Collection<?> caller8(Collection<Runnable> arg)
 		{
 		return called8(arg);
 		}
 
+	@Nullable
 	<A> Collection<A> called8(Collection<A> arg)
 		{
 		return null;
@@ -156,6 +174,7 @@ public class FromVariableAlgorithmTest extends TestCase
 
 	// Scenario 9
 
+	@Nullable
 	Collection<? extends Runnable> caller9(Collection<Runnable> arg)
 		{
 		return called8(arg);
@@ -187,9 +206,9 @@ public class FromVariableAlgorithmTest extends TestCase
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller10", new Class[]{Collection.class});
 		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET
+				           .isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+				                         hierarchy));
 		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 
@@ -197,9 +216,9 @@ public class FromVariableAlgorithmTest extends TestCase
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller11", new Class[]{Collection.class});
 		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET
+				           .isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+				                         hierarchy));
 		assertFalse(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 
@@ -237,9 +256,9 @@ public class FromVariableAlgorithmTest extends TestCase
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller8", new Class[]{Collection.class});
 		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET
+				           .isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+				                         hierarchy));
 		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 
@@ -247,9 +266,9 @@ public class FromVariableAlgorithmTest extends TestCase
 		{
 		Method caller = this.getClass().getDeclaredMethod("caller9", new Class[]{Collection.class});
 		Method called = this.getClass().getDeclaredMethod("called8", new Class[]{Collection.class});
-		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(called.getGenericParameterTypes()[0],
-		                                                               caller.getGenericParameterTypes()[0],
-		                                                               hierarchy));
+		assertTrue(AssignabilityAlgorithm.VARIABLE_TARGET
+				           .isAssignable(called.getGenericParameterTypes()[0], caller.getGenericParameterTypes()[0],
+				                         hierarchy));
 		assertTrue(algorithm.isAssignable(caller.getGenericReturnType(), called.getGenericReturnType(), hierarchy));
 		}
 	}

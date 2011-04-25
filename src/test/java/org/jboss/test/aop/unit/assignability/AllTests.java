@@ -33,6 +33,7 @@ package org.jboss.test.aop.unit.assignability;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
@@ -42,9 +43,10 @@ public class AllTests
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
+	@NotNull
 	public static Test suite()
 		{
-		TestSuite suite = new TestSuite("Test for org.jboss.test.aop.unit.assignability");
+		@NotNull TestSuite suite = new TestSuite("Test for org.jboss.test.aop.unit.assignability");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ClassTypeTest.class);
 		suite.addTestSuite(GenericArrayTypeTest.class);

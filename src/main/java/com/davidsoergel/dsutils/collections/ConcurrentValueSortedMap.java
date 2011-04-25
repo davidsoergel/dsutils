@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 				}
 			});*/
 
+	@NotNull
 	private final ConcurrentHashMap<K, V> map;
 
 	private final ConcurrentSkipListSet<OrderedPair<K, V>> sortedPairs;
@@ -55,7 +57,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 	 *
 	 * @param cloneFrom
 	 */
-	public ConcurrentValueSortedMap(final ConcurrentValueSortedMap<K, V> cloneFrom)
+	public ConcurrentValueSortedMap(@NotNull final ConcurrentValueSortedMap<K, V> cloneFrom)
 		{
 		//map.putAll(cloneFrom.map);
 		map = new ConcurrentHashMap<K, V>(cloneFrom.getMap());
@@ -76,6 +78,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		return sortedPairs;
 		}
 
+	@NotNull
 	public ConcurrentHashMap<K, V> getMap()
 		{
 		return map;
@@ -147,7 +150,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 
 
 	// should be synchronized?
-	public void put(final K key, final V val)
+	public void put(@NotNull final K key, @NotNull final V val)
 		{
 		remove(key);
 
@@ -164,7 +167,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		//	sanityCheck();
 		}
 
-	public synchronized void remove(final K key)
+	public synchronized void remove(@NotNull final K key)
 		{
 		V val = map.get(key);
 		if (val != null)
@@ -173,7 +176,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 			}
 		}
 
-	public synchronized void remove(final K key, final V val)
+	public synchronized void remove(@NotNull final K key, @NotNull final V val)
 		{
 		//V val = map.get(key);
 		//if (val != null)
@@ -202,11 +205,12 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 		return sortedPairs.isEmpty();
 		}
 
+	@NotNull
 	public ConcurrentLinkedQueue<Map.Entry<K, V>> entriesQueue()
 		{
 		//ConcurrentHashMap<K,V> result = new ConcurrentHashMap<K, V>();
 		//result.putAll(map);
-		ConcurrentLinkedQueue<Map.Entry<K, V>> result = new ConcurrentLinkedQueue<Map.Entry<K, V>>();
+		@NotNull ConcurrentLinkedQueue<Map.Entry<K, V>> result = new ConcurrentLinkedQueue<Map.Entry<K, V>>();
 		result.addAll(map.entrySet());
 		return result;
 //		ConcurrentSkipListSet<Map.Entry<K, V>>(entrySet());

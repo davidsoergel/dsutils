@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.math.LongRational;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -52,8 +53,8 @@ public class MultiIntervalIntersectionTest//extends TestCase
 	@Test
 	public void multiIntervalIntersectionOfDoublesWorks()
 		{
-		Set<Set<BasicInterval<Double>>> a = new HashSet<Set<BasicInterval<Double>>>();
-		Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
+		@NotNull Set<Set<BasicInterval<Double>>> a = new HashSet<Set<BasicInterval<Double>>>();
+		@NotNull Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
 		as.add(new BasicInterval<Double>(0.123, 0.456, true, true));
 		as.add(new BasicInterval<Double>(2.2, 3.3, true, true));
 		as.add(new BasicInterval<Double>(4.4, 5.5, true, true));
@@ -71,7 +72,7 @@ public class MultiIntervalIntersectionTest//extends TestCase
 		as.add(new BasicInterval<Double>(5.45, 5.5, true, true));
 		a.add(as);
 
-		Set<Interval<Double>> result = new MultiIntervalIntersection<Double>(a);
+		@NotNull Set<Interval<Double>> result = new MultiIntervalIntersection<Double>(a);
 
 		assert result.size() == 2;
 		assert result.contains(new BasicInterval<Double>(0.123, 0.456, true, true));
@@ -81,8 +82,8 @@ public class MultiIntervalIntersectionTest//extends TestCase
 	@Test
 	public void multiIntervalIntersectionOfDoublesDealsWithOverlappingInputsCorrectly()
 		{
-		Set<Set<BasicInterval<Double>>> a = new HashSet<Set<BasicInterval<Double>>>();
-		Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
+		@NotNull Set<Set<BasicInterval<Double>>> a = new HashSet<Set<BasicInterval<Double>>>();
+		@NotNull Set<BasicInterval<Double>> as = new HashSet<BasicInterval<Double>>();
 		as.add(new BasicInterval<Double>(0.123, 0.456, true, true));
 		as.add(new BasicInterval<Double>(.4, 5., true, true));
 		as.add(new BasicInterval<Double>(4.4, 5.5, true, true));
@@ -100,7 +101,7 @@ public class MultiIntervalIntersectionTest//extends TestCase
 		as.add(new BasicInterval<Double>(5.45, 5.5, true, true));
 		a.add(as);
 
-		Set<Interval<Double>> result = new MultiIntervalIntersection<Double>(a);
+		@NotNull Set<Interval<Double>> result = new MultiIntervalIntersection<Double>(a);
 
 		assert result.size() == 3;
 		assert result.contains(new BasicInterval<Double>(0.123, 1., true, false));
@@ -111,8 +112,8 @@ public class MultiIntervalIntersectionTest//extends TestCase
 	@Test
 	public void multiIntervalClosedIntersectionOfLongRationalsWorks()
 		{
-		Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
-		Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
+		@NotNull Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
+		@NotNull Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 7000), new LongRational(3, 7000), true, true));
 		as.add(new BasicInterval<LongRational>(new LongRational(1, 5), new LongRational(2, 5), true, true));
 		as.add(new BasicInterval<LongRational>(new LongRational(5, 6), new LongRational(1, 1), true, true));
@@ -130,7 +131,7 @@ public class MultiIntervalIntersectionTest//extends TestCase
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 3), new LongRational(3, 3), true, true));
 		a.add(as);
 
-		MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
+		@NotNull MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
 
 		assert result.size() == 3;
 		assert result.contains(
@@ -151,8 +152,8 @@ public class MultiIntervalIntersectionTest//extends TestCase
 	@Test
 	public void multiIntervalOpenIntersectionOfLongRationalsWorks()
 		{
-		Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
-		Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
+		@NotNull Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
+		@NotNull Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 7000), new LongRational(3, 7000), false, false));
 		as.add(new BasicInterval<LongRational>(new LongRational(1, 5), new LongRational(2, 5), false, false));
 		as.add(new BasicInterval<LongRational>(new LongRational(5, 6), new LongRational(1, 1), false, false));
@@ -170,7 +171,7 @@ public class MultiIntervalIntersectionTest//extends TestCase
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 3), new LongRational(3, 3), false, false));
 		a.add(as);
 
-		MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
+		@NotNull MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
 
 		assert result.size() == 2;
 		assert result.contains(
@@ -194,8 +195,8 @@ public class MultiIntervalIntersectionTest//extends TestCase
 	@Test
 	public void multiIntervalMixedOpenClosedIntersectionOfLongRationalsWorks()
 		{
-		Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
-		Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
+		@NotNull Set<Set<BasicInterval<LongRational>>> a = new HashSet<Set<BasicInterval<LongRational>>>();
+		@NotNull Set<BasicInterval<LongRational>> as = new HashSet<BasicInterval<LongRational>>();
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 7000), new LongRational(3, 7000), false, true));
 		as.add(new BasicInterval<LongRational>(new LongRational(1, 5), new LongRational(2, 5), false, false));
 		as.add(new BasicInterval<LongRational>(new LongRational(5, 6), new LongRational(1, 1), false, false));
@@ -213,7 +214,7 @@ public class MultiIntervalIntersectionTest//extends TestCase
 		as.add(new BasicInterval<LongRational>(new LongRational(2, 3), new LongRational(3, 3), false, false));
 		a.add(as);
 
-		MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
+		@NotNull MultiIntervalIntersection<LongRational> result = new MultiIntervalIntersection<LongRational>(a);
 
 		assert result.size() == 2;
 		assert result.contains(

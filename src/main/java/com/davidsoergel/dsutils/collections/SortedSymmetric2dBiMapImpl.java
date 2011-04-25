@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -66,6 +67,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 	//private V smallestValue;
 	//private KeyPair<K> keyPairWithSmallestValue;
 
+	@NotNull
 	protected SimpleMultiMap<K, UnorderedPair<K>> keyToKeyPairs = new SimpleMultiMap<K, UnorderedPair<K>>();
 
 	// for some reason the HashMultimap didn't seem to work right... occasionally gave the wrong size(), and such.  Maybe concurrency problems.
@@ -78,10 +80,11 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 
 	// public only for the sake of efficient serialization in HierarchicalClusteringStringDistanceMatrix
 
+	@NotNull
 	public ConcurrentValueSortedMap<UnorderedPair<K>, V> keyPairToValueSorted =
 			new ConcurrentValueSortedMap<UnorderedPair<K>, V>();
 
-	public SortedSymmetric2dBiMapImpl(final SortedSymmetric2dBiMapImpl<K, V> cloneFrom)
+	public SortedSymmetric2dBiMapImpl(@NotNull final SortedSymmetric2dBiMapImpl<K, V> cloneFrom)
 		{
 		keyToKeyPairs = new SimpleMultiMap<K, UnorderedPair<K>>(cloneFrom.keyToKeyPairs);
 		keyPairToValueSorted = new ConcurrentValueSortedMap<UnorderedPair<K>, V>(cloneFrom.keyPairToValueSorted);
@@ -99,7 +102,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyPairToValueSorted.get(keyPair);
 		}
 
-	public V get(K key1, K key2)
+	public V get(@NotNull K key1, @NotNull K key2)
 		{
 		return get(new UnorderedPair<K>(key1, key2)); //getKeyPair(key1, key2));
 		}
@@ -109,11 +112,13 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyToKeyPairs.keySet();
 		}
 
+	@NotNull
 	public K getKey1WithSmallestValue()
 		{
 		return getKeyPairWithSmallestValue().getKey1();
 		}
 
+	@NotNull
 	public K getKey2WithSmallestValue()
 		{
 		return getKeyPairWithSmallestValue().getKey2();
@@ -162,11 +167,11 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 							new SymmetricHashMap2D<LengthWeightHierarchyNode<T>, LengthWeightHierarchyNode<T>, Double>();*/
 
 
-	public void put(K key1, K key2, V d)
+	public void put(@NotNull K key1, @NotNull K key2, @NotNull V d)
 		{
 		assert !key1.equals(key2);
 		//sanityCheck();
-		UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
+		@NotNull UnorderedPair<K> pair = new UnorderedPair<K>(key1, key2);
 		keyPairToValueSorted.put(pair, d);
 		keyToKeyPairs.put(key1, pair);
 		keyToKeyPairs.put(key2, pair);
@@ -179,7 +184,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 	 * @param keyPair
 	 * @param d
 	 */
-	protected void put(UnorderedPair<K> keyPair, V d)
+	protected void put(@NotNull UnorderedPair<K> keyPair, @NotNull V d)
 		{
 		keyPairToValueSorted.put(keyPair, d);
 		keyToKeyPairs.put(keyPair.getKey1(), keyPair);
@@ -239,15 +244,15 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		keyToKeyPairs.get(key1);
 		}
 
-	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
+	public synchronized void putAll(@NotNull final Map<UnorderedPair<K>, V> result)
 		{
 		// sanityCheck();
-		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
+		for (@NotNull Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			UnorderedPair<K> pair = entry.getKey();
 
-			final K key1 = pair.getKey1();
-			final K key2 = pair.getKey2();
+			@NotNull final K key1 = pair.getKey1();
+			@NotNull final K key2 = pair.getKey2();
 
 			assert !key1.equals(key2);
 
@@ -258,7 +263,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		// sanityCheck();
 		}
 
-	public synchronized void removeAll(final Collection<K> keys)
+	public synchronized void removeAll(@NotNull final Collection<K> keys)
 		{
 		for (K key : keys)
 			{
@@ -275,8 +280,8 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		{
 		//sanityCheck();
 		int removed = 0;
-		final Collection<UnorderedPair<K>> obsoletePairs = new HashSet<UnorderedPair<K>>(keyToKeyPairs.get(b));
-		for (UnorderedPair<K> pair : obsoletePairs)
+		@NotNull final Collection<UnorderedPair<K>> obsoletePairs = new HashSet<UnorderedPair<K>>(keyToKeyPairs.get(b));
+		for (@NotNull UnorderedPair<K> pair : obsoletePairs)
 			{
 			removed++;
 			//keyPairsInValueOrder.remove(pair);
@@ -284,7 +289,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 
 			// the pair may be in either order; we'll be removing b wholesale later, so
 			// now make sure that a is the element of the pair that is not b
-			K a = pair.getKey1();
+			@NotNull K a = pair.getKey1();
 			if (a.equals(b))
 				{
 				a = pair.getKey2();
@@ -320,13 +325,13 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyPairToValueSorted.entrySet();
 		}
 
-	public void removalSanityCheck(final K b, final Collection<K> keys)
+	public void removalSanityCheck(final K b, @NotNull final Collection<K> keys)
 		{
 		assert !getKeys().contains(b);
-		for (Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
+		for (@NotNull Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
 			{
-			final K k1 = entry.getKey().getKey1();
-			final K k2 = entry.getKey().getKey2();
+			@NotNull final K k1 = entry.getKey().getKey1();
+			@NotNull final K k2 = entry.getKey().getKey2();
 
 			assert !k1.equals(b);
 			assert !k2.equals(b);
@@ -337,6 +342,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		}
 
 
+	@NotNull
 	public ConcurrentLinkedQueue<Map.Entry<UnorderedPair<K>, V>> entriesQueue()
 		{
 		return keyPairToValueSorted.entriesQueue();
@@ -348,6 +354,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		{
 // ------------------------------ FIELDS ------------------------------
 
+		@NotNull
 		private Map<X, Set<Y>> contents = new ConcurrentHashMap<X, Set<Y>>();
 
 		public SimpleMultiMap()
@@ -359,7 +366,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		 *
 		 * @param cloneFrom
 		 */
-		public SimpleMultiMap(final SimpleMultiMap<X, Y> cloneFrom)
+		public SimpleMultiMap(@NotNull final SimpleMultiMap<X, Y> cloneFrom)
 			{
 			contents.putAll(cloneFrom.contents);
 			}
@@ -388,7 +395,7 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 			return contents.size();
 			}
 
-		public void put(final X key1, final Y val)
+		public void put(@NotNull final X key1, @NotNull final Y val)
 			{
 			get(key1).add(val);
 			}

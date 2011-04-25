@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Type;
 
 /**
@@ -8,15 +11,14 @@ import java.lang.reflect.Type;
  */
 public class IntegerMapper extends StringMapper<Integer>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Integer.class,
-				int.class
-		};
+		return new Type[]{Integer.class, int.class};
 		}
 
-	public Integer parse(String s)
+	@Nullable
+	public Integer parse(@Nullable String s)
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
@@ -25,7 +27,7 @@ public class IntegerMapper extends StringMapper<Integer>
 		return new Integer(s);
 		}
 
-	public String render(Integer value)
+	public String render(@NotNull Integer value)
 		{
 		return value.toString();
 		}

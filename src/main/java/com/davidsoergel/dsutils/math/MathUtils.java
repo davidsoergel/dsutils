@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.math;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -61,6 +62,7 @@ public class MathUtils
 
 	private static final Logger logger = Logger.getLogger(MathUtils.class);
 	private static final int FACTORIAL_LIMIT = 100;
+	@NotNull
 	private static double[] factorials = new double[FACTORIAL_LIMIT + 1];
 	// log(x+y)  =  log(x) + log [1 + exp[log(y) - log(x)]]
 	// for x >= y
@@ -322,6 +324,7 @@ public class MathUtils
 	 * @return an array of long containing {a, b, c}
 	 * @throws ArithmeticException if either argument is negative or zero
 	 */
+	@NotNull
 	public static long[] extendedGCD(long x, long y) throws ArithmeticException
 		{
 		/*
@@ -331,7 +334,7 @@ public class MathUtils
 					  }
 					  */
 
-		long[] u = {1, 0, x}, v = {0, 1, y}, t = new long[3];
+		@NotNull long[] u = {1, 0, x}, v = {0, 1, y}, t = new long[3];
 		while (v[2] != 0)
 			{
 			long q = u[2] / v[2];
@@ -371,9 +374,10 @@ public class MathUtils
 	 * @return an array of long containing {a, b, c}
 	 * @throws ArithmeticException if either argument is negative or zero
 	 */
+	@NotNull
 	public static long[] extendedGCDPositive(long x, long y) throws ArithmeticException
 		{
-		long[] u = extendedGCD(x, y);
+		@NotNull long[] u = extendedGCD(x, y);
 		if (u[2] < 0)
 			{
 			u[0] *= -1;
@@ -439,9 +443,10 @@ public class MathUtils
 		return priorQ + ((sampleCount - 1) * d * d / sampleCount);
 		}
 
-	public static double[] runningStddevQtoStddev(double[] stddevQ, int sampleCount)
+	@NotNull
+	public static double[] runningStddevQtoStddev(@NotNull double[] stddevQ, int sampleCount)
 		{
-		double[] result = new double[stddevQ.length];
+		@NotNull double[] result = new double[stddevQ.length];
 		double d = sampleCount;  // cast only once
 		for (int i = 0; i < result.length; i++)
 			{

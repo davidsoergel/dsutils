@@ -31,6 +31,9 @@
  */
 package org.jboss.aop.advice.annotation.assignability;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -50,11 +53,13 @@ public class DegreeAlgorithm
 	public static final short NOT_ASSIGNABLE_DEGREE = Short.MAX_VALUE;
 	public static final short MAX_DEGREE = NOT_ASSIGNABLE_DEGREE - 1;
 
+	@NotNull
 	private static final DegreeAlgorithm INSTANCE = new DegreeAlgorithm();
 
 
 	// -------------------------- STATIC METHODS --------------------------
 
+	@NotNull
 	public static DegreeAlgorithm getInstance()
 		{
 		return INSTANCE;
@@ -68,18 +73,18 @@ public class DegreeAlgorithm
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public short getAssignabilityDegree(Type type, Type fromType)
+	public short getAssignabilityDegree(@Nullable Type type, @Nullable Type fromType)
 		{
 		if (type == null || fromType == null)
 			{
 			return DegreeAlgorithm.MAX_DEGREE;
 			}
-		Class<?> clazz = getClassType(type);
+		@Nullable Class<?> clazz = getClassType(type);
 		if (clazz == null)
 			{
 			return MAX_DEGREE;
 			}
-		Class<?> fromClass = getClassType(fromType);
+		@Nullable Class<?> fromClass = getClassType(fromType);
 		if (fromClass == null)
 			{
 			return MAX_DEGREE;
@@ -87,7 +92,8 @@ public class DegreeAlgorithm
 		return getAssignabilityDegree(fromClass, clazz);
 		}
 
-	private Class<?> getClassType(Type type)
+	@Nullable
+	private Class<?> getClassType(@NotNull Type type)
 		{
 		if (type instanceof Class)
 			{
@@ -102,7 +108,7 @@ public class DegreeAlgorithm
 			return null;
 			}
 		Type componentType = ((GenericArrayType) type).getGenericComponentType();
-		Class componentClass = getClassType(componentType);
+		@NotNull Class componentClass = getClassType(componentType);
 		try
 			{
 			return componentClass.getClassLoader().loadClass(componentClass.getName() + "[]");
@@ -128,7 +134,7 @@ public class DegreeAlgorithm
 	 *         otherwise.
 	 * @see java.lang.Class#isAssignableFrom(Class)
 	 */
-	private short getAssignabilityDegree(Class<?> fromType, Class<?> toType)
+	private short getAssignabilityDegree(@NotNull Class<?> fromType, @NotNull Class<?> toType)
 		{
 		// they're the same
 		if (fromType == toType)
@@ -164,7 +170,7 @@ public class DegreeAlgorithm
 				short degree = 2;
 				while (true)
 					{
-					for (Class[] interfaces : list1)
+					for (@NotNull Class[] interfaces : list1)
 						{
 						for (int i = 0; i < interfaces.length; i++)
 							{
@@ -202,7 +208,8 @@ public class DegreeAlgorithm
 	 *         <code> fromInterfaceType</code>; <code>currentDegree + </code> the assignability degree from
 	 *         <code>fromInterfaceType </code> to <code>toInterfaceType</code>.
 	 */
-	private short getInterfaceInheritanceAD(Class<?> fromInterfaceType, Class<?> toInterfaceType, short currentDegree)
+	private short getInterfaceInheritanceAD(@NotNull Class<?> fromInterfaceType, Class<?> toInterfaceType,
+	                                        short currentDegree)
 		{
 		Class[] interfaces = fromInterfaceType.getInterfaces();
 		currentDegree++;
@@ -232,7 +239,7 @@ public class DegreeAlgorithm
 	 *         <code>toInterfaceType </code>, returns 1 + the assignability degree between this subinterface and
 	 *         <code>toType</code>; otherwhise, returns 1.
 	 */
-	private short getImplementationAD(Class<?> fromClassType, Class<?> toInterfaceType)
+	private short getImplementationAD(@Nullable Class<?> fromClassType, Class<?> toInterfaceType)
 		{
 		if (fromClassType == null)
 			{
@@ -271,7 +278,7 @@ public class DegreeAlgorithm
 	 *         <code>fromClassType </code>; <code>currentDegree + </code> the assignability degree from
 	 *         <code>fromClassType</code> to <code>toClassType </code>.
 	 */
-	private short getClassInheritanceAD(Class<?> fromClassType, Class<?> toClassType, short currentDegree)
+	private short getClassInheritanceAD(@Nullable Class<?> fromClassType, Class<?> toClassType, short currentDegree)
 		{
 		if (fromClassType == null)
 			{

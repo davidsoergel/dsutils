@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -125,9 +127,9 @@ public class SmtpUtils
 	 */
 	public static void sendEmail(String mailhost, String from, String to, String subject, String message)
 		{
-		Socket mailSocket = null;
-		BufferedReader is = null;
-		PrintStream os = null;
+		@Nullable Socket mailSocket = null;
+		@Nullable BufferedReader is = null;
+		@Nullable PrintStream os = null;
 		StringTokenizer theTokenizer;
 		String theToken;
 		String servResponse;
@@ -152,7 +154,7 @@ public class SmtpUtils
 
 			// logger.warn(servResponse);
 
-			String lineOut = "MAIL FROM: " + from;
+			@NotNull String lineOut = "MAIL FROM: " + from;
 
 			os.print(lineOut + "\r\n");
 
@@ -255,7 +257,7 @@ public class SmtpUtils
 	 */
 	private static String fixCRLF(String s)
 		{
-		StringBuffer sb = new StringBuffer(s);
+		@NotNull StringBuffer sb = new StringBuffer(s);
 		int c = 0;
 
 		if (logger.isTraceEnabled())
@@ -338,14 +340,15 @@ public class SmtpUtils
 	/**
 	 * Turn any bare CRs or LFs to LF
 	 */
-	public static String normalizeCRLF(String s)
+	@Nullable
+	public static String normalizeCRLF(@Nullable String s)
 		{
 		if (s == null)
 			{
 			return null;
 			}
 
-		StringBuffer sb = new StringBuffer(s);
+		@NotNull StringBuffer sb = new StringBuffer(s);
 		int c = 0;
 
 		// first turn bare \r's to \r\n

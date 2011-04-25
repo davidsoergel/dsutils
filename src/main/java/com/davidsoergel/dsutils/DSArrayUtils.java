@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils;
 
 import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static boolean equalWithinFPError(double[] a, double[] b)
+	public static boolean equalWithinFPError(@NotNull double[] a, @NotNull double[] b)
 		{
 		if (a.length != b.length)
 			{
@@ -74,7 +75,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return true;
 		}
 
-	public static boolean equalWithinFPError(Double[] a, Double[] b)
+	public static boolean equalWithinFPError(@NotNull Double[] a, @NotNull Double[] b)
 		{
 		if (a.length != b.length)
 			{
@@ -90,14 +91,14 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return true;
 		}
 
-	public static double[] minus(double[] a, double[] b)
+	public static double[] minus(@NotNull double[] a, @NotNull double[] b)
 		{
 		double[] result = a.clone();// does this work??
 		decrementBy(result, b);
 		return result;
 		}
 
-	public static void decrementBy(double[] a, double[] b)
+	public static void decrementBy(@NotNull double[] a, @NotNull double[] b)
 		{
 		if (a.length != b.length)
 			{
@@ -111,7 +112,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 
-	public static void decrementByWeighted(double[] a, double[] b, double weight)
+	public static void decrementByWeighted(@NotNull double[] a, @NotNull double[] b, double weight)
 		{
 		if (a.length != b.length)
 			{
@@ -131,13 +132,14 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		 }
  */
 
-	public static double[][] plus(double[][] a, double[][] b)
+	@NotNull
+	public static double[][] plus(@NotNull double[][] a, @NotNull double[][] b)
 		{
 		if (a.length != b.length)
 			{
 			throw new ArrayIndexOutOfBoundsException("Can't add arrays of different sizes");
 			}
-		double[][] result = new double[a.length][];
+		@NotNull double[][] result = new double[a.length][];
 		for (int i = 0; i < a.length; i++)
 			{
 			result[i] = new double[a[i].length];
@@ -154,14 +156,14 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double[] plus(double[] a, double[] b)
+	public static double[] plus(@NotNull double[] a, @NotNull double[] b)
 		{
 		double[] result = a.clone();// does this work??
 		incrementBy(result, b);
 		return result;
 		}
 
-	public static void incrementBy(double[] a, double[] b)
+	public static void incrementBy(@NotNull double[] a, @NotNull double[] b)
 		{
 		if (a.length != b.length)
 			{
@@ -175,7 +177,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 
-	public static void incrementByWeighted(double[] a, double[] b, double weight)
+	public static void incrementByWeighted(@NotNull double[] a, @NotNull double[] b, double weight)
 		{
 		if (a.length != b.length)
 			{
@@ -194,9 +196,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return deepcopy(copyFrom, 0, 0);
 		}
 
-	public static int[] deepcopy(int[] copyFrom)
+	@NotNull
+	public static int[] deepcopy(@NotNull int[] copyFrom)
 		{
-		int[] to = new int[copyFrom.length];
+		@NotNull int[] to = new int[copyFrom.length];
 
 
 		for (int j = 0; j < copyFrom.length; j++)
@@ -206,30 +209,33 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
-	public static int[][] deepcopy(int[][] copyFrom)
+	@NotNull
+	public static int[][] deepcopy(@NotNull int[][] copyFrom)
 		{
 		return deepcopy(copyFrom, 0, 0);
 		}
 
-	public static char[][] deepcopy(char[][] copyFrom)
+	@NotNull
+	public static char[][] deepcopy(@NotNull char[][] copyFrom)
 		{
 		return deepcopy(copyFrom, 0, ' ');
 		}
 
-	public static byte[][] deepcopy(byte[][] copyFrom)
+	@NotNull
+	public static byte[][] deepcopy(@NotNull byte[][] copyFrom)
 		{
 		return deepcopy(copyFrom, 0, (byte) ' ');
 		}
 
 
 	@Nullable
-	public static double[][] deepcopy(double[][] copyFrom, int newcolumns, double newval)
+	public static double[][] deepcopy(@Nullable double[][] copyFrom, int newcolumns, double newval)
 		{
 		if (copyFrom == null)
 			{
 			return null;
 			}
-		double[][] to = new double[copyFrom.length][];
+		@NotNull double[][] to = new double[copyFrom.length][];
 		for (int i = 0; i < copyFrom.length; i++)
 			{
 			if (copyFrom[i] != null)
@@ -260,9 +266,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
-	public static int[][] deepcopy(int[][] copyFrom, int newcolumns, int newval)
+	@NotNull
+	public static int[][] deepcopy(@NotNull int[][] copyFrom, int newcolumns, int newval)
 		{
-		int[][] to = new int[copyFrom.length][];
+		@NotNull int[][] to = new int[copyFrom.length][];
 		for (int i = 0; i < copyFrom.length; i++)
 			{
 			to[i] = new int[copyFrom[i].length + newcolumns];
@@ -290,9 +297,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
-	public static char[][] deepcopy(char[][] copyFrom, int newcolumns, char newval)
+	@NotNull
+	public static char[][] deepcopy(@NotNull char[][] copyFrom, int newcolumns, char newval)
 		{
-		char[][] to = new char[copyFrom.length][];
+		@NotNull char[][] to = new char[copyFrom.length][];
 		for (int i = 0; i < copyFrom.length; i++)
 			{
 			to[i] = new char[copyFrom[i].length + newcolumns];
@@ -319,9 +327,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
-	public static byte[][] deepcopy(byte[][] copyFrom, int newcolumns, byte newval)
+	@NotNull
+	public static byte[][] deepcopy(@NotNull byte[][] copyFrom, int newcolumns, byte newval)
 		{
-		byte[][] to = new byte[copyFrom.length][];
+		@NotNull byte[][] to = new byte[copyFrom.length][];
 		for (int i = 0; i < copyFrom.length; i++)
 			{
 			to[i] = new byte[copyFrom[i].length + newcolumns];
@@ -348,7 +357,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return to;
 		}
 
-	public static int sum(int[] a)
+	public static int sum(@NotNull int[] a)
 		{
 		int result = 0;
 		for (int i = 0; i < a.length; i++)
@@ -358,7 +367,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int sum(Integer[] a)
+	public static int sum(@NotNull Integer[] a)
 		{
 		int result = 0;
 		for (int i = 0; i < a.length; i++)
@@ -368,7 +377,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double sum(double[] a)
+	public static double sum(@NotNull double[] a)
 		{
 		double result = 0;
 		for (int i = 0; i < a.length; i++)
@@ -378,7 +387,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double sumOfSquares(double[] a)
+	public static double sumOfSquares(@NotNull double[] a)
 		{
 		double result = 0;
 		for (int i = 0; i < a.length; i++)
@@ -388,12 +397,12 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double sum(double[][] a)
+	public static double sum(@NotNull double[][] a)
 		{
 		return sumFirstNColumns(a, a[0].length);
 		}
 
-	public static double sumFirstNColumns(double[][] a, int cols)
+	public static double sumFirstNColumns(@NotNull double[][] a, int cols)
 		{
 		double result = 0.0;
 		for (int i = 0; i < a.length; i++)
@@ -408,7 +417,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double product(double[] a)
+	public static double product(@NotNull double[] a)
 		{
 		double result = 0;
 		for (int i = 0; i < a.length; i++)
@@ -418,7 +427,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int max(int[] x)
+	public static int max(@NotNull int[] x)
 		{
 		int result = Integer.MIN_VALUE;
 		for (int col = 0; col < x.length; col++)
@@ -428,7 +437,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double max(double[] x)
+	public static double max(@NotNull double[] x)
 		{
 		double result = Double.NEGATIVE_INFINITY;
 		for (int col = 0; col < x.length; col++)
@@ -438,7 +447,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static Double max(Double[] x)
+	public static Double max(@NotNull Double[] x)
 		{
 		double result = Double.NEGATIVE_INFINITY;
 		for (int col = 0; col < x.length; col++)
@@ -448,7 +457,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int argmax(double[] x)
+	public static int argmax(@NotNull double[] x)
 		{
 		int posmax = 0;
 		for (int col = 0; col < x.length; col++)
@@ -461,7 +470,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return posmax;
 		}
 
-	public static int min(int[] x)
+	public static int min(@NotNull int[] x)
 		{
 		int result = Integer.MAX_VALUE;
 		for (int col = 0; col < x.length; col++)
@@ -471,7 +480,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double min(double[] x)
+	public static double min(@NotNull double[] x)
 		{
 		double result = Double.POSITIVE_INFINITY;
 		for (int col = 0; col < x.length; col++)
@@ -481,7 +490,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int argmin(double[] x)
+	public static int argmin(@NotNull double[] x)
 		{
 		int posmax = 0;
 		for (int col = 0; col < x.length; col++)
@@ -498,9 +507,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param x
 	 * @param value
 	 */
-	public static int[] positions(int[] x, int value)
+	@NotNull
+	public static int[] positions(@NotNull int[] x, int value)
 		{
-		int result[] = new int[x.length];
+		@NotNull int result[] = new int[x.length];
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
 			{
@@ -527,9 +537,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param value
 	 * @return
 	 */
-	public static boolean[] mapEquals(double[] x, double value)
+	@NotNull
+	public static boolean[] mapEquals(@NotNull double[] x, double value)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -538,9 +549,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapEquals(double[] x, double value, boolean[] mask)
+	@NotNull
+	public static boolean[] mapEquals(@NotNull double[] x, double value, boolean[] mask)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -549,9 +561,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotEquals(double[] x, double value)
+	@NotNull
+	public static boolean[] mapNotEquals(@NotNull double[] x, double value)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -560,9 +573,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotEquals(double[] x, double value, boolean[] mask)
+	@NotNull
+	public static boolean[] mapNotEquals(@NotNull double[] x, double value, boolean[] mask)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -571,9 +585,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotNaN(double[] x)
+	@NotNull
+	public static boolean[] mapNotNaN(@NotNull double[] x)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -582,9 +597,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotNaN(double[] x, boolean[] mask)
+	@NotNull
+	public static boolean[] mapNotNaN(@NotNull double[] x, boolean[] mask)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -593,9 +609,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotNaNOrInfinite(double[] x)
+	@NotNull
+	public static boolean[] mapNotNaNOrInfinite(@NotNull double[] x)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -604,9 +621,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean[] mapNotNaNOrInfinite(double[] x, boolean[] mask)
+	@NotNull
+	public static boolean[] mapNotNaNOrInfinite(@NotNull double[] x, boolean[] mask)
 		{
-		boolean result[] = new boolean[x.length];
+		@NotNull boolean result[] = new boolean[x.length];
 
 		for (int col = 0; col < x.length; col++)
 			{
@@ -620,7 +638,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param x
 	 * @param value
 	 */
-	public static int count(double[] x, double value)
+	public static int count(@NotNull double[] x, double value)
 		{
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
@@ -637,7 +655,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param x
 	 * @param value
 	 */
-	public static int count(boolean[] x, boolean value)
+	public static int count(@NotNull boolean[] x, boolean value)
 		{
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
@@ -654,7 +672,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param x
 	 * @param value
 	 */
-	public static int countNot(double[] x, double value)
+	public static int countNot(@NotNull double[] x, double value)
 		{
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
@@ -670,7 +688,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	/**
 	 * @param x
 	 */
-	public static int countNotNaN(double[] x)
+	public static int countNotNaN(@NotNull double[] x)
 		{
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
@@ -686,7 +704,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	/**
 	 * @param x
 	 */
-	public static int countNotNaNOrInfinite(double[] x)
+	public static int countNotNaNOrInfinite(@NotNull double[] x)
 		{
 		int count = 0;
 		for (int col = 0; col < x.length; col++)
@@ -699,9 +717,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return count;
 		}
 
-	public static double[] grow(double[] a, int x)
+	@NotNull
+	public static double[] grow(@NotNull double[] a, int x)
 		{
-		double[] result = new double[a.length + x];
+		@NotNull double[] result = new double[a.length + x];
 		for (int i = 0; i < a.length; i++)
 			{
 			result[i] = a[i];
@@ -709,9 +728,9 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static String asString(char[] x, String separator)
+	public static String asString(@NotNull char[] x, String separator)
 		{
-		StringBuffer sb = new StringBuffer();
+		@NotNull StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < x.length; i++)
 			{
 			char i1 = x[i];
@@ -724,9 +743,9 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return sb.toString();
 		}
 
-	public static String asString(int[] x, String separator)
+	public static String asString(@NotNull int[] x, String separator)
 		{
-		StringBuffer sb = new StringBuffer();
+		@NotNull StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < x.length; i++)
 			{
 			int i1 = x[i];
@@ -739,7 +758,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return sb.toString();
 		}
 
-	public static boolean contains(Object[] a, Object o)
+	public static boolean contains(@NotNull Object[] a, Object o)
 		{
 		for (int i = 0; i < a.length; i++)
 			{
@@ -751,9 +770,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return false;
 		}
 
-	public static double[] castToDouble(int[] p)
+	@NotNull
+	public static double[] castToDouble(@NotNull int[] p)
 		{
-		double[] result = new double[p.length];
+		@NotNull double[] result = new double[p.length];
 		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = p[i];
@@ -761,9 +781,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static double[] castToDouble(float[] p)
+	@NotNull
+	public static double[] castToDouble(@NotNull float[] p)
 		{
-		double[] result = new double[p.length];
+		@NotNull double[] result = new double[p.length];
 		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = p[i];
@@ -778,9 +799,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param i
 	 * @return
 	 */
+	@NotNull
 	public static byte[] prefix(byte[] s, int i)
 		{
-		byte[] result = new byte[i];
+		@NotNull byte[] result = new byte[i];
 		System.arraycopy(s, 0, result, 0, i);
 		return result;
 		}
@@ -792,9 +814,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param i
 	 * @return
 	 */
+	@NotNull
 	public static double[] prefix(double[] s, int i)
 		{
-		double[] result = new double[i];
+		@NotNull double[] result = new double[i];
 		System.arraycopy(s, 0, result, 0, i);
 		return result;
 		}
@@ -806,9 +829,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param i
 	 * @return
 	 */
+	@NotNull
 	public static int[] prefix(int[] s, int i)
 		{
-		int[] result = new int[i];
+		@NotNull int[] result = new int[i];
 		System.arraycopy(s, 0, result, 0, i);
 		return result;
 		}
@@ -821,9 +845,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @return
 	 * @see #suffixOfLength
 	 */
-	public static byte[] suffix(byte[] s, int startpos)
+	@NotNull
+	public static byte[] suffix(@NotNull byte[] s, int startpos)
 		{
-		byte[] result = new byte[s.length - startpos];
+		@NotNull byte[] result = new byte[s.length - startpos];
 		System.arraycopy(s, startpos, result, 0, s.length - startpos);
 		return result;
 		}
@@ -836,9 +861,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @return
 	 * @see #suffixOfLength
 	 */
-	public static double[] suffix(double[] s, int startpos)
+	@NotNull
+	public static double[] suffix(@NotNull double[] s, int startpos)
 		{
-		double[] result = new double[s.length - startpos];
+		@NotNull double[] result = new double[s.length - startpos];
 		System.arraycopy(s, startpos, result, 0, s.length - startpos);
 		return result;
 		}
@@ -851,41 +877,45 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @return
 	 * @see #suffixOfLength
 	 */
-	public static String[] suffix(String[] s, int startpos)
+	@NotNull
+	public static String[] suffix(@NotNull String[] s, int startpos)
 		{
-		String[] result = new String[s.length - startpos];
+		@NotNull String[] result = new String[s.length - startpos];
 		System.arraycopy(s, startpos, result, 0, s.length - startpos);
 		return result;
 		}
 
-	public static byte[] suffixOfLength(byte[] s, int length)
+	@NotNull
+	public static byte[] suffixOfLength(@NotNull byte[] s, int length)
 		{
 		if (length > s.length)
 			{
 			throw new IndexOutOfBoundsException("Requested suffix is longer than the array");
 			}
-		byte[] result = new byte[length];
+		@NotNull byte[] result = new byte[length];
 		System.arraycopy(s, s.length - length, result, 0, length);
 		return result;
 		}
 
-	public static byte[] prepend(byte b, byte[] s)
+	@NotNull
+	public static byte[] prepend(byte b, @NotNull byte[] s)
 		{
-		byte[] result = new byte[s.length + 1];
+		@NotNull byte[] result = new byte[s.length + 1];
 		result[0] = b;
 		System.arraycopy(s, 0, result, 1, s.length);
 		return result;
 		}
 
-	public static byte[] append(byte[] s, byte b)
+	@NotNull
+	public static byte[] append(@NotNull byte[] s, byte b)
 		{
-		byte[] result = new byte[s.length + 1];
+		@NotNull byte[] result = new byte[s.length + 1];
 		System.arraycopy(s, 0, result, 0, s.length);
 		result[s.length] = b;
 		return result;
 		}
 
-	public static double mean(double[] counts)
+	public static double mean(@NotNull double[] counts)
 		{
 		double sum = 0;
 		for (int i = 0; i < counts.length; i++)
@@ -895,7 +925,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return sum / (double) counts.length;
 		}
 
-	public static double mean(int[] counts)
+	public static double mean(@NotNull int[] counts)
 		{
 		double sum = 0;
 		for (int i = 0; i < counts.length; i++)
@@ -912,7 +942,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param mean
 	 * @return
 	 */
-	public static double stddev(double[] x, double mean)
+	public static double stddev(@NotNull double[] x, double mean)
 		{
 		double sumsq = 0;
 		for (int i = 0; i < x.length; i++)
@@ -930,7 +960,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param mean
 	 * @return
 	 */
-	public static double stddev(int[] x, double mean)
+	public static double stddev(@NotNull int[] x, double mean)
 		{
 		double sumsq = 0;
 		for (int i = 0; i < x.length; i++)
@@ -941,7 +971,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return Math.sqrt(sumsq / (double) x.length);
 		}
 
-	public static double mean(Collection<Double> counts)
+	public static double mean(@NotNull Collection<Double> counts)
 		{
 		double sum = 0;
 		for (Double d : counts)
@@ -958,7 +988,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param mean
 	 * @return
 	 */
-	public static double stddev(Collection<Double> x, double mean)
+	public static double stddev(@NotNull Collection<Double> x, double mean)
 		{
 		double sumsq = 0;
 		for (Double d : x)
@@ -970,14 +1000,14 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 
-	public static double[] times(double[] data, double scalar)
+	public static double[] times(@NotNull double[] data, double scalar)
 		{
 		double[] result = data.clone();// does this work??
 		multiplyBy(result, scalar);
 		return result;
 		}
 
-	public static void multiplyBy(double[] a, double scalar)
+	public static void multiplyBy(@NotNull double[] a, double scalar)
 		{
 		for (int i = 0; i < a.length; i++)
 			{
@@ -986,7 +1016,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		}
 
-	public static double norm(int[] x)
+	public static double norm(@NotNull int[] x)
 		{
 		int sumsq = 0;
 		for (int i = 0; i < x.length; i++)
@@ -996,7 +1026,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return Math.sqrt(sumsq);
 		}
 
-	public static double norm(double[] x)
+	public static double norm(@NotNull double[] x)
 		{
 		double sumsq = 0;
 		for (int i = 0; i < x.length; i++)
@@ -1013,7 +1043,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 	 * @param newMin
 	 * @param newMax
 	 */
-	public static void rescale(double[] x, double newMin, double newMax)
+	public static void rescale(@NotNull double[] x, double newMin, double newMax)
 		{
 		double newSpan = newMax - newMin;
 
@@ -1027,7 +1057,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 			}
 		}
 
-	public static int compare(int[] a, int[] b)
+	public static int compare(@NotNull int[] a, @NotNull int[] b)
 		{
 		if (a.length < b.length)
 			{
@@ -1050,7 +1080,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 
-	public static int compare(char[] a, char[] b)
+	public static int compare(@NotNull char[] a, @NotNull char[] b)
 		{
 		if (a.length < b.length)
 			{
@@ -1072,9 +1102,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return 0;
 		}
 
-	public static double[] toPrimitiveArray(Collection<Double> c)
+	@NotNull
+	public static double[] toPrimitiveArray(@NotNull Collection<Double> c)
 		{
-		double[] result = new double[c.size()];
+		@NotNull double[] result = new double[c.size()];
 		int i = 0;
 		for (Double d : c)
 			{
@@ -1084,9 +1115,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int[] toPrimitiveArray(Collection<Integer> c)
+	@NotNull
+	public static int[] toPrimitiveArray(@NotNull Collection<Integer> c)
 		{
-		int[] result = new int[c.size()];
+		@NotNull int[] result = new int[c.size()];
 		int i = 0;
 		for (Integer d : c)
 			{
@@ -1096,7 +1128,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean allValuesAreNumeric(double[] value)
+	public static boolean allValuesAreNumeric(@NotNull double[] value)
 		{
 		for (double v : value)
 			{
@@ -1108,9 +1140,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return true;
 		}
 
+	@NotNull
 	public static double[] createIncrementingDoubleArray(final int size, final double start, final double increment)
 		{
-		double[] result = new double[size];
+		@NotNull double[] result = new double[size];
 		double trav = start;
 		for (int i = 0; i < size; i++)
 			{
@@ -1120,9 +1153,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
+	@NotNull
 	public static int[] createIncrementingIntArray(final int size, final int start, final int increment)
 		{
-		int[] result = new int[size];
+		@NotNull int[] result = new int[size];
 		int trav = start;
 		for (int i = 0; i < size; i++)
 			{
@@ -1144,9 +1178,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return nastWidths[insertionPoint];
 		}
 
-	public static int[] castToInt(final Double[] p)
+	@NotNull
+	public static int[] castToInt(@NotNull final Double[] p)
 		{
-		int[] result = new int[p.length];
+		@NotNull int[] result = new int[p.length];
 		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = p[i].intValue();
@@ -1154,9 +1189,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static int[] castToInt(final boolean[] p)
+	@NotNull
+	public static int[] castToInt(@NotNull final boolean[] p)
 		{
-		int[] result = new int[p.length];
+		@NotNull int[] result = new int[p.length];
 		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = p[i] ? 1 : 0;
@@ -1164,9 +1200,10 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static byte[] castToByte(final char[] p)
+	@NotNull
+	public static byte[] castToByte(@NotNull final char[] p)
 		{
-		byte[] result = new byte[p.length];
+		@NotNull byte[] result = new byte[p.length];
 		for (int i = 0; i < p.length; i++)
 			{
 			result[i] = (byte) p[i];
@@ -1175,14 +1212,16 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 
-	public static byte[] toByteArray(final String s)
+	@NotNull
+	public static byte[] toByteArray(@NotNull final String s)
 		{
 		return castToByte(s.toCharArray());
 		}
 
-	public static double[] toDoubleArray(final List<String> l) throws NumberFormatException
+	@NotNull
+	public static double[] toDoubleArray(@NotNull final List<String> l) throws NumberFormatException
 		{
-		double[] result = new double[l.size()];
+		@NotNull double[] result = new double[l.size()];
 		int i = 0;
 		for (String s : l)
 			{
@@ -1192,32 +1231,33 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return result;
 		}
 
-	public static boolean isNumberArray(Object o)
+	public static boolean isNumberArray(@NotNull Object o)
 		{
 		final Class<?> arrayType = o.getClass().getComponentType();
 		return o.getClass().isArray() && DSClassUtils.isAssignable(arrayType, Number.class);
 		}
 
-	public static boolean isPrimitiveArray(Object o)
+	public static boolean isPrimitiveArray(@NotNull Object o)
 		{
 		final Class<?> arrayType = o.getClass().getComponentType();
 		return o.getClass().isArray() && arrayType.isPrimitive();
 		}
 
-	public static String[] mapToString(final Object[] os)
+	public static String[] mapToString(@NotNull final Object[] os)
 		{
-		List<String> result = new ArrayList<String>(os.length);
-		for (Object o : os)
+		@NotNull List<String> result = new ArrayList<String>(os.length);
+		for (@NotNull Object o : os)
 			{
 			result.add(o.toString());
 			}
 		return result.toArray(EMPTY_STRING_ARRAY);
 		}
 
-	public static double[] select(final double[] d, final boolean[] mask)
+	@NotNull
+	public static double[] select(final double[] d, @NotNull final boolean[] mask)
 		{
 		int s = count(mask, true);
-		double[] result = new double[s];
+		@NotNull double[] result = new double[s];
 		int di = 0;
 		for (int i = 0; i < s; i++)
 			{

@@ -33,6 +33,8 @@
 package com.davidsoergel.dsutils;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Marks a class for which instances keep track of the factory that produced them.  This is useful for cases when the
  * instances need to create additional instances using the same factory.
@@ -51,6 +53,7 @@ public interface GenericFactoryAware
 	 *
 	 * @return
 	 */
+	@NotNull
 	GenericFactory getFactory();
 
 	/**

@@ -31,6 +31,7 @@
 package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.math.MathUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,6 +46,7 @@ public class IntegerSteppedRange extends AbstractSteppedRange<Integer>
 		super(min, max, step);
 		}
 
+	@NotNull
 	protected IntegerSetRange asSetRange()
 		{
 		return new IntegerSetRange(getValues());
@@ -54,16 +56,17 @@ public class IntegerSteppedRange extends AbstractSteppedRange<Integer>
 		{
 		assert step != null;
 		assert step != 0;
-		Integer multiplier = (value - min) / step;
+		@NotNull Integer multiplier = (value - min) / step;
 		return MathUtils.equalWithinFPError(multiplier, Math.floor(multiplier));
 		}
 
 
+	@NotNull
 	public SortedSet<Integer> getValues()
 		{
 		assert step != null;
 		assert step != 0;
-		SortedSet<Integer> result = new TreeSet<Integer>();
+		@NotNull SortedSet<Integer> result = new TreeSet<Integer>();
 		for (int d = min; d <= max; d += step)
 			{
 			result.add(d);

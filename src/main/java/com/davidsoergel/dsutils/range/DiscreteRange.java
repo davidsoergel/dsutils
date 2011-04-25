@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.range;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Set;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Set;
  */
 public interface DiscreteRange<T> extends Range<T>
 	{
+	@Nullable
 	Set<T> getValues();
 
 	int size();

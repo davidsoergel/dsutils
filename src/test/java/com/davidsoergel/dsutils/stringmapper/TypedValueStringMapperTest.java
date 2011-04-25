@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import junit.framework.TestCase;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -41,12 +42,8 @@ public class TypedValueStringMapperTest extends TestCase
 	@Test
 	public void testDoubleObjectArrayMappingWorks() throws StringMapperException
 		{
-		Double[] o = (Double[]) TypedValueStringMapper.get(Double[].class).parse("1.1,2.2,3.3");
-		Double[] expected = {
-				1.1,
-				2.2,
-				3.3
-		};
+		@NotNull Double[] o = (Double[]) TypedValueStringMapper.get(Double[].class).parse("1.1,2.2,3.3");
+		@NotNull Double[] expected = {1.1, 2.2, 3.3};
 		assert Arrays.deepEquals(o, expected);
 		}
 
@@ -54,12 +51,8 @@ public class TypedValueStringMapperTest extends TestCase
 	@Test
 	public void testDoublePrimitiveArrayMappingWorks() throws StringMapperException
 		{
-		double[] o = (double[]) TypedValueStringMapper.get(double[].class).parse("1.1,2.2,3.3");
-		double[] expected = {
-				1.1,
-				2.2,
-				3.3
-		};
+		@NotNull double[] o = (double[]) TypedValueStringMapper.get(double[].class).parse("1.1,2.2,3.3");
+		@NotNull double[] expected = {1.1, 2.2, 3.3};
 		assert Arrays.equals(o, expected);
 		}
 	}

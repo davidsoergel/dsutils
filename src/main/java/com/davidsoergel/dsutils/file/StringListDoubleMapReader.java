@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class StringListDoubleMapReader
 	{
+	@NotNull
 	public static Map<String, List<Double>> read(String filename) throws IOException
 		{
 		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
@@ -27,7 +30,7 @@ public class StringListDoubleMapReader
 		URL res = threadClassLoader.getResource(filename);
 		if (res == null)
 			{
-			File f = new File(filename);
+			@NotNull File f = new File(filename);
 			if (f.exists())
 				{
 				res = f.toURI().toURL(); //new URL("file://" + filename);
@@ -39,9 +42,9 @@ public class StringListDoubleMapReader
 			}
 		InputStream is = res.openStream();
 
-		Map<String, List<Double>> result = new HashMap<String, List<Double>>();
+		@NotNull Map<String, List<Double>> result = new HashMap<String, List<Double>>();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		@NotNull BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
 			{
 			String line;
@@ -58,7 +61,7 @@ public class StringListDoubleMapReader
 					{
 					String key = numbers[0];
 
-					List<Double> resultList = new ArrayList<Double>();
+					@NotNull List<Double> resultList = new ArrayList<Double>();
 
 					// skip first element
 					for (int j = 1; j < numbers.length; j++)

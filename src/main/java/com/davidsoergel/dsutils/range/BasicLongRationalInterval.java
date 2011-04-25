@@ -35,6 +35,7 @@ package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.math.LongRational;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @version $Id$
@@ -57,7 +58,7 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 
 	// --------------------- Interface Comparable ---------------------
 
-	public int compareTo(Interval<LongRational> o)
+/*	public int compareTo(@NotNull Interval<LongRational> o)
 		{
 		// assume we're using Comparable Numbers; ClassCastException if not
 		int result = left.compareTo(o.getMin());
@@ -74,12 +75,13 @@ public class BasicLongRationalInterval extends BasicInterval<LongRational>
 			}
 		return result;
 		}
+*/
 
 	// --------------------- Interface Interval ---------------------
 
 	// assumes open interval, i.e. includes endpoints
 
-	public boolean encompassesValue(LongRational value)
+	public boolean encompassesValue(@NotNull LongRational value)
 		{
 		int leftCompare = LongRational.overflowSafeCompare(left, value);
 		int rightCompare = LongRational.overflowSafeCompare(right, value);

@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils.collections;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -79,7 +80,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		keys = new InsertionTrackingSet<K>();
 		}
 
-	public IndexedSymmetric2dBiMapWithDefault(final IndexedSymmetric2dBiMapWithDefault<K, V> cloneFrom)
+	public IndexedSymmetric2dBiMapWithDefault(@NotNull final IndexedSymmetric2dBiMapWithDefault<K, V> cloneFrom)
 		{
 		setDefaultValue(cloneFrom.getDefaultValue());
 		keys = new InsertionTrackingSet<K>(cloneFrom.keys);
@@ -113,19 +114,27 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return keys.get(underlyingIntMap.getKey2WithSmallestValue());
 		}
 
+	@NotNull
 	public synchronized OrderedPair<UnorderedPair<K>, V> getKeyPairAndSmallestValue()
 		{
 		final OrderedPair<UnorderedPair<Integer>, V> op = underlyingIntMap.getKeyPairAndSmallestValue();
 		final UnorderedPair<Integer> p = op.getKey1();
 		final K id1 = keys.get(p.getKey1());
 		final K id2 = keys.get(p.getKey2());
+		assert id1 != null;
+		assert id2 != null;
 		return new OrderedPair<UnorderedPair<K>, V>(new UnorderedPair<K>(id1, id2), op.getKey2());
 		}
 
+	@NotNull
 	public synchronized UnorderedPair<K> getKeyPairWithSmallestValue()
 		{
 		final UnorderedPair<Integer> p = underlyingIntMap.getKeyPairWithSmallestValue();
-		return new UnorderedPair<K>(keys.get(p.getKey1()), keys.get(p.getKey2()));
+		final K id1 = keys.get(p.getKey1());
+		final K id2 = keys.get(p.getKey2());
+		assert id1 != null;
+		assert id2 != null;
+		return new UnorderedPair<K>(id1, id2);
 		}
 
 	public V getSmallestValue()
@@ -133,7 +142,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return underlyingIntMap.getSmallestValue();
 		}
 
-	public V get(final K key1, final K key2)
+	public V get(@NotNull final K key1, @NotNull final K key2)
 		{
 		return underlyingIntMap.get(keys.indexOf(key1), keys.indexOf(key2));
 		}
@@ -153,19 +162,19 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return underlyingIntMap.isEmpty();
 		}
 
-	public V get(final UnorderedPair<K> keypair)
+	public V get(@NotNull final UnorderedPair<K> keypair)
 		{
 		return underlyingIntMap.get(keys.indexOf(keypair.getKey1()), keys.indexOf(keypair.getKey2()));
 		}
 
-	public void put(final UnorderedPair<K> keypair, final V d)
+	public synchronized void put(@NotNull final UnorderedPair<K> keypair, @NotNull final V d)
 		{
 		final Integer i1 = keys.indexOfWithAdd(keypair.getKey1());
 		final Integer i2 = keys.indexOfWithAdd(keypair.getKey2());
 		underlyingIntMap.put(i1, i2, d);
 		}
 
-	public void put(final K key1, final K key2, final V d)
+	public synchronized void put(@NotNull final K key1, @NotNull final K key2, @NotNull final V d)
 		{
 		final Integer i1 = keys.indexOfWithAdd(key1);
 		final Integer i2 = keys.indexOfWithAdd(key2);
@@ -177,14 +186,14 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return keys.size();
 		}
 
-	public void addKey(final K key1)
+	public void addKey(@NotNull final K key1)
 		{
 		keys.add(key1);
 		}
 
-	public void putAll(final Map<UnorderedPair<K>, V> map)
+	public void putAll(@NotNull final Map<UnorderedPair<K>, V> map)
 		{
-		for (Map.Entry<UnorderedPair<K>, V> entry : map.entrySet())
+		for (@NotNull Map.Entry<UnorderedPair<K>, V> entry : map.entrySet())
 			{
 			UnorderedPair<K> p = entry.getKey();
 			V v = entry.getValue();
@@ -197,33 +206,37 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 	 *
 	 * @param map
 	 */
-	public void putAllInt(final Map<UnorderedPair<Integer>, V> map)
+	public void putAllInt(@NotNull final Map<UnorderedPair<Integer>, V> map)
 		{
-		for (Map.Entry<UnorderedPair<Integer>, V> entry : map.entrySet())
+		for (@NotNull Map.Entry<UnorderedPair<Integer>, V> entry : map.entrySet())
 			{
 			UnorderedPair<Integer> p = entry.getKey();
 			V v = entry.getValue();
-			underlyingIntMap.put(p, v);
+			putInt(p, v);
 			}
 		}
 
 	/**
-	 * Add a value entry using the integer indexes; just assume that the matching keys exist
+	 * Add a value entry using the integer indexes; just assume that the matching keys exist.  This is not synchronized, on
+	 * the theory that the underlying map should handle that.
 	 */
-	public void putInt(final UnorderedPair<Integer> pair, final V v)
+	public void putInt(@NotNull final UnorderedPair<Integer> pair, final V v)
 		{
+		// PERF
+		assert keys.contains(pair.getKey1());
+		assert keys.contains(pair.getKey2());
 		underlyingIntMap.put(pair, v);
 		}
 
-	public void removeAll(final Collection<K> keys)
+	public void removeAll(@NotNull final Collection<K> keys)
 		{
-		for (K key : keys)
+		for (@NotNull K key : keys)
 			{
 			remove(key);
 			}
 		}
 
-	public synchronized int remove(final K b)
+	public synchronized int remove(@NotNull final K b)
 		{
 		Integer i = keys.indexOf(b);
 		if (i != null)
@@ -242,6 +255,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return 0;
 		}
 
+	@NotNull
 	public Set<Map.Entry<UnorderedPair<K>, V>> entrySet()
 		{
 		throw new NotImplementedException();
@@ -252,12 +266,14 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return keys.getNextId();
 		}
 
+	@NotNull
 	public Set<Iterator<Map.Entry<UnorderedPair<K>, V>>> entryBlockIterators(final int i)
 		{
 		throw new NotImplementedException();
 		}
 
 
+	@NotNull
 	public ConcurrentLinkedQueue<Map.Entry<UnorderedPair<Integer>, V>> integerEntriesQueue()
 		{
 		return underlyingIntMap.entriesQueue();

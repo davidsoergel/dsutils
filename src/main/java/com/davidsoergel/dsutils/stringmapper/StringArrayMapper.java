@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSStringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -10,12 +12,13 @@ import java.lang.reflect.Type;
  */
 public class StringArrayMapper extends StringMapper<String[]>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
 		return new Type[]{String[].class};
 		}
 
-	public String[] parse(String s)
+	public String[] parse(@Nullable String s)
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{

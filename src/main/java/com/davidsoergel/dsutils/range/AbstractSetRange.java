@@ -33,6 +33,8 @@ package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.collections.DSCollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -47,7 +49,8 @@ import java.util.TreeSet;
  */
 public abstract class AbstractSetRange<T extends Serializable> implements DiscreteRange<T>, SerializableRange<T>
 	{
-	protected SortedSet<T> values = null; //new TreeSet<T>();  // wanted final, but then Hessian can't deserialize it
+	@NotNull
+	protected SortedSet<T> values = new TreeSet<T>();  // = null; //wanted final, but then Hessian can't deserialize it
 
 
 	// --------------------------- CONSTRUCTORS ---------------------------
@@ -60,16 +63,18 @@ public abstract class AbstractSetRange<T extends Serializable> implements Discre
 
 	protected AbstractSetRange(Collection<T> newValues)
 		{
-		values = new TreeSet<T>();
+		//values = new TreeSet<T>();
 		values.addAll(newValues);
 		}
 
+	@NotNull
 	public SortedSet<T> getValues()
 		{
 		return values;
 		}
 
 
+	@NotNull
 	public String toString()
 		{
 		return "{" + StringUtils.join(values.iterator(), ",") + "}";
@@ -77,22 +82,25 @@ public abstract class AbstractSetRange<T extends Serializable> implements Discre
 
 	// -------------------------- OTHER METHODS --------------------------
 
+	@NotNull
 	public AbstractSetRange<T> expandToInclude(T v)
 		{
-		Set<T> newValues = new HashSet<T>(values.size() + 1);
+		@NotNull Set<T> newValues = new HashSet<T>(values.size() + 1);
 		newValues.addAll(values);
 		newValues.add(v);
-		return create(values);
+		return create(newValues);
 		}
 
-	public AbstractSetRange<T> expandToInclude(DiscreteRange<T> v)
+	@NotNull
+	public AbstractSetRange<T> expandToInclude(@NotNull DiscreteRange<T> v)
 		{
-		Set<T> newValues = new HashSet<T>(values.size() + v.size());
+		@NotNull Set<T> newValues = new HashSet<T>(values.size() + v.size());
 		newValues.addAll(values);
 		newValues.addAll(v.getValues());
-		return create(values);
+		return create(newValues);
 		}
 
+	@NotNull
 	protected abstract AbstractSetRange<T> create(final Collection<T> values);
 
 
@@ -107,7 +115,7 @@ public abstract class AbstractSetRange<T extends Serializable> implements Discre
 		}
 
 	@Override
-	public boolean equals(final Object o)
+	public boolean equals(@Nullable final Object o)
 		{
 		if (this == o)
 			{
@@ -118,7 +126,7 @@ public abstract class AbstractSetRange<T extends Serializable> implements Discre
 			return false;
 			}
 
-		final AbstractSetRange that = (AbstractSetRange) o;
+		@NotNull final AbstractSetRange that = (AbstractSetRange) o;
 
 		return DSCollectionUtils.isEqualCollection(values, that.values);
 /*		if (values != null ? !values.equals(that.values) : that.values != null)

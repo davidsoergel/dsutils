@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Type;
 
 /**
@@ -8,15 +11,14 @@ import java.lang.reflect.Type;
  */
 public class FloatMapper extends StringMapper<Float>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Float.class,
-				float.class
-		};
+		return new Type[]{Float.class, float.class};
 		}
 
-	public Float parse(String s)
+	@Nullable
+	public Float parse(@Nullable String s)
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
@@ -25,7 +27,7 @@ public class FloatMapper extends StringMapper<Float>
 		return new Float(s);
 		}
 
-	public String render(Float value)
+	public String render(@NotNull Float value)
 		{
 		return value.toString();
 		}

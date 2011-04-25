@@ -2,6 +2,8 @@ package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.EnumValue;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -20,6 +22,7 @@ public class EnumMapper extends StringMapper<EnumValue>
 		EnumMapper.classLoader = classLoader;
 		}
 
+	@NotNull
 	public Type[] basicTypes()
 		{
 		return new Type[]{EnumValue.class};
@@ -30,7 +33,8 @@ public class EnumMapper extends StringMapper<EnumValue>
 		//super();
 		}
 
-	public EnumValue parse(String s) throws StringMapperException
+	@NotNull
+	public EnumValue parse(@Nullable String s) throws StringMapperException
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
@@ -47,7 +51,8 @@ public class EnumMapper extends StringMapper<EnumValue>
 		//	}
 		}
 
-	public String render(EnumValue value)
+	@NotNull
+	public String render(@Nullable EnumValue value)
 		{
 		return value == null ? "null" : value.getValue(); //getCanonicalName();
 		}

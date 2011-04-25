@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class IndexedSymmetric2dBiMap<K extends Comparable<K> & Serializable, V e
 
 	private static final Logger logger = Logger.getLogger(IndexedSymmetric2dBiMap.class);
 
+	@NotNull
 	List<K> keys = new ArrayList<K>();
 
 	Symmetric2dBiMap<Integer, V> underlyingIntMap;

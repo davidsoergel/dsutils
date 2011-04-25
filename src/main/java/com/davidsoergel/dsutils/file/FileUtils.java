@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils.file;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +57,7 @@ public class FileUtils
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static boolean move(java.io.File oldFile, java.io.File newFile)
+	public static boolean move(@NotNull java.io.File oldFile, @NotNull java.io.File newFile)
 		{
 		// first try simple rename
 		if (!oldFile.renameTo(newFile))
@@ -78,11 +80,11 @@ public class FileUtils
 		return true;
 		}
 
-	private static void deleteRecursive(final File oldFile)
+	private static void deleteRecursive(@NotNull final File oldFile)
 		{
 		if (oldFile.isDirectory())
 			{
-			for (File file : oldFile.listFiles())
+			for (@NotNull File file : oldFile.listFiles())
 				{
 				deleteRecursive(file);
 				}
@@ -103,7 +105,7 @@ public class FileUtils
 
 	// ** should replace boolean return values with exceptions as needed
 
-	public static boolean bufferedCopy(java.io.File origFile, java.io.File copyFile, int buffSize)
+	public static boolean bufferedCopy(@NotNull java.io.File origFile, @NotNull java.io.File copyFile, int buffSize)
 		{
 		if (origFile.isDirectory())
 			{
@@ -121,13 +123,13 @@ public class FileUtils
 		else
 			{
 
-			byte[] buff = new byte[buffSize];
+			@NotNull byte[] buff = new byte[buffSize];
 
 			try
 				{
-				FileInputStream fis = new FileInputStream(origFile);
+				@NotNull FileInputStream fis = new FileInputStream(origFile);
 				//file.createNewFile();
-				FileOutputStream fos = new FileOutputStream(copyFile);
+				@NotNull FileOutputStream fos = new FileOutputStream(copyFile);
 
 				try
 					{
@@ -152,12 +154,12 @@ public class FileUtils
 		return true;
 		}
 
-	static public boolean deleteDirectory(File path)
+	static public boolean deleteDirectory(@NotNull File path)
 		{
 		if (path.exists())
 			{
 			File[] files = path.listFiles();
-			for (File file : files)
+			for (@NotNull File file : files)
 				{
 				if (file.isDirectory())
 					{
@@ -182,7 +184,8 @@ public class FileUtils
 
 	   }*/
 
-	public static String makeAbsolute(String root, String f)
+	@NotNull
+	public static String makeAbsolute(String root, @NotNull String f)
 		{
 		if (!f.startsWith(File.separator))
 			{
@@ -191,7 +194,8 @@ public class FileUtils
 		return f;
 		}
 
-	public static List<File> getFilesWithNames(String root, String[] filenames)
+	@NotNull
+	public static List<File> getFilesWithNames(String root, @Nullable String[] filenames)
 		{
 		/*
 
@@ -215,13 +219,13 @@ public class FileUtils
 		//	logger.info("Writing outputs to " + outputDirectoryName);
 		//	logger.info("Found directory: " + outputDirectory);
 
-		List<File> files = new ArrayList<File>();
+		@NotNull List<File> files = new ArrayList<File>();
 		// List<File> inputFilesList = new ArrayList<File>();
 		if (filenames != null)
 			{
 			try
 				{
-				for (String f : filenames)
+				for (@NotNull String f : filenames)
 					{
 					if (!f.startsWith(File.separator))
 						{
@@ -234,7 +238,7 @@ public class FileUtils
 						String dirname = f.substring(0, f.lastIndexOf(File.separator));
 						//logger.info("Wildcard directory: " + dirname);
 
-						File dir = new File(dirname);
+						@NotNull File dir = new File(dirname);
 
 						//logger.info("is directory: " + dir.isDirectory());
 						//logger.info("Canonical path = " + dir.getCanonicalPath());
@@ -252,7 +256,7 @@ public class FileUtils
 
 						for (File r : dir.listFiles(new FilenameFilter()
 						{
-						public boolean accept(File file, String string)
+						public boolean accept(File file, @NotNull String string)
 							{
 							return string.startsWith(prefix);
 							}
@@ -279,9 +283,10 @@ public class FileUtils
 		return files;
 		}
 
+	@NotNull
 	public static File getDirectory(String name) throws IOException
 		{
-		File dir = new File(name);
+		@NotNull File dir = new File(name);
 		if (!dir.exists())
 			{
 			if (!dir.mkdirs())

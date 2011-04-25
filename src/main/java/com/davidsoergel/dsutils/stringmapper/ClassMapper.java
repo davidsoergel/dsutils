@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -29,7 +31,7 @@ public class ClassMapper extends StringMapper<Class>
 		//super();
 		}
 
-	public Class parse(String s) throws StringMapperException
+	public Class parse(@Nullable String s) throws StringMapperException
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
@@ -46,7 +48,8 @@ public class ClassMapper extends StringMapper<Class>
 			}
 		}
 
-	public String render(Class value)
+	@NotNull
+	public String render(@Nullable Class value)
 		{
 		return value == null ? "null" : value.getCanonicalName();
 		}

@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.swing;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,7 +32,7 @@ public class ColorIcon implements Icon
 		return WIDTH;
 		}
 
-	public void paintIcon(Component c, Graphics g, int x, int y)
+	public void paintIcon(Component c, @NotNull Graphics g, int x, int y)
 		{
 		g.setColor(color);
 		g.fillRect(x, y, WIDTH - 1, HEIGHT - 1);

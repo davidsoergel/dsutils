@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -20,7 +22,7 @@ public class CustomClassloaderObjectInputStream extends ObjectInputStream
 		this.classLoader = classLoader;
 		}
 
-	protected Class<?> resolveClass(ObjectStreamClass desc) throws ClassNotFoundException
+	protected Class<?> resolveClass(@NotNull ObjectStreamClass desc) throws ClassNotFoundException
 		{
 		return Class.forName(desc.getName(), false, classLoader);
 		}

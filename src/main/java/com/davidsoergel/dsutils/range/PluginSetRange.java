@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils.range;
 
 
 import com.davidsoergel.dsutils.PluginValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,10 +21,10 @@ public class PluginSetRange extends AbstractSetRange<PluginValue>
 		{
 		}
 
-	public PluginSetRange(final Collection enumValues)
+	public PluginSetRange(@NotNull final Collection enumValues)
 		{
 		super(new HashSet<PluginValue>());
-		for (Object s : enumValues)
+		for (@NotNull Object s : enumValues)
 			{
 			if (s instanceof String)
 				{
@@ -41,15 +42,17 @@ public class PluginSetRange extends AbstractSetRange<PluginValue>
 			}
 		}
 
-	protected PluginSetRange create(final Collection<PluginValue> values)
+	@NotNull
+	protected PluginSetRange create(@NotNull final Collection<PluginValue> values)
 		{
 		return new PluginSetRange(values);
 		}
 
+	@NotNull
 	public SortedSet<String> getStringValues()
 		{
-		SortedSet<String> result = new TreeSet<String>();
-		for (PluginValue value : values)
+		@NotNull SortedSet<String> result = new TreeSet<String>();
+		for (@NotNull PluginValue value : values)
 			{
 			result.add(value.toString());
 			}

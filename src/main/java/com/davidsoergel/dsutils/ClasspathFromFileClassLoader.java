@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils;
 
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,8 +57,8 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 
 	private URL[] getURLs(File classpathFile) throws IOException
 		{
-		List<URL> urls = new ArrayList<URL>();
-		BufferedReader is = new BufferedReader(new FileReader(classpathFile));
+		@NotNull List<URL> urls = new ArrayList<URL>();
+		@NotNull BufferedReader is = new BufferedReader(new FileReader(classpathFile));
 
 		try
 			{
@@ -77,7 +78,7 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 
 					s = "file:" + s;
 
-					URL url = new URL(s);
+					@NotNull URL url = new URL(s);
 					logger.debug("Adding classpath entry: " + url);
 					urls.add(url);
 					}
@@ -101,6 +102,7 @@ public class ClasspathFromFileClassLoader// extends URLClassLoader
 		{
 		return (URLClassLoader) AccessController.doPrivileged(new PrivilegedAction()
 		{
+		@NotNull
 		public Object run()
 			{
 			return new URLClassLoader(urls);

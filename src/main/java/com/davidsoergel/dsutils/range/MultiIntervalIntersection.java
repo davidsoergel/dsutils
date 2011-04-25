@@ -36,6 +36,8 @@ package com.davidsoergel.dsutils.range;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -58,30 +60,30 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 
 	//private Set<LongInterval> result = new HashSet<LongInterval>();
 
-	public <U extends Interval<T>> MultiIntervalIntersection(Set<Set<U>> possiblyOverlappingIntervalSets)
+	public <U extends Interval<T>> MultiIntervalIntersection(@NotNull Set<Set<U>> possiblyOverlappingIntervalSets)
 		{
-		Set<Set<U>> intervalSets = new HashSet<Set<U>>();
+		@NotNull Set<Set<U>> intervalSets = new HashSet<Set<U>>();
 
 		// guarantee that each constraint contains no internal overlaps
-		for (Set<U> intervalSet : possiblyOverlappingIntervalSets)
+		for (@NotNull Set<U> intervalSet : possiblyOverlappingIntervalSets)
 			{
 			intervalSets.add(new MultiIntervalUnion(intervalSet));
 			}
 
 		//private
-		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
+		@NotNull SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
 		//SortedMap<T, Integer> closedLeftRightMap = new TreeMap<T, Integer>();
 		//Set<T> allEndpoints = new HashSet<T>();
 
 		//	SortedMap<T, Integer> openEndpointMap = new TreeMap<T, Integer>();
 
-		Set<T> excludedEndpoints = new HashSet<T>();
+		@NotNull Set<T> excludedEndpoints = new HashSet<T>();
 		Multiset<T> includedEndpoints = HashMultiset.create();
 
 		int numberOfConstraints = intervalSets.size();
-		for (Set<U> intervalSet : intervalSets)
+		for (@NotNull Set<U> intervalSet : intervalSets)
 			{
-			for (Interval<T> i : intervalSet)
+			for (@NotNull Interval<T> i : intervalSet)
 				{
 				T left = i.getMin();
 				T right = i.getMax();
@@ -115,7 +117,7 @@ public class MultiIntervalIntersection<T extends Number & Comparable> extends Tr
 
 
 		int openParens = 0;
-		MutableBasicInterval<T> currentInterval = null;
+		@Nullable MutableBasicInterval<T> currentInterval = null;
 		for (T position : fullLeftRightMap.keySet())// the positions must be sorted!
 			{
 			/*Integer openDelta = openLeftRightMap.get(position);

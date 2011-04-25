@@ -32,6 +32,7 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 import java.util.BitSet;
@@ -45,7 +46,7 @@ public class CircularBitFieldTest
 	@Test
 	public void getAndSetAreConsistentAndCircular()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);
@@ -82,7 +83,7 @@ public class CircularBitFieldTest
 	@Test
 	public void negativeShiftMovesWindowRightBitsLeft()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);
@@ -117,7 +118,7 @@ public class CircularBitFieldTest
 	@Test
 	public void positiveShiftMovesWindowLeftBitsRight()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);
@@ -152,7 +153,7 @@ public class CircularBitFieldTest
 	@Test
 	public void getLastWorksEvenWhenShifted()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);
@@ -181,13 +182,13 @@ public class CircularBitFieldTest
 	@Test
 	public void retainWorks()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);
 		c.set(9, true);
 
-		BitSet mask = new BitSet(10);
+		@NotNull BitSet mask = new BitSet(10);
 		mask.set(5, true);
 		mask.set(7, true);
 		mask.set(8, true);
@@ -237,7 +238,7 @@ public class CircularBitFieldTest
 	@Test
 	public void clearSetsAllBitsFalse()
 		{
-		CircularBitField c = new CircularBitField(10);
+		@NotNull CircularBitField c = new CircularBitField(10);
 		c.set(3, true);
 		c.set(7, true);
 		c.set(8, true);

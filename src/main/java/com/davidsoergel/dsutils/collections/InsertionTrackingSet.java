@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils.collections;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.AbstractSet;
@@ -54,14 +55,14 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 	@Override
 	public synchronized boolean add(final T t)
 		{
-		try
-			{
-			contents.put(t, nextIndex);
-			}
-		catch (IllegalArgumentException e)
-			{
-			return false;
-			}
+		//	try
+		//		{
+		contents.put(t, nextIndex);
+		/*		}
+	   catch (IllegalArgumentException e)
+		   {
+		   return false;
+		   }*/
 
 		nextIndex++;
 		return true;
@@ -84,12 +85,13 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		return contents.remove(o) != null;
 		}
 
-	public synchronized Integer indexOf(final T key1)
+	public synchronized Integer indexOf(@NotNull final T key1)
 		{
 		return contents.get(key1);
 		}
 
-	public synchronized Integer indexOfWithAdd(final T key1)
+	@NotNull
+	public synchronized Integer indexOfWithAdd(@NotNull final T key1)
 		{
 		Integer result = indexOf(key1);
 		if (result == null)
@@ -105,7 +107,7 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		return nextIndex;
 		}
 
-	public Collection<Integer> getIndexes()
+	public synchronized Collection<Integer> getIndexes()
 		{
 		return contents.values();
 		}

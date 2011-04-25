@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,6 +87,7 @@ public interface UrlContentCache
 	 * @throws MalformedURLException    if the provided string is not a valid URL.
 	 * @throws UrlContentCacheException if anything else goes wrong
 	 */
+	@NotNull
 	File getFile(String url) throws UrlContentCacheException, MalformedURLException;
 
 	/**
@@ -95,6 +98,7 @@ public interface UrlContentCache
 	 * @return the File
 	 * @throws UrlContentCacheException if anything goes wrong
 	 */
+	@NotNull
 	File getFile(URL url) throws UrlContentCacheException;
 
 	/**
@@ -106,6 +110,7 @@ public interface UrlContentCache
 	 * @return the File
 	 * @throws UrlContentCacheException if anything else goes wrong
 	 */
+	@NotNull
 	File getFile(URL url, String checksum) throws UrlContentCacheException;
 
 	/**
@@ -118,6 +123,7 @@ public interface UrlContentCache
 	 * @throws MalformedURLException    if the provided string is not a valid URL.
 	 * @throws UrlContentCacheException if anything else goes wrong
 	 */
+	@NotNull
 	File getFile(String url, String checksum) throws UrlContentCacheException, MalformedURLException;
 
 	/**

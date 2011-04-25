@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSStringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,15 +13,16 @@ import java.util.List;
  */
 public class DoubleArrayMapper extends StringMapper<Double[]>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
 		return new Type[]{Double[].class};
 		}
 
-	public Double[] parse(String s)
+	public Double[] parse(@NotNull String s)
 		{
-		List<Double> result = new ArrayList<Double>();
-		for (String d : s.split(","))
+		@NotNull List<Double> result = new ArrayList<Double>();
+		for (@NotNull String d : s.split(","))
 			{
 			if (!d.isEmpty())
 				{

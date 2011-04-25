@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class StringListStringMapColumnReader
 	{
+	@NotNull
 	public static Map<String, List<String>> read(String filename) throws IOException
 		{
 		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
@@ -27,7 +30,7 @@ public class StringListStringMapColumnReader
 		URL res = threadClassLoader.getResource(filename);
 		if (res == null)
 			{
-			File f = new File(filename);
+			@NotNull File f = new File(filename);
 			if (f.exists())
 				{
 				res = f.toURI().toURL(); //new URL("file://" + filename);
@@ -39,9 +42,9 @@ public class StringListStringMapColumnReader
 			}
 		InputStream is = res.openStream();
 
-		Map<String, List<String>> result = new HashMap<String, List<String>>();
+		@NotNull Map<String, List<String>> result = new HashMap<String, List<String>>();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		@NotNull BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
 			{
 			String header = br.readLine();

@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.math;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +28,11 @@ public class ArrayInterpolatingFunctionCache
 	Method method;
 	float maxError;
 
-	public ArrayInterpolatingFunctionCache(Method method, float maxError, float minX, float maxX)
+	public ArrayInterpolatingFunctionCache(@NotNull Method method, float maxError, float minX, float maxX)
 		{
 		this.method = method;
 		this.maxError = maxError;
-		InterpolationInterval i = new InterpolationInterval(minX, maxX);
+		@NotNull InterpolationInterval i = new InterpolationInterval(minX, maxX);
 		try
 			{
 			i.cielY = ((Double) (method.invoke(null, maxX))).floatValue();
@@ -47,15 +49,16 @@ public class ArrayInterpolatingFunctionCache
 //	private TreeMap<InterpolationInterval, InterpolationInterval> intervals =
 //			new TreeMap<InterpolationInterval, InterpolationInterval>();
 
-	InterpolationInterval[] intervals = new InterpolationInterval[1];
+	private InterpolationInterval[] intervals = new InterpolationInterval[1];
 
 	int evalCount;
 	int notHits;
 
+	@NotNull
 	public String perfString()
 		{
 		return "" + intervals.length + " intervals, " + evalCount + " evaluations, " + (evalCount - notHits) + " hits ("
-				+ ((float) (evalCount - notHits) / (float) evalCount) + "%)";
+		       + ((float) (evalCount - notHits) / (float) evalCount) + "%)";
 		}
 
 	// pull a trick with compareTo, equals, and hashCode so that using TreeMap.get(float x) finds the interval that x is contained in.
@@ -100,14 +103,15 @@ public class ArrayInterpolatingFunctionCache
 				}
 			}
 
+		@NotNull
 		@Override
 		public String toString()
 			{
 			return "InterpolationInterval{" + floorX + "->" + cielX + " = " + floorY + " + " + slope + " * x "
-					+ (smooth ? "SMOOTH" : "") + '}';
+			       + (smooth ? "SMOOTH" : "") + '}';
 			}
 
-		public int compareTo(InterpolationInterval o)
+		public int compareTo(@NotNull InterpolationInterval o)
 			{
 			// if there is any overlap at all, assert equality
 			// I had assumed that TreeMap would use interval.compareTo(point), but in fact it uses point.compareTo(interval)
@@ -127,7 +131,7 @@ public class ArrayInterpolatingFunctionCache
 		@Override
 		public boolean equals(Object obj)
 			{
-			InterpolationInterval o = (InterpolationInterval) obj;
+			@NotNull InterpolationInterval o = (InterpolationInterval) obj;
 			return !(floorX >= o.cielX) && !(o.floorX >= cielX);
 			}
 
@@ -202,7 +206,7 @@ public class ArrayInterpolatingFunctionCache
 
 
 				// note we don't use InterpolationInterval(midX, cielX), since we need to delay setting cielX until after the map put.
-				InterpolationInterval right = new InterpolationInterval(midX, cielX);
+				@NotNull InterpolationInterval right = new InterpolationInterval(midX, cielX);
 
 				right.cielY = cielY;
 				right.slope = slope; // just temporary for the smoothness test; it'll be reset anyway
@@ -219,7 +223,8 @@ public class ArrayInterpolatingFunctionCache
 
 				// array insertion is a hassle; just use the ArrayList implementation at extra expense
 				// this doesn't happen very often anyway
-				ArrayList<InterpolationInterval> tmp = new ArrayList<InterpolationInterval>(Arrays.asList(intervals));
+				@NotNull ArrayList<InterpolationInterval> tmp =
+						new ArrayList<InterpolationInterval>(Arrays.asList(intervals));
 				tmp.add(index, right);
 				intervals = tmp.toArray(intervals);
 //				intervals.put(right, right);

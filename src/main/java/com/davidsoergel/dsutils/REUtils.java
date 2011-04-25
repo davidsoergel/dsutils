@@ -33,6 +33,9 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -52,6 +55,7 @@ public class REUtils
 	 * @param pattern The regular expression to look for.
 	 * @return the first substring of the given string matching the given regular expression, or null if no match.
 	 */
+	@Nullable
 	public static String matchRE(String s, String pattern)
 		{
 		return matchRE(s, pattern, 0);
@@ -65,7 +69,8 @@ public class REUtils
 	 * @param groupnums Array of group numbers to return (0-based).
 	 * @return the first substring of the given string matching the given regular expression, or null if no match.
 	 */
-	public static String[] matchRE(String s, String pattern, int[] groupnums)
+	@Nullable
+	public static String[] matchRE(String s, String pattern, @NotNull int[] groupnums)
 		{
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(s);
@@ -75,7 +80,7 @@ public class REUtils
 			}
 		try
 			{
-			String[] groups = new String[groupnums.length];
+			@NotNull String[] groups = new String[groupnums.length];
 			for (int g = 0; g < groupnums.length; g++)
 				{
 				groups[g] = m.group(groupnums[g]);
@@ -97,6 +102,7 @@ public class REUtils
 	 * @param groupnum Look for the groupnum'th match (0-based).
 	 * @return the first substring of the given string matching the given regular expression, or null if no match.
 	 */
+	@Nullable
 	public static String matchRE(String s, String pattern, int groupnum)
 		{
 		Pattern p = Pattern.compile(pattern);
@@ -115,6 +121,7 @@ public class REUtils
 			}
 		}
 
+	@NotNull
 	public static List matchAllRE(String s, String pattern)
 		{
 		return matchAllRE(s, pattern, 0);
@@ -127,9 +134,10 @@ public class REUtils
 	 * @param pattern The regular expression to look for.
 	 * @return the first substring of the given string matching the given regular expression, or null if no match.
 	 */
+	@NotNull
 	public static List matchAllRE(String s, String pattern, int groupnum)
 		{
-		List result = new ArrayList();
+		@NotNull List result = new ArrayList();
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(s);
 		while (m.find())
@@ -148,16 +156,17 @@ public class REUtils
 	 * @param groupnums Array of group numbers to return (0-based).
 	 * @return the first substring of the given string matching the given regular expression, or null if no match.
 	 */
-	public static List matchAllRE(String s, String pattern, int[] groupnums)
+	@NotNull
+	public static List matchAllRE(String s, String pattern, @NotNull int[] groupnums)
 		{
-		List result = new ArrayList();
+		@NotNull List result = new ArrayList();
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(s);
 		while (m.find())
 			{
 			try
 				{
-				String[] groups = new String[groupnums.length];
+				@NotNull String[] groups = new String[groupnums.length];
 				for (int g = 0; g < groupnums.length; g++)
 					{
 					groups[g] = m.group(groupnums[g]);

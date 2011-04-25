@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,11 +17,11 @@ public class EnvironmentUtils
 	{
 	private static final Logger logger = Logger.getLogger(EnvironmentUtils.class);
 
-	static
+	/*static
 		{
 		//	File propFile = new File("system.properties");
 		//	init(propFile);
-		}
+		}*/
 
 	static String cacheRoot = "/tmp/"; // null; //
 	//static String inputRoot;
@@ -27,14 +29,14 @@ public class EnvironmentUtils
 
 	public static void init(File propFile)
 		{
-		FileInputStream in = null;
+		@Nullable FileInputStream in = null;
 		try
 			{
 			in = new FileInputStream(propFile);
 			// set up new properties object
 			// from file "myProperties.txt"
 
-			Properties p = new Properties(System.getProperties());
+			@NotNull Properties p = new Properties(System.getProperties());
 			p.load(in);
 
 			// set the system properties

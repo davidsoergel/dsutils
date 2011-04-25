@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils.range;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -64,16 +66,16 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 	 * @param intervalSet
 	 * @return
 	 */
-	public <U extends Interval<T>> MultiIntervalUnion(Set<U> intervalSet)
+	public <U extends Interval<T>> MultiIntervalUnion(@NotNull Set<U> intervalSet)
 		{
 		//private
-		SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
-		Set<T> includedEndpoints = new HashSet<T>();
+		@NotNull SortedMap<T, Integer> fullLeftRightMap = new TreeMap<T, Integer>();
+		@NotNull Set<T> includedEndpoints = new HashSet<T>();
 
 		//int numberOfConstraints = intervalSets.size();
 		//	for (Set<U> intervalSet : intervalSets)
 		//		{
-		for (Interval<T> i : intervalSet)
+		for (@NotNull Interval<T> i : intervalSet)
 			{
 			T left = i.getMin();
 			T right = i.getMax();
@@ -97,8 +99,8 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 		//		}
 
 		int openParens = 0;
-		MutableBasicInterval<T> currentInterval = null;
-		for (Map.Entry<T, Integer> entry : fullLeftRightMap.entrySet())// the positions must be sorted!
+		@Nullable MutableBasicInterval<T> currentInterval = null;
+		for (@NotNull Map.Entry<T, Integer> entry : fullLeftRightMap.entrySet())// the positions must be sorted!
 			{
 			T position = entry.getKey();
 			Integer parenDelta = entry.getValue();

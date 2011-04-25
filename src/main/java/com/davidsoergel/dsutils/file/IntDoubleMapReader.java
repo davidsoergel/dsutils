@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,11 +14,12 @@ import java.util.Map;
  */
 public class IntDoubleMapReader
 	{
+	@NotNull
 	public static Map<Integer, Double> read(String filename) throws IOException
 		{
-		Map<Integer, Double> result = new HashMap<Integer, Double>();
+		@NotNull Map<Integer, Double> result = new HashMap<Integer, Double>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
 			{
 			String line;
@@ -31,8 +34,8 @@ public class IntDoubleMapReader
 				String[] numbers = line.split("[ ,\t]+");
 				try
 					{
-					Integer key = new Integer(numbers[0]);
-					Double value = new Double(numbers[1]);
+					@NotNull Integer key = new Integer(numbers[0]);
+					@NotNull Double value = new Double(numbers[1]);
 					result.put(key, value);
 					i++;
 					}

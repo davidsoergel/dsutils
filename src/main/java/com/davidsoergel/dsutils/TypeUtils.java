@@ -34,6 +34,7 @@ package com.davidsoergel.dsutils;
 
 import org.jboss.aop.advice.annotation.assignability.AssignabilityAlgorithm;
 import org.jboss.aop.advice.annotation.assignability.VariableHierarchy;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 
@@ -46,7 +47,7 @@ public class TypeUtils
 	{
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static boolean isAssignableFrom(Type superType, Type subType)
+	public static boolean isAssignableFrom(Type superType, @NotNull Type subType)
 		{
 		return AssignabilityAlgorithm.VARIABLE_TARGET.isAssignable(superType, subType, new VariableHierarchy());
 		/*

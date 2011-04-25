@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils;
 import com.google.common.collect.MapMaker;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,17 +60,17 @@ public class CacheManager
 	 */
 	public static void syncAccumulatingMaps()
 		{
-		for (AccumulatingMap accumulatingMap : accumulatingMaps.values())
+		for (@NotNull AccumulatingMap accumulatingMap : accumulatingMaps.values())
 			{
 			accumulatingMap.mergeToDisk();
 			}
 		}
 
 
-	private static String hashAndVerify(final Object source, final String idString)
+	private static String hashAndVerify(@NotNull final Object source, @NotNull final String idString)
 		{
 		String idHash = String.valueOf(idString.hashCode());
-		String cachedString = (String) get(source, idHash + ".idString");
+		@Nullable String cachedString = (String) get(source, idHash + ".idString");
 
 		if (cachedString == null)  // idstring file didn't exist
 			{
@@ -92,14 +93,15 @@ public class CacheManager
 	 * @param key
 	 * @return
 	 */
-	public static Serializable get(Object source, String key)
+	@Nullable
+	public static Serializable get(@NotNull Object source, @NotNull String key)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
 			key = hashAndVerify(source, key);
 			}
 
-		String filename = buildFilename(source, key);
+		@NotNull String filename = buildFilename(source, key);
 		return getFromFile(filename);
 		}
 
@@ -109,17 +111,19 @@ public class CacheManager
 	 * @param classNamePlusKey
 	 * @return
 	 */
+	@Nullable
 	public static Serializable get(String classNamePlusKey)
 		{
-		String filename = buildFilename(classNamePlusKey);
+		@NotNull String filename = buildFilename(classNamePlusKey);
 		return getFromFile(filename);
 		}
 
+	@Nullable
 	private static Serializable getFromFile(String filename)
 		{
 		logger.info("Loading cache: " + filename);
-		FileInputStream fin = null;
-		ObjectInputStream ois = null;
+		@Nullable FileInputStream fin = null;
+		@Nullable ObjectInputStream ois = null;
 		try
 			{
 			fin = new FileInputStream(filename);
@@ -175,7 +179,7 @@ public class CacheManager
 	 */
 	public static void put(String classNamePlusKey, Serializable o)
 		{
-		String filename = buildFilename(classNamePlusKey);
+		@NotNull String filename = buildFilename(classNamePlusKey);
 		putToFile(filename, o);
 		}
 
@@ -187,25 +191,25 @@ public class CacheManager
 	 * @param key
 	 * @param o
 	 */
-	public static void put(Object source, String key, Serializable o)
+	public static void put(@NotNull Object source, @NotNull String key, Serializable o)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
 			key = hashAndVerify(source, key);
 			}
 
-		String filename = buildFilename(source, key);
+		@NotNull String filename = buildFilename(source, key);
 		putToFile(filename, o);
 		}
 
 	private static void putToFile(String filename, Serializable o)
 		{
-		File cacheFile = new File(filename);
+		@NotNull File cacheFile = new File(filename);
 		cacheFile.getParentFile().mkdirs();
-		FileOutputStream fout = null;
-		ObjectOutputStream oos = null;
-		FileChannel channel = null;
-		FileLock lock = null;
+		@Nullable FileOutputStream fout = null;
+		@Nullable ObjectOutputStream oos = null;
+		@Nullable FileChannel channel = null;
+		@Nullable FileLock lock = null;
 
 		try
 			{
@@ -291,20 +295,21 @@ public class CacheManager
 
 	static ConcurrentMap<String, AccumulatingMap> accumulatingMaps = new MapMaker().weakValues().makeMap();
 
-	public static Map getAccumulatingMapAssumeSerializable(Object source, String key) //, Map<K, V> prototype)
+	public static Map getAccumulatingMapAssumeSerializable(@NotNull Object source,
+	                                                       @NotNull String key) //, Map<K, V> prototype)
 	{
 	return getAccumulatingMap(source, key);
 	}
 
-	public static <K extends Serializable, V extends Serializable> Map<K, V> getAccumulatingMap(Object source,
-	                                                                                            String key) //, Map<K, V> prototype)
+	public static <K extends Serializable, V extends Serializable> Map<K, V> getAccumulatingMap(@NotNull Object source,
+	                                                                                            @NotNull String key) //, Map<K, V> prototype)
 	{
 	if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 		{
 		key = hashAndVerify(source, key);
 		}
 
-	String filename = buildFilename(source, key);
+	@NotNull String filename = buildFilename(source, key);
 
 	AccumulatingMap<K, V> result = accumulatingMaps.get(filename);
 	if (result == null)
@@ -316,7 +321,8 @@ public class CacheManager
 	return result;
 	}
 
-	private static String buildFilename(Object source, String key)
+	@NotNull
+	private static String buildFilename(@NotNull Object source, String key)
 		{
 		String className = source.getClass().getCanonicalName();
 		int i = className.indexOf('$');
@@ -327,6 +333,7 @@ public class CacheManager
 		return EnvironmentUtils.getCacheRoot() + className + File.separator + key;
 		}
 
+	@NotNull
 	private static String buildFilename(String classNamePlusKey)
 		{
 		return EnvironmentUtils.getCacheRoot() + classNamePlusKey;
@@ -362,6 +369,7 @@ public class CacheManager
 			}
 */
 
+		@NotNull
 		transient Set<K> alteredKeys = new HashSet<K>();
 		transient private String filename;
 
@@ -369,7 +377,7 @@ public class CacheManager
 			{
 			this.filename = filename;
 
-			Map<K, V> theMap = (Map<K, V>) CacheManager.getFromFile(filename);
+			@Nullable Map<K, V> theMap = (Map<K, V>) CacheManager.getFromFile(filename);
 			if (theMap != null)
 				{
 
@@ -377,7 +385,7 @@ public class CacheManager
 				// but not like this, since super.putAll calls the local put which then calls mergeToDisk unnecessarily
 				//	super.putAll(theMap);
 
-				for (Map.Entry<K, V> entry : theMap.entrySet())
+				for (@NotNull Map.Entry<K, V> entry : theMap.entrySet())
 					{
 					super.put(entry.getKey(), entry.getValue());
 					}
@@ -401,7 +409,7 @@ public class CacheManager
 			}
 
 		@Override
-		public synchronized void putAll(Map<? extends K, ? extends V> map)
+		public synchronized void putAll(@NotNull Map<? extends K, ? extends V> map)
 			{
 			alteredKeys.addAll(map.keySet());
 			super.putAll(map);
@@ -431,22 +439,22 @@ public class CacheManager
 				logger.warn("Writing AccumulatingMap: " + filename + ", " + this.size() + " entries, " + alteredKeys
 				            + " new.");
 
-				FileOutputStream fout = null;
-				ObjectOutputStream oos = null;
-				FileChannel channel = null;
-				FileLock lock = null;
+				@Nullable FileOutputStream fout = null;
+				@Nullable ObjectOutputStream oos = null;
+				@Nullable FileChannel channel = null;
+				@Nullable FileLock lock = null;
 
 				try
 					{
 					// prepare a new file and lock it
-					File cacheFile = new File(filename + ".new");
+					@NotNull File cacheFile = new File(filename + ".new");
 					cacheFile.getParentFile().mkdirs();
 					fout = new FileOutputStream(cacheFile);
 					channel = fout.getChannel();
 					lock = channel.lock();
 
 					// load the latest version, without locking
-					AccumulatingMap<K, V> theMap = (AccumulatingMap<K, V>) CacheManager.get(filename);
+					@NotNull AccumulatingMap<K, V> theMap = (AccumulatingMap<K, V>) CacheManager.get(filename);
 
 					if (theMap == null)
 						{
@@ -467,7 +475,7 @@ public class CacheManager
 					oos.writeObject(theMap);
 
 					// replace the old file with the new one
-					File oldFile = new File(filename);
+					@NotNull File oldFile = new File(filename);
 					if (!oldFile.exists() || oldFile.delete())
 						{
 						if (cacheFile.renameTo(oldFile))
@@ -581,14 +589,14 @@ public class CacheManager
 	 * @return
 	 */
 	@NotNull
-	public static LazyStub getLazy(Object source, String key)
+	public static LazyStub getLazy(@NotNull Object source, @NotNull String key)
 		{
 		if (key.length() > MAX_KEY_LENGTH)  // OR key contains invalid characters?
 			{
 			key = hashAndVerify(source, key);
 			}
 
-		String filename = buildFilename(source, key);
+		@NotNull String filename = buildFilename(source, key);
 
 		//if (new File(filename).exists())
 		//	{
@@ -604,6 +612,7 @@ public class CacheManager
 	public static class LazyStub
 		{
 		private String filename;
+		@Nullable
 		private Serializable thing;
 		private boolean fileExists;
 
@@ -618,6 +627,7 @@ public class CacheManager
 			return !fileExists;
 			}
 
+		@Nullable
 		public synchronized Serializable get()
 			{
 			if (thing == null)
@@ -633,7 +643,7 @@ public class CacheManager
 		 *
 		 * @param o
 		 */
-		public synchronized void put(Serializable o)
+		public synchronized void put(@Nullable Serializable o)
 			{
 			if (o == null)
 				{

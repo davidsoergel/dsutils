@@ -33,6 +33,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,13 +107,14 @@ public class PropertiesUtils
 		throw new FileNotFoundException("Could not find properties file: " + defaultFileName);
 		}
 
+	@NotNull
 	public static Map<String, Properties> splitPeriodDelimitedProperties(Properties p)
 		{
-		PropertiesToMapAdapter pm = new PropertiesToMapAdapter(p);
+		@NotNull PropertiesToMapAdapter pm = new PropertiesToMapAdapter(p);
 
-		Map<String, Properties> result = new HashMap<String, Properties>();
+		@NotNull Map<String, Properties> result = new HashMap<String, Properties>();
 
-		for (Map.Entry<String, Object> entry : pm.entrySet())
+		for (@NotNull Map.Entry<String, Object> entry : pm.entrySet())
 			//for (String key : pm.keySet())
 			{
 			String[] keyparts = entry.getKey().split("\\.");
@@ -150,19 +153,22 @@ public class PropertiesUtils
 		}
 
 
+	@NotNull
 	public static Map<String, Properties> splitPeriodDelimitedPropertiesFromStream(InputStream s) throws IOException
 		{
-		Properties p = new Properties();
+		@NotNull Properties p = new Properties();
 		p.load(s);
 		return splitPeriodDelimitedProperties(p);
 		}
 
+	@NotNull
 	public static Map<String, Properties> splitPeriodDelimitedPropertiesFromFilename(String propsFilename)
 			throws IOException
 		{
 		return splitPeriodDelimitedPropertiesFromStream(new FileInputStream(propsFilename));
 		}
 
+	@NotNull
 	public static Map<String, Properties> splitPeriodDelimitedPropertiesFromFile(File propsFile) throws IOException
 		{
 		return splitPeriodDelimitedPropertiesFromStream(new FileInputStream(propsFile));
@@ -173,7 +179,7 @@ public class PropertiesUtils
 		Properties props;
 
 		props = new Properties();
-		FileInputStream inStream = null;
+		@Nullable FileInputStream inStream = null;
 		try
 			{
 			inStream = new FileInputStream(propsFile);

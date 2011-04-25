@@ -35,6 +35,8 @@ package com.davidsoergel.dsutils;
 
 import com.davidsoergel.dsutils.math.MathUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -61,9 +63,9 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void doubleArrayDeepEqualsWorks()
 		{
-		double[] a1 = {0.1, 0.2, 0.3, 0.4};
-		double[] a2 = {0.1, 0.2, 0.3, 0.4};
-		double[] a3 = {0.1, 0.2, 0.3, 0.4004};
+		@NotNull double[] a1 = {0.1, 0.2, 0.3, 0.4};
+		@NotNull double[] a2 = {0.1, 0.2, 0.3, 0.4};
+		@NotNull double[] a3 = {0.1, 0.2, 0.3, 0.4004};
 		assert DSArrayUtils.equalWithinFPError(a1, a2);
 		assert !DSArrayUtils.equalWithinFPError(a1, a3);
 		}
@@ -71,9 +73,9 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void doubleObjectArrayDeepEqualsWorks()
 		{
-		Double[] a1 = {0.1, 0.2, 0.3, 0.4};
-		Double[] a2 = {0.1, 0.2, 0.3, 0.4};
-		Double[] a3 = {0.1, 0.2, 0.3, 0.4004};
+		@NotNull Double[] a1 = {0.1, 0.2, 0.3, 0.4};
+		@NotNull Double[] a2 = {0.1, 0.2, 0.3, 0.4};
+		@NotNull Double[] a3 = {0.1, 0.2, 0.3, 0.4004};
 		assert DSArrayUtils.equalWithinFPError(a1, a2);
 		assert !DSArrayUtils.equalWithinFPError(a1, a3);
 		}
@@ -144,17 +146,17 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void twoDimensionalDoubleArrayPlusWorks()
 		{
-		double[][] aa = new double[3][];
+		@NotNull double[][] aa = new double[3][];
 		aa[0] = a;
 		aa[1] = b;
 		aa[2] = c;
 
-		double[][] bb = new double[3][];
+		@NotNull double[][] bb = new double[3][];
 		bb[0] = DSArrayUtils.times(a, 2.5);
 		bb[1] = DSArrayUtils.times(b, 2.5);
 		bb[2] = DSArrayUtils.times(c, 2.5);
 
-		double[][] aabb = DSArrayUtils.plus(aa, bb);
+		@NotNull double[][] aabb = DSArrayUtils.plus(aa, bb);
 
 		assert DSArrayUtils.equalWithinFPError(aabb[0], DSArrayUtils.times(a, 3.5));
 		assert DSArrayUtils.equalWithinFPError(aabb[1], DSArrayUtils.times(b, 3.5));
@@ -164,7 +166,7 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void twoDimensionalDoubleArraySumNColumnsWorks()
 		{
-		double[][] aa = new double[3][];
+		@NotNull double[][] aa = new double[3][];
 		aa[0] = a;
 		aa[1] = b;
 		aa[2] = c;
@@ -176,12 +178,12 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void twoDimensionalDoubleArrayCopyWithMoreColumnsWorks()
 		{
-		double[][] aa = new double[3][];
+		@NotNull double[][] aa = new double[3][];
 		aa[0] = a;
 		aa[1] = b;
 		aa[2] = c;
 
-		double[][] aax = DSArrayUtils.deepcopy(aa, 2, 5);
+		@NotNull double[][] aax = DSArrayUtils.deepcopy(aa, 2, 5);
 
 		assert aax[0].length == 6;
 
@@ -195,12 +197,12 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void twoDimensionalDoubleArrayCopyWithFewerColumnsWorks()
 		{
-		double[][] aa = new double[3][];
+		@NotNull double[][] aa = new double[3][];
 		aa[0] = a;
 		aa[1] = b;
 		aa[2] = c;
 
-		double[][] aax = DSArrayUtils.deepcopy(aa, -2, 5);
+		@Nullable double[][] aax = DSArrayUtils.deepcopy(aa, -2, 5);
 
 		assert aax[0].length == 2;
 
@@ -223,9 +225,9 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void byteArrayPrefixReturnsFirstNBytes()
 		{
-		byte[] fourBytes = new byte[]{34, 65, 123, 75};
-		byte[] threeBytes = new byte[]{34, 65, 123};
-		byte[] twoBytes = new byte[]{34, 65};
+		@NotNull byte[] fourBytes = new byte[]{34, 65, 123, 75};
+		@NotNull byte[] threeBytes = new byte[]{34, 65, 123};
+		@NotNull byte[] twoBytes = new byte[]{34, 65};
 		assert Arrays.equals(DSArrayUtils.prefix(fourBytes, 3), threeBytes);
 
 		assert Arrays.equals(DSArrayUtils.prefix(fourBytes, 2), twoBytes);
@@ -235,11 +237,11 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void byteArraySuffixOfLengthReturnsLastNBytes()
 		{
-		byte[] fourBytes = new byte[]{34, 65, 123, 75};
-		byte[] threeBytes = new byte[]{
+		@NotNull byte[] fourBytes = new byte[]{34, 65, 123, 75};
+		@NotNull byte[] threeBytes = new byte[]{
 
 				65, 123, 75};
-		byte[] twoBytes = new byte[]{123, 75};
+		@NotNull byte[] twoBytes = new byte[]{123, 75};
 		assert Arrays.equals(DSArrayUtils.suffixOfLength(fourBytes, 3), threeBytes);
 
 		assert Arrays.equals(DSArrayUtils.suffixOfLength(fourBytes, 2), twoBytes);
@@ -248,11 +250,11 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void byteArraySuffixReturnsLastBytesFromPos()
 		{
-		byte[] fourBytes = new byte[]{34, 65, 123, 75};
-		byte[] threeBytes = new byte[]{
+		@NotNull byte[] fourBytes = new byte[]{34, 65, 123, 75};
+		@NotNull byte[] threeBytes = new byte[]{
 
 				65, 123, 75};
-		byte[] twoBytes = new byte[]{123, 75};
+		@NotNull byte[] twoBytes = new byte[]{123, 75};
 		assert Arrays.equals(DSArrayUtils.suffix(fourBytes, 1), threeBytes);
 
 		assert Arrays.equals(DSArrayUtils.suffix(fourBytes, 2), twoBytes);
@@ -268,8 +270,8 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void bytePrependWorks()
 		{
-		byte[] fourBytes = new byte[]{34, 65, 123, 75};
-		byte[] threeBytes = new byte[]{
+		@NotNull byte[] fourBytes = new byte[]{34, 65, 123, 75};
+		@NotNull byte[] threeBytes = new byte[]{
 
 				65, 123, 75};
 		assert Arrays.equals(DSArrayUtils.prepend((byte) 34, threeBytes), fourBytes);
@@ -278,23 +280,23 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void byteAppendWorks()
 		{
-		byte[] fourBytes = new byte[]{34, 65, 123, 75};
-		byte[] threeBytes = new byte[]{34, 65, 123};
+		@NotNull byte[] fourBytes = new byte[]{34, 65, 123, 75};
+		@NotNull byte[] threeBytes = new byte[]{34, 65, 123};
 		assert Arrays.equals(DSArrayUtils.append(threeBytes, (byte) 75), fourBytes);
 		}
 
 	@Test
 	public void positionsWorks()
 		{
-		int[] aa = new int[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 8, 345, 7, 45, 7};
-		int[] result = new int[]{2, 5, 11, 13};
+		@NotNull int[] aa = new int[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 8, 345, 7, 45, 7};
+		@NotNull int[] result = new int[]{2, 5, 11, 13};
 		assert Arrays.equals(DSArrayUtils.positions(aa, 7), result);
 		}
 
 	@Test
 	public void argMinReturnsFirstPositionOfMinimumValue()
 		{
-		double[] aa = new double[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 5, 345, 7, 5, 7};
+		@NotNull double[] aa = new double[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 5, 345, 7, 5, 7};
 
 		assert DSArrayUtils.argmin(aa) == 3;
 		}
@@ -302,7 +304,7 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void argMaxReturnsFirstPositionOfMaximumValue()
 		{
-		double[] aa = new double[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 5, 345, 7, 5, 7};
+		@NotNull double[] aa = new double[]{22, 45, 7, 5, 45, 7, 345, 66, 8, 5, 345, 7, 5, 7};
 
 		assert DSArrayUtils.argmax(aa) == 6;
 		}
@@ -316,8 +318,8 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void intArrayCompareConsidersColumnsInOrder()
 		{
-		int[] ai = new int[]{2, 3, 7, 6, 8};
-		int[] bi = new int[]{2, 3, 8, 6, 8};
+		@NotNull int[] ai = new int[]{2, 3, 7, 6, 8};
+		@NotNull int[] bi = new int[]{2, 3, 8, 6, 8};
 		assert DSArrayUtils.compare(ai, ai) == 0;
 		assert DSArrayUtils.compare(bi, bi) == 0;
 		assert DSArrayUtils.compare(ai, bi) == -1;
@@ -327,8 +329,8 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void intArrayCompareConsidersArrayLength()
 		{
-		int[] ai = new int[]{2, 3, 7, 6, 8};
-		int[] bi = new int[]{2, 3, 7, 6, 8, 2};
+		@NotNull int[] ai = new int[]{2, 3, 7, 6, 8};
+		@NotNull int[] bi = new int[]{2, 3, 7, 6, 8, 2};
 		assert DSArrayUtils.compare(ai, ai) == 0;
 		assert DSArrayUtils.compare(bi, bi) == 0;
 		assert DSArrayUtils.compare(ai, bi) == -1;
@@ -338,9 +340,9 @@ public class DSArrayUtilsTest//extends TestCase
 	@Test
 	public void selectWorks()
 		{
-		double[] a1 = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
+		@NotNull double[] a1 = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7};
 
-		boolean[] mask = {false, true, true, false, false, true, true};
+		@NotNull boolean[] mask = {false, true, true, false, false, true, true};
 
 		assert Arrays.equals(DSArrayUtils.select(a1, mask), new double[]{0.2, 0.3, 0.6, 0.7});
 		}

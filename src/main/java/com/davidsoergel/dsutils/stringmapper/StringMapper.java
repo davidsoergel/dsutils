@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Type;
 
 /**
@@ -13,6 +15,7 @@ public abstract class StringMapper<T>
 		super();
 		}
 
+	@Nullable
 	public abstract T parse(String s) throws StringMapperException;
 
 	public abstract String render(T value);

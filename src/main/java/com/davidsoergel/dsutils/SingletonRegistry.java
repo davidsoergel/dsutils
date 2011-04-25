@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -50,8 +52,10 @@ public abstract class SingletonRegistry
 
 	private static final Logger logger = Logger.getLogger(SingletonRegistry.class);
 
+	@NotNull
 	static private HashMap _registry = new HashMap();
 
+	@Nullable
 	private static ClassLoader classLoader = null;
 
 	// -------------------------- STATIC METHODS --------------------------
@@ -59,13 +63,14 @@ public abstract class SingletonRegistry
 	/**
 	 * @return The unique instance of the specified class.
 	 */
-	static public SingletonRegistry instance(String byname) throws ClassNotFoundException
+	@NotNull
+	static public SingletonRegistry instance(@NotNull String byname) throws ClassNotFoundException
 		{
 		// byname = byname.toLowerCase();
 
 		logger.trace("SingletonRegistry.instance(\"" + byname + "\")");
 
-		SingletonRegistry result = (SingletonRegistry) (_registry.get(byname.toLowerCase()));
+		@Nullable SingletonRegistry result = (SingletonRegistry) (_registry.get(byname.toLowerCase()));
 
 		// make sure the class has been loaded, since it wouldn't yet be in SingletonRegistry's registry otherwise
 

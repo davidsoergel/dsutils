@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import com.google.common.collect.Multiset;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,30 +57,30 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 	// this is really an int, but we could store it as a double to avoid casting all the time in getNormalized()
 	// note the itemCount is different from the sum of the weights
 
-	public ConcurrentHashWeightedSet(final Map<? extends T, Double> map, final int items)
+	public ConcurrentHashWeightedSet(@NotNull final Map<? extends T, Double> map, final int items)
 		{
 		backingMap = new ConcurrentHashMap<T, Double>();
 		this.initialCapacity = 16;
 		itemCount = items;
-		for (final Map.Entry<? extends T, Double> entry : map.entrySet())
+		for (@NotNull final Map.Entry<? extends T, Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
 			}
 		}
 
-	public ConcurrentHashWeightedSet(final Map<? extends T, Double> map)
+	public ConcurrentHashWeightedSet(@NotNull final Map<? extends T, Double> map)
 		{
 		backingMap = new ConcurrentHashMap<T, Double>();
 
 		this.initialCapacity = 16;
 		itemCount = 1;
-		for (final Map.Entry<? extends T, Double> entry : map.entrySet())
+		for (@NotNull final Map.Entry<? extends T, Double> entry : map.entrySet())
 			{
 			add(entry.getKey(), entry.getValue());
 			}
 		}
 
-	public ConcurrentHashWeightedSet(final Multiset<T> m)
+	public ConcurrentHashWeightedSet(@NotNull final Multiset<T> m)
 		{
 		backingMap = new ConcurrentHashMap<T, Double>();
 
@@ -142,10 +143,10 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 		 }
  */
 
-	public synchronized void addAll(final WeightedSet<T> increment)
+	public synchronized void addAll(@NotNull final WeightedSet<T> increment)
 		{
 		itemCount += increment.getItemCount();
-		for (final Map.Entry<T, Double> entry : increment.entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
@@ -159,17 +160,17 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			}
 		}
 
-	public synchronized void addAll(final WeightedSet<T> increment, final double weight)
+	public synchronized void addAll(@NotNull final WeightedSet<T> increment, final double weight)
 		{
 		itemCount += increment.getItemCount();
-		for (final Map.Entry<T, Double> entry : increment.entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
 				{
 				val = 0.;
 				}
-			final Double d = entry.getValue() * weight;
+			@NotNull final Double d = entry.getValue() * weight;
 			val = val + d;
 			//weightSum += d;
 
@@ -177,10 +178,10 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			}
 		}
 
-	public synchronized void removeAll(final WeightedSet<T> increment)
+	public synchronized void removeAll(@NotNull final WeightedSet<T> increment)
 		{
 		itemCount -= increment.getItemCount();
-		for (final Map.Entry<T, Double> entry : increment.entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : increment.entrySet())
 			{
 			Double val = backingMap.get(entry.getKey());
 			if (val == null)
@@ -224,14 +225,14 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 		}
 		*/
 
-	public synchronized void add(final Map<T, Double> weights)
+	public synchronized void add(@NotNull final Map<T, Double> weights)
 		{
 		add(weights, 1);
 		}
 
-	public synchronized void add(final Map<T, Double> weights, final int items)
+	public synchronized void add(@NotNull final Map<T, Double> weights, final int items)
 		{
-		for (final Map.Entry<T, Double> entry : weights.entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : weights.entrySet())
 			{
 			add(entry.getKey(), entry.getValue() * items);
 			}
@@ -245,14 +246,14 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 		itemCount += items;
 		}
 
-	public synchronized void put(final Map<T, Double> weights)
+	public synchronized void put(@NotNull final Map<T, Double> weights)
 		{
 		put(weights, 1);
 		}
 
-	public synchronized void put(final Map<T, Double> weights, final int items)
+	public synchronized void put(@NotNull final Map<T, Double> weights, final int items)
 		{
-		for (final Map.Entry<T, Double> entry : weights.entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : weights.entrySet())
 			{
 			put(entry.getKey(), entry.getValue() * items);
 			}

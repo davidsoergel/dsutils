@@ -6,6 +6,7 @@ import com.davidsoergel.dsutils.collections.MutableWeightedSet;
 import com.davidsoergel.dsutils.collections.WeightedSet;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
@@ -16,7 +17,9 @@ public class LabellableImpl<T> implements Labellable<T> //, Serializable
 	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
 
 	//** we're serializing for the sake of the FastaParser index, where labels shouldn't matter
+	@Nullable
 	protected transient MutableWeightedSet<T> mutableWeightedLabels = null; // = new ConcurrentHashWeightedSet<T>();
+	@Nullable
 	private transient WeightedSet<T> immutableWeightedLabels = null;
 
 	// jump through some hoops here to avoid allocating the label sets if they're never used

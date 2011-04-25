@@ -33,6 +33,8 @@
 package com.davidsoergel.dsutils;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -63,8 +65,8 @@ public abstract class ContractTestAware<T>
 	 */
 	public Object[] instantiateAllContractTestsWithName(String testName)
 		{
-		Set result = new HashSet();
-		Queue<ContractTest> queue = new LinkedList<ContractTest>();
+		@NotNull Set result = new HashSet();
+		@NotNull Queue<ContractTest> queue = new LinkedList<ContractTest>();
 
 		addContractTestsToQueue(queue);
 

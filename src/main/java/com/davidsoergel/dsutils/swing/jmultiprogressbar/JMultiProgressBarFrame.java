@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.swing.jmultiprogressbar;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +84,7 @@ public class JMultiProgressBarFrame extends JFrame
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		monitor = new JMultiProgressBar();
 
-		JScrollPane scroller = new JScrollPane(monitor);
+		@NotNull JScrollPane scroller = new JScrollPane(monitor);
 
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

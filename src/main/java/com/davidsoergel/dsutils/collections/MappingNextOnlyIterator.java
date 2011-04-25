@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -18,10 +20,12 @@ public abstract class MappingNextOnlyIterator<T, J> implements NextOnlyIterator<
 		this.i = i;
 		}
 
+	@NotNull
 	public J next() throws NoSuchElementException
 		{
 		return function(i.next());
 		}
 
+	@NotNull
 	public abstract J function(T t);
 	}

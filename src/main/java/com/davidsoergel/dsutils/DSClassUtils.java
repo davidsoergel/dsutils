@@ -32,6 +32,8 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,10 +52,10 @@ public class DSClassUtils extends org.apache.commons.lang.ClassUtils
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static Class[] getClasses(Object[] objects)
+	public static Class[] getClasses(@NotNull Object[] objects)
 		{
-		List<Class> result = new ArrayList<Class>();
-		for (Object o : objects)
+		@NotNull List<Class> result = new ArrayList<Class>();
+		for (@NotNull Object o : objects)
 			{
 			/*if (o == null)
 				{
@@ -67,14 +69,14 @@ public class DSClassUtils extends org.apache.commons.lang.ClassUtils
 		return result.toArray(new Class[]{});
 		}
 
-	public static Constructor findConstructor(Class theClass, Class[] paramClasses) throws NoSuchMethodException
+	public static Constructor findConstructor(@NotNull Class theClass, @NotNull Class[] paramClasses)
+			throws NoSuchMethodException
 		{
 		// based on a comment at http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4651775
 
-		Constructor constr = null;
 		// search for the required constructor
 		Constructor[] constrs = theClass.getConstructors();
-		for (int i = 0; constr == null && i < constrs.length; i++)
+		for (int i = 0; i < constrs.length; i++)
 			{
 			Class[] paramTypes = constrs[i].getParameterTypes();
 
@@ -105,6 +107,7 @@ public class DSClassUtils extends org.apache.commons.lang.ClassUtils
 		throw new NoSuchMethodException("" + theClass + " (" + DSStringUtils.join(paramClasses, ", ") + ")");
 		}
 
+	@NotNull
 	private static Map<Type, Type> wrapperPrimitiveMap = new HashMap<Type, Type>();
 
 	static

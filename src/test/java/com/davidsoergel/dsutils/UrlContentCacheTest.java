@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -53,6 +55,7 @@ public class UrlContentCacheTest
 	{
 	// ------------------------------ FIELDS ------------------------------
 
+	@Nullable
 	UrlContentCache cache = null;
 
 	// -------------------------- OTHER METHODS --------------------------
@@ -100,9 +103,9 @@ public class UrlContentCacheTest
 	@Test
 	public void fileCanBeRead() throws UrlContentCacheException, IOException
 		{
-		File f = cache.getFile("http://www.davidsoergel.com/testfile");
+		@NotNull File f = cache.getFile("http://www.davidsoergel.com/testfile");
 		assert f.length() == 81;
-		BufferedReader br = new BufferedReader(new FileReader(f));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(f));
 		assert br.readLine().trim().equals("this is the first line of the test file");
 		}
 
@@ -125,7 +128,7 @@ public class UrlContentCacheTest
 		String origChecksum = cache.getChecksum("http://www.davidsoergel.com/testfile");
 		assert origChecksum.equals("4275079459");
 
-		FileWriter fw = new FileWriter("/tmp/test/www.davidsoergel.com/testfile");
+		@NotNull FileWriter fw = new FileWriter("/tmp/test/www.davidsoergel.com/testfile");
 		fw.write("bogus");
 		fw.close();
 
@@ -138,7 +141,7 @@ public class UrlContentCacheTest
 
 		assert new File("/tmp/test/www.davidsoergel.com/testfile").length() == 5;
 
-		File f = cache.getFile("http://www.davidsoergel.com/testfile", "4275079459");
+		@NotNull File f = cache.getFile("http://www.davidsoergel.com/testfile", "4275079459");
 
 		assert cache.getChecksum("http://www.davidsoergel.com/testfile").equals("4275079459");// should be reverted
 

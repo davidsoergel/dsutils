@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 		this.defaultValue = defaultValue;
 		}
 
-	public SortedSymmetric2dBiMapWithDefault(SortedSymmetric2dBiMapWithDefault<K, V> cloneFrom)
+	public SortedSymmetric2dBiMapWithDefault(@NotNull SortedSymmetric2dBiMapWithDefault<K, V> cloneFrom)
 		{
 		super(cloneFrom);
 		this.defaultValue = cloneFrom.defaultValue;
@@ -30,7 +32,7 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 
 
 	@Override
-	public V get(final K key1, final K key2)
+	public V get(@NotNull final K key1, @NotNull final K key2)
 		{
 		V result = super.get(key1, key2);
 		if (result == null)
@@ -41,7 +43,7 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 		}
 
 	@Override
-	public synchronized void put(final K key1, final K key2, final V d)
+	public synchronized void put(@NotNull final K key1, @NotNull final K key2, @NotNull final V d)
 		{
 		if (d.equals(defaultValue))
 			{
@@ -57,15 +59,15 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 
 
 	@Override
-	public synchronized void putAll(final Map<UnorderedPair<K>, V> result)
+	public synchronized void putAll(@NotNull final Map<UnorderedPair<K>, V> result)
 		{
 		// sanityCheck();
-		for (Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
+		for (@NotNull Map.Entry<UnorderedPair<K>, V> entry : result.entrySet())
 			{
 			final V value = entry.getValue();
 			UnorderedPair<K> pair = entry.getKey();
-			final K key1 = pair.getKey1();
-			final K key2 = pair.getKey2();
+			@NotNull final K key1 = pair.getKey1();
+			@NotNull final K key2 = pair.getKey2();
 
 			assert !key1.equals(key2);
 

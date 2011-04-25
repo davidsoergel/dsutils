@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -8,10 +10,12 @@ import java.io.Serializable;
  */
 public class UnorderedPair<K extends Comparable<K>> implements Comparable<UnorderedPair<K>>, Serializable
 	{
+	@NotNull
 	final private K key1;
+	@NotNull
 	final private K key2;
 
-	public UnorderedPair(K key1, K key2)
+	public UnorderedPair(@NotNull K key1, @NotNull K key2)
 		{
 		final boolean swap = key1.compareTo(key2) > 0;
 		/*boolean swap = false;
@@ -54,7 +58,7 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 			return false;
 			}
 
-		UnorderedPair keyPair = (UnorderedPair) o;
+		@NotNull UnorderedPair keyPair = (UnorderedPair) o;
 
 		if (key1 != null ? !key1.equals(keyPair.key1) : keyPair.key1 != null)
 			{
@@ -83,17 +87,21 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 		return result;
 		}
 
-	public K getKey1()
+	public
+	@NotNull
+	K getKey1()
 		{
 		return key1;
 		}
 
-	public K getKey2()
+	public
+	@NotNull
+	K getKey2()
 		{
 		return key2;
 		}
 
-	public int compareTo(final UnorderedPair<K> o)
+	public int compareTo(@NotNull final UnorderedPair<K> o)
 		{
 		int c = key1.compareTo(o.key1);
 		if (c == 0)
@@ -120,6 +128,7 @@ public class UnorderedPair<K extends Comparable<K>> implements Comparable<Unorde
 //		return key1.toString().compareTo(o.toString());
 		}*/
 
+	@NotNull
 	public String toString()
 		{
 		return "[" + key1 + ", " + key2 + "]";

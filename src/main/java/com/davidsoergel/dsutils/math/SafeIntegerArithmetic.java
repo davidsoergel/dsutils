@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils.math;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Title              <p> Safe Integer Arithmetic Description        <p> Copyright          Copyright (c) <p> J F H
  * Winkler, 2000, 2001 Company            <p> FSU, Jena, Germany
@@ -48,16 +50,25 @@ public class SafeIntegerArithmetic
 	{
 	// ------------------------------ FIELDS ------------------------------
 
+	@NotNull
 	public static final PrimTypeIndTy ByteTy = PrimTypeIndTy.ByteTy;
+	@NotNull
 	public static final PrimTypeIndTy ShortTy = PrimTypeIndTy.ShortTy;
+	@NotNull
 	public static final PrimTypeIndTy IntTy = PrimTypeIndTy.IntTy;
+	@NotNull
 	public static final PrimTypeIndTy LongTy = PrimTypeIndTy.LongTy;
 
+	@NotNull
 	public static final OperationKindTy AddOp = OperationKindTy.AddOp;
+	@NotNull
 	public static final OperationKindTy SubOp = OperationKindTy.SubOp;
+	@NotNull
 	public static final OperationKindTy NegOp = OperationKindTy.NegOp;
+	@NotNull
 	public static final OperationKindTy MulOp = OperationKindTy.MulOp;
 	public static final OperationKindTy DivOp = OperationKindTy.DivOp;
+	@NotNull
 	public static final OperationKindTy ExpOp = OperationKindTy.ExpOp;
 
 	public static final byte MaxB = java.lang.Byte.MAX_VALUE;
@@ -271,7 +282,7 @@ public class SafeIntegerArithmetic
 	public static final long mul(long L, long R)
 		{
 		if ((L > 0 && (R < MinL / L || R > MaxL / L)) || (L == -1 && R == MinL) || (L < -1 && (R < MaxL / L
-				|| R > MinL / L)))
+		                                                                                       || R > MinL / L)))
 			{
 			throw new IllegalArithArgsException(LongTy, MulOp, L, R);
 			}
@@ -459,8 +470,11 @@ public class SafeIntegerArithmetic
 	public final static class PrimTypeIndTy
 		{
 		protected static final PrimTypeIndTy ByteTy = new PrimTypeIndTy("ByteTy");
+		@NotNull
 		protected static final PrimTypeIndTy ShortTy = new PrimTypeIndTy("ShortTy");
+		@NotNull
 		protected static final PrimTypeIndTy IntTy = new PrimTypeIndTy("IntTy");
+		@NotNull
 		protected static final PrimTypeIndTy LongTy = new PrimTypeIndTy("LongTy");
 
 		public String getVal()
@@ -478,9 +492,13 @@ public class SafeIntegerArithmetic
 
 	public final static class OperationKindTy
 		{
+		@NotNull
 		protected static final OperationKindTy AddOp = new OperationKindTy("AddOp");
+		@NotNull
 		protected static final OperationKindTy SubOp = new OperationKindTy("SubOp");
+		@NotNull
 		protected static final OperationKindTy NegOp = new OperationKindTy("NegOp");
+		@NotNull
 		protected static final OperationKindTy MulOp = new OperationKindTy("MulOp");
 		protected static final OperationKindTy DivOp = new OperationKindTy("DivOp");
 		protected static final OperationKindTy ExpOp = new OperationKindTy("ExpOp");
@@ -506,8 +524,9 @@ public class SafeIntegerArithmetic
 			this.operationKind = operation;
 			this.L = L;
 			this.R = R;
-			System.out.println("illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal()
-					+ ", L = " + L + ", R = " + R);
+			System.out.println(
+					"illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal() + ", L = "
+					+ L + ", R = " + R);
 			}
 
 		public IllegalArithArgsException(PrimTypeIndTy type, OperationKindTy operation, long L)
@@ -515,8 +534,9 @@ public class SafeIntegerArithmetic
 			this.typeIndication = type;
 			this.operationKind = operation;
 			this.L = L;
-			System.out.println("illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal()
-					+ ", L = " + L);
+			System.out.println(
+					"illegal args: " + "op = " + operationKind.getV() + ", type = " + typeIndication.getVal() + ", L = "
+					+ L);
 			}
 
 		public PrimTypeIndTy getType()

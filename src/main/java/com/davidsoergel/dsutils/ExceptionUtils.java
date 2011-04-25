@@ -33,6 +33,8 @@
 
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -46,9 +48,9 @@ public class ExceptionUtils
 	/**
 	 * Get the stack trace from a Throwable as a String.
 	 */
-	public static String getStackTrace(Throwable e)
+	public static String getStackTrace(@NotNull Throwable e)
 		{
-		StringWriter sw = new StringWriter();
+		@NotNull StringWriter sw = new StringWriter();
 
 		e.printStackTrace(new PrintWriter(sw));
 

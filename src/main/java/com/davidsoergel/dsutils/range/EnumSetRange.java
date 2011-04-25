@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils.range;
 
 
 import com.davidsoergel.dsutils.EnumValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,10 +26,10 @@ public class EnumSetRange extends AbstractSetRange<EnumValue>
 		{
 		}
 
-	public EnumSetRange(final Collection enumValues)
+	public EnumSetRange(@NotNull final Collection enumValues)
 		{
 		super(new HashSet<EnumValue>());
-		for (Object s : enumValues)
+		for (@NotNull Object s : enumValues)
 			{
 			if (s instanceof String)
 				{
@@ -46,15 +47,17 @@ public class EnumSetRange extends AbstractSetRange<EnumValue>
 			}
 		}
 
-	protected EnumSetRange create(final Collection<EnumValue> values)
+	@NotNull
+	protected EnumSetRange create(@NotNull final Collection<EnumValue> values)
 		{
 		return new EnumSetRange(values);
 		}
 
+	@NotNull
 	public SortedSet<String> getStringValues()
 		{
-		SortedSet<String> result = new TreeSet<String>();
-		for (EnumValue value : values)
+		@NotNull SortedSet<String> result = new TreeSet<String>();
+		for (@NotNull EnumValue value : values)
 			{
 			result.add(value.toString());
 			}

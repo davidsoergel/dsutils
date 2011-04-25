@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -52,6 +54,7 @@ public class WeakHashSet implements Set
 
 	private static final Logger logger = Logger.getLogger(WeakHashSet.class);
 
+	@NotNull
 	HashSet _set = new HashSet();
 
 
@@ -80,6 +83,7 @@ public class WeakHashSet implements Set
 		return getReferentSet().toArray();
 		}
 
+	@Nullable
 	public Object[] toArray(Object a[])
 		{
 		// not implemented
@@ -96,12 +100,12 @@ public class WeakHashSet implements Set
 		return false;
 		}
 
-	public boolean remove(Object o)
+	public boolean remove(@NotNull Object o)
 		{
 		boolean result = false;
 		for (Iterator i = _set.iterator(); i.hasNext();)
 			{
-			WeakReference wr = (WeakReference) i.next();
+			@NotNull WeakReference wr = (WeakReference) i.next();
 			if (o.equals(wr.get()))
 				{
 				i.remove();
@@ -111,9 +115,9 @@ public class WeakHashSet implements Set
 		return result;
 		}
 
-	public boolean containsAll(Collection c)
+	public boolean containsAll(@NotNull Collection c)
 		{
-		Set rs = getReferentSet();
+		@NotNull Set rs = getReferentSet();
 		for (Iterator i = c.iterator(); i.hasNext();)
 			{
 			if (!rs.contains(i.next()))
@@ -165,12 +169,13 @@ public class WeakHashSet implements Set
 		}
 		}   */
 
+	@NotNull
 	private Set getReferentSet()
 		{
-		HashSet result = new HashSet();
+		@NotNull HashSet result = new HashSet();
 		for (Iterator i = _set.iterator(); i.hasNext();)
 			{
-			WeakReference wr = (WeakReference) i.next();
+			@NotNull WeakReference wr = (WeakReference) i.next();
 			Object o = wr.get();
 			if (o == null)
 				{

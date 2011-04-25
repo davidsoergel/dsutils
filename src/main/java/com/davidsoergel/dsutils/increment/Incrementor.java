@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.increment;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -59,6 +60,7 @@ public abstract class Incrementor
 		 }
 
  */
+	@NotNull
 	private Set<Listener> listeners = new ConcurrentSkipListSet<Listener>();
 
 	public void fireIncrementableUpdatedEvent(Integer changedI, Integer changedMax)
@@ -69,18 +71,18 @@ public abstract class Incrementor
 				{
 				notifyAll();
 				}
-			IncrementorDoneEvent ev = new IncrementorDoneEvent(id);
+			@NotNull IncrementorDoneEvent ev = new IncrementorDoneEvent(id);
 
-			for (Listener listener : listeners)
+			for (@NotNull Listener listener : listeners)
 				{
 				listener.incrementableDone(ev);
 				}
 			}
 		else
 			{
-			IncrementorProgressEvent ev = new IncrementorProgressEvent(id, changedI, changedMax);
+			@NotNull IncrementorProgressEvent ev = new IncrementorProgressEvent(id, changedI, changedMax);
 
-			for (Listener listener : listeners)
+			for (@NotNull Listener listener : listeners)
 				{
 				listener.incrementableProgressUpdated(ev);
 				}
@@ -90,9 +92,9 @@ public abstract class Incrementor
 
 	public void fireIncrementableNoteEvent(String note)
 		{
-		IncrementorNoteEvent ev = new IncrementorNoteEvent(clientName, id, note);
+		@NotNull IncrementorNoteEvent ev = new IncrementorNoteEvent(clientName, id, note);
 
-		for (Listener listener : listeners)
+		for (@NotNull Listener listener : listeners)
 			{
 			listener.incrementableNoteUpdated(ev);
 			}
@@ -116,6 +118,7 @@ public abstract class Incrementor
 		return id;
 		}
 
+	@NotNull
 	private static AtomicInteger idGenerator = new AtomicInteger(0);
 
 	public Incrementor(final String clientName)

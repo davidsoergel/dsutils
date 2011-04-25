@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,9 +17,9 @@ public class IntArrayReader
 	{
 	public static int[] read(String filename) throws IOException
 		{
-		List<Integer> theList = new ArrayList<Integer>();
+		@NotNull List<Integer> theList = new ArrayList<Integer>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
 			{
 			String line;

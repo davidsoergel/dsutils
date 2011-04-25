@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils.range;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @version $Id$
@@ -74,7 +76,7 @@ public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 
 	// ------------------------ CANONICAL METHODS ------------------------
 
-	public boolean equals(Object o)
+	public boolean equals(@Nullable Object o)
 		{
 		if (this == o)
 			{
@@ -85,7 +87,7 @@ public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 			return false;
 			}
 
-		BasicInterval<T> that = (BasicInterval<T>) o;
+		@NotNull BasicInterval<T> that = (BasicInterval<T>) o;
 
 		if (closedLeft != that.closedLeft)
 			{
@@ -117,6 +119,7 @@ public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 		return result;
 		}
 
+	@NotNull
 	public String toString()
 		{
 		return (closedLeft ? "[" : "(") + left + "," + right + (closedRight ? "]" : ")");
@@ -128,7 +131,7 @@ public class BasicInterval<T extends Number & Comparable> implements Interval<T>
 
 	// --------------------- Interface Comparable ---------------------
 
-	public int compareTo(Interval<T> o)
+	public int compareTo(@NotNull Interval<T> o)
 		{
 		// assume we're using Comparable Numbers; ClassCastException if not
 		int result = ((Comparable) getMin()).compareTo(o.getMin());

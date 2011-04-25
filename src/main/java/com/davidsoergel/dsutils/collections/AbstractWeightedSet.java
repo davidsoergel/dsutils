@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,19 +29,20 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 		return backingMap;
 		}
 
-	public synchronized SortedSet<T> keysInDecreasingWeightOrder(final Comparator<T> secondarySort)
+	@NotNull
+	public synchronized SortedSet<T> keysInDecreasingWeightOrder(@Nullable final Comparator<T> secondarySort)
 		{
-		final SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
+		@NotNull final SortedSet<T> result = new TreeSet<T>(new Comparator<T>()
 		{
 		public int compare(final T o1, final T o2)
 			{
-			int result = -backingMap.get(o1).compareTo(backingMap.get(o2));
-			if (result == 0 && secondarySort != null)
+			int c = -backingMap.get(o1).compareTo(backingMap.get(o2));
+			if (c == 0 && secondarySort != null)
 				{
-				result = secondarySort.compare(o1, o2);
+				c = secondarySort.compare(o1, o2);
 				//	result = o1.compareTo(o2);
 				}
-			return result;
+			return c;
 			}
 		});
 		result.addAll(backingMap.keySet());
@@ -68,9 +70,9 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 			{
 			throw new NoSuchElementException("Can't normalize an empty HashWeightedSet");
 			}
-		final Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
+		@NotNull final Map<T, Double> result = new HashMap<T, Double>(backingMap.size());
 		final double dEntries = (double) itemCount;
-		for (final Map.Entry<T, Double> entry : entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : entrySet())
 			{
 			result.put(entry.getKey(), entry.getValue() / dEntries);
 			}
@@ -83,7 +85,7 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 
 	 }
  */
-	public int getItemCount()
+	public synchronized int getItemCount()
 		{
 		return itemCount;
 		}
@@ -108,12 +110,12 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 
 	public T getDominantKeyInSet(@NotNull final Set<T> keys)
 		{
-		Map.Entry<T, Double> result = null;
+		@Nullable Map.Entry<T, Double> result = null;
 
 		//Sets.intersection(keySet(), keys);
 
 		// PERF lots of different ways to do this, probably with different performance
-		for (final Map.Entry<T, Double> entry : entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : entrySet())
 			{
 			if (keys.contains(entry.getKey()))
 				{
@@ -133,9 +135,9 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 
 	public T getDominantKey()
 		{
-		Map.Entry<T, Double> result = null;
+		@Nullable Map.Entry<T, Double> result = null;
 		// PERF lots of different ways to do this, probably with different performance
-		for (final Map.Entry<T, Double> entry : entrySet())
+		for (@NotNull final Map.Entry<T, Double> entry : entrySet())
 			{
 			if (result == null || entry.getValue() > result.getValue())
 				{
@@ -171,14 +173,16 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 		return backingMap.isEmpty();
 		}
 
+	@NotNull
 	public SortedSet<T> keysInDecreasingWeightOrder()
 		{
 		return keysInDecreasingWeightOrder(null);
 		}
 
+	@NotNull
 	public List<Double> weightsInDecreasingOrder()
 		{
-		final List<Double> result = new ArrayList<Double>(backingMap.values());
+		@NotNull final List<Double> result = new ArrayList<Double>(backingMap.values());
 		Collections.sort(result, Collections.reverseOrder());
 		return result;
 		}
@@ -192,9 +196,10 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 		 }
  */
 
-	private synchronized Map<T, Double> limitBackingMap(final Collection<T> okKeys)
+	@NotNull
+	private synchronized Map<T, Double> limitBackingMap(@NotNull final Collection<T> okKeys)
 		{
-		final Map<T, Double> limitedMap = new HashMap<T, Double>();
+		@NotNull final Map<T, Double> limitedMap = new HashMap<T, Double>();
 
 		for (final T okKey : okKeys)
 			{
@@ -207,7 +212,8 @@ public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
 		return limitedMap;
 		}
 
-	public synchronized WeightedSet<T> extractWithKeys(final Collection<T> okKeys)
+	@NotNull
+	public synchronized WeightedSet<T> extractWithKeys(@NotNull final Collection<T> okKeys)
 		{
 		// leave the item count the same
 		return new ConcurrentHashWeightedSet<T>(limitBackingMap(okKeys), itemCount);

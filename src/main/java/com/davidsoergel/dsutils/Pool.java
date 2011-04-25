@@ -34,6 +34,8 @@
 package com.davidsoergel.dsutils;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -53,17 +55,21 @@ public class Pool<E>
 
 	private static final Logger logger = Logger.getLogger(Pool.class);
 
+	@NotNull
 	private CopyOnWriteArrayList<E> active = new CopyOnWriteArrayList<E>();
+	@NotNull
 	private CopyOnWriteArrayList<E> inactive = new CopyOnWriteArrayList<E>();
 
 
 	// --------------------- GETTER / SETTER METHODS ---------------------
 
+	@NotNull
 	public List<E> getActive()
 		{
 		return active;
 		}
 
+	@NotNull
 	public List<E> getInactive()
 		{
 		return inactive;
@@ -76,6 +82,7 @@ public class Pool<E>
 		active.add(obj);
 		}
 
+	@Nullable
 	public E get()
 		{
 		E tmp;

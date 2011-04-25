@@ -35,6 +35,8 @@ package com.davidsoergel.dsutils;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,7 +62,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * Return the String representation of the given object, or the string "null" if it is null.  Helpful for avoiding
 	 * NullPointerExceptions.
 	 */
-	public static String s(Object o)
+	public static String s(@Nullable Object o)
 		{
 		if (o == null)
 			{
@@ -144,7 +146,8 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 *
 	 * @return The given string with the first letter capitalized.
 	 */
-	public static String cap(String s)
+	@NotNull
+	public static String cap(@NotNull String s)
 		{
 		return s.substring(0, 1).toUpperCase() + s.substring(1);
 		}
@@ -152,7 +155,8 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	/**
 	 * Replace any single quotes with doubled single quotes, so "foo 'bar' foo" becomes "foo ''bar'' foo".
 	 */
-	public static String oracleEscapeSingleQuotes(String s)
+	@Nullable
+	public static String oracleEscapeSingleQuotes(@Nullable String s)
 		{
 		if (s == null)
 			{
@@ -184,11 +188,12 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * @return A Set of tokens.
 	 * @deprecated use org.apache.commons.lang.StringUtils.split()
 	 */
+	@NotNull
 	public static Set<String> tokenSet(String s, String delim)
 		{
 		//return new HashSet<String>(org.apache.commons.lang.StringUtils.split(s, delim));
-		StringTokenizer st = new StringTokenizer(s, delim);
-		Set<String> result = new HashSet<String>();
+		@NotNull StringTokenizer st = new StringTokenizer(s, delim);
+		@NotNull Set<String> result = new HashSet<String>();
 
 		while (st.hasMoreTokens())
 			{
@@ -222,7 +227,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 
 	   return sb.toString();
 	   }*/
-	public static String join(Iterable s, String delim)
+	public static String join(@NotNull Iterable s, String delim)
 		{
 		return join(s.iterator(), delim);
 		}
@@ -233,7 +238,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 		return join(new TreeSet(s), delim);
 		}
 
-	public static String join(char[] chars, String delim)
+	public static String join(@NotNull char[] chars, String delim)
 		{
 		return DSArrayUtils.asString(chars, delim);
 		}
@@ -247,6 +252,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 	 * Return the name of the month associated with the given int.  I think these are 0-based, but it's easiest just to use
 	 * Calendar.JANUARY and so on to avoid any confusion.
 	 */
+	@NotNull
 	public static String month2name(int i)
 		{
 		switch (i)
@@ -459,7 +465,7 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 		 }
  */
 
-	public static void trimAll(final String[] result)
+	public static void trimAll(@NotNull final String[] result)
 		{
 		for (int i = 0; i < result.length; i++)
 			{
@@ -467,19 +473,20 @@ public class DSStringUtils extends org.apache.commons.lang.StringUtils
 			}
 		}
 
-	public static List<String> honorDoubleQuotesAndTabs(final String[] argv)
+	@NotNull
+	public static List<String> honorDoubleQuotesAndTabs(@NotNull final String[] argv)
 		{
 		//List<String> args = new ArrayList<String>(Arrays.asList(argv));
-		List<String> fileNames = new ArrayList<String>();
+		@NotNull List<String> fileNames = new ArrayList<String>();
 
 		// oh hell
 		boolean openQuote = false;
-		StringBuffer sb = new StringBuffer();
+		@NotNull StringBuffer sb = new StringBuffer();
 
 
 		// internal quotes will mess things up
 
-		for (String s : argv)
+		for (@NotNull String s : argv)
 			{
 			if (openQuote)
 				{

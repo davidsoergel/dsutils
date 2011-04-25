@@ -31,6 +31,7 @@
 package com.davidsoergel.dsutils.range;
 
 import com.davidsoergel.dsutils.math.MathUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,14 +46,16 @@ public class DoubleSteppedRange extends AbstractSteppedRange<Double>
 		super(min, max, step);
 		}
 
+	@NotNull
 	protected DoubleSetRange asSetRange()
 		{
 		return new DoubleSetRange(getValues());
 		}
 	// -------------------------- OTHER METHODS --------------------------
 
-	public int compareTo(Interval<Double> o)
+	public int compareTo(@NotNull final Object x)
 		{
+		Interval<Double> o = (Interval<Double>) x;
 		return min.compareTo(o.getMin());
 		}
 
@@ -60,16 +63,17 @@ public class DoubleSteppedRange extends AbstractSteppedRange<Double>
 		{
 		assert step != null;
 		assert step != 0;
-		Double multiplier = (value - min) / step;
+		@NotNull Double multiplier = (value - min) / step;
 		return MathUtils.equalWithinFPError(multiplier, Math.floor(multiplier));
 		}
 
 
+	@NotNull
 	public SortedSet<Double> getValues()
 		{
 		assert step != null;
 		assert step != 0;
-		SortedSet<Double> result = new TreeSet<Double>();
+		@NotNull SortedSet<Double> result = new TreeSet<Double>();
 		for (double d = min; d <= max; d += step)
 			{
 			result.add(d);

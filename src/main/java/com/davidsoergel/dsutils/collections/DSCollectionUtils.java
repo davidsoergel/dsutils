@@ -36,6 +36,8 @@ package com.davidsoergel.dsutils.collections;
 import com.davidsoergel.dsutils.DSArrayUtils;
 import com.davidsoergel.dsutils.math.MersenneTwisterFast;
 import com.google.common.base.Function;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +61,8 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	 * Shallow-copy any Collection into an ArrayList.  Useful for making a local copy for iteration, to avoid
 	 * ConcurrentModificationExceptions.
 	 */
-	public static <T> ArrayList<T> arrayList(Collection<T> c)
+	@NotNull
+	public static <T> ArrayList<T> arrayList(@NotNull Collection<T> c)
 		{
 		if (c instanceof ArrayList)
 			{
@@ -69,13 +72,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return new ArrayList<T>(c);
 		}
 
-	public static ArrayList<Double> plus(List<Number> a, List<Number> b)
+	@NotNull
+	public static ArrayList<Double> plus(@NotNull List<Number> a, @NotNull List<Number> b)
 		{
 		if (a.size() != b.size())
 			{
 			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
 			}
-		ArrayList<Double> result = new ArrayList<Double>(a.size());
+		@NotNull ArrayList<Double> result = new ArrayList<Double>(a.size());
 
 
 		for (int i = 0; i < a.size(); i++)
@@ -86,13 +90,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static ArrayList<Double> minus(List<Number> a, List<Number> b)
+	@NotNull
+	public static ArrayList<Double> minus(@NotNull List<Number> a, @NotNull List<Number> b)
 		{
 		if (a.size() != b.size())
 			{
 			throw new IndexOutOfBoundsException("Can't add arrays of different sizes");
 			}
-		ArrayList<Double> result = new ArrayList<Double>(a.size());
+		@NotNull ArrayList<Double> result = new ArrayList<Double>(a.size());
 
 
 		for (int i = 0; i < a.size(); i++)
@@ -103,7 +108,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static boolean deepEqualsWithinFPError(Set<Double> a, Set<Double> b)
+	public static boolean deepEqualsWithinFPError(@NotNull Set<Double> a, @NotNull Set<Double> b)
 		{
 		Double[] aa = a.toArray(new Double[]{});
 		Double[] bb = b.toArray(new Double[]{});
@@ -112,7 +117,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return DSArrayUtils.equalWithinFPError(aa, bb);
 		}
 
-	public static void retainRandom(List list, int numElements)
+	public static void retainRandom(@NotNull List list, int numElements)
 		{
 		//inefficient...?
 		while (list.size() > numElements)
@@ -122,10 +127,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static void retainRandom(Collection set, int numElements)
+	public static void retainRandom(@NotNull Collection set, int numElements)
 		{
 		//inefficient...?
-		List list = new LinkedList(set);
+		@NotNull List list = new LinkedList(set);
 		while (set.size() > numElements)
 			{
 			int pos = MersenneTwisterFast.randomInt(set.size());
@@ -135,10 +140,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static void retainRandom(Map map, int numElements)
+	public static void retainRandom(@NotNull Map map, int numElements)
 		{
 		//inefficient...?
-		List list = new LinkedList(map.keySet());
+		@NotNull List list = new LinkedList(map.keySet());
 		while (map.size() > numElements)
 			{
 			int pos = MersenneTwisterFast.randomInt(map.size());
@@ -147,9 +152,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}
 		}
 
-	public static <K, V> List<V> mapAll(Map<K, V> m, Iterable<K> keys)
+	@NotNull
+	public static <K, V> List<V> mapAll(@NotNull Map<K, V> m, @NotNull Iterable<K> keys)
 		{
-		List<V> result = new ArrayList<V>(); //new HashSet<V>();
+		@NotNull List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		for (K key : keys)
 			{
 			result.add(m.get(key));
@@ -157,9 +163,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <K, V> List<V> mapAll(Function<K, V> f, Iterable<K> keys)
+	@NotNull
+	public static <K, V> List<V> mapAll(@NotNull Function<K, V> f, @NotNull Iterable<K> keys)
 		{
-		List<V> result = new ArrayList<V>(); //new HashSet<V>();
+		@NotNull List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		for (K key : keys)
 			{
 			result.add(f.apply(key));
@@ -167,9 +174,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <K, V> List<V> mapAllIgnoringNulls(Map<K, V> m, Iterator<? extends K> keys)
+	@NotNull
+	public static <K, V> List<V> mapAllIgnoringNulls(@NotNull Map<K, V> m, @NotNull Iterator<? extends K> keys)
 		{
-		List<V> result = new ArrayList<V>(); //new HashSet<V>();
+		@NotNull List<V> result = new ArrayList<V>(); //new HashSet<V>();
 		while (keys.hasNext())
 			{
 			V value = m.get(keys.next());
@@ -182,10 +190,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static <T> T getDominantFirstElement(Set<List<T>> theLists, int numberThatMustAgree)
+	public static <T> T getDominantFirstElement(@NotNull Set<List<T>> theLists, int numberThatMustAgree)
 		{
-		MutableWeightedSet<T> counts = new ConcurrentHashWeightedSet<T>();
-		for (List<T> l : theLists)
+		@NotNull MutableWeightedSet<T> counts = new ConcurrentHashWeightedSet<T>();
+		for (@NotNull List<T> l : theLists)
 			{
 			/*if (l.isEmpty())
 				{
@@ -207,49 +215,50 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> boolean allFirstElementsEqual(Set<List<? extends T>> theLists) //, boolean ignoreNull)
+	public static <T> boolean allFirstElementsEqual(@NotNull Set<List<? extends T>> theLists) //, boolean ignoreNull)
+	{
+	@Nullable Object o = null;
+	if (theLists.isEmpty())
 		{
-		Object o = null;
-		if (theLists.isEmpty())
+		return false;
+		}
+	for (@NotNull List l : theLists)
+		{
+		if (l.isEmpty())
 			{
+			/*	if (ignoreNull)
+							   {
+							   continue;
+							   }
+						   else
+							   {*/
+			return false;
+			//	}
+			}
+		if (o != null)
+			{
+			if (!o.equals(l.get(0)))
+				{
+				return false;
+				}
+			}
+		else
+			//if(o == null)
+			{
+			o = l.get(0);
+			}
+
+		if (o == null)
+			{
+			// the first list had null as its first element, that's no good
 			return false;
 			}
-		for (List l : theLists)
-			{
-			if (l.isEmpty())
-				{
-				/*	if (ignoreNull)
-				   {
-				   continue;
-				   }
-			   else
-				   {*/
-				return false;
-				//	}
-				}
-			if (o != null)
-				{
-				if (!o.equals(l.get(0)))
-					{
-					return false;
-					}
-				}
-			else
-				//if(o == null)
-				{
-				o = l.get(0);
-				}
-
-			if (o == null)
-				{
-				// the first list had null as its first element, that's no good
-				return false;
-				}
-			}
-		return true;
 		}
+	return true;
+	}
 
-	public static <T> Set<List<T>> filterByAndRemoveFirstElement(Set<List<T>> theLists, T firstElement)
+	@NotNull
+	public static <T> Set<List<T>> filterByAndRemoveFirstElement(@NotNull Set<List<T>> theLists, T firstElement)
 		{
 
 		// this doesn't work, maybe because the list contents are changing and that screws up the HashSet?? (eg hashcode issues)
@@ -270,8 +279,8 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			}*/
 
 		//just do the slow way for now
-		Set<List<T>> result = new HashSet<List<T>>();
-		T o = null;
+		@NotNull Set<List<T>> result = new HashSet<List<T>>();
+		@Nullable T o = null;
 		for (Iterator<List<T>> iter = theLists.iterator(); iter.hasNext();)
 			{
 			List<T> theAncestorList = iter.next();
@@ -288,34 +297,36 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> T removeAllFirstElements(Set<List<? extends T>> theLists) //, boolean ignoreEmpty)
+	@Nullable
+	public static <T> T removeAllFirstElements(@NotNull Set<List<? extends T>> theLists) //, boolean ignoreEmpty)
+	{
+	@Nullable T o = null;
+	for (@NotNull List<? extends T> l : theLists)
 		{
-		T o = null;
-		for (List<? extends T> l : theLists)
+		if (l.isEmpty())
 			{
 			if (l.isEmpty())
 				{
-				if (l.isEmpty())
-					{
-					/*if (ignoreEmpty)
-						{
-						continue;
-						}
-					else
-						{*/
-					throw new IndexOutOfBoundsException("Can't remove first element from an empty list.");
-					//	}
-					}
+				/*if (ignoreEmpty)
+					  {
+					  continue;
+					  }
+				  else
+					  {*/
+				throw new IndexOutOfBoundsException("Can't remove first element from an empty list.");
+				//	}
 				}
-			o = l.remove(0);
 			}
-		return o;
+		o = l.remove(0);
 		}
+	return o;
+	}
 
-	public static <T> Collection<T> getAllFirstElements(Set<List<T>> theLists)
+	@NotNull
+	public static <T> Collection<T> getAllFirstElements(@NotNull Set<List<T>> theLists)
 		{
-		Set<T> result = new HashSet<T>();
-		for (List<T> l : theLists)
+		@NotNull Set<T> result = new HashSet<T>();
+		for (@NotNull List<T> l : theLists)
 			{
 			if (l.isEmpty())
 				{
@@ -326,14 +337,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> T chooseRandom(Collection<T> coll)
+	public static <T> T chooseRandom(@NotNull Collection<T> coll)
 		{
 		//PERF ?
-		T[] ar = (T[]) coll.toArray();
+		@NotNull T[] ar = (T[]) coll.toArray();
 		return ar[MersenneTwisterFast.randomInt(ar.length)];
 		}
 
-	public static <T> T getFirst(Collection<T> coll)
+	public static <T> T getFirst(@NotNull Collection<T> coll)
 		{
 		// like coll.iterator().next(), but we hope this is faster since it doesn't instantiate hashsets
 		// oops, yes it does
@@ -341,24 +352,26 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return coll.iterator().next();
 		}
 
+	@NotNull
 	public static <T> Set<T> setOf(T... things)
 		{
 		return new HashSet<T>(Arrays.asList(things));
 		}
 
+	@NotNull
 	public static <T> List<T> listOf(T... things)
 		{
 		return new ArrayList<T>(Arrays.asList(things));  // copy so that we return a mutable array
 		}
 
-	public static <K, V> boolean isEqualMap(Map<K, V> mapA, Map<K, V> mapB)
+	public static <K, V> boolean isEqualMap(@NotNull Map<K, V> mapA, @NotNull Map<K, V> mapB)
 		{
 		if (mapA.size() != mapB.size())
 			{
 			return false;
 			}
 
-		for (Map.Entry<K, V> entry : mapA.entrySet())
+		for (@NotNull Map.Entry<K, V> entry : mapA.entrySet())
 			{
 			if (!(entry.getValue().equals(mapB.get(entry.getKey()))))
 				{
@@ -370,13 +383,13 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static boolean allElementsEqual(Collection list, Object o)
+	public static boolean allElementsEqual(@Nullable Collection list, @Nullable Object o)
 		{
 		if (list == null)
 			{
 			return o == null;
 			}
-		for (Object p : list)
+		for (@NotNull Object p : list)
 			{
 			if (!p.equals(o))
 				{
@@ -387,13 +400,13 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static boolean allElementsNaN(final Collection<Double> list)
+	public static boolean allElementsNaN(@Nullable final Collection<Double> list)
 		{
 		if (list == null)
 			{
 			return true;
 			}
-		for (Double p : list)
+		for (@NotNull Double p : list)
 			{
 			if (!p.isNaN())
 				{
@@ -404,7 +417,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		}
 
 
-	public static double sum(Iterable<Double> a)
+	public static double sum(@NotNull Iterable<Double> a)
 		{
 		double result = 0.0;
 		for (double d : a)
@@ -424,28 +437,30 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}*/
 
+	@NotNull
 	public static <T> Set<T> intersectionSet(Collection<T> a, Collection<T> b)
 		{
 		return new HashSet<T>(intersection(a, b));
 		}
 
-	public static String[] mapToString(final Collection os)
+	public static String[] mapToString(@NotNull final Collection os)
 		{
-		List<String> result = new ArrayList<String>(os.size());
-		for (Object o : os)
+		@NotNull List<String> result = new ArrayList<String>(os.size());
+		for (@NotNull Object o : os)
 			{
 			result.add(o.toString());
 			}
 		return result.toArray(DSArrayUtils.EMPTY_STRING_ARRAY);
 		}
 
-	public static <T> Set<Set<T>> subsetsOfSize(final Set<T> entries, final int i)
+	@NotNull
+	public static <T> Set<Set<T>> subsetsOfSize(@NotNull final Set<T> entries, final int i)
 		{
-		Set<Set<T>> result = new HashSet<Set<T>>();
+		@NotNull Set<Set<T>> result = new HashSet<Set<T>>();
 		Iterator<T> it = entries.iterator();
 		while (it.hasNext())
 			{
-			Set<T> block = new HashSet<T>();
+			@NotNull Set<T> block = new HashSet<T>();
 			try
 				{
 				for (int j = 0; j < i; j++)

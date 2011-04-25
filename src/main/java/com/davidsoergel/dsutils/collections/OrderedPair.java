@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -9,10 +12,10 @@ import java.util.Comparator;
 public class OrderedPair<A, B> implements Serializable
 		//	implements Comparable<OrderedPair<A, B>> //<A extends Comparable<A>, B extends Comparable<B>>
 	{
-	private A key1;  // final, but that screws with Serializable
-	private B key2;  // final, but that screws with Serializable
+	private final A key1;  // final, but that screws with Serializable (does it?)
+	private final B key2;  // final, but that screws with Serializable (does it?)
 
-	public OrderedPair(A key1, B key2)
+	public OrderedPair(@NotNull A key1, @NotNull B key2)
 		{
 		this.key1 = key1;
 		this.key2 = key2;
@@ -29,7 +32,7 @@ public class OrderedPair<A, B> implements Serializable
 		}
 
 	@Override
-	public boolean equals(final Object o)
+	public boolean equals(@Nullable final Object o)
 		{
 		if (this == o)
 			{
@@ -40,7 +43,7 @@ public class OrderedPair<A, B> implements Serializable
 			return false;
 			}
 
-		final OrderedPair that = (OrderedPair) o;
+		@NotNull final OrderedPair that = (OrderedPair) o;
 
 		if (key1 != null ? !key1.equals(that.key1) : that.key1 != null)
 			{
@@ -68,8 +71,9 @@ public class OrderedPair<A, B> implements Serializable
 	 * @param o
 	 * @return
 	 */
-	public int compareTo(final OrderedPair<A, B> o)
+	public int compareTo(@NotNull final Object x)
 		{
+		OrderedPair<A, B> o = (OrderedPair<A, B>) x;
 		int c = key1.toString().compareTo(o.key1.toString());
 		if (c == 0)
 			{
@@ -96,6 +100,7 @@ public class OrderedPair<A, B> implements Serializable
 			}
 		}*/
 
+	@NotNull
 	public static Comparator getRowMajorComparator()
 		{
 		return new ValuesPrimaryStringComparator();
@@ -103,7 +108,7 @@ public class OrderedPair<A, B> implements Serializable
 
 	public static class ValuesPrimaryStringComparator implements Comparator<OrderedPair>
 		{
-		public int compare(final OrderedPair o1, final OrderedPair o2)
+		public int compare(@NotNull final OrderedPair o1, @NotNull final OrderedPair o2)
 			{
 			int c = o1.key2.toString().compareTo(o2.key2.toString());
 			if (c == 0)
@@ -116,7 +121,7 @@ public class OrderedPair<A, B> implements Serializable
 
 	public static class ValuesPrimaryComparator implements Comparator<OrderedPair>, Serializable
 		{
-		public int compare(final OrderedPair o1, final OrderedPair o2)
+		public int compare(@NotNull final OrderedPair o1, @NotNull final OrderedPair o2)
 			{
 			int c = ((Comparable) o1.key2).compareTo(o2.key2);
 			if (c == 0)
@@ -127,6 +132,7 @@ public class OrderedPair<A, B> implements Serializable
 			}
 		}
 
+	@NotNull
 	public String toString()
 		{
 		return "[" + key1 + ", " + key2 + "]";

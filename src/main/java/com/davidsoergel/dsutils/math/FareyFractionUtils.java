@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.math;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -57,7 +58,8 @@ public class FareyFractionUtils
 	 * @return the associated right bound
 	 * @throws ArithmeticException if the resolution of the Farey fraction system is exhausted (due to numerical overflow)
 	 */
-	public static LongRational rgt(LongRational lft) throws ArithmeticException
+	@NotNull
+	public static LongRational rgt(@NotNull LongRational lft) throws ArithmeticException
 		{
 		// Tropashko suggests a brute-force search
 		/* for (long d = 1; d < lft.denominator; d++)
@@ -80,7 +82,7 @@ public class FareyFractionUtils
 */
 
 		// the normal GCD could make x and d negative, so we use the guaranteed-positive version
-		long[] u = MathUtils.extendedGCDPositive(lft.denominator, -lft.numerator);
+		@NotNull long[] u = MathUtils.extendedGCDPositive(lft.denominator, -lft.numerator);
 
 		long rgtDenominator = u[1];
 		//MathUtils.extendedGCD(lft.denominator, lft.numerator)[1];

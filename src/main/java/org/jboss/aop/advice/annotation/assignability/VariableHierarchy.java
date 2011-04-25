@@ -31,6 +31,8 @@
  */
 package org.jboss.aop.advice.annotation.assignability;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,14 +70,14 @@ public class VariableHierarchy
 		this.realBoundComparation--;
 		}
 
-	VariableNode getVariableNode(TypeVariable typeVariable)
+	VariableNode getVariableNode(@NotNull TypeVariable typeVariable)
 		{
 		String key = typeVariable.getName();
 		if (map.containsKey(key))
 			{
 			return map.get(key);
 			}
-		VariableNode node = new VariableNode(typeVariable, this);
+		@NotNull VariableNode node = new VariableNode(typeVariable, this);
 		map.put(key, node);
 		return node;
 		}

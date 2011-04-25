@@ -2,6 +2,7 @@ package com.davidsoergel.dsutils.collections;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
@@ -11,12 +12,15 @@ import java.util.Iterator;
  */
 public class OrderedPairIterator<A, B> implements Iterator<OrderedPair<A, B>>
 	{
+	@NotNull
 	private final Iterator<A> iterA;
 	//final Iterator<B> iterB;
+	@NotNull
 	private final Iterable<B> iterableB;
 
 	private Iterator<B> iterB;
 
+	@Nullable
 	private A aTrav = null;
 
 /*
@@ -32,13 +36,13 @@ public class OrderedPairIterator<A, B> implements Iterator<OrderedPair<A, B>>
 		}
 */
 
-	public OrderedPairIterator(@NotNull final Iterator<A> iterA, final Iterable<B> iterableB)
+	public OrderedPairIterator(@NotNull final Iterator<A> iterA, @NotNull final Iterable<B> iterableB)
 		{
 		this.iterA = iterA;
 		this.iterableB = iterableB;
 		}
 
-	public OrderedPairIterator(@NotNull final Iterable<A> iterableA, final Iterable<B> iterableB)
+	public OrderedPairIterator(@NotNull final Iterable<A> iterableA, @NotNull final Iterable<B> iterableB)
 		{
 		this(iterableA.iterator(), iterableB);
 		}
@@ -58,6 +62,7 @@ public class OrderedPairIterator<A, B> implements Iterator<OrderedPair<A, B>>
 		return canAdvanceB;
 		}
 
+	@Nullable
 	public OrderedPair<A, B> next()
 		{
 		// this advances a as needed to guarantee canAdvanceB

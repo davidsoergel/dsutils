@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.swing.jmultiprogressbar;
 
 import com.davidsoergel.dsutils.increment.Incrementor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,9 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 	// Incrementables have a unique integer id; we use those to match incoming IncrementableEvents to their associated progress bars
 
 	//java.util.List<SwingWorker> theWorkers = new LinkedList<SwingWorker>();
+	@NotNull
 	Map<Integer, JProgressBar> theBars = new HashMap<Integer, JProgressBar>();
+	@NotNull
 	Map<Integer, JLabel> theLabels = new HashMap<Integer, JLabel>();
 
 	/*	private void update(SwingWorker sw, int value, String note)
@@ -63,7 +66,7 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 			}
 		}
 
-	public void incrementableDone(final Incrementor.IncrementorDoneEvent e)
+	public void incrementableDone(@NotNull final Incrementor.IncrementorDoneEvent e)
 		{
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -77,7 +80,7 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 		});
 		}
 
-	public void incrementableNoteUpdated(final Incrementor.IncrementorNoteEvent e)
+	public void incrementableNoteUpdated(@NotNull final Incrementor.IncrementorNoteEvent e)
 		{
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -98,7 +101,7 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 		});
 		}
 
-	public void incrementableProgressUpdated(final Incrementor.IncrementorProgressEvent e)
+	public void incrementableProgressUpdated(@NotNull final Incrementor.IncrementorProgressEvent e)
 		{
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -122,8 +125,8 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 
 	private void createBar(final Integer id)
 		{
-		final JProgressBar bar;
-		JLabel label = new JLabel("");
+		@NotNull final JProgressBar bar;
+		@NotNull JLabel label = new JLabel("");
 		theLabels.put(id, label);
 		add(label);
 
@@ -135,8 +138,42 @@ public class JMultiProgressBar extends JPanel implements Incrementor.Listener
 		repaint();
 		}
 
-	public int compareTo(final Object o)
+	public int compareTo(@NotNull final Object o)
 		{
 		return new Integer(hashCode()).compareTo(o.hashCode());
+		}
+
+	@Override
+	public boolean equals(final Object o)
+		{
+		if (this == o)
+			{
+			return true;
+			}
+		if (o == null || getClass() != o.getClass())
+			{
+			return false;
+			}
+
+		final JMultiProgressBar that = (JMultiProgressBar) o;
+
+		if (!theBars.equals(that.theBars))
+			{
+			return false;
+			}
+		if (!theLabels.equals(that.theLabels))
+			{
+			return false;
+			}
+
+		return true;
+		}
+
+	@Override
+	public int hashCode()
+		{
+		int result = theBars.hashCode();
+		result = 31 * result + theLabels.hashCode();
+		return result;
 		}
 	}

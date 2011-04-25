@@ -31,6 +31,9 @@
  */
 package org.jboss.aop.advice.annotation.assignability;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -51,11 +54,12 @@ class ArgumentContextualizer
 	 * Schedules variable replacement when required by contextualizer. The effect of this scheduling process is the
 	 * creation of variable replacement.
 	 */
+	@NotNull
 	private static ReplacementScheduler<ArgumentContextualizer> replacementCreator =
 			new ReplacementScheduler<ArgumentContextualizer>()
 			{
 			public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
-			                                ArgumentContextualizer outer)
+			                                @NotNull ArgumentContextualizer outer)
 				{
 				outer.initialize();
 				outer.createVariableReplacement(outer.arguments, targetIndex, variableIndex);
@@ -67,10 +71,11 @@ class ArgumentContextualizer
 	 * this schedule process will be an update in the client object, unless this one already has a pending replacement
 	 * scheduled.
 	 */
+	@NotNull
 	private static ReplacementScheduler<VariableReplacer> updater = new ReplacementScheduler<VariableReplacer>()
 	{
 	public void scheduleReplacement(Type[] replacementTarget, int targetIndex, int variableIndex,
-	                                VariableReplacer replacer)
+	                                @NotNull VariableReplacer replacer)
 		{
 		if (replacer.pendingExecution)// replacer is already busy
 			{
@@ -92,14 +97,18 @@ class ArgumentContextualizer
 	private Type[] arguments;
 	private LinkedList<VariableReplacer> variableReplacements;
 
+	@NotNull
 	private ListIterator<VariableReplacer> iterator;
 
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static final Type[] getContextualizedArguments(ParameterizedType paramType, Class rawType, Class desiredType)
+	@Nullable
+	public static final Type[] getContextualizedArguments(@Nullable ParameterizedType paramType, @NotNull Class rawType,
+	                                                      @NotNull Class desiredType)
 		{
-		ArgumentContextualizer contextualizedArguments = getContextualizedArgumentsInternal(desiredType, rawType);
+		@Nullable ArgumentContextualizer contextualizedArguments =
+				getContextualizedArgumentsInternal(desiredType, rawType);
 		if (contextualizedArguments == null)
 			{
 			return null;
@@ -111,17 +120,18 @@ class ArgumentContextualizer
 		return contextualizedArguments.getArguments();
 		}
 
-	private static final ArgumentContextualizer getContextualizedArgumentsInternal(Class<?> desiredType,
-	                                                                               Class<?> classType)
+	@Nullable
+	private static final ArgumentContextualizer getContextualizedArgumentsInternal(@NotNull Class<?> desiredType,
+	                                                                               @NotNull Class<?> classType)
 		{
-		Type superType = null;
+		@NotNull Type superType = null;
 		if (desiredType.isInterface())
 			{
-			for (Type superInterface : classType.getGenericInterfaces())
+			for (@NotNull Type superInterface : classType.getGenericInterfaces())
 				{
-				if ((superInterface instanceof Class && desiredType
-						.isAssignableFrom((Class<?>) superInterface)) || (superInterface instanceof ParameterizedType
-						&& desiredType.isAssignableFrom((Class<?>) ((ParameterizedType) superInterface).getRawType())))
+				if ((superInterface instanceof Class && desiredType.isAssignableFrom((Class<?>) superInterface)) || (
+						superInterface instanceof ParameterizedType && desiredType
+								.isAssignableFrom((Class<?>) ((ParameterizedType) superInterface).getRawType())))
 					{
 					superType = superInterface;
 					break;
@@ -132,10 +142,10 @@ class ArgumentContextualizer
 			{
 			superType = classType.getGenericSuperclass();
 			}
-		ArgumentContextualizer result = null;
+		@Nullable ArgumentContextualizer result = null;
 		if (superType instanceof Class)
 			{
-			if (superType == desiredType)
+			if (superType.equals(desiredType))
 				{
 				return null;
 				}
@@ -143,12 +153,11 @@ class ArgumentContextualizer
 			}
 		else
 			{
-			ParameterizedType superParamType = (ParameterizedType) superType;
-			Class<?> superClassType = (Class<?>) superParamType.getRawType();
-			if (superClassType == desiredType)
+			@NotNull ParameterizedType superParamType = (ParameterizedType) superType;
+			@NotNull Class<?> superClassType = (Class<?>) superParamType.getRawType();
+			if (superClassType.equals(desiredType))
 				{
-				return new ArgumentContextualizer(superParamType
-						.getActualTypeArguments(), classType);
+				return new ArgumentContextualizer(superParamType.getActualTypeArguments(), classType);
 				}
 			else
 				{
@@ -164,6 +173,7 @@ class ArgumentContextualizer
 
 	// newDeclaringClass extends/implements oldDeclaringType
 	// returns false = warning (work with raw type hence)
+
 	/**
 	 * Performs a contextualization step.
 	 *
@@ -183,7 +193,7 @@ class ArgumentContextualizer
 			{
 			return false;// warning: variables lost in hierarchy
 			}
-		ParameterizedType superParamType = (ParameterizedType) superType;
+		@NotNull ParameterizedType superParamType = (ParameterizedType) superType;
 		for (iterator = variableReplacements.listIterator(); iterator.hasNext();)
 			{
 			if (iterator.next().replace(superParamType, subClass))
@@ -209,12 +219,12 @@ class ArgumentContextualizer
 	 * @param declaringClass the class that declared those arguments. This class must be the same class that
 	 *                       extends/implements a queried parameterized type.
 	 */
-	private ArgumentContextualizer(Type[] arguments, Class<?> declaringClass)
+	private ArgumentContextualizer(@NotNull Type[] arguments, Class<?> declaringClass)
 		{
 		this.arguments = arguments;
 		for (int i = 0; i < arguments.length; i++)
 			{
-			Type newArgument = processArgument(arguments, i, declaringClass, replacementCreator, this);
+			@Nullable Type newArgument = processArgument(arguments, i, declaringClass, replacementCreator, this);
 			if (newArgument != null)
 				{
 				this.arguments[i] = newArgument;
@@ -235,8 +245,10 @@ class ArgumentContextualizer
 	 * @return the argument processed. This return value may be null if no processement of
 	 *         <code>argumentContainer[argumentIndex]</code> is rerquired, or an equivalent type otherwise.
 	 */
-	private static <O> Type processArgument(Type[] argumentContainer, int argumentIndex, Class<?> declaringClass,
-	                                        ReplacementScheduler<O> recorder, O outer)
+	@Nullable
+	private static <O> Type processArgument(Type[] argumentContainer, int argumentIndex,
+	                                        @Nullable Class<?> declaringClass,
+	                                        @NotNull ReplacementScheduler<O> recorder, O outer)
 		{
 		Type argument = argumentContainer[argumentIndex];
 		if (argument instanceof Class)
@@ -245,12 +257,12 @@ class ArgumentContextualizer
 			}
 		if (argument instanceof ParameterizedType)
 			{
-			ParameterizedType paramType = (ParameterizedType) argument;
-			ParameterizedType_ newParamType = null;
+			@NotNull ParameterizedType paramType = (ParameterizedType) argument;
+			@Nullable ParameterizedType_ newParamType = null;
 			Type[] arguments = paramType.getActualTypeArguments();
 			for (int i = 0; i < arguments.length; i++)
 				{
-				Type newType = processArgument(arguments, i, declaringClass, recorder, outer);
+				@Nullable Type newType = processArgument(arguments, i, declaringClass, recorder, outer);
 				if (newType != null)
 					{
 					if (newParamType == null)
@@ -361,6 +373,7 @@ class ArgumentContextualizer
 			}
 
 		// return true if replacement has been done for good
+
 		/**
 		 * Performs replacemen of a variable by a new type.
 		 *
@@ -368,11 +381,11 @@ class ArgumentContextualizer
 		 * @param declaringClass the class that declares the the variables used in the arguments of <code>paramType</code>.
 		 *                       This class must extend/implement the generic type <code>paramType</code>.
 		 */
-		public boolean replace(ParameterizedType paramType, Class<?> declaringClass)
+		public boolean replace(@NotNull ParameterizedType paramType, Class<?> declaringClass)
 			{
 			arguments[argumentIndex] = paramType.getActualTypeArguments()[valueIndex];
 			this.pendingExecution = false;
-			Type newType =
+			@Nullable Type newType =
 					ArgumentContextualizer.processArgument(arguments, argumentIndex, declaringClass, updater, this);
 			if (newType != null)
 				{
@@ -387,6 +400,7 @@ class ArgumentContextualizer
 		 *
 		 * @return the contextualizer.
 		 */
+		@NotNull
 		ArgumentContextualizer getContextualizer()
 			{
 			return ArgumentContextualizer.this;
@@ -404,7 +418,7 @@ class ArgumentContextualizer
 		private Type ownerType;
 		private Type rawType;
 
-		ParameterizedType_(ParameterizedType type)
+		ParameterizedType_(@NotNull ParameterizedType type)
 			{
 			Type[] actualArguments = type.getActualTypeArguments();
 			this.arguments = new Type[actualArguments.length];
@@ -434,7 +448,7 @@ class ArgumentContextualizer
 				{
 				return false;
 				}
-			ParameterizedType other = (ParameterizedType) obj;
+			@NotNull ParameterizedType other = (ParameterizedType) obj;
 			if (!this.ownerType.equals(other.getOwnerType()) || !this.rawType.equals(other.getRawType()))
 				{
 				return false;
@@ -454,8 +468,8 @@ class ArgumentContextualizer
 	/**
 	 * Schedules replacements to be performed during contextualization.
 	 *
-	 * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
 	 * @param <C> the scheduler client
+	 * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
 	 */
 	interface ReplacementScheduler<C>
 		{

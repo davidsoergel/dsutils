@@ -33,6 +33,9 @@
 
 package com.davidsoergel.dsutils.math;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 
 
@@ -65,7 +68,7 @@ public class LongRational extends Number implements Comparable, Serializable
 	 * <pre>
 	 *   (a/b) <=> (c/d)    ===   ad     - bc     <=> 0
 	 * (ad-bc) <=> 0        ===   d(a-nc) - c(b-nd) <=> 0   for arbitrary n
-	 * <p/>
+	 *
 	 * If one but not both of (a-nc) and (b-nd) is negative, then the solution is clear.
 	 * If both are positive, then we iterate, having reduced the magnitude of the numbers involved (if n is well chosen).
 	 * If both are negative, then we multiply them by -1 and reverse the order of the subtraction,
@@ -74,7 +77,7 @@ public class LongRational extends Number implements Comparable, Serializable
 	 *
 	 * @return 1 if ab > cd, -1 if ab < cd, 0 if ab == cd.
 	 */
-	public static int overflowSafeCompare(LongRational ab, LongRational cd)
+	public static int overflowSafeCompare(@NotNull LongRational ab, @NotNull LongRational cd)
 		{
 		if (ab.equals(cd))
 			{
@@ -111,35 +114,35 @@ public class LongRational extends Number implements Comparable, Serializable
 				return -1;
 				}
 			else if (x < 0 && y < 0)// switch things around to make everything positive again
-					{
-					b = d;
-					a = c;
-					d = -y;
-					c = -x;
-					}
-				else if (x > 0 && y > 0)// everything still positive
-						{
-						a = d;
-						d = x;
-						b = c;
-						c = y;
-						}
-					else if (x == 0)
-							{
-							return Long.valueOf(-y).compareTo((long) 0);
-							}
-						else if (y == 0)
-								{
-								return Long.valueOf(x).compareTo((long) 0);
-								}
-							else
-								{
-								assert false;// the above conditions should cover all cases, yes?
-								}
+				{
+				b = d;
+				a = c;
+				d = -y;
+				c = -x;
+				}
+			else if (x > 0 && y > 0)// everything still positive
+				{
+				a = d;
+				d = x;
+				b = c;
+				c = y;
+				}
+			else if (x == 0)
+				{
+				return Long.valueOf(-y).compareTo((long) 0);
+				}
+			else if (y == 0)
+				{
+				return Long.valueOf(x).compareTo((long) 0);
+				}
+			else
+				{
+				assert false;// the above conditions should cover all cases, yes?
+				}
 			}
 		}
 
-	public boolean equals(Object o)
+	public boolean equals(@Nullable Object o)
 		{
 		if (this == o)
 			{
@@ -150,7 +153,7 @@ public class LongRational extends Number implements Comparable, Serializable
 			return false;
 			}
 
-		LongRational that = (LongRational) o;
+		@NotNull LongRational that = (LongRational) o;
 
 		// note this depends on both LongRationals already being reduced, but that's OK since it's in the constructor
 		if (denominator != that.denominator)
@@ -171,7 +174,8 @@ public class LongRational extends Number implements Comparable, Serializable
 	 * @param a
 	 * @param b
 	 */
-	private static LongRational minus(LongRational a, LongRational b)
+	@NotNull
+	private static LongRational minus(@NotNull LongRational a, @NotNull LongRational b)
 		{
 		// the GCD thing helps keep the numbers small and may avoid an overflow, but it's slower too
 		long denominatorGCD = MathUtils.GCD(a.denominator, b.denominator);
@@ -187,14 +191,15 @@ public class LongRational extends Number implements Comparable, Serializable
 		return new LongRational(aNum - bNum, denom);
 		}
 
-	public static LongRational mediant(LongRational a, LongRational b)
+	@NotNull
+	public static LongRational mediant(@NotNull LongRational a, @NotNull LongRational b)
 		{
 		return new LongRational(a.numerator + b.numerator, a.denominator + b.denominator);
 		}
 
 	// --------------------------- CONSTRUCTORS ---------------------------
 
-	public LongRational(Long numerator, Long denominator)
+	public LongRational(@NotNull Long numerator, @NotNull Long denominator)
 		{
 		this(numerator.longValue(), denominator.longValue());
 		}
@@ -253,6 +258,7 @@ public class LongRational extends Number implements Comparable, Serializable
 		return result;
 		}
 
+	@NotNull
 	public String toString()
 		{
 		return "" + numerator + "/" + denominator;
@@ -272,7 +278,7 @@ public class LongRational extends Number implements Comparable, Serializable
 	 */
 	public int compareTo(Object o)
 		{
-		LongRational lro = (LongRational) o;
+		@NotNull LongRational lro = (LongRational) o;
 		int result = new Double(doubleValue())
 				.compareTo(lro.doubleValue());// I assume this is faster than my algorithm below...??
 		if (result == 0)
@@ -342,7 +348,8 @@ public class LongRational extends Number implements Comparable, Serializable
 		return (long) doubleValue();
 		}
 
-	public LongRational minus(LongRational b)
+	@NotNull
+	public LongRational minus(@NotNull LongRational b)
 		{
 		return minus(this, b);
 		}

@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 
 /**
@@ -13,7 +15,7 @@ public abstract class MappingIterator<T, J> implements Iterator<J>
 	{
 	Iterator<T> i;
 
-	public MappingIterator(Iterable<T> it)
+	public MappingIterator(@NotNull Iterable<T> it)
 		{
 		this.i = it.iterator();
 		}
@@ -28,11 +30,13 @@ public abstract class MappingIterator<T, J> implements Iterator<J>
 		return i.hasNext();
 		}
 
+	@NotNull
 	public J next()
 		{
 		return function(i.next());
 		}
 
+	@NotNull
 	public abstract J function(T t);
 
 	public void remove()

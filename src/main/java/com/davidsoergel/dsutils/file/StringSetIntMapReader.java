@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ import java.util.Set;
  */
 public class StringSetIntMapReader
 	{
+	@NotNull
 	public static Map<String, Set<Integer>> read(String filename) throws IOException
 		{
 		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
@@ -27,7 +30,7 @@ public class StringSetIntMapReader
 		URL res = threadClassLoader.getResource(filename);
 		if (res == null)
 			{
-			File f = new File(filename);
+			@NotNull File f = new File(filename);
 			if (f.exists())
 				{
 				res = f.toURI().toURL(); //new URL("file://" + filename);
@@ -39,9 +42,9 @@ public class StringSetIntMapReader
 			}
 		InputStream is = res.openStream();
 
-		Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
+		@NotNull Map<String, Set<Integer>> result = new HashMap<String, Set<Integer>>();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		@NotNull BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try
 			{
 			String line;
@@ -57,7 +60,7 @@ public class StringSetIntMapReader
 				try
 					{
 					String key = numbers[0];
-					Integer value = new Integer(numbers[1]);
+					@NotNull Integer value = new Integer(numbers[1]);
 
 					Set<Integer> resultSet = result.get(key);
 					if (resultSet == null)

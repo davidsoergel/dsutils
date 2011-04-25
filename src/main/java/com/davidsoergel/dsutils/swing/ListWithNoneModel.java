@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.swing;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -8,7 +10,7 @@ import javax.swing.*;
  */
 public class ListWithNoneModel extends DefaultListModel
 	{
-	public ListWithNoneModel(Object[] options)
+	public ListWithNoneModel(@NotNull Object[] options)
 		{
 		super();
 		addElement("None");

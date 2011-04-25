@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.range;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 
 
@@ -20,6 +22,7 @@ public class BooleanSetRange extends AbstractSetRange<Boolean>
 		super(values);
 		}
 
+	@NotNull
 	protected AbstractSetRange<Boolean> create(final Collection<Boolean> values)
 		{
 		return new BooleanSetRange(values);

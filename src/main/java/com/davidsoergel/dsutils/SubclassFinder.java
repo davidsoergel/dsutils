@@ -36,6 +36,7 @@ package com.davidsoergel.dsutils;
 import com.davidsoergel.dsutils.increment.Incrementor;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,8 +84,9 @@ public class SubclassFinder
 
 	// -------------------------- STATIC METHODS --------------------------
 
-	public static List<Class> findRecursive(String pckgname, Class tosubclass, Incrementor incrementor)
-			throws IOException
+	@NotNull
+	public static List<Class> findRecursive(@NotNull String pckgname, @NotNull Class tosubclass,
+	                                        @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, null, incrementor);
 		}
@@ -100,18 +102,20 @@ public class SubclassFinder
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
+	@NotNull
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
-	                                Incrementor incrementor) throws IOException
+	                                @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation, null, incrementor);
 		}
 
-	public static List<Class> findRecursive(String pckgname, ParameterizedType tosubclass, Incrementor incrementor)
-			throws IOException
+	@NotNull
+	public static List<Class> findRecursive(@NotNull String pckgname, @NotNull ParameterizedType tosubclass,
+	                                        @NotNull Incrementor incrementor) throws IOException
 		{
 		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
-		Class c = (Class) tosubclass.getRawType();
+		@NotNull Class c = (Class) tosubclass.getRawType();
 		return find(pckgname, c, true, false, null, tosubclass, incrementor);
 		}
 
@@ -121,15 +125,16 @@ public class SubclassFinder
 	 * @param pckgname   the fully qualified name of the package
 	 * @param tosubclass the Class object to inherit from
 	 */
+	@NotNull
 	private static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass, boolean recurse,
 	                                boolean includeInterfaces, Class<? extends Annotation> requiredAnnotation,
-	                                ParameterizedType requiredParameterizedType, Incrementor incrementor)
+	                                ParameterizedType requiredParameterizedType, @NotNull Incrementor incrementor)
 			throws IOException
-		//public static List find(String pckgname, Class tosubclass)
+	//public static List find(String pckgname, Class tosubclass)
 		{
 		//Set result = new HashSet();
 
-		List result = new ArrayList();
+		@NotNull List result = new ArrayList();
 		// Code from JWhich
 		// ======
 		// Translate the package name into an absolute path
@@ -143,7 +148,6 @@ public class SubclassFinder
 		// Get a File object for the package
 
 
-		Enumeration e = null;
 		logger.trace("Looking for resources: " + name);
 		//logger.trace("The first resource found is: " + ClassLoader.getSystemResource(name));
 		//try
@@ -155,7 +159,7 @@ public class SubclassFinder
 					   }
 				   catch (Throwable e1)
 					   {*/
-		e = classLoader.getResources(name);
+		@NotNull Enumeration e = classLoader.getResources(name);
 		//	}
 		//	}
 		//	catch (IOException e1)
@@ -164,7 +168,7 @@ public class SubclassFinder
 		//		}
 		while (e.hasMoreElements())
 			{
-			URL url = (URL) e.nextElement();
+			@NotNull URL url = (URL) e.nextElement();
 			logger.trace("Found resource: " + url);
 			result.addAll(find(url, pckgname, tosubclass, recurse, includeInterfaces, requiredAnnotation,
 			                   requiredParameterizedType, incrementor));
@@ -172,28 +176,34 @@ public class SubclassFinder
 		return result;
 		}
 
-	public static List<Class> findRecursive(String pckgname, Class tosubclass,
-	                                        Class<? extends Annotation> requiredAnnotation, Incrementor incrementor)
-			throws IOException
+	@NotNull
+	public static List<Class> findRecursive(@NotNull String pckgname, @NotNull Class tosubclass,
+	                                        Class<? extends Annotation> requiredAnnotation,
+	                                        @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, true, false, requiredAnnotation, incrementor);
 		}
 
-	public static List<Class> find(String pckgname, Class tosubclass, Incrementor incrementor) throws IOException
+	@NotNull
+	public static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass,
+	                               @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, false, false, null, incrementor);
 		}
 
 
-	public static List<Class> find(String pckgname, ParameterizedType tosubclass, Incrementor incrementor)
-			throws IOException
+	@NotNull
+	public static List<Class> find(@NotNull String pckgname, @NotNull ParameterizedType tosubclass,
+	                               @NotNull Incrementor incrementor) throws IOException
 		{
 		//http://www.velocityreviews.com/forums/t524488-raw-type-other-than-a-class-possible.html
-		Class c = (Class) tosubclass.getRawType();
+		@NotNull Class c = (Class) tosubclass.getRawType();
 		return find(pckgname, c, false, false, null, tosubclass, incrementor);
 		}
 
-	public static List<Class> find(String pckgname, Type tosubclass, Incrementor incrementor) throws IOException
+	@NotNull
+	public static List<Class> find(@NotNull String pckgname, Type tosubclass, @NotNull Incrementor incrementor)
+			throws IOException
 		{
 		if (tosubclass instanceof Class)
 			{
@@ -209,17 +219,21 @@ public class SubclassFinder
 		}
 
 
-	public static List<Class> find(String pckgname, Class tosubclass, Class<? extends Annotation> requiredAnnotation,
-	                               Incrementor incrementor) throws IOException
+	@NotNull
+	public static List<Class> find(@NotNull String pckgname, @NotNull Class tosubclass,
+	                               Class<? extends Annotation> requiredAnnotation, @NotNull Incrementor incrementor)
+			throws IOException
 		{
 		return find(pckgname, tosubclass, false, false, requiredAnnotation, incrementor);
 		}
 
-	private static List find(URL url, String pckgname, Class tosubclass, boolean recurse, boolean includeInterfaces,
-	                         Class<? extends Annotation> requiredAnnotation,
-	                         ParameterizedType requiredParameterizedType, Incrementor incrementor) throws IOException
+	@NotNull
+	private static List find(@NotNull URL url, String pckgname, @NotNull Class tosubclass, boolean recurse,
+	                         boolean includeInterfaces, @Nullable Class<? extends Annotation> requiredAnnotation,
+	                         @Nullable ParameterizedType requiredParameterizedType, @NotNull Incrementor incrementor)
+			throws IOException
 		{
-		List result = new ArrayList();
+		@NotNull List result = new ArrayList();
 		// URL url = tosubclass.getResource(name);
 		// URL url = ClassLoader.getSystemClassLoader().getResource(name);
 
@@ -240,7 +254,7 @@ public class SubclassFinder
 		//          RTSI.class
 		//
 
-		File directory = new File(url.getFile());
+		@NotNull File directory = new File(url.getFile());
 
 		// New code
 		// ======
@@ -342,13 +356,13 @@ public class SubclassFinder
 				{
 				// It does not work with the filesystem: we must
 				// be in the case of a package contained in a jar file.
-				JarURLConnection conn = (JarURLConnection) url.openConnection();
+				@NotNull JarURLConnection conn = (JarURLConnection) url.openConnection();
 				String starts = conn.getEntryName();
 				JarFile jfile = conn.getJarFile();
 				Enumeration e = jfile.entries();
 				while (e.hasMoreElements())
 					{
-					ZipEntry entry = (ZipEntry) e.nextElement();
+					@NotNull ZipEntry entry = (ZipEntry) e.nextElement();
 					incrementor.increment();
 					String entryname = entry.getName();
 
@@ -450,28 +464,32 @@ public class SubclassFinder
 		return result;
 		}
 
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass, Incrementor incrementor)
-			throws IOException
+	@NotNull
+	public static List<Class> findIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
+	                                                  @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, false, true, null, incrementor);
 		}
 
-	public static List<Class> findIncludingInterfaces(String pckgname, Class tosubclass,
+	@NotNull
+	public static List<Class> findIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
 	                                                  Class<? extends Annotation> requiredAnnotation,
-	                                                  Incrementor incrementor) throws IOException
+	                                                  @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, false, true, requiredAnnotation, incrementor);
 		}
 
-	public static List<Class> findRecursiveIncludingInterfaces(String pckgname, Class tosubclass,
-	                                                           Incrementor incrementor) throws IOException
+	@NotNull
+	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
+	                                                           @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, true, true, null, incrementor);
 		}
 
+	@NotNull
 	public static List<Class> findRecursiveIncludingInterfaces(@NotNull String pckgname, @NotNull Class tosubclass,
 	                                                           Class<? extends Annotation> requiredAnnotation,
-	                                                           Incrementor incrementor) throws IOException
+	                                                           @NotNull Incrementor incrementor) throws IOException
 		{
 		return find(pckgname, tosubclass, true, true, requiredAnnotation, incrementor);
 		}

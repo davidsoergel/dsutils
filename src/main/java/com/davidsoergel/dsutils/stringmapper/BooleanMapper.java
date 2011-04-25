@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Type;
 
 /**
@@ -8,12 +11,10 @@ import java.lang.reflect.Type;
  */
 public class BooleanMapper extends StringMapper<Boolean>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Boolean.class,
-				boolean.class
-		};
+		return new Type[]{Boolean.class, boolean.class};
 		}
 
 	/**
@@ -23,7 +24,8 @@ public class BooleanMapper extends StringMapper<Boolean>
 	 * @param s
 	 * @return
 	 */
-	public Boolean parse(String s)
+	@Nullable
+	public Boolean parse(@Nullable String s)
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{

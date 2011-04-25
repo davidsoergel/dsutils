@@ -35,6 +35,8 @@ package com.davidsoergel.dsutils;
 
 import com.davidsoergel.dsutils.increment.Incrementor;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -67,11 +69,15 @@ public class PluginManager<T>
 
 	private static final Logger logger = Logger.getLogger(PluginManager.class);
 
+	@NotNull
 	private static Map<Type, PluginManager> _managers = new HashMap<Type, PluginManager>();
 
 	private Type theInterface;
+	@NotNull
 	private Set<String> registeredPackages = new HashSet<String>();
+	@NotNull
 	private HashMap<String, Class> classes = new HashMap<String, Class>();
+	@NotNull
 	private HashMap<String, T> instances = new HashMap<String, T>();
 
 	private static Collection<String> defaultPackageNames;
@@ -84,7 +90,7 @@ public class PluginManager<T>
 	public static void setDefaultPackageNames(File defaultPackageNameFile) throws IOException
 		{
 		PluginManager.defaultPackageNames = new HashSet<String>();
-		BufferedReader br = new BufferedReader(new FileReader(defaultPackageNameFile));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(defaultPackageNameFile));
 		for (String line = br.readLine(); line != null; line = br.readLine())
 			{
 			defaultPackageNames.add(line);
@@ -93,7 +99,8 @@ public class PluginManager<T>
 // -------------------------- STATIC METHODS --------------------------
 
 
-	public static <T> void registerPluginsFromDefaultPackages(Type T, Incrementor incrementor) throws IOException
+	public static <T> void registerPluginsFromDefaultPackages(Type T, @NotNull Incrementor incrementor)
+			throws IOException
 		{
 		if (defaultPackageNames == null || defaultPackageNames.isEmpty())
 			{
@@ -103,15 +110,15 @@ public class PluginManager<T>
 		m.registerPackages(defaultPackageNames, incrementor);
 		}
 
-	public static <T> void registerPluginsFromPackages(Type T, Collection<String> packagenames, Incrementor incrementor)
-			throws IOException
+	public static <T> void registerPluginsFromPackages(Type T, @NotNull Collection<String> packagenames,
+	                                                   @NotNull Incrementor incrementor) throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackages(packagenames, incrementor);
 		}
 
-	public static <T> void registerPluginsFromPackage(Type T, String packagename, Incrementor incrementor)
-			throws IOException
+	public static <T> void registerPluginsFromPackage(Type T, @NotNull String packagename,
+	                                                  @NotNull Incrementor incrementor) throws IOException
 		{
 		PluginManager<T> m = getManagerForInterface(T);
 		m.registerPackage(packagename, incrementor);
@@ -120,11 +127,11 @@ public class PluginManager<T>
 	public static <T> PluginManager<T> getManagerForInterface(Type T)
 		{
 		//Map<Type, PluginManager> _managers = _managers_tl.get();
-		if (_managers == null)
+		/*if (_managers == null)
 			{
 			_managers = new HashMap<Type, PluginManager>();
 			//	_managers_tl.set(_managers);
-			}
+			}*/
 		PluginManager<T> result = _managers.get(T);
 		if (result == null)
 			{
@@ -134,11 +141,13 @@ public class PluginManager<T>
 		return result;
 		}
 
+	@NotNull
 	public static <T> T getSingletonByName(Type T, String s) throws PluginException
 		{
 		return (T) getManagerForInterface(T).getSingletonByName(s);
 		}
 
+	@Nullable
 	public static Class getClassByName(Class T, String s) throws PluginException
 		{
 		return getManagerForInterface(T).getClassByName(s);
@@ -159,6 +168,7 @@ public class PluginManager<T>
 		return classes.values();
 		}
 
+	@NotNull
 	public static <T> T getNewInstanceByName(Class T, String s) throws PluginException
 		{
 		return (T) getManagerForInterface(T).getNewInstanceByName(s);
@@ -173,7 +183,8 @@ public class PluginManager<T>
 
 	// -------------------------- OTHER METHODS --------------------------
 
-	public Class getClassByName(String s) throws PluginException
+	@Nullable
+	public Class getClassByName(@Nullable String s) throws PluginException
 		{
 		if (s == null)
 			{
@@ -202,10 +213,11 @@ public class PluginManager<T>
 		}
 
 	public Set<String> getKeySet()//throws PluginException
-		{
-		return classes.keySet();
-		}
+	{
+	return classes.keySet();
+	}
 
+	@NotNull
 	public T getNewInstanceByName(String s) throws PluginException
 		{
 		try
@@ -252,15 +264,16 @@ public class PluginManager<T>
 		return result;
 		}
 
-	public void registerPackages(Collection<String> packagenames, Incrementor incrementor) throws IOException
+	public void registerPackages(@NotNull Collection<String> packagenames, @NotNull Incrementor incrementor)
+			throws IOException
 		{
-		for (String packagename : packagenames)
+		for (@NotNull String packagename : packagenames)
 			{
 			registerPackage(packagename, incrementor);
 			}
 		}
 
-	public void registerPackage(String packagename, Incrementor incrementor) throws IOException
+	public void registerPackage(@NotNull String packagename, @NotNull Incrementor incrementor) throws IOException
 		{
 		if (!registeredPackages.contains(packagename))
 			{
@@ -278,7 +291,7 @@ public class PluginManager<T>
 				{
 				throw new Error("Not a Class or a ParameterizedType: " + theInterface);
 				}
-			for (Class c : found)
+			for (@NotNull Class c : found)
 				{
 				if (!(c.isInterface() || Modifier.isAbstract(c.getModifiers())
 				      || c.getAnnotation(Deprecated.class) != null))

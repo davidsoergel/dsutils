@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 
 
@@ -12,7 +13,7 @@ public class InsertionTrackingSetTest
 	@Test
 	public void insertionOrderIsTracked()
 		{
-		InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
+		@NotNull InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
 		t.add("a");
 		t.add("b");
 		t.add("c");
@@ -29,7 +30,7 @@ public class InsertionTrackingSetTest
 	@Test
 	public void insertionOrderIsNotAffectedByRemoval()
 		{
-		InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
+		@NotNull InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
 		t.add("a");
 		t.add("b");
 		t.add("c");
@@ -52,7 +53,7 @@ public class InsertionTrackingSetTest
 	@Test
 	public void getHonorsInsertionOrder()
 		{
-		InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
+		@NotNull InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
 		t.add("a");
 		t.add("b");
 		t.add("c");
@@ -69,7 +70,7 @@ public class InsertionTrackingSetTest
 	@Test
 	public void getByInsertionOrderIsNotAffectedByRemoval()
 		{
-		InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
+		@NotNull InsertionTrackingSet<String> t = new InsertionTrackingSet<String>();
 		t.add("a");
 		t.add("b");
 		t.add("c");

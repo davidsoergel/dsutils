@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.range;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -14,6 +16,7 @@ public class BasicImmutableSetRange<T extends Serializable> extends AbstractSetR
 		super(newValues);
 		}
 
+	@NotNull
 	@Override
 	protected AbstractSetRange<T> create(final Collection<T> values)
 		{

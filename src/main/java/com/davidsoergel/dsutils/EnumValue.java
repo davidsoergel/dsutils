@@ -1,5 +1,8 @@
 package com.davidsoergel.dsutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -29,7 +32,7 @@ public class EnumValue implements Serializable
 		}
 
 	@Override
-	public boolean equals(final Object o)
+	public boolean equals(@Nullable final Object o)
 		{
 		if (this == o)
 			{
@@ -40,7 +43,7 @@ public class EnumValue implements Serializable
 			return false;
 			}
 
-		final EnumValue enumValue = (EnumValue) o;
+		@NotNull final EnumValue enumValue = (EnumValue) o;
 
 		if (value != null ? !value.equals(enumValue.value) : enumValue.value != null)
 			{

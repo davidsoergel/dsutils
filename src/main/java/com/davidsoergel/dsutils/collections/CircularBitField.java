@@ -32,6 +32,8 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.BitSet;
 
 /**
@@ -74,7 +76,7 @@ public class CircularBitField
 		return buf.get((start - 1 + size) % size);
 		}
 
-	public void retain(BitSet mask)
+	public void retain(@NotNull BitSet mask)
 		{
 		//assert mask.length() == size;
 

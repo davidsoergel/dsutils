@@ -33,6 +33,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import com.davidsoergel.dsutils.math.MathUtils;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -68,7 +69,7 @@ public class ConcurrentHashWeightedSetTest
 	@Test
 	public void atomicConstructorWorks()
 		{
-		WeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
+		@NotNull WeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
 
 		assert a.getItemCount() == 1;
 		assert a.get("a") == .1;
@@ -76,7 +77,7 @@ public class ConcurrentHashWeightedSetTest
 		assert a.get("e") == .5;
 		assert a.get("f") == .06;
 
-		Map<String, Double> mapAextracted = a.getItemNormalizedMap();
+		@NotNull Map<String, Double> mapAextracted = a.getItemNormalizedMap();
 
 		assert DSCollectionUtils.isEqualMap(mapA, mapAextracted);
 		}
@@ -84,8 +85,8 @@ public class ConcurrentHashWeightedSetTest
 	@Test
 	public void addAllWorks()
 		{
-		MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
-		MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
+		@NotNull MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
+		@NotNull MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 
@@ -103,12 +104,12 @@ public class ConcurrentHashWeightedSetTest
 	@Test
 	public void addAndGetNormalizedWorks()
 		{
-		MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
-		MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
+		@NotNull MutableWeightedSet<String> a = new ConcurrentHashWeightedSet(mapA, 1);
+		@NotNull MutableWeightedSet<String> b = new ConcurrentHashWeightedSet(mapB, 1);
 
 		a.addAll(b);
 
-		Map<String, Double> mapAextracted = a.getItemNormalizedMap();
+		@NotNull Map<String, Double> mapAextracted = a.getItemNormalizedMap();
 
 
 		assert mapAextracted.get("a") == (.1 * 1 + 0. * 1) / 2.;

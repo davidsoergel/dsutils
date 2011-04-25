@@ -1,8 +1,8 @@
 package com.davidsoergel.dsutils.range;
 
 
-import com.davidsoergel.dsutils.EnumValue;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,10 +24,10 @@ public class URLSetRange extends AbstractSetRange<URL>
 		{
 		}
 
-	public URLSetRange(final Collection urlValues)
+	public URLSetRange(@NotNull final Collection urlValues)
 		{
 		super(new HashSet<URL>());
-		for (Object s : urlValues)
+		for (@NotNull Object s : urlValues)
 			{
 			if (s instanceof String)
 				{
@@ -41,27 +41,29 @@ public class URLSetRange extends AbstractSetRange<URL>
 					throw new RangeRuntimeException(e);
 					}
 				}
-			else if (s instanceof EnumValue)
+			else if (s instanceof URL)
 				{
 				values.add((URL) s);
 				}
 			else
 				{
 				throw new RangeRuntimeException(
-						"EnumSetRange must be initialized with EnumValues or Strings, not " + s.getClass());
+						"URLSetRange must be initialized with URLs or Strings, not " + s.getClass());
 				}
 			}
 		}
 
-	protected URLSetRange create(final Collection<URL> values)
+	@NotNull
+	protected URLSetRange create(@NotNull final Collection<URL> values)
 		{
 		return new URLSetRange(values);
 		}
 
+	@NotNull
 	public Set<String> getStringValues()
 		{
-		Set<String> result = new HashSet<String>();
-		for (URL value : values)
+		@NotNull Set<String> result = new HashSet<String>();
+		for (@NotNull URL value : values)
 			{
 			result.add(value.toString());
 			}

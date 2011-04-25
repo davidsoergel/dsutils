@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils.collections;
 import com.davidsoergel.dsutils.GenericFactory;
 import com.davidsoergel.dsutils.GenericFactoryException;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,7 @@ public class Grid<A, B, C>
 
 	// ** Iterators are Row-major order, with the origin in the lower left.  x = position; y = nonGapWidth
 	// but unless createGrid was run, the cells may not be fully populated
+	@NotNull
 	SortedMap<OrderedPair<A, B>, C> values = new TreeMap<OrderedPair<A, B>, C>(OrderedPair.getRowMajorComparator());
 
 
@@ -37,7 +39,8 @@ public class Grid<A, B, C>
 		return xValues.length;
 		}
 
-	public void createGrid(final A[] xValues, final B[] yValues, final GenericFactory<C> cFactory)
+	public void createGrid(@NotNull final A[] xValues, @NotNull final B[] yValues,
+	                       @NotNull final GenericFactory<C> cFactory)
 		{
 		this.xValues = xValues;
 		this.yValues = yValues;
@@ -45,9 +48,9 @@ public class Grid<A, B, C>
 		Arrays.sort(this.xValues);
 		Arrays.sort(this.yValues);
 
-		for (final A x : xValues)
+		for (@NotNull final A x : xValues)
 			{
-			for (final B y : yValues)
+			for (@NotNull final B y : yValues)
 				{
 				try
 					{
@@ -63,6 +66,7 @@ public class Grid<A, B, C>
 		assert values.size() == yValues.length * xValues.length;
 		}
 
+	@NotNull
 	public OrderedPair<A, B> decodeRowMajorIndex(final int index)
 		{
 		final int xIndex = index % xValues.length;
@@ -75,11 +79,12 @@ public class Grid<A, B, C>
 		return values.entrySet();
 		}
 
+	@NotNull
 	public List<C> extractRow(final int yIndex)
 		{
-		List<C> result = new ArrayList<C>();
+		@NotNull List<C> result = new ArrayList<C>();
 		final B y = yValues[yIndex];
-		for (final A x : xValues)
+		for (@NotNull final A x : xValues)
 			{
 			final C value = values.get(new OrderedPair<A, B>(x, y));
 			if (value == null)
@@ -91,7 +96,7 @@ public class Grid<A, B, C>
 		return result;
 		}
 
-	public C get(final A x, final B y)
+	public C get(@NotNull final A x, @NotNull final B y)
 		{
 		return values.get(new OrderedPair<A, B>(x, y));
 		}
@@ -102,16 +107,17 @@ public class Grid<A, B, C>
 		return values.size();
 		}
 
+	@NotNull
 	public Map<Integer, C> valuesByRowMajorIndex()
 		{
-		final Map<Integer, C> result = new HashMap<Integer, C>();
+		@NotNull final Map<Integer, C> result = new HashMap<Integer, C>();
 		// ** Row-major order, with the origin in the lower left.  x = position; y = nonGapWidth
 		int gridIndex = 0;
 
 		// this guarantees an entry for every cell, even if it's null
-		for (final B y : yValues)
+		for (@NotNull final B y : yValues)
 			{
-			for (final A x : xValues)
+			for (@NotNull final A x : xValues)
 				{
 				final C value = values.get(new OrderedPair<A, B>(x, y));
 				if (value == null)

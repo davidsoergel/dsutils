@@ -1,6 +1,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -25,6 +26,7 @@ public class NextOnlyIteratorAsNormalIterator<T> implements Iterator<T>
 		return hasNext;
 		}
 
+	@NotNull
 	public T next()
 		{
 		try

@@ -32,6 +32,8 @@
 
 package com.davidsoergel.dsutils.collections;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -74,6 +76,7 @@ public interface WeightedSet<T> //extends Map<T, Double>
 	 *
 	 * @return
 	 */
+	@NotNull
 	Map<T, Double> getItemNormalizedMap();
 
 	/**
@@ -100,8 +103,10 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	Set<T> keySet();
 
+	@NotNull
 	SortedSet<T> keysInDecreasingWeightOrder();
 
+	@NotNull
 	SortedSet<T> keysInDecreasingWeightOrder(Comparator<T> secondarySort);
 
 	//void multiplyBy(int multiplier);
@@ -114,11 +119,13 @@ public interface WeightedSet<T> //extends Map<T, Double>
 
 	T getDominantKey();
 
+	@NotNull
 	List<Double> weightsInDecreasingOrder();
 
 	// void retainKeys(Collection<T> okKeys);
 
 
+	@NotNull
 	WeightedSet<T> extractWithKeys(Collection<T> okKeys);
 
 	Map<T, Double> getMap();

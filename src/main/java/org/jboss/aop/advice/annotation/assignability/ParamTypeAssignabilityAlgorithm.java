@@ -31,6 +31,9 @@
  */
 package org.jboss.aop.advice.annotation.assignability;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -51,12 +54,12 @@ class ParamTypeAssignabilityAlgorithm
 	 * @param checkerToken
 	 * @return
 	 */
-	public static <C, T> boolean isAssignable(ParameterizedType paramType, Type fromType, EqualityChecker<C, T> checker,
-	                                          C caller, T checkerToken)
+	public static <C, T> boolean isAssignable(@NotNull ParameterizedType paramType, Type fromType,
+	                                          @NotNull EqualityChecker<C, T> checker, C caller, T checkerToken)
 		{
-		Class<?> fromRaw = null;
-		ParameterizedType fromParamType = null;
-		Class<?> desiredType = (Class<?>) paramType.getRawType();
+		@Nullable Class<?> fromRaw = null;
+		@Nullable ParameterizedType fromParamType = null;
+		@NotNull Class<?> desiredType = (Class<?>) paramType.getRawType();
 		if (fromType instanceof Class)
 			{
 			fromRaw = (Class<?>) fromType;
@@ -80,8 +83,9 @@ class ParamTypeAssignabilityAlgorithm
 			if (fromRaw == desiredType)
 				{
 				// compare arguments with arguments
-				return checker.isSame(paramType.getActualTypeArguments(), fromParamType.getActualTypeArguments(),
-				                      caller, checkerToken);
+				return checker
+						.isSame(paramType.getActualTypeArguments(), fromParamType.getActualTypeArguments(), caller,
+						        checkerToken);
 				}
 			else if (!desiredType.isAssignableFrom(fromRaw))
 				{
@@ -93,7 +97,8 @@ class ParamTypeAssignabilityAlgorithm
 			return false;
 			}
 		// try to get, if null, warning, parameters lost in hierarchy
-		Type[] arguments = ArgumentContextualizer.getContextualizedArguments(fromParamType, fromRaw, desiredType);
+		@Nullable Type[] arguments =
+				ArgumentContextualizer.getContextualizedArguments(fromParamType, fromRaw, desiredType);
 		if (arguments == null)
 			{
 			return true;// (ignore)  TODO with Warning
@@ -107,14 +112,14 @@ class ParamTypeAssignabilityAlgorithm
 	 * Class responsible for telling whether two groups of arguments, used on two different instances of ParameterizedType,
 	 * can be considered the same group of arguments.
 	 *
-	 * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
 	 * @param <T> this is a token that can be used to store information useful for the implementor.
+	 * @author <a href="flavia.rainone@jboss.com">Flavia Rainone</a>
 	 */
 	static abstract class EqualityChecker<C, T>
 		{
 		/**
 		 * Indicates whether both argument list can be considered the same. This method is a facility that will invoke {@link
-		 * #isSame(Type,Type,Object,Object)} for each argument of the lists. Both lists have the same length.
+		 * #isSame(Type, Type, Object, Object)} for each argument of the lists. Both lists have the same length.
 		 *
 		 * @param arguments     list of arguments.
 		 * @param fromArguments list of arguments that will be assigned to <code> arguments</code> only if this method returns
@@ -123,7 +128,7 @@ class ParamTypeAssignabilityAlgorithm
 		 * @return <code>true</code> only if values of <code> fromArguments</code> list can be assigned to a list of
 		 *         <code>arguments</code> type.
 		 */
-		protected boolean isSame(Type[] arguments, Type[] fromArguments, C caller, T token)
+		protected boolean isSame(@NotNull Type[] arguments, Type[] fromArguments, C caller, T token)
 			{
 			for (int i = 0; i < arguments.length; i++)
 				{

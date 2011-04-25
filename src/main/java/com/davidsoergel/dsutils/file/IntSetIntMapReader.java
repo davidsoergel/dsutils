@@ -1,5 +1,7 @@
 package com.davidsoergel.dsutils.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,11 +16,12 @@ import java.util.Set;
  */
 public class IntSetIntMapReader
 	{
+	@NotNull
 	public static Map<Integer, Set<Integer>> read(String filename) throws IOException
 		{
-		Map<Integer, Set<Integer>> result = new HashMap<Integer, Set<Integer>>();
+		@NotNull Map<Integer, Set<Integer>> result = new HashMap<Integer, Set<Integer>>();
 
-		BufferedReader br = new BufferedReader(new FileReader(filename));
+		@NotNull BufferedReader br = new BufferedReader(new FileReader(filename));
 		try
 			{
 			String line;
@@ -33,8 +36,8 @@ public class IntSetIntMapReader
 				String[] numbers = line.split("[ ,\t]+");
 				try
 					{
-					Integer key = new Integer(numbers[0]);
-					Integer value = new Integer(numbers[1]);
+					@NotNull Integer key = new Integer(numbers[0]);
+					@NotNull Integer value = new Integer(numbers[1]);
 
 					Set<Integer> resultSet = result.get(key);
 					if (resultSet == null)

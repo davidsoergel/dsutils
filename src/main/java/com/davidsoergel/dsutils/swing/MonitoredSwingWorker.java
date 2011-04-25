@@ -4,6 +4,7 @@ import com.davidsoergel.dsutils.increment.ConcurrentIncrementor;
 import com.davidsoergel.dsutils.increment.Incrementor;
 import com.davidsoergel.dsutils.swing.jmultiprogressbar.JMultiProgressBarFrame;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -24,6 +25,7 @@ public abstract class MonitoredSwingWorker<A, B> extends SwingWorker<A, B>
 		this.initialNote = initialNote;
 		}
 
+	@NotNull
 	protected final Incrementor incrementor = new ConcurrentIncrementor("localhost", null);
 
 	public void executeWithProgressMonitor()

@@ -1,6 +1,8 @@
 package com.davidsoergel.dsutils.stringmapper;
 
 import com.davidsoergel.dsutils.DSStringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,20 +14,20 @@ import java.util.List;
  */
 public class BooleanArrayMapper extends StringMapper<Boolean[]>
 	{
+	@NotNull
 	public Type[] basicTypes()
 		{
-		return new Type[]{
-				Boolean[].class
-		};
+		return new Type[]{Boolean[].class};
 		}
 
-	public Boolean[] parse(String s) throws StringMapperException
+	@Nullable
+	public Boolean[] parse(@Nullable String s) throws StringMapperException
 		{
 		if (s == null || s.trim().equals("")) //s.trim().isEmpty())   // JDK 1.5 compatibility
 			{
 			return null;
 			}
-		List<Boolean> result = new ArrayList<Boolean>();
+		@NotNull List<Boolean> result = new ArrayList<Boolean>();
 		StringMapper<Boolean> booleanMapper = TypedValueStringMapper.get(Boolean.class);
 		for (String d : s.split(":"))
 			{
