@@ -87,7 +87,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		underlyingIntMap = new SortedSymmetric2dBiMapWithDefault<Integer, V>(cloneFrom.underlyingIntMap);
 		}
 
-	public IndexedSymmetric2dBiMapWithDefault(final V defaultValue, final Collection<K> keys)
+	public IndexedSymmetric2dBiMapWithDefault(final V defaultValue, final InsertionTrackingSet<K> keys)
 		{
 		underlyingIntMap = new SortedSymmetric2dBiMapWithDefault<Integer, V>(defaultValue);
 		this.keys = new InsertionTrackingSet<K>(keys);
@@ -147,7 +147,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return underlyingIntMap.get(keys.indexOf(key1), keys.indexOf(key2));
 		}
 
-	public Collection<K> getKeys()
+	public InsertionTrackingSet<K> getKeys()
 		{
 		return keys;
 		}
@@ -216,6 +216,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 			}
 		}
 
+
 	/**
 	 * Add a value entry using the integer indexes; just assume that the matching keys exist.  This is not synchronized, on
 	 * the theory that the underlying map should handle that.
@@ -223,8 +224,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 	public void putInt(@NotNull final UnorderedPair<Integer> pair, final V v)
 		{
 		// PERF
-		assert keys.contains(pair.getKey1());
-		assert keys.contains(pair.getKey2());
+		assert keys.containsIndex(pair.getKey1());
+		assert keys.containsIndex(pair.getKey2());
 		underlyingIntMap.put(pair, v);
 		}
 
@@ -279,9 +280,16 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		return underlyingIntMap.entriesQueue();
 		}
 
-	public void sanityCheck()
+	public synchronized void sanityCheck()
 		{
-		// could test that each underlying int has an entry in keys
 		underlyingIntMap.sanityCheck();
+
+		for (Map.Entry<UnorderedPair<Integer>, V> entry : underlyingIntMap.entrySet())
+			{
+			UnorderedPair<Integer> p = entry.getKey();
+
+			assert keys.containsIndex(p.getKey1());
+			assert keys.containsIndex(p.getKey2());
+			}
 		}
 	}

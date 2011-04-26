@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.collections;
 
+import org.apache.commons.collections15.comparators.NullComparator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +16,7 @@ public class OrderedPair<A, B> implements Serializable
 	private final A key1;  // final, but that screws with Serializable (does it?)
 	private final B key2;  // final, but that screws with Serializable (does it?)
 
-	public OrderedPair(@NotNull A key1, @NotNull B key2)
+	public OrderedPair(@Nullable A key1, @Nullable B key2)
 		{
 		this.key1 = key1;
 		this.key2 = key2;
@@ -73,37 +74,53 @@ public class OrderedPair<A, B> implements Serializable
 	 */
 	public int compareTo(@NotNull final Object x)
 		{
-		OrderedPair<A, B> o = (OrderedPair<A, B>) x;
-		int c = key1.toString().compareTo(o.key1.toString());
-		if (c == 0)
-			{
-			c = key2.toString().compareTo(o.key2.toString());
-			}
-		return c;
+		return defaultComparator.compare(this, x);
 		}
+
 
 /*	public static <A, B> Comparator<? super OrderedPair<A,B>> getRowMajorComparator()
+	  {
+	  return new RowMajorComparator<A, B>();
+	  }
+
+  public  static  class RowMajorComparator<A, B> implements Comparator<OrderedPair<A, B>>
+	  {
+	  public int compare(final OrderedPair<A, B> o1, final OrderedPair<A, B> o2)
+		  {
+		  int c = o1.key2.toString().compareTo(o2.key2.toString());
+		  if (c == 0)
+			  {
+			  c = o1.key1.toString().compareTo(o2.key1.toString());
+			  }
+		  return c;
+		  }
+	  }*/
+
+	private static Comparator defaultComparator = getColumnMajorComparator();
+
+	@NotNull
+	public static Comparator getColumnMajorComparator()
 		{
-		return new RowMajorComparator<A, B>();
+		return new NullComparator(new KeysPrimaryStringComparator());
 		}
 
-	public  static  class RowMajorComparator<A, B> implements Comparator<OrderedPair<A, B>>
+	public static class KeysPrimaryStringComparator implements Comparator<OrderedPair>
 		{
-		public int compare(final OrderedPair<A, B> o1, final OrderedPair<A, B> o2)
+		public int compare(@NotNull final OrderedPair o1, @NotNull final OrderedPair o2)
 			{
-			int c = o1.key2.toString().compareTo(o2.key2.toString());
+			int c = o1.key1.toString().compareTo(o2.key1.toString());
 			if (c == 0)
 				{
-				c = o1.key1.toString().compareTo(o2.key1.toString());
+				c = o1.key2.toString().compareTo(o2.key2.toString());
 				}
 			return c;
 			}
-		}*/
+		}
 
 	@NotNull
 	public static Comparator getRowMajorComparator()
 		{
-		return new ValuesPrimaryStringComparator();
+		return new NullComparator(new ValuesPrimaryStringComparator());
 		}
 
 	public static class ValuesPrimaryStringComparator implements Comparator<OrderedPair>

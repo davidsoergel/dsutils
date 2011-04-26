@@ -27,14 +27,21 @@ public class InsertionTrackingSet<T> extends AbstractSet<T> implements Serializa
 		{
 		}
 
-	public InsertionTrackingSet(Collection<T> c)
+	public InsertionTrackingSet(InsertionTrackingSet<T> c)
 		{
-		addAll(c);
+		contents.putAll(c.contents);
+		nextIndex = c.nextIndex;
+		//addAll(c);
 		}
 
 	public synchronized T get(final Integer index)
 		{
 		return contents.inverse().get(index);
+		}
+
+	public synchronized boolean containsIndex(final Integer index)
+		{
+		return contents.inverse().containsKey(index);
 		}
 
 	/**
