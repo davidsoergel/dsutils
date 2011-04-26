@@ -325,19 +325,19 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 		return keyPairToValueSorted.entrySet();
 		}
 
-	public void removalSanityCheck(final K b, @NotNull final Collection<K> keys)
+	public void removalSanityCheck(final K removedKey, @NotNull final Collection<K> remainingKeys)
 		{
-		assert !getKeys().contains(b);
+		assert !getKeys().contains(removedKey);
 		for (@NotNull Map.Entry<UnorderedPair<K>, V> entry : keyPairToValueSorted.entrySet())
 			{
 			@NotNull final K k1 = entry.getKey().getKey1();
 			@NotNull final K k2 = entry.getKey().getKey2();
 
-			assert !k1.equals(b);
-			assert !k2.equals(b);
+			assert !k1.equals(removedKey);
+			assert !k2.equals(removedKey);
 
-			assert keys.contains(k1);
-			assert keys.contains(k2);
+			assert remainingKeys.contains(k1);
+			assert remainingKeys.contains(k2);
 			}
 		}
 

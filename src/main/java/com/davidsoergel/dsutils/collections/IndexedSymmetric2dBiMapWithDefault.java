@@ -249,6 +249,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 
 	public synchronized int remove(@NotNull final K b)
 		{
+		sanityCheck();
+
 		Integer i = keys.indexOf(b);
 		if (i == null)
 			{
@@ -259,12 +261,12 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 			{
 			int removed = underlyingIntMap.remove(i);
 
-			// underlyingIntMap.removalSanityCheck(i, underlyingIntMap.getKeys());
+			underlyingIntMap.removalSanityCheck(i, underlyingIntMap.getKeys());
 
 			boolean keyRemoved = keys.remove(b);
 			assert keyRemoved;
 
-			//underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
+			underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
 			sanityCheck();
 			return removed;
 			}
@@ -299,6 +301,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 	public synchronized void sanityCheck()
 		{
 		underlyingIntMap.sanityCheck();
+
+		assert keys.getIndexes().equals(underlyingIntMap.getKeys());
 
 		Set<Integer> referencedKeys = new HashSet<Integer>();
 
