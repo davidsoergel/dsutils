@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -125,6 +126,11 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		final UnorderedPair<Integer> p = op.getKey1();
 		final K id1 = keys.get(p.getKey1());
 		final K id2 = keys.get(p.getKey2());
+		if (id1 == null || id2 == null)
+			{
+			sanityCheck();
+			//throw new CollectionRuntimeException("")
+			}
 		assert id1 != null;
 		assert id2 != null;
 		return new OrderedPair<UnorderedPair<K>, V>(new UnorderedPair<K>(id1, id2), op.getKey2());
@@ -244,6 +250,11 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 	public synchronized int remove(@NotNull final K b)
 		{
 		Integer i = keys.indexOf(b);
+		if (i == null)
+			{
+			logger.warn("requested removal of nonexistent cluster" + i + ":" + b);
+			sanityCheck();
+			}
 		if (i != null)
 			{
 			int removed = underlyingIntMap.remove(i);
@@ -253,7 +264,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 			boolean keyRemoved = keys.remove(b);
 			assert keyRemoved;
 
-			// underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
+			//underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
+			sanityCheck();
 			return removed;
 			}
 		assert keys.indexOf(b) == null;
@@ -288,12 +300,19 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		{
 		underlyingIntMap.sanityCheck();
 
+		Set<Integer> referencedKeys = new HashSet<Integer>();
+
 		for (Map.Entry<UnorderedPair<Integer>, V> entry : underlyingIntMap.entrySet())
 			{
 			UnorderedPair<Integer> p = entry.getKey();
+			referencedKeys.add(p.getKey1());
+			referencedKeys.add(p.getKey2());
+			}
 
-			assert keys.containsIndex(p.getKey1());
-			assert keys.containsIndex(p.getKey2());
+		for (Integer key : referencedKeys)
+			{
+			assert keys.containsIndex(key);
+			assert keys.get(key) != null;
 			}
 		}
 	}
