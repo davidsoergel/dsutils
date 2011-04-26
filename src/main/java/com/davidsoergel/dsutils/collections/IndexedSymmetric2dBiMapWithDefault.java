@@ -93,6 +93,10 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		this.keys = new InsertionTrackingSet<K>(keys);
 		}
 
+	public IndexedSymmetric2dBiMapWithDefault<K, Float> copyDefaultAndKeys()
+		{
+		return new IndexedSymmetric2dBiMapWithDefault(getDefaultValue(), keys);
+		}
 
 	public void setDefaultValue(V defaultValue)
 		{

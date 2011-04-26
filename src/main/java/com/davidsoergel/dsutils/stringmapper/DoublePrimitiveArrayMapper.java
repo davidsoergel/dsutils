@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,25 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 		return DSArrayUtils.toPrimitive(result.toArray(new Double[]{}));
 		}
 
+	private static DecimalFormat df = new DecimalFormat("#.###");
+
+
 	public String render(double[] value)
 		{
-		return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
+		return DSStringUtils.join(value, ",");
+		}
+
+	public String renderAbbreviated(double[] value)
+		{
+		StringBuffer sb = new StringBuffer();
+
+		for (Double d : value)
+			{
+			sb.append(df.format(d)).append(",");
+			}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+		//return DSStringUtils.join(DSArrayUtils.toObject(value), ",");
 		}
 
 	public String renderHtml(@Nullable double[] ss)

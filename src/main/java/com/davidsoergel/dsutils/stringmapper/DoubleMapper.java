@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
@@ -36,8 +37,11 @@ public class DoubleMapper extends StringMapper<Double>
 		return value.toString();
 		}
 
+
+	private static DecimalFormat df = new DecimalFormat("#.###");
+
 	public String renderAbbreviated(Double value)
 		{
-		return String.format("%.2g", value);
+		return df.format(value); //String.format("%.2g", value);
 		}
 	}

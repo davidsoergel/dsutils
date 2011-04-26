@@ -4,6 +4,7 @@ import com.davidsoergel.dsutils.DSStringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,24 @@ public class DoubleArrayMapper extends StringMapper<Double[]>
 		return result.toArray(new Double[]{});
 		}
 
+	private static DecimalFormat df = new DecimalFormat("#.###");
+
 	public String render(Double[] value)
 		{
 		return DSStringUtils.join(value, ",");
+		}
+
+	public String renderAbbreviated(Double[] value)
+		{
+		StringBuffer sb = new StringBuffer();
+
+		for (Double d : value)
+			{
+			sb.append(df.format(d)).append(",");
+			}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+
+		// DSStringUtils.join(value, ",");
 		}
 	}
