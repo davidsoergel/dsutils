@@ -374,6 +374,19 @@ public class SortedSymmetric2dBiMapImpl<K extends Comparable<K> & Serializable, 
 
 // -------------------------- OTHER METHODS --------------------------
 
+		public void addKeys(final Collection<X> c)
+			{
+			for (X a : c)
+				{
+				Set<Y> ys = contents.get(a);
+				if (ys == null)
+					{
+					ys = new ConcurrentSkipListSet<Y>();
+					contents.put(a, ys);
+					}
+				}
+			}
+
 		public Collection<Y> get(final X a)
 			{
 			Set<Y> ys = contents.get(a);

@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils.collections;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -22,6 +23,12 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 	public SortedSymmetric2dBiMapWithDefault(final V defaultValue)
 		{
 		this.defaultValue = defaultValue;
+		}
+
+	public SortedSymmetric2dBiMapWithDefault(final V defaultValue, Collection<K> keys)
+		{
+		this.defaultValue = defaultValue;
+		keyToKeyPairs.addKeys(keys);
 		}
 
 	public SortedSymmetric2dBiMapWithDefault(@NotNull SortedSymmetric2dBiMapWithDefault<K, V> cloneFrom)

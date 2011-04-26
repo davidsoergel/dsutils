@@ -90,7 +90,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 
 	public IndexedSymmetric2dBiMapWithDefault(final V defaultValue, final InsertionTrackingSet<K> keys)
 		{
-		underlyingIntMap = new SortedSymmetric2dBiMapWithDefault<Integer, V>(defaultValue);
+		underlyingIntMap = new SortedSymmetric2dBiMapWithDefault<Integer, V>(defaultValue, keys.getIndexes());
 		this.keys = new InsertionTrackingSet<K>(keys);
 		}
 
