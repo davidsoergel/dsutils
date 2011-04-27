@@ -115,4 +115,9 @@ public class SortedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Seriali
 		{
 		this.defaultValue = defaultValue;
 		}
+
+	public void addKeys(final Collection<K> keys)
+		{
+		keyToKeyPairs.addKeys(keys);
+		}
 	}

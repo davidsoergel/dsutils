@@ -302,7 +302,10 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		{
 		underlyingIntMap.sanityCheck();
 
-		assert keys.getIndexes().equals(underlyingIntMap.getKeys());
+		Collection<Integer> keys1 = keys.getIndexes();
+		Set<Integer> keys2 = underlyingIntMap.getKeys();
+
+		assert DSCollectionUtils.isEqualCollection(keys1, keys2);
 
 		Set<Integer> referencedKeys = new HashSet<Integer>();
 
