@@ -249,25 +249,25 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 
 	public synchronized int remove(@NotNull final K b)
 		{
-		sanityCheck();
+		//	sanityCheck();
 
 		Integer i = keys.indexOf(b);
 		if (i == null)
 			{
 			logger.warn("requested removal of nonexistent cluster" + i + ":" + b);
-			sanityCheck();
+			//	sanityCheck();
 			}
 		if (i != null)
 			{
 			int removed = underlyingIntMap.remove(i);
 
-			underlyingIntMap.removalSanityCheck(i, underlyingIntMap.getKeys());
+			//	underlyingIntMap.removalSanityCheck(i, underlyingIntMap.getKeys());
 
 			boolean keyRemoved = keys.remove(b);
 			assert keyRemoved;
 
-			underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
-			sanityCheck();
+			//	underlyingIntMap.removalSanityCheck(i, keys.getIndexes());
+			//	sanityCheck();
 			return removed;
 			}
 		assert keys.indexOf(b) == null;
