@@ -25,6 +25,7 @@ public class SimpleStringMapper extends StringMapper<String>
 
 	public String render(@NotNull String value)
 		{
-		return value.trim();
+		// actually it's sometimes legit and important to retain whitespace on the ends
+		return value; //.trim();
 		}
 	}
