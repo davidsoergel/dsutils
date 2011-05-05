@@ -8,11 +8,13 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public class LabellableImpl<T> implements Labellable<T> //, Serializable
+public class LabellableImpl<T> implements Labellable<T>, Serializable
 	{
 	private static final Logger logger = Logger.getLogger(LabellableImpl.class);
 

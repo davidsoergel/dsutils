@@ -42,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -49,6 +50,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @version $Id$
@@ -442,6 +445,226 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		{
 		return new HashSet<T>(intersection(a, b));
 		}
+
+	public static <T> Set<T> intersectionSlow(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = new HashSet<T>();
+
+		for (T t : a)
+			{
+			for (T t1 : b)
+				{
+				if (comp.compare(t, t1) == 0)
+					{
+					result.add(t);
+					break;
+					}
+				}
+			}
+		return result;
+		}
+
+	/**
+	 * Intersection defining equality only by the natural comparator (where 0 => equal). The comparator must provide a
+	 * stable sort.  equals() and hashCode are ignored.
+	 *
+	 * @param a
+	 * @param b
+	 * @param comp
+	 * @param <T>
+	 * @return
+	 */
+	public static <T extends Comparable<T>> Set<T> intersectionUsingCompare(Collection<T> a, Collection<T> b)
+		{
+		Comparator<T> comp = new Comparator<T>()
+		{
+		public int compare(final T o1, final T o2)
+			{
+			return o1.compareTo(o2);
+			}
+		};
+		return intersection(a, b, comp);
+		}
+
+	public static <T extends Comparable<T>> Set<T> unionUsingCompare(Collection<T> a, Collection<T> b)
+		{
+		Comparator<T> comp = new Comparator<T>()
+		{
+		public int compare(final T o1, final T o2)
+			{
+			return o1.compareTo(o2);
+			}
+		};
+		return union(a, b, comp);
+		}
+
+
+	/**
+	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
+	 * stable sort.  equals() and hashCode are ignored.  THe elements returned are those from the first collection.
+	 *
+	 * @param a
+	 * @param b
+	 * @param comp
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> Set<T> intersection(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = new HashSet<T>();
+
+		SortedSet<T> as = new TreeSet<T>(comp);
+		as.addAll(a);
+		SortedSet<T> bs = new TreeSet<T>(comp);
+		bs.addAll(b);
+
+		for (T at : as)
+			{
+			for (T bt : bs)
+				{
+				int compare = comp.compare(at, bt);
+				if (compare == 0)
+					{
+					result.add(at);
+					bs.remove(bt);
+					break;
+					}
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				//** except in the case of unstable sort
+				/*if (compare <= 0)
+					{
+					break;
+					}*/
+				}
+			}
+		;
+		return result;
+		}
+
+	/**
+	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
+	 * stable sort.  equals() and hashCode are ignored.  THe elements returned are those from the first collection.
+	 *
+	 * @param a
+	 * @param b
+	 * @param comp
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> Set<T> intersectionFast(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = new HashSet<T>();
+
+		SortedSet<T> as = new TreeSet<T>(comp);
+		as.addAll(a);
+		SortedSet<T> bs = new TreeSet<T>(comp);
+		bs.addAll(b);
+
+		for (T at : as)
+			{
+			for (T bt : bs)
+				{
+				int compare = comp.compare(at, bt);
+				if (compare == 0)
+					{
+					result.add(at);
+					bs.remove(bt);
+					}
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				if (compare <= 0)
+					{
+					break;
+					}
+				}
+			}
+		;
+		return result;
+		}
+
+
+	/**
+	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
+	 * stable sort.  equals() and hashCode are ignored.
+	 *
+	 * @param a
+	 * @param b
+	 * @param comp
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> Set<T> union(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = subtract(a, b, comp);
+		result.addAll(b);
+		return result;
+		}
+
+	public static <T> Set<T> subtract(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = new HashSet<T>(a);
+
+		SortedSet<T> as = new TreeSet<T>(comp);
+		as.addAll(a);
+		SortedSet<T> bs = new TreeSet<T>(comp);
+		bs.addAll(b);
+
+		for (T at : as)
+			{
+			for (T bt : bs)
+				{
+				int compare = comp.compare(at, bt);
+				if (compare == 0)
+					{
+					result.remove(at);
+					bs.remove(bt);  // don't bother testing future a's against this
+					break;
+					}
+
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				//** except in the case of unstable sort
+				/*if (compare <= 0)
+					{
+					break;
+					}*/
+				}
+			}
+		return result;
+		}
+
+	public static <T> Set<T> subtractFast(Collection<T> a, Collection<T> b, Comparator<T> comp)
+		{
+		Set<T> result = new HashSet<T>(a);
+
+		SortedSet<T> as = new TreeSet<T>(comp);
+		as.addAll(a);
+		SortedSet<T> bs = new TreeSet<T>(comp);
+		bs.addAll(b);
+
+		for (T at : as)
+			{
+			for (T bt : bs)
+				{
+				int compare = comp.compare(at, bt);
+				if (compare == 0)
+					{
+					result.remove(at);
+					bs.remove(bt);  // don't bother testing future a's against this
+					}
+
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				if (compare <= 0)
+					{
+					break;
+					}
+				}
+			}
+		return result;
+		}
+
 
 	public static String[] mapToString(@NotNull final Collection os)
 		{

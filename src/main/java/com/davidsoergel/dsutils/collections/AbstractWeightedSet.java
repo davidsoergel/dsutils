@@ -3,6 +3,7 @@ package com.davidsoergel.dsutils.collections;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.TreeSet;
  * @author <a href="mailto:dev@davidsoergel.com">David Soergel</a>
  * @version $Id$
  */
-public abstract class AbstractWeightedSet<T> implements WeightedSet<T>
+public abstract class AbstractWeightedSet<T> implements WeightedSet<T>, Serializable
 	{
 	protected Map<T, Double> backingMap;
 	protected int itemCount = 0;
