@@ -1,5 +1,6 @@
 package com.davidsoergel.dsutils.collections;
 
+import com.davidsoergel.dsutils.EquivalenceDefinition;
 import org.testng.annotations.Test;
 
 import java.util.Comparator;
@@ -12,7 +13,24 @@ import java.util.Set;
 public class DSCollectionUtilsTest
 	{
 	@Test
-	public void testIntersectionWithComparator() throws Exception
+	public void testIntersectionExhaustiveWithComparator() throws Exception
+		{
+		Set<String> set1 = DSCollectionUtils.setOf("abboo", "utnth", "bbrruu", "ccunu");
+		Set<String> set2 = DSCollectionUtils.setOf("utnth", "ccunu", "rcdrc", "hnth");
+		EquivalenceDefinition<String> reverseSort = new EquivalenceDefinition<String>()
+		{
+		public boolean areEquivalent(final String o1, final String o2)
+			{
+			return o2.compareTo(o1) == 0;
+			}
+		};
+		Set<String> result = DSCollectionUtils.intersectionExhaustive(set1, set2, reverseSort);
+
+		assert result.equals(DSCollectionUtils.setOf("utnth", "ccunu"));
+		}
+
+	@Test
+	public void testIntersectionFastWithComparator() throws Exception
 		{
 		Set<String> set1 = DSCollectionUtils.setOf("abboo", "utnth", "bbrruu", "ccunu");
 		Set<String> set2 = DSCollectionUtils.setOf("utnth", "ccunu", "rcdrc", "hnth");
@@ -23,7 +41,7 @@ public class DSCollectionUtilsTest
 			return o2.compareTo(o1);
 			}
 		};
-		Set<String> result = DSCollectionUtils.intersection(set1, set2, reverseSort);
+		Set<String> result = DSCollectionUtils.intersectionFast(set1, set2, reverseSort);
 
 		assert result.equals(DSCollectionUtils.setOf("utnth", "ccunu"));
 		}
@@ -41,7 +59,7 @@ public class DSCollectionUtilsTest
 			return o2.compareTo(o1);
 			}
 		};
-		Set<String> result = DSCollectionUtils.union(set1, set2, reverseSort);
+		Set<String> result = DSCollectionUtils.unionFast(set1, set2, reverseSort);
 
 		assert result.equals(DSCollectionUtils.setOf("abboo", "utnth", "bbrruu", "ccunu", "rcdrc", "hnth"));
 		}
@@ -59,7 +77,7 @@ public class DSCollectionUtilsTest
 			return o2.compareTo(o1);
 			}
 		};
-		Set<String> result = DSCollectionUtils.subtract(set1, set2, reverseSort);
+		Set<String> result = DSCollectionUtils.subtractFast(set1, set2, reverseSort);
 
 		assert result.equals(DSCollectionUtils.setOf("abboo", "bbrruu"));
 		}

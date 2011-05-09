@@ -34,6 +34,7 @@
 package com.davidsoergel.dsutils.collections;
 
 import com.davidsoergel.dsutils.DSArrayUtils;
+import com.davidsoergel.dsutils.EquivalenceDefinition;
 import com.davidsoergel.dsutils.math.MersenneTwisterFast;
 import com.google.common.base.Function;
 import org.jetbrains.annotations.NotNull;
@@ -474,7 +475,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	 * @param <T>
 	 * @return
 	 */
-	public static <T extends Comparable<T>> Set<T> intersectionUsingCompare(Collection<T> a, Collection<T> b)
+	public static <T extends Comparable<T>> Set<T> intersectionUsingCompare(Set<T> a, Set<T> b)
 		{
 		Comparator<T> comp = new Comparator<T>()
 		{
@@ -483,10 +484,10 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			return o1.compareTo(o2);
 			}
 		};
-		return intersection(a, b, comp);
+		return intersectionFast(a, b, comp);
 		}
 
-	public static <T extends Comparable<T>> Set<T> unionUsingCompare(Collection<T> a, Collection<T> b)
+	public static <T extends Comparable<T>> Set<T> unionUsingCompare(Set<T> a, Set<T> b)
 		{
 		Comparator<T> comp = new Comparator<T>()
 		{
@@ -495,35 +496,37 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 			return o1.compareTo(o2);
 			}
 		};
-		return union(a, b, comp);
+
+		return unionFast(a, b, comp);
 		}
 
 
 	/**
-	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
-	 * stable sort.  equals() and hashCode are ignored.  THe elements returned are those from the first collection.
+	 * Intersection defining equality only by the provided comparator (where 0 => equal).  The sort order is otherwise
+	 * ignored; all elemets are compared exhaustively.  equals() and hashCode are ignored.  THe elements returned are those
+	 * from the first collection.
 	 *
 	 * @param a
 	 * @param b
-	 * @param comp
+	 * @param equiv
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> Set<T> intersection(Collection<T> a, Collection<T> b, Comparator<T> comp)
+	public static <T> Set<T> intersectionExhaustive(Collection<T> a, Collection<T> b, EquivalenceDefinition<T> equiv)
 		{
 		Set<T> result = new HashSet<T>();
 
-		SortedSet<T> as = new TreeSet<T>(comp);
+		/*SortedSet<T> as = new TreeSet<T>(comp);
 		as.addAll(a);
 		SortedSet<T> bs = new TreeSet<T>(comp);
-		bs.addAll(b);
+		bs.addAll(b);*/
+		Set<T> bs = new HashSet<T>(b);
 
-		for (T at : as)
+		for (T at : a)
 			{
 			for (T bt : bs)
 				{
-				int compare = comp.compare(at, bt);
-				if (compare == 0)
+				if (equiv.areEquivalent(at, bt))
 					{
 					result.add(at);
 					bs.remove(bt);
@@ -552,7 +555,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> Set<T> intersectionFast(Collection<T> a, Collection<T> b, Comparator<T> comp)
+	public static <T> Set<T> intersectionFast(Set<T> a, Set<T> b, Comparator<T> comp)
 		{
 		Set<T> result = new HashSet<T>();
 
@@ -563,7 +566,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 
 		for (T at : as)
 			{
-			for (T bt : bs)
+			for (T bt : bs.tailSet(at))
 				{
 				int compare = comp.compare(at, bt);
 				if (compare == 0)
@@ -594,28 +597,36 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> Set<T> union(Collection<T> a, Collection<T> b, Comparator<T> comp)
+	public static <T> Set<T> unionExhaustive(Set<T> a, Set<T> b, EquivalenceDefinition<T> comp)
 		{
-		Set<T> result = subtract(a, b, comp);
+		Set<T> result = subtractExhaustive(a, b, comp);
 		result.addAll(b);
 		return result;
 		}
 
-	public static <T> Set<T> subtract(Collection<T> a, Collection<T> b, Comparator<T> comp)
+
+	public static <T> Set<T> unionFast(Set<T> a, Set<T> b, Comparator<T> comp)
+		{
+		Set<T> result = subtractFast(a, b, comp);
+		result.addAll(b);
+		return result;
+		}
+
+	public static <T> Set<T> subtractExhaustive(Set<T> a, Set<T> b, EquivalenceDefinition<T> equiv)
 		{
 		Set<T> result = new HashSet<T>(a);
 
-		SortedSet<T> as = new TreeSet<T>(comp);
+		/*SortedSet<T> as = new TreeSet<T>(equiv);
 		as.addAll(a);
-		SortedSet<T> bs = new TreeSet<T>(comp);
-		bs.addAll(b);
+		SortedSet<T> bs = new TreeSet<T>(equiv);
+		bs.addAll(b);*/
 
-		for (T at : as)
+		Set<T> bs = new HashSet<T>(b);
+		for (T at : a)
 			{
 			for (T bt : bs)
 				{
-				int compare = comp.compare(at, bt);
-				if (compare == 0)
+				if (equiv.areEquivalent(at, bt))
 					{
 					result.remove(at);
 					bs.remove(bt);  // don't bother testing future a's against this
@@ -634,7 +645,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
-	public static <T> Set<T> subtractFast(Collection<T> a, Collection<T> b, Comparator<T> comp)
+	public static <T> Set<T> subtractFast(Set<T> a, Set<T> b, Comparator<T> comp)
 		{
 		Set<T> result = new HashSet<T>(a);
 
@@ -645,7 +656,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 
 		for (T at : as)
 			{
-			for (T bt : bs)
+			for (T bt : bs.tailSet(at))
 				{
 				int compare = comp.compare(at, bt);
 				if (compare == 0)
