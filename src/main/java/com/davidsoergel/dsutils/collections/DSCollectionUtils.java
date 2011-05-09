@@ -586,6 +586,41 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		return result;
 		}
 
+	/**
+	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
+	 * stable sort.  equals() and hashCode are ignored.  THe elements returned are those from the first collection.
+	 *
+	 * @param a
+	 * @param b
+	 * @param comp
+	 * @param <T>
+	 * @return
+	 */
+	public static <T extends Comparable<T>> Set<T> intersectionFastUsingCompare(SortedSet<T> a, SortedSet<T> b)
+		{
+		Set<T> result = new HashSet<T>();
+
+		for (T at : a)
+			{
+			for (T bt : b.tailSet(at))
+				{
+				int compare = at.compareTo(bt);
+				if (compare == 0)
+					{
+					result.add(at);
+					}
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				if (compare <= 0)
+					{
+					break;
+					}
+				}
+			}
+		;
+		return result;
+		}
+
 
 	/**
 	 * Intersection defining equality only by the provided comparator (where 0 => equal). The comparator must provide a
@@ -611,6 +646,14 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 		result.addAll(b);
 		return result;
 		}
+
+	public static <T extends Comparable> Set<T> unionFastUsingCompare(SortedSet<T> a, SortedSet<T> b)
+		{
+		Set<T> result = subtractFastUsingCompare(a, b);
+		result.addAll(b);
+		return result;
+		}
+
 
 	public static <T> Set<T> subtractExhaustive(Set<T> a, Set<T> b, EquivalenceDefinition<T> equiv)
 		{
@@ -663,6 +706,31 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 					{
 					result.remove(at);
 					bs.remove(bt);  // don't bother testing future a's against this
+					}
+
+				// try all the b's up to the point that they exceed the a in question
+				// since they're sorted, no later b's can possibly match
+				if (compare <= 0)
+					{
+					break;
+					}
+				}
+			}
+		return result;
+		}
+
+	public static <T extends Comparable<T>> Set<T> subtractFastUsingCompare(SortedSet<T> a, SortedSet<T> b)
+		{
+		Set<T> result = new HashSet<T>(a);
+
+		for (T at : a)
+			{
+			for (T bt : b.tailSet(at))
+				{
+				int compare = at.compareTo(bt);
+				if (compare == 0)
+					{
+					result.remove(at);
 					}
 
 				// try all the b's up to the point that they exceed the a in question
