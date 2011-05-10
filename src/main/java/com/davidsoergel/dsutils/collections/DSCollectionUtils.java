@@ -582,7 +582,7 @@ public class DSCollectionUtils extends org.apache.commons.collections15.Collecti
 					}
 				}
 			}
-		;
+
 		return result;
 		}
 
