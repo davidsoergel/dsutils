@@ -1,6 +1,6 @@
 package com.davidsoergel.dsutils.collections;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class SerializableOrderedPair<A extends Serializable, B extends Serializable> extends OrderedPair<A, B>
 		implements Serializable
 	{
-	public SerializableOrderedPair(@NotNull final A key1, @NotNull final B key2)
+	public SerializableOrderedPair(@Nullable final A key1, @Nullable final B key2)
 		{
 		super(key1, key2);
 		}
