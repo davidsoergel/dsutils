@@ -155,8 +155,9 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 				}
 			val = val + entry.getValue();
 			//weightSum += entry.getValue();
-
-			backingMap.put(entry.getKey(), val);
+			T key = entry.getKey();
+			assert key != null;
+			backingMap.put(key, val);
 			}
 		}
 
@@ -174,7 +175,9 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			val = val + d;
 			//weightSum += d;
 
-			backingMap.put(entry.getKey(), val);
+			T key = entry.getKey();
+			assert key != null;
+			backingMap.put(key, val);
 			}
 		}
 
@@ -191,11 +194,13 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			val = val - entry.getValue();
 			//weightSum -= entry.getValue();
 
-			backingMap.put(entry.getKey(), val);
+			T key = entry.getKey();
+			assert key != null;
+			backingMap.put(key, val);
 			}
 		}
 
-	private void add(final T key, final double addVal)
+	private void add(@NotNull final T key, final double addVal)
 		{
 		Double val = backingMap.get(key);
 
@@ -209,7 +214,7 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 		backingMap.put(key, val);
 		}
 
-	private void put(final T key, final double val)
+	private void put(@NotNull final T key, final double val)
 		{
 		backingMap.put(key, val);
 		}
@@ -255,7 +260,9 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 		{
 		for (@NotNull final Map.Entry<T, Double> entry : weights.entrySet())
 			{
-			put(entry.getKey(), entry.getValue() * items);
+			T key = entry.getKey();
+			assert key != null;
+			put(key, entry.getValue() * items);
 			}
 		if (itemCount == 0)
 			{
@@ -267,7 +274,7 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			}
 		}
 
-	public synchronized void put(final T key, final double increment, final int items)
+	public synchronized void put(@NotNull final T key, final double increment, final int items)
 		{
 		put(key, increment * items);
 		if (itemCount == 0)
@@ -280,7 +287,7 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 			}
 		}
 
-	public synchronized void remove(final T key, final double remVal)
+	public synchronized void remove(@NotNull final T key, final double remVal)
 		{
 		Double val = backingMap.get(key);
 

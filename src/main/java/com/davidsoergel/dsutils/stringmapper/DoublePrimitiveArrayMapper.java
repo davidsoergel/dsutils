@@ -42,6 +42,10 @@ public class DoublePrimitiveArrayMapper extends StringMapper<double[]>
 
 	public String renderAbbreviated(double[] value)
 		{
+		if (value.length == 0)
+			{
+			return "";
+			}
 		StringBuffer sb = new StringBuffer();
 
 		for (Double d : value)
