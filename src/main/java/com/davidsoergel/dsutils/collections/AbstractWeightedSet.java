@@ -23,6 +23,10 @@ import java.util.TreeSet;
 public abstract class AbstractWeightedSet<T> implements WeightedSet<T>, Serializable
 	{
 	protected Map<T, Double> backingMap;
+
+    /**
+      * A total weight for the set as a whole, used as a denominator for normalization etc.
+      */
 	protected int itemCount = 0;
 
 	public Map<T, Double> getMap()

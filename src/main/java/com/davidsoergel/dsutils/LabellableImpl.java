@@ -93,6 +93,7 @@ public class LabellableImpl<T> implements Labellable<T>, Serializable
 			{
 			return mutableWeightedLabels.getItemCount();
 			}
-		return 0;
+        // ** if we're not using labels at all, then each sample still gets a weight of 1.
+		return 1;
 		}
 	}
