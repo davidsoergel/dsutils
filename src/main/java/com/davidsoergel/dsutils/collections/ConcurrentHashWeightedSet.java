@@ -123,6 +123,11 @@ public class ConcurrentHashWeightedSet<T> extends AbstractWeightedSet<T>
 
 		}
 
+	public void incrementItemCount(int i)
+		{
+		itemCount+=i;
+		}
+
 	/*	@Override
 	 public Double put(T key, Double value)
 		 {

@@ -34,6 +34,7 @@ public interface MutableWeightedSet<T> extends WeightedSet<T>
 
 	void put(T key, double val, int items);
 
+	public void incrementItemCount(int i);
 
 	/**
 	 * Decrement the indicated value in this WeightedSet by the values in the argument.  Does not alter the number of
