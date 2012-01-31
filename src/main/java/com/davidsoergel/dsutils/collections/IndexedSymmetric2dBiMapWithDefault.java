@@ -234,8 +234,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 	public void putInt(@NotNull final UnorderedPair<Integer> pair, final V v)
 		{
 		// PERF
-		//assert keys.containsIndex(pair.getKey1());
-		//assert keys.containsIndex(pair.getKey2());
+		assert keys.containsIndex(pair.getKey1());
+		assert keys.containsIndex(pair.getKey2());
 		underlyingIntMap.put(pair, v);
 		}
 
@@ -270,7 +270,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 			//	sanityCheck();
 			return removed;
 			}
-		//assert keys.indexOf(b) == null;
+		assert keys.indexOf(b) == null;
 		return 0;
 		}
 
@@ -305,7 +305,7 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 		Collection<Integer> keys1 = keys.getIndexes();
 		Set<Integer> keys2 = underlyingIntMap.getKeys();
 
-		//assert DSCollectionUtils.isEqualCollection(keys1, keys2);
+		assert DSCollectionUtils.isEqualCollection(keys1, keys2);
 
 		Set<Integer> referencedKeys = new HashSet<Integer>();
 
@@ -318,8 +318,8 @@ public class IndexedSymmetric2dBiMapWithDefault<K extends Comparable<K> & Serial
 
 		for (Integer key : referencedKeys)
 			{
-			//assert keys.containsIndex(key);
-			//assert keys.get(key) != null;
+			assert keys.containsIndex(key);
+			assert keys.get(key) != null;
 			}
 		}
 	}

@@ -192,7 +192,7 @@ public class ConcurrentValueSortedMap<K extends Comparable<K>, V extends Compara
 
 	private synchronized void sanityCheck()
 		{
-		//assert map.size() == sortedPairs.size();
+		assert map.size() == sortedPairs.size();
 		}
 
 	public int size()
