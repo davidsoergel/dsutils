@@ -81,9 +81,11 @@ public class MultiIntervalUnion<T extends Number & Comparable> extends TreeSet<I
 			T right = i.getMax();
 
 			Integer leftCount = fullLeftRightMap.get(left);
-			Integer rightCount = fullLeftRightMap.get(right);
-
 			fullLeftRightMap.put(left, leftCount == null ? 1 : leftCount + 1);
+
+            // if left and right are the same then we have to modify the count twice
+
+            Integer rightCount = fullLeftRightMap.get(right);
 			fullLeftRightMap.put(right, rightCount == null ? -1 : rightCount - 1);
 
 			// if any bound in ever inclusive, that overrides any exclusive bound at the same point
