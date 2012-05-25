@@ -52,7 +52,11 @@
 
   <packaging>jar</packaging>
 
-  <issueManagement>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <issueManagement>
     <system>Trac</system>
     <url>http://dev.davidsoergel.com/dsutils/</url>
   </issueManagement>
@@ -67,7 +71,7 @@
   <repositories>
     <repository>
       <id>dev.davidsoergel.com</id>
-      <url>http://dev.davidsoergel.com/nexus/content/groups/public/</url>    
+      <url>http://dev.davidsoergel.com/nexus/content/groups/public/</url>
     </repository>
   </repositories>
 
