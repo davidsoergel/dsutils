@@ -16,7 +16,7 @@
   ~       documentation and/or other materials provided with the distribution.
   ~     * Neither the name of the author nor the names of any contributors may
   ~       be used to endorse or promote products derived from this software
-  ~       without specific prior written permission.
+  ~       without specific prior written permission.~;container:start; container:reload /
   ~
   ~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
   ~ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -45,7 +45,7 @@
   <parent>
     <groupId>com.davidsoergel</groupId>
     <artifactId>basepom</artifactId>
-    <version>0.95</version>
+    <version>0.97-SNAPSHOT</version>
   </parent>
 
   <inceptionYear>2006</inceptionYear>
@@ -57,12 +57,6 @@
     <url>http://dev.davidsoergel.com/dsutils/</url>
   </issueManagement>
 
-  <scm>
-    <connection>scm:svn:http://svn.davidsoergel.com/repos/dsutils/tags/dsutils-1.0</connection>
-    <developerConnection>scm:svn:svn+ssh://svn.davidsoergel.com/home/svn/repos-ds/dsutils/tags/dsutils-1.0
-    </developerConnection>
-  </scm>
-
   <distributionManagement>
     <site>
       <id>website</id>
@@ -70,21 +64,10 @@
     </site>
   </distributionManagement>
 
-
   <repositories>
     <repository>
-      <id>central</id>
-      <url>http://dev.davidsoergel.com/artifactory/repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots</id>
-      <url>http://dev.davidsoergel.com/artifactory/repo</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
+      <id>dev.davidsoergel.com</id>
+      <url>http://dev.davidsoergel.com/nexus/content/groups/public/</url>    
     </repository>
   </repositories>
 
