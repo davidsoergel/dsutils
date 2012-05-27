@@ -45,7 +45,7 @@
     <parent>
         <groupId>com.davidsoergel</groupId>
         <artifactId>basepom</artifactId>
-        <version>0.97</version>
+        <version>0.98-SNAPSHOT</version>
     </parent>
 
     <inceptionYear>2006</inceptionYear>
