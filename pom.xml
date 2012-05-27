@@ -33,96 +33,102 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.davidsoergel</groupId>
-  <artifactId>dsutils</artifactId>
-
-  <name>dsutils</name>
-  <version>1.04-SNAPSHOT</version>
-  <url>http://dev.davidsoergel.com/dsutils</url>
-  <description>Some generic utility classes.</description>
-
-  <parent>
+    <modelVersion>4.0.0</modelVersion>
     <groupId>com.davidsoergel</groupId>
-    <artifactId>basepom</artifactId>
-    <version>0.97-SNAPSHOT</version>
-  </parent>
+    <artifactId>dsutils</artifactId>
 
-  <inceptionYear>2006</inceptionYear>
+    <name>dsutils</name>
+    <version>1.04-SNAPSHOT</version>
+    <url>http://dev.davidsoergel.com/dsutils</url>
+    <description>Some generic utility classes.</description>
 
-  <packaging>jar</packaging>
+    <parent>
+        <groupId>com.davidsoergel</groupId>
+        <artifactId>basepom</artifactId>
+        <version>0.97</version>
+    </parent>
+
+    <inceptionYear>2006</inceptionYear>
+
+    <packaging>jar</packaging>
+
+	<scm>
+		<connection>scm:hg:https://hg.davidsoergel.com/dsutils</connection>
+		<developerConnection>scm:hg:ssh://dev.davidsoergel.com//home/hg/dsutils</developerConnection>
+		<url>http://hg.davidsoergel.com/dsutils</url>
+	</scm>
+
+    <issueManagement>
+        <system>Trac</system>
+        <url>http://dev.davidsoergel.com/dsutils/</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <site>
+            <id>website</id>
+            <url>scpexe://jenkins@dev.davidsoergel.com/home/build/mavensites/dsutils</url>
+        </site>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <issueManagement>
-    <system>Trac</system>
-    <url>http://dev.davidsoergel.com/dsutils/</url>
-  </issueManagement>
+    <repositories>
+        <repository>
+            <id>dev.davidsoergel.com</id>
+            <url>http://dev.davidsoergel.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scpexe://jenkins@dev.davidsoergel.com/home/build/mavensites/dsutils</url>
-    </site>
-  </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>dev.davidsoergel.com</id>
-      <url>http://dev.davidsoergel.com/nexus/content/groups/public/</url>
-    </repository>
-  </repositories>
-
-  <dependencies>
-    <!--<dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.7</version>
-      <scope>test</scope>
-    </dependency>-->
-    <!-- <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.2</version>
-      <scope>test</scope>
-    </dependency>-->
-    <!-- <dependency>
-      <groupId>javatar</groupId>
-      <artifactId>javatar</artifactId>
-      <version>2.5</version>
-    </dependency>-->
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.5</version>
-      <scope>compile</scope>
-    </dependency>
-    <!-- try to work around transitive multiple inclusion of old versions -->
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.collections</groupId>
-      <artifactId>collections-generic</artifactId>
-      <version>4.01</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.collections</groupId>
-      <artifactId>google-collections</artifactId>
-      <version>1.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <!-- <dependency>
-      <groupId>com.hazelcast</groupId>
-      <artifactId>hazelcast</artifactId>
-      <version>1.5.3</version>
-    </dependency>-->
-  </dependencies>
+    <dependencies>
+        <!--<dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.7</version>
+          <scope>test</scope>
+        </dependency>-->
+        <!-- <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>3.8.2</version>
+          <scope>test</scope>
+        </dependency>-->
+        <!-- <dependency>
+          <groupId>javatar</groupId>
+          <artifactId>javatar</artifactId>
+          <version>2.5</version>
+        </dependency>-->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- try to work around transitive multiple inclusion of old versions -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.collections</groupId>
+            <artifactId>collections-generic</artifactId>
+            <version>4.01</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- <dependency>
+          <groupId>com.hazelcast</groupId>
+          <artifactId>hazelcast</artifactId>
+          <version>1.5.3</version>
+        </dependency>-->
+    </dependencies>
 
 </project>
