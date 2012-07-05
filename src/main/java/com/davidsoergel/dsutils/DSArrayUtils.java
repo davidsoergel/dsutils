@@ -1103,7 +1103,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 	@NotNull
-	public static double[] toPrimitiveArray(@NotNull Collection<Double> c)
+	public static double[] toPrimitiveDoubleArray(@NotNull Collection<Double> c)
 		{
 		@NotNull double[] result = new double[c.size()];
 		int i = 0;
@@ -1116,7 +1116,7 @@ public class DSArrayUtils extends org.apache.commons.lang.ArrayUtils
 		}
 
 	@NotNull
-	public static int[] toPrimitiveArray(@NotNull Collection<Integer> c)
+	public static int[] toPrimitiveIntArray(@NotNull Collection<Integer> c)
 		{
 		@NotNull int[] result = new int[c.size()];
 		int i = 0;
