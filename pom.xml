@@ -35,7 +35,7 @@
 	<groupId>com.davidsoergel</groupId>
 	<artifactId>dsutils</artifactId>
 	<name>dsutils</name>
-	<version>1.051</version>
+	<version>1.06-SNAPSHOT</version>
 	<url>http://dev.davidsoergel.com/dsutils</url>
 	<description>Some generic utility classes.</description>
 	<parent>
