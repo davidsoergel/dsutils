@@ -1,0 +1,10 @@
+com.davidsoergel.dsutils
+com.davidsoergel.dsutils.collections
+com.davidsoergel.dsutils.file
+com.davidsoergel.dsutils.increment
+com.davidsoergel.dsutils.math
+com.davidsoergel.dsutils.range
+com.davidsoergel.dsutils.stringmapper
+com.davidsoergel.dsutils.swing
+com.davidsoergel.dsutils.swing.jmultiprogressbar
+org.jboss.aop.advice.annotation.assignability
