@@ -41,25 +41,25 @@
 	<parent>
 		<groupId>com.davidsoergel</groupId>
 		<artifactId>basepom</artifactId>
-		<version>1.01</version>
+		<version>1.02</version>
 	</parent>
 	<inceptionYear>2006</inceptionYear>
 	<packaging>jar</packaging>
 	<scm>
-		<connection>scm:hg:https://hg.davidsoergel.com/dsutils</connection>
-		<developerConnection>scm:hg:ssh://dev.davidsoergel.com//home/hg/dsutils</developerConnection>
-		<url>http://hg.davidsoergel.com/dsutils</url>
+		<url>https://github.com/davidsoergel/dsutils</url>
+		<connection>scm:git:git://github.com/davidsoergel/dsutils.git</connection>
+		<developerConnection>scm:git:git@github.com:davidsoergel/dsutils.git</developerConnection>
 	</scm>
-	<issueManagement>
-		<system>Trac</system>
-		<url>http://dev.davidsoergel.com/dsutils/</url>
-	</issueManagement>
-	<distributionManagement>
-		<site>
-			<id>website</id>
-			<url>scpexe://jenkins@dev.davidsoergel.com/home/build/mavensites/dsutils</url>
-		</site>
-	</distributionManagement>
+    <issueManagement>
+            <system>GitHub Issues</system>
+            <url>https://github.com/davidsoergel/dsutils/issues</url>
+    </issueManagement>
+    <distributionManagement>
+      <site>
+        <id>github.davidsoergel.gh-pages</id>
+        <url>scm:git:ssh://git@github.com/davidsoergel/dsutils.git</url>
+      </site>
+    </distributionManagement>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

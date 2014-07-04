@@ -5,17 +5,15 @@ _A Java library of general utility classes_
 
 ---
 
-Basically anytime I write a bit of generally useful code (whether having to do with string processing, collections, basic math, etc.) I put it in here; thus, all of my other packages depend on this one.
+Basically anytime I write a bit of generally useful code (whether having to do with string processing, collections, basic math, etc. etc.) I put it in here; thus, all of my other packages depend on this one.
 
 This project has been accumulating since 2003 or so, and some of the functionality has slowly been replaced over the years by new features in the JDK and by the [Apache Commons](http://commons.apache.org) packages.
 
 Note that the nature of this kind of code is that some of it is found on the Internet and pasted into this package for convenience.  I've tried to keep the attributions, copyright notices, and licenses straight, but I know I need to doublecheck those--so I can't make any guarantee as to non-GPL code and such.
 
-<!--- 
 == Documentation ==
 
- * [API docs](http://dev.davidsoergel.com/maven/dsutils/apidocs)
--->
+ * [API docs](http://davidsoergel.github.io/dsutils/)
 
 == Download ==
 
@@ -47,5 +45,5 @@ Note that the nature of this kind of code is that some of it is found on the Int
 </dependencies>
 ```
 
-If you really want just the jar, you can get it via "Releases" above; or get the [latest stable build](http://dev.davidsoergel.com/jenkins/job/dsutils/lastStableBuild/) from the continuous integration server.
+If you really want just the jar, you can get it via "Releases" above; or get the [latest stable build](http://dev.davidsoergel.com/jenkins/job/dsutils/lastStableBuild/com.davidsoergel$dsutils/) from the build server.
 
