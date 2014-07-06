@@ -49,3 +49,4 @@ Download
 
 If you really want just the jar, you can get the [latest release](http://dev.davidsoergel.com/nexus/content/repositories/releases/com/davidsoergel/dsutils/) from the Maven repo; or get the [latest stable build](http://dev.davidsoergel.com/jenkins/job/dsutils/lastStableBuild/com.davidsoergel$dsutils/) from the build server.
 
+
